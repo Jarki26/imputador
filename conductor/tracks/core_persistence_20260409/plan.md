@@ -13,11 +13,11 @@
 
 ## Phase 2: Data Persistence Layer
 
-- [~] **Task: Implement IndexedDB Schema and Initialization**
-  - [ ] Write tests for DB initialization.
-  - [ ] Implement `db.ts` using `idb` library or native IndexedDB API.
-  - [ ] Define stores for `tasks` and `projects`.
-- [ ] **Task: Create TaskStore with TDD (CRUD operations)**
+- [x] **Task: Implement IndexedDB Schema and Initialization** (294bc9d)
+  - [x] Write tests for DB initialization.
+  - [x] Implement `db.ts` using `idb` library or native IndexedDB API.
+  - [x] Define stores for `tasks` and `projects`.
+- [~] **Task: Create TaskStore with TDD (CRUD operations)**
   - [ ] Write failing tests for `addTask`, `getTasksForDay`, `updateTask`, and `deleteTask`.
   - [ ] Implement `TaskStore` logic to pass tests.
   - [ ] Verify >80% coverage for `TaskStore`.
