@@ -11,7 +11,7 @@
   - [x] Create basic layout components (Shell, Main Container).
 - [x] **Task: Conductor - User Manual Verification 'Project Scaffolding & Initial Setup' (Protocol in workflow.md)** (5655513)
 
-## Phase 2: Data Persistence Layer
+## Phase 2: Data Persistence Layer [checkpoint: e73a2b7]
 
 - [x] **Task: Implement IndexedDB Schema and Initialization** (294bc9d)
   - [x] Write tests for DB initialization.
@@ -24,7 +24,7 @@
 - [x] **Task: Implement Project Autocomplete Logic** (9cf326d)
   - [x] Write tests for project search and auto-saving new projects.
   - [x] Implement logic to manage the `projects` store.
-- [~] **Task: Conductor - User Manual Verification 'Data Persistence Layer' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Data Persistence Layer' (Protocol in workflow.md)** (e73a2b7)
 
 ## Phase 3: Core UI Components
 
