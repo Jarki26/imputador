@@ -21,10 +21,10 @@
   - [x] Write failing tests for `addTask`, `getTasksForDay`, `updateTask`, and `deleteTask`.
   - [x] Implement `TaskStore` logic to pass tests.
   - [x] Verify >80% coverage for `TaskStore`.
-- [~] **Task: Implement Project Autocomplete Logic**
-  - [ ] Write tests for project search and auto-saving new projects.
-  - [ ] Implement logic to manage the `projects` store.
-- [ ] **Task: Conductor - User Manual Verification 'Data Persistence Layer' (Protocol in workflow.md)**
+- [x] **Task: Implement Project Autocomplete Logic** (9cf326d)
+  - [x] Write tests for project search and auto-saving new projects.
+  - [x] Implement logic to manage the `projects` store.
+- [~] **Task: Conductor - User Manual Verification 'Data Persistence Layer' (Protocol in workflow.md)**
 
 ## Phase 3: Core UI Components
 
