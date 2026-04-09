@@ -229,14 +229,14 @@ export class ProjectStore {
     const db = await initDB(this.dbName);
     const tx = db.transaction('projects', 'readonly');
     const store = tx.objectStore('projects');
-    
+&nbsp;
     // We can't do case-insensitive search efficiently in IDB without a specialized index
     // or scanning. For now, we'll get all and filter, assuming project count is small (&lt;1000).
     const projects = await store.getAll();
     const lowerQuery = query.toLowerCase();
-    
+&nbsp;
     return projects
-      .filter(p =&gt; p.name.toLowerCase().startsWith(lowerQuery))
+      .filter((p) =&gt; p.name.toLowerCase().startsWith(lowerQuery))
       .<span class="fstat-no" title="function not covered" >sort((a</span>, b) =&gt; <span class="cstat-no" title="statement not covered" >b.lastUsedAt.getTime() - a.lastUsedAt.getTime())</span>;
   }
 &nbsp;
@@ -250,16 +250,16 @@ export class ProjectStore {
     const tx = db.transaction('projects', 'readonly');
     const store = tx.objectStore('projects');
     const index = store.index('lastUsedAt');
-    
+&nbsp;
     // Get projects sorted by lastUsedAt descending
     const projects: Project[] = [];
     let cursor = await index.openCursor(null, 'prev');
-    
+&nbsp;
     while (cursor &amp;&amp; projects.length &lt; limit) {
       projects.push(cursor.value);
       cursor = await cursor.continue();
     }
-    
+&nbsp;
     return projects;
   }
 }
@@ -277,7 +277,7 @@ export class ProjectStore {
         rel="noopener noreferrer"
         >istanbul</a
       >
-      at 2026-04-09T21:57:43.732Z
+      at 2026-04-09T22:37:52.309Z
     </div>
     <script src="../prettify.js"></script>
     <script>
