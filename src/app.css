@@ -25,7 +25,8 @@
   --md-sys-color-on-surface-variant: #49454f;
 
   /* Typography */
-  --md-sys-typescale-body-large-font: Roboto, system-ui, -apple-system, sans-serif;
+  --md-sys-typescale-body-large-font:
+    Roboto, system-ui, -apple-system, sans-serif;
   --md-sys-typescale-body-large-size: 1rem;
   --md-sys-typescale-body-large-weight: 400;
   --md-sys-typescale-body-large-line-height: 1.5rem;
