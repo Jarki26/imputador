@@ -4,5 +4,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Implement Core Task Registration and IndexedDB Persistence**
-  *Link: [./tracks/core_persistence_20260409/](./tracks/core_persistence_20260409/)*
+- [~] **Track: Implement Core Task Registration and IndexedDB Persistence**
+  _Link: [./tracks/core_persistence_20260409/](./tracks/core_persistence_20260409/)_
