@@ -40,9 +40,10 @@ export async function initDB(
       taskStore.createIndex('date', 'startTime');
 
       // Create projects store
-      db.createObjectStore('projects', {
+      const projectStore = db.createObjectStore('projects', {
         keyPath: 'name',
       });
+      projectStore.createIndex('lastUsedAt', 'lastUsedAt');
     },
   });
 }

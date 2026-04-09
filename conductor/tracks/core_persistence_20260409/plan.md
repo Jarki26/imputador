@@ -17,11 +17,11 @@
   - [x] Write tests for DB initialization.
   - [x] Implement `db.ts` using `idb` library or native IndexedDB API.
   - [x] Define stores for `tasks` and `projects`.
-- [~] **Task: Create TaskStore with TDD (CRUD operations)**
-  - [ ] Write failing tests for `addTask`, `getTasksForDay`, `updateTask`, and `deleteTask`.
-  - [ ] Implement `TaskStore` logic to pass tests.
-  - [ ] Verify >80% coverage for `TaskStore`.
-- [ ] **Task: Implement Project Autocomplete Logic**
+- [x] **Task: Create TaskStore with TDD (CRUD operations)** (ec901fd)
+  - [x] Write failing tests for `addTask`, `getTasksForDay`, `updateTask`, and `deleteTask`.
+  - [x] Implement `TaskStore` logic to pass tests.
+  - [x] Verify >80% coverage for `TaskStore`.
+- [~] **Task: Implement Project Autocomplete Logic**
   - [ ] Write tests for project search and auto-saving new projects.
   - [ ] Implement logic to manage the `projects` store.
 - [ ] **Task: Conductor - User Manual Verification 'Data Persistence Layer' (Protocol in workflow.md)**
