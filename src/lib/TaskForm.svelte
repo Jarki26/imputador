@@ -5,11 +5,13 @@
   interface Props {
     taskStore?: TaskStore;
     projectStore?: ProjectStore;
+    onSuccess?: () => void | Promise<void>;
   }
 
   let {
     taskStore = new TaskStore(),
     projectStore = new ProjectStore(),
+    onSuccess,
   }: Props = $props();
 
   let errorMessage = $state('');
@@ -57,6 +59,9 @@
       }
 
       form.reset();
+      if (onSuccess) {
+        await onSuccess();
+      }
     } catch (err) {
       errorMessage = 'Failed to save task';
       console.error(err);
