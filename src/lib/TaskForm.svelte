@@ -1,6 +1,7 @@
 <script lang="ts">
   import { TaskStore } from './taskStore';
   import { ProjectStore } from './projectStore';
+  import { formatDateForInput } from './utils';
 
   interface Props {
     taskStore?: TaskStore;
@@ -23,11 +24,6 @@
   let errorMessage = $state('');
 
   const taskTypes = ['General', 'Feature', 'Bug', 'Rest', 'Meeting'];
-
-  function formatDateForInput(d: Date): string {
-    const pad = (n: number) => n.toString().padStart(2, '0');
-    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
-  }
 
   async function handleSubmit(e: SubmitEvent) {
     e.preventDefault();

@@ -4,6 +4,7 @@
   import WeeklyView from '$lib/WeeklyView.svelte';
   import { TaskStore } from '$lib/taskStore';
   import { ProjectStore } from '$lib/projectStore';
+  import { formatDateForInput } from '$lib/utils';
   import { onMount } from 'svelte';
   import type { Task } from '$lib/db';
 
@@ -45,17 +46,11 @@
     const end = new Date(date);
     end.setHours(start.getHours() + 1);
 
-    // Format to YYYY-MM-DDTHH:mm for datetime-local input
-    const format = (d: Date) => {
-      const pad = (n: number) => n.toString().padStart(2, '0');
-      return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
-    };
-
-    selectedStartTime = format(start);
-    selectedEndTime = format(end);
+    selectedStartTime = formatDateForInput(start);
+    selectedEndTime = formatDateForInput(end);
     editingTask = null;
     showModal = true;
-  }
+    }
 
   function handleTaskClick(task: Task) {
     editingTask = task;

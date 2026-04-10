@@ -46,6 +46,7 @@
   }
 
   let dragInfo = $state<DragInfo | null>(null);
+  let gridContentRef = $state<HTMLElement | null>(null);
 
   function formatDay(date: Date): string {
     return date.toLocaleDateString('en-US', { weekday: 'long' });
@@ -199,9 +200,8 @@
       const newStartMinutes = Math.max(0, Math.min(23 * 60, dragInfo.initialStart + minutesDelta));
       const duration = dragInfo.initialDuration;
       
-      const gridContent = document.querySelector('.grid-content');
-      if (gridContent) {
-        const rect = gridContent.getBoundingClientRect();
+      if (gridContentRef) {
+        const rect = gridContentRef.getBoundingClientRect();
         const colWidth = rect.width / 7;
         const deltaX = e.clientX - dragInfo.startX;
         const dayDelta = Math.round(deltaX / colWidth);
@@ -275,7 +275,7 @@
         {/each}
       </div>
 
-      <div class="grid-content">
+      <div class="grid-content" bind:this={gridContentRef}>
         {#each daysOfWeek as day}
           <div class="day-column">
             {#each hours as hour}
