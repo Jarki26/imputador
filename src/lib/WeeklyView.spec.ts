@@ -153,4 +153,65 @@ describe('WeeklyView.svelte', () => {
 
     expect(onTaskClick).toHaveBeenCalledWith(tasks[0]);
   });
+
+  it('should trigger onTaskUpdate when a task is dragged to a new time', async () => {
+    cleanup();
+    const onTaskUpdate = vi.fn();
+    const tasks = [
+      {
+        id: 1,
+        title: 'Draggable Task',
+        project: 'Project D',
+        startTime: new Date('2026-04-06T09:00:00Z'),
+        endTime: new Date('2026-04-06T10:00:00Z'),
+      }
+    ];
+    render(WeeklyView, { props: { tasks, onTaskUpdate } });
+
+    const taskBlock = screen.getByText('Draggable Task').closest('.task-block');
+    
+    // Simulate drag start
+    await fireEvent.pointerDown(taskBlock!, { clientY: 0, pointerId: 1 });
+    // Move 60px down (1 hour)
+    await fireEvent.pointerMove(taskBlock!, { clientY: 60, pointerId: 1 });
+    // Release
+    await fireEvent.pointerUp(taskBlock!, { clientY: 60, pointerId: 1 });
+
+    expect(onTaskUpdate).toHaveBeenCalled();
+    const updatedTask = onTaskUpdate.mock.calls[0][0];
+    // Original was 09:00, moved 1 hour down -> should be 10:00
+    expect(new Date(updatedTask.startTime).getUTCHours()).toBe(10);
+    expect(new Date(updatedTask.endTime).getUTCHours()).toBe(11);
+  });
+
+  it('should trigger onTaskUpdate when a task is resized', async () => {
+    cleanup();
+    const onTaskUpdate = vi.fn();
+    const tasks = [
+      {
+        id: 1,
+        title: 'Resizable Task',
+        project: 'Project R',
+        startTime: new Date('2026-04-06T09:00:00Z'),
+        endTime: new Date('2026-04-06T10:00:00Z'),
+      }
+    ];
+    render(WeeklyView, { props: { tasks, onTaskUpdate } });
+
+    const taskBlock = screen.getByText('Resizable Task').closest('.task-block');
+    const resizeHandle = taskBlock?.querySelector('.resize-handle');
+    
+    // Simulate resize start
+    await fireEvent.pointerDown(resizeHandle!, { clientY: 60, pointerId: 2 });
+    // Move 30px down (30 mins)
+    await fireEvent.pointerMove(resizeHandle!, { clientY: 90, pointerId: 2 });
+    // Release
+    await fireEvent.pointerUp(resizeHandle!, { clientY: 90, pointerId: 2 });
+
+    expect(onTaskUpdate).toHaveBeenCalled();
+    const updatedTask = onTaskUpdate.mock.calls[0][0];
+    expect(new Date(updatedTask.startTime).getUTCHours()).toBe(9);
+    expect(new Date(updatedTask.endTime).getUTCHours()).toBe(10);
+    expect(new Date(updatedTask.endTime).getUTCMinutes()).toBe(30);
+  });
 });

@@ -70,6 +70,14 @@
     selectedStartTime = '';
     selectedEndTime = '';
   }
+
+  async function handleTaskUpdate(updatedTask: Task) {
+    if (updatedTask.id) {
+      const { id, ...data } = updatedTask;
+      await taskStore.updateTask(id, data);
+      await loadTasks();
+    }
+  }
 </script>
 
 <div class="dashboard">
@@ -115,6 +123,7 @@
         {tasks}
         onSlotClick={handleSlotClick}
         onTaskClick={handleTaskClick}
+        onTaskUpdate={handleTaskUpdate}
       />
     </div>
   {/if}

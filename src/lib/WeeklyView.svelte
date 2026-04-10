@@ -6,18 +6,19 @@
     tasks = [],
     onSlotClick,
     onTaskClick,
+    onTaskUpdate,
   }: {
     startDate: Date;
     tasks: Task[];
     onSlotClick?: (date: Date) => void;
     onTaskClick?: (task: Task) => void;
+    onTaskUpdate?: (task: Task) => void;
   } = $props();
 
   const daysOfWeek = $derived.by(() => {
     const days = [];
     const current = new Date(startDate);
     current.setHours(0, 0, 0, 0);
-    // Find Monday of the current week if not provided
     const day = current.getDay();
     const diff = current.getDate() - day + (day === 0 ? -6 : 1);
     const monday = new Date(current.setDate(diff));
@@ -31,6 +32,20 @@
   });
 
   const hours = Array.from({ length: 24 }, (_, i) => i);
+
+  // Drag and Drop State
+  interface DragInfo {
+    taskId: number | string;
+    mode: 'move' | 'resize';
+    startY: number;
+    startX: number;
+    initialStart: number; // minutes from midnight
+    initialDuration: number; // minutes
+    initialDayIndex: number;
+    currentTask: Task;
+  }
+
+  let dragInfo = $state<DragInfo | null>(null);
 
   function formatDay(date: Date): string {
     return date.toLocaleDateString('en-US', { weekday: 'long' });
@@ -46,13 +61,17 @@
     const dayEnd = new Date(date);
     dayEnd.setHours(23, 59, 59, 999);
 
-    const dailyTasks = tasks
+    // If we are dragging, we should use the updated task positions for the total calculation
+    const effectiveTasks = dragInfo 
+      ? tasks.map(t => t.id === dragInfo?.taskId ? dragInfo.currentTask : t)
+      : tasks;
+
+    const dailyTasks = effectiveTasks
       .filter((t) => t.startTime >= dayStart && t.startTime <= dayEnd)
       .sort((a, b) => a.startTime.getTime() - b.startTime.getTime());
 
     if (dailyTasks.length === 0) return '0.00';
 
-    // Merge overlapping intervals to calculate unique time covered
     const mergedIntervals: { start: Date; end: Date }[] = [];
     let currentInterval = {
       start: new Date(dailyTasks[0].startTime),
@@ -62,12 +81,10 @@
     for (let i = 1; i < dailyTasks.length; i++) {
       const nextTask = dailyTasks[i];
       if (nextTask.startTime < currentInterval.end) {
-        // Overlap detected, extend the end time if necessary
         if (nextTask.endTime > currentInterval.end) {
           currentInterval.end = new Date(nextTask.endTime);
         }
       } else {
-        // No overlap, push current and start new
         mergedIntervals.push(currentInterval);
         currentInterval = {
           start: new Date(nextTask.startTime),
@@ -94,7 +111,11 @@
     const dayEnd = new Date(date);
     dayEnd.setHours(23, 59, 59, 999);
 
-    const dailyTasks: TaskWithOverlap[] = tasks
+    const effectiveTasks = dragInfo 
+      ? tasks.map(t => t.id === dragInfo?.taskId ? dragInfo.currentTask : t)
+      : tasks;
+
+    const dailyTasks: TaskWithOverlap[] = effectiveTasks
       .filter((t) => t.startTime >= dayStart && t.startTime <= dayEnd)
       .map((t) => ({ ...t }));
 
@@ -103,8 +124,6 @@
       for (let j = i + 1; j < dailyTasks.length; j++) {
         const t1 = dailyTasks[i];
         const t2 = dailyTasks[j];
-
-        // Check if t1 and t2 overlap
         if (t1.startTime < t2.endTime && t2.startTime < t1.endTime) {
           t1.hasOverlap = true;
           t2.hasOverlap = true;
@@ -122,10 +141,14 @@
     const startMinutes = start.getHours() * 60 + start.getMinutes();
     const durationMinutes = (end.getTime() - start.getTime()) / (1000 * 60);
 
-    const top = startMinutes; // 1px per minute since hour height is 60px
-    const height = Math.max(durationMinutes, 45); // Increased to 45px for safe text fit
+    const top = startMinutes; 
+    const height = Math.max(durationMinutes, 45); 
 
-    return `top: ${top}px; height: ${height}px;`;
+    let style = `top: ${top}px; height: ${height}px;`;
+    if (dragInfo && dragInfo.taskId === task.id) {
+      style += 'z-index: 100; opacity: 0.8; box-shadow: 0 8px 16px rgba(0,0,0,0.2); pointer-events: none;';
+    }
+    return style;
   }
 
   function getTaskDuration(task: Task): string {
@@ -140,10 +163,98 @@
       onSlotClick(clickedDate);
     }
   }
+
+  // Pointer Handlers
+  function handlePointerDown(e: PointerEvent, task: Task, mode: 'move' | 'resize') {
+    if (e.button !== 0) return; // Left click only
+    e.stopPropagation();
+    
+    const target = e.currentTarget as HTMLElement;
+    if (target.setPointerCapture) {
+      try {
+        target.setPointerCapture(e.pointerId);
+      } catch (err) {
+        console.warn('Pointer capture failed:', err);
+      }
+    }
+
+    const startMinutes = task.startTime.getHours() * 60 + task.startTime.getMinutes();
+    const durationMinutes = (task.endTime.getTime() - task.startTime.getTime()) / (1000 * 60);
+    
+    // Find initial day index
+    const dayStart = new Date(task.startTime);
+    dayStart.setHours(0,0,0,0);
+    const dayIndex = daysOfWeek.findIndex(d => d.getTime() === dayStart.getTime());
+
+    dragInfo = {
+      taskId: task.id!,
+      mode,
+      startY: e.clientY,
+      startX: e.clientX,
+      initialStart: startMinutes,
+      initialDuration: durationMinutes,
+      initialDayIndex: dayIndex,
+      currentTask: { ...task }
+    };
+  }
+
+  function handlePointerMove(e: PointerEvent) {
+    if (!dragInfo) return;
+
+    const deltaY = e.clientY - dragInfo.startY;
+    const minutesDelta = Math.round(deltaY / 15) * 15; // Snap to 15m (1px = 1m)
+
+    const updatedTask = { ...dragInfo.currentTask };
+
+    if (dragInfo.mode === 'move') {
+      const newStartMinutes = dragInfo.initialStart + minutesDelta;
+      const duration = dragInfo.initialDuration;
+      
+      // Calculate day delta (X axis)
+      const gridContent = document.querySelector('.grid-content');
+      if (gridContent) {
+        const rect = gridContent.getBoundingClientRect();
+        const colWidth = rect.width / 7;
+        const deltaX = e.clientX - dragInfo.startX;
+        const dayDelta = Math.round(deltaX / colWidth);
+        let newDayIndex = dragInfo.initialDayIndex + dayDelta;
+        newDayIndex = Math.max(0, Math.min(6, newDayIndex));
+        
+        const newDay = new Date(daysOfWeek[newDayIndex]);
+        
+        updatedTask.startTime = new Date(newDay);
+        updatedTask.startTime.setHours(Math.floor(newStartMinutes / 60), newStartMinutes % 60, 0, 0);
+        
+        updatedTask.endTime = new Date(updatedTask.startTime.getTime() + duration * 60000);
+      }
+    } else if (dragInfo.mode === 'resize') {
+      const newDuration = Math.max(15, dragInfo.initialDuration + minutesDelta);
+      updatedTask.endTime = new Date(updatedTask.startTime.getTime() + newDuration * 60000);
+    }
+
+    dragInfo.currentTask = updatedTask;
+  }
+
+  function handlePointerUp(e: PointerEvent) {
+    if (!dragInfo) return;
+    
+    if (onTaskUpdate && dragInfo.currentTask) {
+      // Check if task actually moved or resized
+      const original = tasks.find(t => t.id === dragInfo?.taskId);
+      if (original && (
+        original.startTime.getTime() !== dragInfo.currentTask.startTime.getTime() ||
+        original.endTime.getTime() !== dragInfo.currentTask.endTime.getTime()
+      )) {
+        onTaskUpdate(dragInfo.currentTask);
+      }
+    }
+    
+    dragInfo = null;
+  }
 </script>
 
 <div class="weekly-view">
-  <div class="grid-scroll-container">
+  <div class="grid-scroll-container" onpointermove={handlePointerMove} onpointerup={handlePointerUp}>
     <div class="grid-header">
       <div class="time-axis-spacer"></div>
       {#each daysOfWeek as day}
@@ -182,6 +293,7 @@
                 class="task-block"
                 class:has-overlap={task.hasOverlap}
                 style={getTaskStyle(task)}
+                onpointerdown={(e) => handlePointerDown(e, task, 'move')}
                 onclick={(e) => {
                   e.stopPropagation();
                   if (onTaskClick) onTaskClick(task);
@@ -201,6 +313,12 @@
                   <span class="task-project">{task.project}</span>
                   <span class="task-duration">{getTaskDuration(task)}</span>
                 </div>
+                <!-- Resize Handle -->
+                <div 
+                  class="resize-handle" 
+                  onpointerdown={(e) => handlePointerDown(e, task, 'resize')}
+                  role="presentation"
+                ></div>
               </div>
             {/each}
           </div>
@@ -219,6 +337,7 @@
     border: 1px solid var(--md-sys-color-outline);
     border-radius: 12px;
     overflow: hidden;
+    touch-action: none; /* Prevent scrolling while dragging */
   }
 
   /* Local border-box reset */
@@ -358,6 +477,12 @@
     flex-direction: column;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     line-height: 1.1;
+    cursor: grab;
+    user-select: none;
+  }
+
+  .task-block:active {
+    cursor: grabbing;
   }
 
   .task-block.has-overlap {
@@ -397,5 +522,19 @@
     text-align: right;
     font-weight: 600;
     opacity: 0.7;
+  }
+
+  .resize-handle {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    cursor: ns-resize;
+    background: transparent;
+  }
+
+  .resize-handle:hover {
+    background: rgba(0, 0, 0, 0.1);
   }
 </style>
