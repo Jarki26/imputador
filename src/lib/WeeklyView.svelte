@@ -36,12 +36,39 @@
     const dayEnd = new Date(date);
     dayEnd.setHours(23, 59, 59, 999);
 
-    const dailyTasks = tasks.filter(
-      (t) => t.startTime >= dayStart && t.startTime <= dayEnd,
-    );
+    const dailyTasks = tasks
+      .filter((t) => t.startTime >= dayStart && t.startTime <= dayEnd)
+      .sort((a, b) => a.startTime.getTime() - b.startTime.getTime());
 
-    const totalMs = dailyTasks.reduce((acc, t) => {
-      return acc + (t.endTime.getTime() - t.startTime.getTime());
+    if (dailyTasks.length === 0) return '0.00';
+
+    // Merge overlapping intervals to calculate unique time covered
+    const mergedIntervals: { start: Date; end: Date }[] = [];
+    let currentInterval = {
+      start: new Date(dailyTasks[0].startTime),
+      end: new Date(dailyTasks[0].endTime),
+    };
+
+    for (let i = 1; i < dailyTasks.length; i++) {
+      const nextTask = dailyTasks[i];
+      if (nextTask.startTime < currentInterval.end) {
+        // Overlap detected, extend the end time if necessary
+        if (nextTask.endTime > currentInterval.end) {
+          currentInterval.end = new Date(nextTask.endTime);
+        }
+      } else {
+        // No overlap, push current and start new
+        mergedIntervals.push(currentInterval);
+        currentInterval = {
+          start: new Date(nextTask.startTime),
+          end: new Date(nextTask.endTime),
+        };
+      }
+    }
+    mergedIntervals.push(currentInterval);
+
+    const totalMs = mergedIntervals.reduce((acc, interval) => {
+      return acc + (interval.end.getTime() - interval.start.getTime());
     }, 0);
 
     return (totalMs / (1000 * 60 * 60)).toFixed(2);

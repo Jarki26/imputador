@@ -39,6 +39,30 @@ describe('WeeklyView.svelte', () => {
     expect(screen.getByText(/Total: 1\.00h/i)).toBeDefined();
   });
 
+  it('should calculate daily total excluding overlapping time', () => {
+    cleanup();
+    const tasks = [
+      {
+        id: 1,
+        title: 'Task 1',
+        project: 'P1',
+        startTime: new Date('2026-04-06T09:00:00Z'),
+        endTime: new Date('2026-04-06T10:00:00Z'),
+      },
+      {
+        id: 2,
+        title: 'Task 2',
+        project: 'P2',
+        startTime: new Date('2026-04-06T09:30:00Z'),
+        endTime: new Date('2026-04-06T11:00:00Z'),
+      }
+    ];
+    // Total should be from 09:00 to 11:00 = 2.00h, NOT 1h + 1.5h = 2.5h
+    render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks } });
+    
+    expect(screen.getByText(/Total: 2\.00h/i)).toBeDefined();
+  });
+
   it('should render task blocks on the grid', () => {
     cleanup();
     const tasks = [
