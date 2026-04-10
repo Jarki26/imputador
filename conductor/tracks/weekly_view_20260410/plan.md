@@ -29,12 +29,12 @@
 
 ## Phase 3: Interactive Features (Click & Add/Edit)
 
-- [ ] **Task: Implement Click-to-Add functionality (TDD)**
-  - [ ] Write failing tests for capturing click events on empty grid slots and calculating the correct start/end times.
-  - [ ] Implement the click handler to open the `TaskForm` (potentially in a modal or side panel) pre-filled with the calculated times.
-- [ ] **Task: Implement Click-to-Edit functionality (TDD)**
-  - [ ] Write failing tests for capturing click events on existing task blocks.
-  - [ ] Implement the click handler to open the `TaskForm` populated with the clicked task's data.
+- [x] **Task: Implement Click-to-Add functionality (TDD)** (132b5d1)
+  - [x] Write failing tests for capturing click events on empty grid slots and calculating the correct start/end times.
+  - [x] Implement the click handler to open the `TaskForm` (potentially in a modal or side panel) pre-filled with the calculated times.
+- [x] **Task: Implement Click-to-Edit functionality (TDD)** (e851ba2)
+  - [x] Write failing tests for capturing click events on existing task blocks.
+  - [x] Implement the click handler to open the `TaskForm` populated with the clicked task's data.
 - [ ] **Task: Conductor - User Manual Verification 'Interactive Features (Click & Add/Edit)' (Protocol in workflow.md)**
 
 ## Phase 4: Advanced Interactions (Drag & Drop) - *Stretch Goal*
