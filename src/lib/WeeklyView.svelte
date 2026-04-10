@@ -116,7 +116,7 @@
 
     const dailyTasks: TaskWithOverlap[] = effectiveTasks
       .filter((t) => t.startTime >= dayStart && t.startTime <= dayEnd)
-      .map((t) => ({ ...t }));
+      .map((t) => ({ ...t, hasOverlap: false }));
 
     // Detect overlaps
     for (let i = 0; i < dailyTasks.length; i++) {

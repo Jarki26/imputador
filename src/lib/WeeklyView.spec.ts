@@ -151,7 +151,7 @@ describe('WeeklyView.svelte', () => {
     const taskBlock = screen.getByText('Clickable Task').closest('.task-block');
     await fireEvent.click(taskBlock!);
 
-    expect(onTaskClick).toHaveBeenCalledWith(tasks[0]);
+    expect(onTaskClick).toHaveBeenCalledWith(expect.objectContaining(tasks[0]));
   });
 
   it('should trigger onTaskUpdate when a task is dragged to a new time', async () => {
@@ -213,5 +213,93 @@ describe('WeeklyView.svelte', () => {
     expect(new Date(updatedTask.startTime).getUTCHours()).toBe(9);
     expect(new Date(updatedTask.endTime).getUTCHours()).toBe(10);
     expect(new Date(updatedTask.endTime).getUTCMinutes()).toBe(30);
+  });
+
+  it('should remove has-overlap class when tasks no longer overlap', async () => {
+    cleanup();
+    const tasks = [
+      {
+        id: 1,
+        title: 'Task 1',
+        project: 'P1',
+        startTime: new Date('2026-04-06T09:00:00Z'),
+        endTime: new Date('2026-04-06T10:00:00Z'),
+      },
+      {
+        id: 2,
+        title: 'Task 2',
+        project: 'P2',
+        startTime: new Date('2026-04-06T09:30:00Z'), // Overlaps
+        endTime: new Date('2026-04-06T11:00:00Z'),
+      }
+    ];
+
+    const { component, rerender } = render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks } });
+
+    let task1 = screen.getByText('Task 1').closest('.task-block');
+    let task2 = screen.getByText('Task 2').closest('.task-block');
+
+    expect(task1?.classList.contains('has-overlap')).toBe(true);
+    expect(task2?.classList.contains('has-overlap')).toBe(true);
+
+    // Resolve overlap by moving Task 2
+    const updatedTasks = [
+      tasks[0],
+      {
+        ...tasks[1],
+        startTime: new Date('2026-04-06T10:00:00Z'), // No longer overlaps
+        endTime: new Date('2026-04-06T11:30:00Z'),
+      }
+    ];
+
+    await rerender({ tasks: updatedTasks });
+
+    task1 = screen.getByText('Task 1').closest('.task-block');
+    task2 = screen.getByText('Task 2').closest('.task-block');
+
+    expect(task1?.classList.contains('has-overlap')).toBe(false);
+    expect(task2?.classList.contains('has-overlap')).toBe(false);
+  });
+
+  it('should remove has-overlap class during drag when overlap is resolved', async () => {
+    cleanup();
+    const tasks = [
+      {
+        id: 1,
+        title: 'Task 1',
+        project: 'P1',
+        startTime: new Date('2026-04-06T09:00:00Z'),
+        endTime: new Date('2026-04-06T10:00:00Z'),
+      },
+      {
+        id: 2,
+        title: 'Task 2',
+        project: 'P2',
+        startTime: new Date('2026-04-06T09:30:00Z'), // Overlaps
+        endTime: new Date('2026-04-06T11:00:00Z'),
+      }
+    ];
+
+    render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks } });
+
+    let task1 = screen.getByText('Task 1').closest('.task-block');
+    let task2 = screen.getByText('Task 2').closest('.task-block');
+
+    expect(task1?.classList.contains('has-overlap')).toBe(true);
+    expect(task2?.classList.contains('has-overlap')).toBe(true);
+
+    // Start dragging Task 2
+    await fireEvent.pointerDown(task2!, { clientY: 30, pointerId: 3, button: 0 });
+    
+    // Move Task 2 down by 60px (1 hour) -> starts at 10:30, no longer overlaps
+    await fireEvent.pointerMove(window, { clientY: 90, pointerId: 3 });
+
+    // In Svelte 5, the UI should update
+    task1 = screen.getByText('Task 1').closest('.task-block');
+    task2 = screen.getByText('Task 2').closest('.task-block');
+
+    expect(task1?.classList.contains('has-overlap')).toBe(false);
+    // Task 2 should also not have it (using the dragged version)
+    expect(task2?.classList.contains('has-overlap')).toBe(false);
   });
 });
