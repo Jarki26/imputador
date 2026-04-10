@@ -8,6 +8,7 @@
     onSuccess?: () => void | Promise<void>;
     initialStartTime?: string;
     initialEndTime?: string;
+    editingTask?: Task | null;
   }
 
   let {
@@ -16,11 +17,17 @@
     onSuccess,
     initialStartTime = '',
     initialEndTime = '',
+    editingTask = null,
   }: Props = $props();
 
   let errorMessage = $state('');
 
   const taskTypes = ['General', 'Feature', 'Bug', 'Rest', 'Meeting'];
+
+  function formatDateForInput(d: Date): string {
+    const pad = (n: number) => n.toString().padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  }
 
   async function handleSubmit(e: SubmitEvent) {
     e.preventDefault();
@@ -49,14 +56,25 @@
     }
 
     try {
-      await taskStore.addTask({
-        title,
-        description,
-        project,
-        type: taskType,
-        startTime: start,
-        endTime: end,
-      });
+      if (editingTask && editingTask.id) {
+        await taskStore.updateTask(editingTask.id, {
+          title,
+          description,
+          project,
+          type: taskType,
+          startTime: start,
+          endTime: end,
+        });
+      } else {
+        await taskStore.addTask({
+          title,
+          description,
+          project,
+          type: taskType,
+          startTime: start,
+          endTime: end,
+        });
+      }
 
       if (project) {
         await projectStore.upsertProject(project);
@@ -67,7 +85,7 @@
         await onSuccess();
       }
     } catch (err) {
-      errorMessage = 'Failed to save task';
+      errorMessage = editingTask ? 'Failed to update task' : 'Failed to save task';
       console.error(err);
     }
   }
@@ -76,22 +94,22 @@
 <form onsubmit={handleSubmit} class="task-form" novalidate>
   <div class="field">
     <label for="title">Title</label>
-    <input id="title" name="title" type="text" required />
+    <input id="title" name="title" type="text" required value={editingTask?.title || ''} />
   </div>
 
   <div class="field">
     <label for="description">Description</label>
-    <textarea id="description" name="description"></textarea>
+    <textarea id="description" name="description" value={editingTask?.description || ''}></textarea>
   </div>
 
   <div class="field">
     <label for="project">Project</label>
-    <input id="project" name="project" type="text" required />
+    <input id="project" name="project" type="text" required value={editingTask?.project || ''} />
   </div>
 
   <div class="field">
     <label for="taskType">Task Type</label>
-    <select id="taskType" name="taskType">
+    <select id="taskType" name="taskType" value={editingTask?.type || 'General'}>
       {#each taskTypes as type}
         <option value={type}>{type}</option>
       {/each}
@@ -105,7 +123,7 @@
       name="startTime"
       type="datetime-local"
       required
-      value={initialStartTime}
+      value={initialStartTime || (editingTask ? formatDateForInput(editingTask.startTime) : '')}
     />
   </div>
 
@@ -116,7 +134,7 @@
       name="endTime"
       type="datetime-local"
       required
-      value={initialEndTime}
+      value={initialEndTime || (editingTask ? formatDateForInput(editingTask.endTime) : '')}
     />
   </div>
 
@@ -124,7 +142,9 @@
     <p class="error" role="alert">{errorMessage}</p>
   {/if}
 
-  <button type="submit" class="submit-btn">Add Task</button>
+  <button type="submit" class="submit-btn">
+    {editingTask ? 'Update Task' : 'Add Task'}
+  </button>
 </form>
 
 <style>

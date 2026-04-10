@@ -5,10 +5,12 @@
     startDate = new Date(),
     tasks = [],
     onSlotClick,
+    onTaskClick,
   }: {
     startDate: Date;
     tasks: Task[];
     onSlotClick?: (date: Date) => void;
+    onTaskClick?: (task: Task) => void;
   } = $props();
 
   const daysOfWeek = $derived.by(() => {
@@ -177,6 +179,19 @@
               class="task-block"
               class:has-overlap={task.hasOverlap}
               style={getTaskStyle(task)}
+              onclick={(e) => {
+                e.stopPropagation();
+                if (onTaskClick) onTaskClick(task);
+              }}
+              onkeydown={(e) => {
+                if (e.key === 'Enter') {
+                  e.stopPropagation();
+                  if (onTaskClick) onTaskClick(task);
+                }
+              }}
+              role="button"
+              tabindex="0"
+              aria-label="Edit task: {task.title}"
             >
               <div class="task-info">
                 <span class="task-title">{task.title}</span>

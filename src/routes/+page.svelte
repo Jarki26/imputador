@@ -17,6 +17,7 @@
   let showModal = $state(false);
   let selectedStartTime = $state('');
   let selectedEndTime = $state('');
+  let editingTask: Task | null = $state(null);
 
   async function loadTasks() {
     if (view === 'weekly') {
@@ -36,7 +37,7 @@
 
   async function onTaskAdded() {
     await loadTasks();
-    showModal = false;
+    closeModal();
   }
 
   function handleSlotClick(date: Date) {
@@ -52,7 +53,22 @@
 
     selectedStartTime = format(start);
     selectedEndTime = format(end);
+    editingTask = null;
     showModal = true;
+  }
+
+  function handleTaskClick(task: Task) {
+    editingTask = task;
+    selectedStartTime = '';
+    selectedEndTime = '';
+    showModal = true;
+  }
+
+  function closeModal() {
+    showModal = false;
+    editingTask = null;
+    selectedStartTime = '';
+    selectedEndTime = '';
   }
 </script>
 
@@ -94,16 +110,21 @@
     </div>
   {:else}
     <div class="weekly-container">
-      <WeeklyView startDate={today} {tasks} onSlotClick={handleSlotClick} />
+      <WeeklyView
+        startDate={today}
+        {tasks}
+        onSlotClick={handleSlotClick}
+        onTaskClick={handleTaskClick}
+      />
     </div>
   {/if}
 
   {#if showModal}
-    <div class="modal-backdrop" onclick={() => (showModal = false)} role="presentation">
+    <div class="modal-backdrop" onclick={closeModal} role="presentation">
       <div class="modal-content" onclick={(e) => e.stopPropagation()} role="presentation">
         <header class="modal-header">
-          <h2>Register Task</h2>
-          <button class="close-btn" onclick={() => (showModal = false)}>&times;</button>
+          <h2>{editingTask ? 'Edit Task' : 'Register Task'}</h2>
+          <button class="close-btn" onclick={closeModal}>&times;</button>
         </header>
         <TaskForm
           {taskStore}
@@ -111,6 +132,7 @@
           onSuccess={onTaskAdded}
           initialStartTime={selectedStartTime}
           initialEndTime={selectedEndTime}
+          {editingTask}
         />
       </div>
     </div>

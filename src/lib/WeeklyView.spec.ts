@@ -133,4 +133,24 @@ describe('WeeklyView.svelte', () => {
     expect(calledDate.getDate()).toBe(6);
     expect(calledDate.getHours()).toBe(9);
   });
+
+  it('should trigger onTaskClick when a task block is clicked', async () => {
+    cleanup();
+    const onTaskClick = vi.fn();
+    const tasks = [
+      {
+        id: 1,
+        title: 'Clickable Task',
+        project: 'Project X',
+        startTime: new Date('2026-04-06T10:00:00Z'),
+        endTime: new Date('2026-04-06T11:00:00Z'),
+      }
+    ];
+    render(WeeklyView, { props: { tasks, onTaskClick } });
+
+    const taskBlock = screen.getByText('Clickable Task').closest('.task-block');
+    await fireEvent.click(taskBlock!);
+
+    expect(onTaskClick).toHaveBeenCalledWith(tasks[0]);
+  });
 });
