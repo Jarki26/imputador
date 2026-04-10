@@ -15,16 +15,16 @@
 
 ## Phase 2: Task Rendering & Information Display
 
-- [ ] **Task: Enhance TaskStore for Weekly Data Retrieval (TDD)**
-  - [ ] Write failing tests for a new method `getTasksForWeek(startDate: Date)` in `TaskStore`.
-  - [ ] Implement `getTasksForWeek` to efficiently fetch tasks for the displayed 7 days.
-- [ ] **Task: Render Task Blocks in WeeklyView (TDD)**
-  - [ ] Write failing tests for rendering task data as absolute/relative positioned blocks within the grid based on their start and end times.
-  - [ ] Implement the block rendering logic in `WeeklyView.svelte` or a new `TaskBlock.svelte` component.
-  - [ ] Display Title, Project, Duration, and Type Color within the blocks.
-- [ ] **Task: Implement Overlap Error Highlighting (TDD)**
-  - [ ] Write failing tests for detecting overlapping tasks and applying an 'error' CSS class.
-  - [ ] Implement the overlap detection logic and visual highlighting in the rendering process.
+- [x] **Task: Enhance TaskStore for Weekly Data Retrieval (TDD)** (f291e25)
+  - [x] Write failing tests for a new method `getTasksForWeek(startDate: Date)` in `TaskStore`.
+  - [x] Implement `getTasksForWeek` to efficiently fetch tasks for the displayed 7 days.
+- [x] **Task: Render Task Blocks in WeeklyView (TDD)** (f291e25)
+  - [x] Write failing tests for rendering task data as absolute/relative positioned blocks within the grid based on their start and end times.
+  - [x] Implement the block rendering logic in `WeeklyView.svelte` or a new `TaskBlock.svelte` component.
+  - [x] Display Title, Project, Duration, and Type Color within the blocks.
+- [x] **Task: Implement Overlap Error Highlighting (TDD)** (f291e25)
+  - [x] Write failing tests for detecting overlapping tasks and applying an 'error' CSS class.
+  - [x] Implement the overlap detection logic and visual highlighting in the rendering process.
 - [ ] **Task: Conductor - User Manual Verification 'Task Rendering & Information Display' (Protocol in workflow.md)**
 
 ## Phase 3: Interactive Features (Click & Add/Edit)
