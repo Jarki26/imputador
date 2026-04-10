@@ -1,0 +1,50 @@
+# Implementation Plan - Weekly View Implementation
+
+## Phase 1: Core Weekly View Structure & Navigation
+
+- [ ] **Task: Create Basic WeeklyView Component (TDD)**
+  - [ ] Write failing tests for rendering a 7-day grid and time axis.
+  - [ ] Implement the basic visual structure of `WeeklyView.svelte` using CSS Grid/Flexbox.
+  - [ ] Write tests for displaying daily totals.
+  - [ ] Implement logic to calculate and display daily totals.
+- [ ] **Task: Update Routing and Navigation (TDD)**
+  - [ ] Write failing tests for a toggle mechanism to switch between Daily and Weekly views on `+page.svelte`.
+  - [ ] Implement the view toggle, defaulting to the Weekly View.
+  - [ ] Ensure existing Daily View functionality is preserved when toggled.
+- [ ] **Task: Conductor - User Manual Verification 'Core Weekly View Structure & Navigation' (Protocol in workflow.md)**
+
+## Phase 2: Task Rendering & Information Display
+
+- [ ] **Task: Enhance TaskStore for Weekly Data Retrieval (TDD)**
+  - [ ] Write failing tests for a new method `getTasksForWeek(startDate: Date)` in `TaskStore`.
+  - [ ] Implement `getTasksForWeek` to efficiently fetch tasks for the displayed 7 days.
+- [ ] **Task: Render Task Blocks in WeeklyView (TDD)**
+  - [ ] Write failing tests for rendering task data as absolute/relative positioned blocks within the grid based on their start and end times.
+  - [ ] Implement the block rendering logic in `WeeklyView.svelte` or a new `TaskBlock.svelte` component.
+  - [ ] Display Title, Project, Duration, and Type Color within the blocks.
+- [ ] **Task: Implement Overlap Error Highlighting (TDD)**
+  - [ ] Write failing tests for detecting overlapping tasks and applying an 'error' CSS class.
+  - [ ] Implement the overlap detection logic and visual highlighting in the rendering process.
+- [ ] **Task: Conductor - User Manual Verification 'Task Rendering & Information Display' (Protocol in workflow.md)**
+
+## Phase 3: Interactive Features (Click & Add/Edit)
+
+- [ ] **Task: Implement Click-to-Add functionality (TDD)**
+  - [ ] Write failing tests for capturing click events on empty grid slots and calculating the correct start/end times.
+  - [ ] Implement the click handler to open the `TaskForm` (potentially in a modal or side panel) pre-filled with the calculated times.
+- [ ] **Task: Implement Click-to-Edit functionality (TDD)**
+  - [ ] Write failing tests for capturing click events on existing task blocks.
+  - [ ] Implement the click handler to open the `TaskForm` populated with the clicked task's data.
+- [ ] **Task: Conductor - User Manual Verification 'Interactive Features (Click & Add/Edit)' (Protocol in workflow.md)**
+
+## Phase 4: Advanced Interactions (Drag & Drop) - *Stretch Goal*
+
+- [ ] **Task: Research and Select Drag-and-Drop Library (or Native HTML5)**
+  - [ ] Evaluate Svelte-specific dnd libraries vs native HTML5 Drag and Drop API for performance and ease of use in a grid context. Document choice in `tech-stack.md` if external library added.
+- [ ] **Task: Implement Drag to Move Task (TDD)**
+  - [ ] Write failing tests for updating a task's start and end times when dragged to a new slot.
+  - [ ] Implement the drag-to-move logic and visual feedback during dragging.
+- [ ] **Task: Implement Drag to Resize Duration (TDD)**
+  - [ ] Write failing tests for updating a task's end time when its bottom edge is dragged.
+  - [ ] Implement the drag-to-resize logic and visual feedback.
+- [ ] **Task: Conductor - User Manual Verification 'Advanced Interactions (Drag & Drop)' (Protocol in workflow.md)**
