@@ -15,6 +15,8 @@
     onTaskUpdate?: (task: Task) => void;
   } = $props();
 
+  let containerRef = $state<HTMLElement | null>(null);
+
   const daysOfWeek = $derived.by(() => {
     const days = [];
     const current = new Date(startDate);
@@ -61,7 +63,6 @@
     const dayEnd = new Date(date);
     dayEnd.setHours(23, 59, 59, 999);
 
-    // If we are dragging, we should use the updated task positions for the total calculation
     const effectiveTasks = dragInfo 
       ? tasks.map(t => t.id === dragInfo?.taskId ? dragInfo.currentTask : t)
       : tasks;
@@ -146,7 +147,8 @@
 
     let style = `top: ${top}px; height: ${height}px;`;
     if (dragInfo && dragInfo.taskId === task.id) {
-      style += 'z-index: 100; opacity: 0.8; box-shadow: 0 8px 16px rgba(0,0,0,0.2); pointer-events: none;';
+      // z-index elevated and slight transparency, but NO pointer-events: none
+      style += 'z-index: 100; opacity: 0.8; box-shadow: 0 8px 16px rgba(0,0,0,0.2);';
     }
     return style;
   }
@@ -169,19 +171,18 @@
     if (e.button !== 0) return; // Left click only
     e.stopPropagation();
     
-    const target = e.currentTarget as HTMLElement;
-    if (target.setPointerCapture) {
+    // Set capture on the CONTAINER, so move events are caught there
+    if (containerRef && containerRef.setPointerCapture) {
       try {
-        target.setPointerCapture(e.pointerId);
+        containerRef.setPointerCapture(e.pointerId);
       } catch (err) {
-        console.warn('Pointer capture failed:', err);
+        // Silently fail in environments that don't support it (like JSDOM)
       }
     }
 
     const startMinutes = task.startTime.getHours() * 60 + task.startTime.getMinutes();
     const durationMinutes = (task.endTime.getTime() - task.startTime.getTime()) / (1000 * 60);
     
-    // Find initial day index
     const dayStart = new Date(task.startTime);
     dayStart.setHours(0,0,0,0);
     const dayIndex = daysOfWeek.findIndex(d => d.getTime() === dayStart.getTime());
@@ -202,15 +203,14 @@
     if (!dragInfo) return;
 
     const deltaY = e.clientY - dragInfo.startY;
-    const minutesDelta = Math.round(deltaY / 15) * 15; // Snap to 15m (1px = 1m)
+    const minutesDelta = Math.round(deltaY / 15) * 15; 
 
     const updatedTask = { ...dragInfo.currentTask };
 
     if (dragInfo.mode === 'move') {
-      const newStartMinutes = dragInfo.initialStart + minutesDelta;
+      const newStartMinutes = Math.max(0, Math.min(23 * 60 + 45, dragInfo.initialStart + minutesDelta));
       const duration = dragInfo.initialDuration;
       
-      // Calculate day delta (X axis)
       const gridContent = document.querySelector('.grid-content');
       if (gridContent) {
         const rect = gridContent.getBoundingClientRect();
@@ -230,6 +230,13 @@
     } else if (dragInfo.mode === 'resize') {
       const newDuration = Math.max(15, dragInfo.initialDuration + minutesDelta);
       updatedTask.endTime = new Date(updatedTask.startTime.getTime() + newDuration * 60000);
+      
+      // Limit to end of day
+      const dayEnd = new Date(updatedTask.startTime);
+      dayEnd.setHours(23, 59, 59, 999);
+      if (updatedTask.endTime > dayEnd) {
+        updatedTask.endTime = dayEnd;
+      }
     }
 
     dragInfo.currentTask = updatedTask;
@@ -238,8 +245,15 @@
   function handlePointerUp(e: PointerEvent) {
     if (!dragInfo) return;
     
+    if (containerRef && containerRef.releasePointerCapture) {
+      try {
+        containerRef.releasePointerCapture(e.pointerId);
+      } catch (err) {
+        // Silently fail
+      }
+    }
+
     if (onTaskUpdate && dragInfo.currentTask) {
-      // Check if task actually moved or resized
       const original = tasks.find(t => t.id === dragInfo?.taskId);
       if (original && (
         original.startTime.getTime() !== dragInfo.currentTask.startTime.getTime() ||
@@ -254,7 +268,13 @@
 </script>
 
 <div class="weekly-view">
-  <div class="grid-scroll-container" onpointermove={handlePointerMove} onpointerup={handlePointerUp}>
+  <div 
+    bind:this={containerRef}
+    class="grid-scroll-container" 
+    onpointermove={handlePointerMove} 
+    onpointerup={handlePointerUp}
+    onpointercancel={handlePointerUp}
+  >
     <div class="grid-header">
       <div class="time-axis-spacer"></div>
       {#each daysOfWeek as day}
@@ -337,7 +357,7 @@
     border: 1px solid var(--md-sys-color-outline);
     border-radius: 12px;
     overflow: hidden;
-    touch-action: none; /* Prevent scrolling while dragging */
+    touch-action: none;
   }
 
   /* Local border-box reset */
@@ -529,9 +549,10 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: 8px;
+    height: 12px;
     cursor: ns-resize;
     background: transparent;
+    z-index: 5;
   }
 
   .resize-handle:hover {
