@@ -6,12 +6,16 @@
     taskStore?: TaskStore;
     projectStore?: ProjectStore;
     onSuccess?: () => void | Promise<void>;
+    initialStartTime?: string;
+    initialEndTime?: string;
   }
 
   let {
     taskStore = new TaskStore(),
     projectStore = new ProjectStore(),
     onSuccess,
+    initialStartTime = '',
+    initialEndTime = '',
   }: Props = $props();
 
   let errorMessage = $state('');
@@ -96,12 +100,24 @@
 
   <div class="field">
     <label for="startTime">Start Time</label>
-    <input id="startTime" name="startTime" type="datetime-local" required />
+    <input
+      id="startTime"
+      name="startTime"
+      type="datetime-local"
+      required
+      value={initialStartTime}
+    />
   </div>
 
   <div class="field">
     <label for="endTime">End Time</label>
-    <input id="endTime" name="endTime" type="datetime-local" required />
+    <input
+      id="endTime"
+      name="endTime"
+      type="datetime-local"
+      required
+      value={initialEndTime}
+    />
   </div>
 
   {#if errorMessage}

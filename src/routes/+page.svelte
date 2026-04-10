@@ -14,6 +14,10 @@
   let today = new Date();
   let view: 'daily' | 'weekly' = $state('weekly');
 
+  let showModal = $state(false);
+  let selectedStartTime = $state('');
+  let selectedEndTime = $state('');
+
   async function loadTasks() {
     if (view === 'weekly') {
       tasks = await taskStore.getTasksForWeek(today);
@@ -32,6 +36,23 @@
 
   async function onTaskAdded() {
     await loadTasks();
+    showModal = false;
+  }
+
+  function handleSlotClick(date: Date) {
+    const start = new Date(date);
+    const end = new Date(date);
+    end.setHours(start.getHours() + 1);
+
+    // Format to YYYY-MM-DDTHH:mm for datetime-local input
+    const format = (d: Date) => {
+      const pad = (n: number) => n.toString().padStart(2, '0');
+      return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    };
+
+    selectedStartTime = format(start);
+    selectedEndTime = format(end);
+    showModal = true;
   }
 </script>
 
@@ -73,7 +94,25 @@
     </div>
   {:else}
     <div class="weekly-container">
-      <WeeklyView startDate={today} {tasks} />
+      <WeeklyView startDate={today} {tasks} onSlotClick={handleSlotClick} />
+    </div>
+  {/if}
+
+  {#if showModal}
+    <div class="modal-backdrop" onclick={() => (showModal = false)} role="presentation">
+      <div class="modal-content" onclick={(e) => e.stopPropagation()} role="presentation">
+        <header class="modal-header">
+          <h2>Register Task</h2>
+          <button class="close-btn" onclick={() => (showModal = false)}>&times;</button>
+        </header>
+        <TaskForm
+          {taskStore}
+          {projectStore}
+          onSuccess={onTaskAdded}
+          initialStartTime={selectedStartTime}
+          initialEndTime={selectedEndTime}
+        />
+      </div>
     </div>
   {/if}
 </div>
@@ -156,5 +195,49 @@
     padding: 1.5rem;
     border-radius: 16px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Modal Styles */
+  .modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+
+  .modal-content {
+    background: var(--md-sys-color-surface);
+    padding: 2rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 550px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .modal-header h2 {
+    margin: 0;
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--md-sys-color-on-surface-variant);
   }
 </style>

@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { render, screen, cleanup } from '@testing-library/svelte';
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen, cleanup, fireEvent } from '@testing-library/svelte';
 import WeeklyView from './WeeklyView.svelte';
 
 describe('WeeklyView.svelte', () => {
@@ -110,5 +110,27 @@ describe('WeeklyView.svelte', () => {
 
     expect(task1?.classList.contains('has-overlap')).toBe(true);
     expect(task2?.classList.contains('has-overlap')).toBe(true);
+  });
+
+  it('should trigger onSlotClick when an empty slot is clicked', async () => {
+    cleanup();
+    const onSlotClick = vi.fn();
+    const startDate = new Date('2026-04-06'); // Monday
+    render(WeeklyView, { props: { startDate, onSlotClick } });
+
+    // Find the first hour cell (00:00) of the first day (Monday)
+    const dayColumns = document.querySelectorAll('.day-column');
+    const mondayColumn = dayColumns[0];
+    const hourCells = mondayColumn.querySelectorAll('.hour-cell');
+    
+    // Click on 09:00 slot (index 9)
+    await fireEvent.click(hourCells[9]);
+
+    expect(onSlotClick).toHaveBeenCalled();
+    const calledDate = onSlotClick.mock.calls[0][0];
+    expect(calledDate.getFullYear()).toBe(2026);
+    expect(calledDate.getMonth()).toBe(3); // April
+    expect(calledDate.getDate()).toBe(6);
+    expect(calledDate.getHours()).toBe(9);
   });
 });

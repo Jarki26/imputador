@@ -1,7 +1,15 @@
 <script lang="ts">
   import type { Task } from './db';
 
-  let { startDate = new Date(), tasks = [] }: { startDate: Date; tasks: Task[] } = $props();
+  let {
+    startDate = new Date(),
+    tasks = [],
+    onSlotClick,
+  }: {
+    startDate: Date;
+    tasks: Task[];
+    onSlotClick?: (date: Date) => void;
+  } = $props();
 
   const daysOfWeek = $derived.by(() => {
     const days = [];
@@ -122,6 +130,14 @@
     const durationMs = task.endTime.getTime() - task.startTime.getTime();
     return (durationMs / (1000 * 60 * 60)).toFixed(2) + 'h';
   }
+
+  function handleSlotClick(day: Date, hour: number) {
+    if (onSlotClick) {
+      const clickedDate = new Date(day);
+      clickedDate.setHours(hour, 0, 0, 0);
+      onSlotClick(clickedDate);
+    }
+  }
 </script>
 
 <div class="weekly-view">
@@ -147,7 +163,14 @@
       {#each daysOfWeek as day}
         <div class="day-column">
           {#each hours as hour}
-            <div class="hour-cell"></div>
+            <div
+              class="hour-cell"
+              onclick={() => handleSlotClick(day, hour)}
+              onkeydown={(e) => e.key === 'Enter' && handleSlotClick(day, hour)}
+              role="button"
+              tabindex="0"
+              aria-label="Add task at {formatTime(hour)} on {day.toLocaleDateString()}"
+            ></div>
           {/each}
           {#each getTasksForDay(day) as task (task.id)}
             <div
@@ -266,6 +289,11 @@
   .hour-cell {
     height: 60px;
     border-bottom: 1px solid var(--md-sys-color-surface-variant);
+    cursor: pointer;
+  }
+
+  .hour-cell:hover {
+    background-color: var(--md-sys-color-surface-variant);
   }
 
   .hour-cell:last-child {
