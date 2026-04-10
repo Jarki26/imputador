@@ -25,7 +25,7 @@
 - [x] **Task: Implement Overlap Error Highlighting (TDD)** (f291e25)
   - [x] Write failing tests for detecting overlapping tasks and applying an 'error' CSS class.
   - [x] Implement the overlap detection logic and visual highlighting in the rendering process.
-- [ ] **Task: Conductor - User Manual Verification 'Task Rendering & Information Display' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Task Rendering & Information Display' (Protocol in workflow.md)** (f291e25)
 
 ## Phase 3: Interactive Features (Click & Add/Edit)
 
