@@ -1,6 +1,7 @@
 <script lang="ts">
   import TaskForm from '$lib/TaskForm.svelte';
   import TaskList from '$lib/TaskList.svelte';
+  import WeeklyView from '$lib/WeeklyView.svelte';
   import { TaskStore } from '$lib/taskStore';
   import { ProjectStore } from '$lib/projectStore';
   import { onMount } from 'svelte';
@@ -11,6 +12,7 @@
 
   let tasks: Task[] = $state([]);
   let today = new Date();
+  let view: 'daily' | 'weekly' = $state('weekly');
 
   async function loadTasks() {
     tasks = await taskStore.getTasksForDay(today);
@@ -27,21 +29,45 @@
 
 <div class="dashboard">
   <header>
-    <h1>Imputador</h1>
-    <p class="subtitle">Log your workday efficiently.</p>
+    <div class="header-content">
+      <h1>Imputador</h1>
+      <p class="subtitle">Log your workday efficiently.</p>
+    </div>
+    <div class="view-toggle">
+      <button
+        class="toggle-btn"
+        class:active={view === 'weekly'}
+        onclick={() => (view = 'weekly')}
+      >
+        Weekly View
+      </button>
+      <button
+        class="toggle-btn"
+        class:active={view === 'daily'}
+        onclick={() => (view = 'daily')}
+      >
+        Daily View
+      </button>
+    </div>
   </header>
 
-  <div class="grid">
-    <section class="form-section">
-      <h2>Register Task</h2>
-      <TaskForm {taskStore} {projectStore} onSuccess={onTaskAdded} />
-    </section>
+  {#if view === 'daily'}
+    <div class="grid">
+      <section class="form-section">
+        <h2>Register Task</h2>
+        <TaskForm {taskStore} {projectStore} onSuccess={onTaskAdded} />
+      </section>
 
-    <section class="list-section">
-      <h2>Daily Log - {today.toLocaleDateString()}</h2>
-      <TaskList {tasks} />
-    </section>
-  </div>
+      <section class="list-section">
+        <h2>Daily Log - {today.toLocaleDateString()}</h2>
+        <TaskList {tasks} />
+      </section>
+    </div>
+  {:else}
+    <div class="weekly-container">
+      <WeeklyView startDate={today} {tasks} />
+    </div>
+  {/if}
 </div>
 
 <style>
@@ -49,6 +75,12 @@
     display: flex;
     flex-direction: column;
     gap: 2rem;
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   header h1 {
@@ -62,6 +94,31 @@
     color: var(--md-sys-color-on-surface-variant);
   }
 
+  .view-toggle {
+    display: flex;
+    background-color: var(--md-sys-color-secondary-container);
+    padding: 4px;
+    border-radius: 20px;
+  }
+
+  .toggle-btn {
+    padding: 8px 16px;
+    border: none;
+    background: none;
+    border-radius: 16px;
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--md-sys-color-on-secondary-container);
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+  }
+
+  .toggle-btn.active {
+    background-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+  }
+
   .grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -73,6 +130,10 @@
     .grid {
       grid-template-columns: 1fr;
     }
+  }
+
+  .weekly-container {
+    height: 700px;
   }
 
   h2 {
