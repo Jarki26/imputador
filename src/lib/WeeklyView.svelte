@@ -123,7 +123,7 @@
     const durationMinutes = (end.getTime() - start.getTime()) / (1000 * 60);
 
     const top = startMinutes; // 1px per minute since hour height is 60px
-    const height = Math.max(durationMinutes, 20); // Min height for visibility
+    const height = Math.max(durationMinutes, 45); // Increased to 45px for safe text fit
 
     return `top: ${top}px; height: ${height}px;`;
   }
@@ -143,65 +143,69 @@
 </script>
 
 <div class="weekly-view">
-  <div class="grid-header">
-    <div class="time-axis-spacer"></div>
-    {#each daysOfWeek as day}
-      <div class="day-header">
-        <span class="day-name">{formatDay(day)}</span>
-        <span class="day-date">{day.toLocaleDateString()}</span>
-        <span class="day-total">Total: {getDailyTotal(day)}h</span>
-      </div>
-    {/each}
-  </div>
-
-  <div class="grid-body">
-    <div class="time-axis">
-      {#each hours as hour}
-        <div class="hour-label">{formatTime(hour)}</div>
+  <div class="grid-scroll-container">
+    <div class="grid-header">
+      <div class="time-axis-spacer"></div>
+      {#each daysOfWeek as day}
+        <div class="day-header">
+          <span class="day-name">{formatDay(day)}</span>
+          <span class="day-date">{day.toLocaleDateString()}</span>
+          <span class="day-total">Total: {getDailyTotal(day)}h</span>
+        </div>
       {/each}
     </div>
 
-    <div class="grid-content">
-      {#each daysOfWeek as day}
-        <div class="day-column">
-          {#each hours as hour}
-            <div
-              class="hour-cell"
-              onclick={() => handleSlotClick(day, hour)}
-              onkeydown={(e) => e.key === 'Enter' && handleSlotClick(day, hour)}
-              role="button"
-              tabindex="0"
-              aria-label="Add task at {formatTime(hour)} on {day.toLocaleDateString()}"
-            ></div>
-          {/each}
-          {#each getTasksForDay(day) as task (task.id)}
-            <div
-              class="task-block"
-              class:has-overlap={task.hasOverlap}
-              style={getTaskStyle(task)}
-              onclick={(e) => {
-                e.stopPropagation();
-                if (onTaskClick) onTaskClick(task);
-              }}
-              onkeydown={(e) => {
-                if (e.key === 'Enter') {
+    <div class="grid-body">
+      <div class="time-axis">
+        {#each hours as hour}
+          <div class="hour-label">
+            <span>{formatTime(hour)}</span>
+          </div>
+        {/each}
+      </div>
+
+      <div class="grid-content">
+        {#each daysOfWeek as day}
+          <div class="day-column">
+            {#each hours as hour}
+              <div
+                class="hour-cell"
+                onclick={() => handleSlotClick(day, hour)}
+                onkeydown={(e) => e.key === 'Enter' && handleSlotClick(day, hour)}
+                role="button"
+                tabindex="0"
+                aria-label="Add task at {formatTime(hour)} on {day.toLocaleDateString()}"
+              ></div>
+            {/each}
+            {#each getTasksForDay(day) as task (task.id)}
+              <div
+                class="task-block"
+                class:has-overlap={task.hasOverlap}
+                style={getTaskStyle(task)}
+                onclick={(e) => {
                   e.stopPropagation();
                   if (onTaskClick) onTaskClick(task);
-                }
-              }}
-              role="button"
-              tabindex="0"
-              aria-label="Edit task: {task.title}"
-            >
-              <div class="task-info">
-                <span class="task-title">{task.title}</span>
-                <span class="task-project">{task.project}</span>
-                <span class="task-duration">{getTaskDuration(task)}</span>
+                }}
+                onkeydown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.stopPropagation();
+                    if (onTaskClick) onTaskClick(task);
+                  }
+                }}
+                role="button"
+                tabindex="0"
+                aria-label="Edit task: {task.title}"
+              >
+                <div class="task-info">
+                  <span class="task-title">{task.title}</span>
+                  <span class="task-project">{task.project}</span>
+                  <span class="task-duration">{getTaskDuration(task)}</span>
+                </div>
               </div>
-            </div>
-          {/each}
-        </div>
-      {/each}
+            {/each}
+          </div>
+        {/each}
+      </div>
     </div>
   </div>
 </div>
@@ -217,16 +221,33 @@
     overflow: hidden;
   }
 
+  /* Local border-box reset */
+  .weekly-view, .weekly-view * {
+    box-sizing: border-box;
+  }
+
+  .grid-scroll-container {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
   .grid-header {
     display: flex;
-    border-bottom: 1px solid var(--md-sys-color-outline);
+    position: sticky;
+    top: 0;
+    z-index: 20;
     background-color: var(--md-sys-color-surface-variant);
+    border-bottom: 1px solid var(--md-sys-color-outline);
+    flex-shrink: 0;
   }
 
   .time-axis-spacer {
-    width: 60px;
+    width: 64px;
     flex-shrink: 0;
-    border-right: 1px solid var(--md-sys-color-outline);
+    border-right: 1px solid var(--md-sys-color-outline-variant);
   }
 
   .day-header {
@@ -234,8 +255,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0.5rem;
-    border-right: 1px solid var(--md-sys-color-outline);
+    padding: 0.75rem 0.5rem;
+    border-right: 1px solid var(--md-sys-color-outline-variant);
     min-width: 120px;
   }
 
@@ -245,54 +266,68 @@
 
   .day-name {
     font-weight: bold;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 
   .day-date {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: var(--md-sys-color-on-surface-variant);
+    margin-top: 2px;
   }
 
   .day-total {
-    margin-top: 0.25rem;
-    font-size: 0.85rem;
-    font-weight: 500;
+    margin-top: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
     color: var(--md-sys-color-primary);
+    background-color: var(--md-sys-color-primary-container);
+    padding: 2px 8px;
+    border-radius: 12px;
   }
 
   .grid-body {
     display: flex;
     flex: 1;
-    overflow-y: auto;
+    position: relative;
+    min-height: min-content;
   }
 
   .time-axis {
-    width: 60px;
+    width: 64px;
     flex-shrink: 0;
-    border-right: 1px solid var(--md-sys-color-outline);
+    display: flex;
+    flex-direction: column;
     background-color: var(--md-sys-color-surface-variant);
+    border-right: 1px solid var(--md-sys-color-outline-variant);
+    min-height: 1440px;
   }
 
   .hour-label {
     height: 60px;
+    flex-shrink: 0;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.75rem;
+    justify-content: flex-end;
+    padding-right: 8px;
+    padding-top: 4px;
+    font-size: 0.7rem;
+    font-weight: 500;
     color: var(--md-sys-color-on-surface-variant);
-    border-bottom: 1px solid var(--md-sys-color-surface-variant);
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
   }
 
   .grid-content {
     display: flex;
     flex: 1;
+    min-height: 1440px; /* 24 * 60px */
   }
 
   .day-column {
     flex: 1;
     display: flex;
     flex-direction: column;
-    border-right: 1px solid var(--md-sys-color-outline);
+    border-right: 1px solid var(--md-sys-color-outline-variant);
     min-width: 120px;
     position: relative;
   }
@@ -303,25 +338,17 @@
 
   .hour-cell {
     height: 60px;
-    border-bottom: 1px solid var(--md-sys-color-surface-variant);
-    cursor: pointer;
-  }
-
-  .hour-cell:hover {
-    background-color: var(--md-sys-color-surface-variant);
-  }
-
-  .hour-cell:last-child {
-    border-bottom: none;
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
   }
 
   .task-block {
     position: absolute;
-    left: 2px;
-    right: 2px;
+    left: 4px;
+    right: 4px;
     background-color: var(--md-sys-color-primary-container);
     color: var(--md-sys-color-on-primary-container);
-    border-radius: 4px;
+    border-radius: 6px;
     padding: 2px 4px;
     font-size: 0.75rem;
     overflow: hidden;
@@ -329,13 +356,15 @@
     z-index: 1;
     display: flex;
     flex-direction: column;
-    transition: box-shadow 0.2s;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    line-height: 1.1;
   }
 
   .task-block.has-overlap {
     background-color: var(--md-sys-color-error-container);
     color: var(--md-sys-color-on-error-container);
     border-color: var(--md-sys-color-error);
+    opacity: 0.9;
     z-index: 2;
   }
 
@@ -343,26 +372,30 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    gap: 1px;
   }
 
   .task-title {
-    font-weight: bold;
+    font-weight: 700;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
   .task-project {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    opacity: 0.8;
+    opacity: 0.85;
+    font-weight: 500;
   }
 
   .task-duration {
     font-size: 0.65rem;
     margin-top: auto;
     text-align: right;
+    font-weight: 600;
+    opacity: 0.7;
   }
 </style>
