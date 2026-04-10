@@ -35,16 +35,17 @@
 - [x] **Task: Implement Click-to-Edit functionality (TDD)** (e851ba2)
   - [x] Write failing tests for capturing click events on existing task blocks.
   - [x] Implement the click handler to open the `TaskForm` populated with the clicked task's data.
-- [ ] **Task: Conductor - User Manual Verification 'Interactive Features (Click & Add/Edit)' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Interactive Features (Click & Add/Edit)' (Protocol in workflow.md)** (692d2ca)
 
 ## Phase 4: Advanced Interactions (Drag & Drop) - *Stretch Goal*
 
-- [ ] **Task: Research and Select Drag-and-Drop Library (or Native HTML5)**
-  - [ ] Evaluate Svelte-specific dnd libraries vs native HTML5 Drag and Drop API for performance and ease of use in a grid context. Document choice in `tech-stack.md` if external library added.
-- [ ] **Task: Implement Drag to Move Task (TDD)**
-  - [ ] Write failing tests for updating a task's start and end times when dragged to a new slot.
-  - [ ] Implement the drag-to-move logic and visual feedback during dragging.
-- [ ] **Task: Implement Drag to Resize Duration (TDD)**
-  - [ ] Write failing tests for updating a task's end time when its bottom edge is dragged.
-  - [ ] Implement the drag-to-resize logic and visual feedback.
-- [ ] **Task: Conductor - User Manual Verification 'Advanced Interactions (Drag & Drop)' (Protocol in workflow.md)**
+- [x] **Task: Research and Select Drag-and-Drop Library (or Native HTML5)** (b1bbe01)
+  - [x] Evaluate Svelte-specific dnd libraries vs native HTML5 Drag and Drop API for performance and ease of use in a grid context. Document choice in `tech-stack.md` if external library added.
+  - *Decision: We will use native Pointer Events (`pointerdown`, `pointermove`, `pointerup`) combined with Svelte 5 Runes for optimal performance and precise control over the 2D grid, avoiding heavy external dependencies.*
+- [x] **Task: Implement Drag to Move Task (TDD)** (b1bbe01)
+  - [x] Write failing tests for updating a task's start and end times when dragged to a new slot.
+  - [x] Implement the drag-to-move logic and visual feedback during dragging.
+- [x] **Task: Implement Drag to Resize Duration (TDD)** (85ec2c3)
+  - [x] Write failing tests for updating a task's end time when its bottom edge is dragged.
+  - [x] Implement the drag-to-resize logic and visual feedback.
+- [x] **Task: Conductor - User Manual Verification 'Advanced Interactions (Drag & Drop)' (Protocol in workflow.md)** (85ec2c3)
