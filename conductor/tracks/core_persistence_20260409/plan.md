@@ -26,7 +26,7 @@
   - [x] Implement logic to manage the `projects` store.
 - [x] **Task: Conductor - User Manual Verification 'Data Persistence Layer' (Protocol in workflow.md)** (e73a2b7)
 
-## Phase 3: Core UI Components
+## Phase 3: Core UI Components [checkpoint: 8651f07]
 
 - [x] **Task: Create TaskForm Component (TDD)** (f90a99c)
   - [x] Write tests for form inputs and validation logic.
@@ -35,4 +35,4 @@
 - [x] **Task: Create TaskList Component for Daily View (TDD)** (69ab851)
   - [x] Write tests for rendering a list of tasks and highlighting gaps.
   - [x] Implement TaskList component.
-- [ ] **Task: Conductor - User Manual Verification 'Core UI Components' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Core UI Components' (Protocol in workflow.md)** (8651f07)
