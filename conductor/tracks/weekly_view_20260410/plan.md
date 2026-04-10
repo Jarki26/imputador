@@ -52,3 +52,6 @@
   - [x] Write failing tests for updating a task's end time when its bottom edge is dragged.
   - [x] Implement the drag-to-resize logic and visual feedback.
 - [x] **Task: Conductor - User Manual Verification 'Advanced Interactions (Drag & Drop)' (Protocol in workflow.md)** (85ec2c3)
+
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions (66176bd)
