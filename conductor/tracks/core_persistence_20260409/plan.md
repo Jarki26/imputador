@@ -28,11 +28,11 @@
 
 ## Phase 3: Core UI Components
 
-- [~] **Task: Create TaskForm Component (TDD)**
-  - [ ] Write tests for form inputs and validation logic.
-  - [ ] Implement `TaskForm` with Material Design 3 components.
-  - [ ] Integrate with `TaskStore` for saving tasks.
-- [ ] **Task: Create TaskList Component for Daily View (TDD)**
-  - [ ] Write tests for rendering a list of tasks and highlighting gaps.
-  - [ ] Implement `TaskList` component.
+- [x] **Task: Create TaskForm Component (TDD)** (f90a99c)
+  - [x] Write tests for form inputs and validation logic.
+  - [x] Implement `TaskForm` with Material Design 3 components.
+  - [x] Integrate with `TaskStore` for saving tasks.
+- [x] **Task: Create TaskList Component for Daily View (TDD)** (69ab851)
+  - [x] Write tests for rendering a list of tasks and highlighting gaps.
+  - [x] Implement TaskList component.
 - [ ] **Task: Conductor - User Manual Verification 'Core UI Components' (Protocol in workflow.md)**
