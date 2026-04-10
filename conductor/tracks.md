@@ -4,6 +4,6 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Weekly View implementation**
+- [x] **Track: Weekly View implementation**
 *Link: [./tracks/weekly_view_20260410/](./tracks/weekly_view_20260410/)*
 
