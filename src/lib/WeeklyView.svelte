@@ -15,8 +15,6 @@
     onTaskUpdate?: (task: Task) => void;
   } = $props();
 
-  let containerRef = $state<HTMLElement | null>(null);
-
   const daysOfWeek = $derived.by(() => {
     const days = [];
     const current = new Date(startDate);
@@ -147,8 +145,7 @@
 
     let style = `top: ${top}px; height: ${height}px;`;
     if (dragInfo && dragInfo.taskId === task.id) {
-      // z-index elevated and slight transparency, but NO pointer-events: none
-      style += 'z-index: 100; opacity: 0.8; box-shadow: 0 8px 16px rgba(0,0,0,0.2);';
+      style += 'z-index: 100; opacity: 0.8; box-shadow: 0 8px 16px rgba(0,0,0,0.2); cursor: grabbing !important;';
     }
     return style;
   }
@@ -171,15 +168,6 @@
     if (e.button !== 0) return; // Left click only
     e.stopPropagation();
     
-    // Set capture on the CONTAINER, so move events are caught there
-    if (containerRef && containerRef.setPointerCapture) {
-      try {
-        containerRef.setPointerCapture(e.pointerId);
-      } catch (err) {
-        // Silently fail in environments that don't support it (like JSDOM)
-      }
-    }
-
     const startMinutes = task.startTime.getHours() * 60 + task.startTime.getMinutes();
     const durationMinutes = (task.endTime.getTime() - task.startTime.getTime()) / (1000 * 60);
     
@@ -208,7 +196,7 @@
     const updatedTask = { ...dragInfo.currentTask };
 
     if (dragInfo.mode === 'move') {
-      const newStartMinutes = Math.max(0, Math.min(23 * 60 + 45, dragInfo.initialStart + minutesDelta));
+      const newStartMinutes = Math.max(0, Math.min(23 * 60, dragInfo.initialStart + minutesDelta));
       const duration = dragInfo.initialDuration;
       
       const gridContent = document.querySelector('.grid-content');
@@ -242,17 +230,9 @@
     dragInfo.currentTask = updatedTask;
   }
 
-  function handlePointerUp(e: PointerEvent) {
+  function handlePointerUp() {
     if (!dragInfo) return;
     
-    if (containerRef && containerRef.releasePointerCapture) {
-      try {
-        containerRef.releasePointerCapture(e.pointerId);
-      } catch (err) {
-        // Silently fail
-      }
-    }
-
     if (onTaskUpdate && dragInfo.currentTask) {
       const original = tasks.find(t => t.id === dragInfo?.taskId);
       if (original && (
@@ -267,14 +247,14 @@
   }
 </script>
 
+<svelte:window 
+  onpointermove={handlePointerMove} 
+  onpointerup={handlePointerUp}
+  onpointercancel={handlePointerUp}
+/>
+
 <div class="weekly-view">
-  <div 
-    bind:this={containerRef}
-    class="grid-scroll-container" 
-    onpointermove={handlePointerMove} 
-    onpointerup={handlePointerUp}
-    onpointercancel={handlePointerUp}
-  >
+  <div class="grid-scroll-container">
     <div class="grid-header">
       <div class="time-axis-spacer"></div>
       {#each daysOfWeek as day}
@@ -312,6 +292,7 @@
               <div
                 class="task-block"
                 class:has-overlap={task.hasOverlap}
+                class:is-dragging={dragInfo?.taskId === task.id}
                 style={getTaskStyle(task)}
                 onpointerdown={(e) => handlePointerDown(e, task, 'move')}
                 onclick={(e) => {
@@ -502,6 +483,10 @@
   }
 
   .task-block:active {
+    cursor: grabbing;
+  }
+
+  .task-block.is-dragging {
     cursor: grabbing;
   }
 
