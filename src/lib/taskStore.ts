@@ -39,6 +39,29 @@ export class TaskStore {
   }
 
   /**
+   * Retrieves all tasks for a specific week.
+   * @param date - Any date within the week to retrieve.
+   * @returns A promise that resolves to an array of tasks.
+   */
+  async getTasksForWeek(date: Date): Promise<Task[]> {
+    const db = await initDB(this.dbName);
+
+    // Find Monday of the current week
+    const current = new Date(date);
+    current.setHours(0, 0, 0, 0);
+    const day = current.getDay();
+    const diff = current.getDate() - day + (day === 0 ? -6 : 1);
+    const startOfWeek = new Date(current.setDate(diff));
+
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6);
+    endOfWeek.setHours(23, 59, 59, 999);
+
+    const range = IDBKeyRange.bound(startOfWeek, endOfWeek);
+    return db.getAllFromIndex('tasks', 'date', range);
+  }
+
+  /**
    * Updates an existing task.
    * @param id - The ID of the task to update.
    * @param updates - Partial task object containing updates.

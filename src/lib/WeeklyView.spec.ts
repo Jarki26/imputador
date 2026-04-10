@@ -38,4 +38,53 @@ describe('WeeklyView.svelte', () => {
     
     expect(screen.getByText(/Total: 1\.00h/i)).toBeDefined();
   });
+
+  it('should render task blocks on the grid', () => {
+    cleanup();
+    const tasks = [
+      {
+        id: 1,
+        title: 'Weekly Task',
+        description: 'Weekly Desc',
+        project: 'Project Weekly',
+        type: 'Feature',
+        startTime: new Date('2026-04-06T09:00:00Z'),
+        endTime: new Date('2026-04-06T10:30:00Z'), // 1.5 hours
+      }
+    ];
+
+    render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks } });
+
+    expect(screen.getByText('Weekly Task')).toBeDefined();
+    expect(screen.getByText('Project Weekly')).toBeDefined();
+    expect(screen.getAllByText(/1\.50h/i)).toHaveLength(2);
+  });
+
+  it('should highlight overlapping tasks with an error state', () => {
+    cleanup();
+    const tasks = [
+      {
+        id: 1,
+        title: 'Task 1',
+        project: 'P1',
+        startTime: new Date('2026-04-06T09:00:00Z'),
+        endTime: new Date('2026-04-06T10:00:00Z'),
+      },
+      {
+        id: 2,
+        title: 'Task 2',
+        project: 'P2',
+        startTime: new Date('2026-04-06T09:30:00Z'),
+        endTime: new Date('2026-04-06T11:00:00Z'),
+      }
+    ];
+
+    render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks } });
+
+    const task1 = screen.getByText('Task 1').closest('.task-block');
+    const task2 = screen.getByText('Task 2').closest('.task-block');
+
+    expect(task1?.classList.contains('has-overlap')).toBe(true);
+    expect(task2?.classList.contains('has-overlap')).toBe(true);
+  });
 });

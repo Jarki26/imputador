@@ -15,8 +15,16 @@
   let view: 'daily' | 'weekly' = $state('weekly');
 
   async function loadTasks() {
-    tasks = await taskStore.getTasksForDay(today);
+    if (view === 'weekly') {
+      tasks = await taskStore.getTasksForWeek(today);
+    } else {
+      tasks = await taskStore.getTasksForDay(today);
+    }
   }
+
+  $effect(() => {
+    loadTasks();
+  });
 
   onMount(async () => {
     await loadTasks();

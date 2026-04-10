@@ -46,6 +46,55 @@
 
     return (totalMs / (1000 * 60 * 60)).toFixed(2);
   }
+
+  interface TaskWithOverlap extends Task {
+    hasOverlap?: boolean;
+  }
+
+  function getTasksForDay(date: Date): TaskWithOverlap[] {
+    const dayStart = new Date(date);
+    dayStart.setHours(0, 0, 0, 0);
+    const dayEnd = new Date(date);
+    dayEnd.setHours(23, 59, 59, 999);
+
+    const dailyTasks: TaskWithOverlap[] = tasks
+      .filter((t) => t.startTime >= dayStart && t.startTime <= dayEnd)
+      .map((t) => ({ ...t }));
+
+    // Detect overlaps
+    for (let i = 0; i < dailyTasks.length; i++) {
+      for (let j = i + 1; j < dailyTasks.length; j++) {
+        const t1 = dailyTasks[i];
+        const t2 = dailyTasks[j];
+
+        // Check if t1 and t2 overlap
+        if (t1.startTime < t2.endTime && t2.startTime < t1.endTime) {
+          t1.hasOverlap = true;
+          t2.hasOverlap = true;
+        }
+      }
+    }
+
+    return dailyTasks;
+  }
+
+  function getTaskStyle(task: Task): string {
+    const start = task.startTime;
+    const end = task.endTime;
+
+    const startMinutes = start.getHours() * 60 + start.getMinutes();
+    const durationMinutes = (end.getTime() - start.getTime()) / (1000 * 60);
+
+    const top = startMinutes; // 1px per minute since hour height is 60px
+    const height = Math.max(durationMinutes, 20); // Min height for visibility
+
+    return `top: ${top}px; height: ${height}px;`;
+  }
+
+  function getTaskDuration(task: Task): string {
+    const durationMs = task.endTime.getTime() - task.startTime.getTime();
+    return (durationMs / (1000 * 60 * 60)).toFixed(2) + 'h';
+  }
 </script>
 
 <div class="weekly-view">
@@ -72,6 +121,19 @@
         <div class="day-column">
           {#each hours as hour}
             <div class="hour-cell"></div>
+          {/each}
+          {#each getTasksForDay(day) as task (task.id)}
+            <div
+              class="task-block"
+              class:has-overlap={task.hasOverlap}
+              style={getTaskStyle(task)}
+            >
+              <div class="task-info">
+                <span class="task-title">{task.title}</span>
+                <span class="task-project">{task.project}</span>
+                <span class="task-duration">{getTaskDuration(task)}</span>
+              </div>
+            </div>
           {/each}
         </div>
       {/each}
@@ -181,5 +243,56 @@
 
   .hour-cell:last-child {
     border-bottom: none;
+  }
+
+  .task-block {
+    position: absolute;
+    left: 2px;
+    right: 2px;
+    background-color: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+    border-radius: 4px;
+    padding: 2px 4px;
+    font-size: 0.75rem;
+    overflow: hidden;
+    border: 1px solid var(--md-sys-color-primary);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.2s;
+  }
+
+  .task-block.has-overlap {
+    background-color: var(--md-sys-color-error-container);
+    color: var(--md-sys-color-on-error-container);
+    border-color: var(--md-sys-color-error);
+    z-index: 2;
+  }
+
+  .task-info {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .task-title {
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .task-project {
+    font-size: 0.7rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    opacity: 0.8;
+  }
+
+  .task-duration {
+    font-size: 0.65rem;
+    margin-top: auto;
+    text-align: right;
   }
 </style>
