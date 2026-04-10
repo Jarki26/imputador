@@ -1,7 +1,3 @@
-# Initial Concept
-
-una app web
-
 # Product Definition: Imputador
 
 ## Overview
