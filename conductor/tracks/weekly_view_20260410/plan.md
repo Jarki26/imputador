@@ -1,6 +1,6 @@
 # Implementation Plan - Weekly View Implementation
 
-## Phase 1: Core Weekly View Structure & Navigation
+## Phase 1: Core Weekly View Structure & Navigation [checkpoint: f86ccde]
 
 - [x] **Task: Create Basic WeeklyView Component (TDD)** (da2dc2c)
   - [x] Write failing tests for rendering a 7-day grid and time axis.
@@ -11,7 +11,7 @@
   - [x] Write failing tests for a toggle mechanism to switch between Daily and Weekly views on `+page.svelte`.
   - [x] Implement the view toggle, defaulting to the Weekly View.
   - [x] Ensure existing Daily View functionality is preserved when toggled.
-- [ ] **Task: Conductor - User Manual Verification 'Core Weekly View Structure & Navigation' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Core Weekly View Structure & Navigation' (Protocol in workflow.md)** (f86ccde)
 
 ## Phase 2: Task Rendering & Information Display
 
