@@ -1,8 +1,0 @@
-{
-  "track_id": "weekly_goals_20260411",
-  "type": "feature",
-  "status": "new",
-  "created_at": "2026-04-11T00:00:00Z",
-  "updated_at": "2026-04-11T00:00:00Z",
-  "description": "implementa el apartado 3 de tareas_pendientes.md y agrega al plan la actualización del documento para marcar como completadas las tareas cuando se finalice"
-}
