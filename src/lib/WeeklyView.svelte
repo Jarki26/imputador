@@ -71,6 +71,13 @@
     movedTask: Task; // Keep track of the actual moved task
   } | null>(null);
 
+  // Snap State
+  let snapProposal = $state<{
+    task: Task;
+    snapTo: 'before' | 'after';
+    targetTime: Date;
+  } | null>(null);
+
   function formatDay(date: Date): string {
     return date.toLocaleDateString('en-US', { weekday: 'long' });
   }
@@ -255,6 +262,69 @@
     return false;
   }
 
+  function checkForSnap(updatedTask: Task) {
+    const dayStart = new Date(updatedTask.startTime);
+    dayStart.setHours(0, 0, 0, 0);
+    const dayEnd = new Date(updatedTask.startTime);
+    dayEnd.setHours(23, 59, 59, 999);
+
+    const dailyTasks = tasks
+      .filter((t) => t.id !== updatedTask.id)
+      .filter((t) => t.startTime >= dayStart && t.startTime <= dayEnd)
+      .sort((a, b) => a.startTime.getTime() - b.startTime.getTime());
+
+    // Check for gap with task before
+    const taskBefore = [...dailyTasks]
+      .reverse()
+      .find((t) => t.endTime <= updatedTask.startTime);
+    if (taskBefore) {
+      const gapMs = updatedTask.startTime.getTime() - taskBefore.endTime.getTime();
+      if (gapMs > 0 && gapMs <= 15 * 60000) {
+        snapProposal = {
+          task: updatedTask,
+          snapTo: 'before',
+          targetTime: new Date(taskBefore.endTime),
+        };
+        return true;
+      }
+    }
+
+    // Check for gap with task after
+    const taskAfter = dailyTasks.find((t) => t.startTime >= updatedTask.endTime);
+    if (taskAfter) {
+      const gapMs = taskAfter.startTime.getTime() - updatedTask.endTime.getTime();
+      if (gapMs > 0 && gapMs <= 15 * 60000) {
+        snapProposal = {
+          task: updatedTask,
+          snapTo: 'after',
+          targetTime: new Date(taskAfter.startTime),
+        };
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  function handleSnap() {
+    if (!snapProposal || !onTaskUpdate) return;
+
+    const { task, snapTo, targetTime } = snapProposal;
+    const durationMs = task.endTime.getTime() - task.startTime.getTime();
+
+    const updatedTask = { ...task };
+    if (snapTo === 'before') {
+      updatedTask.startTime = new Date(targetTime);
+      updatedTask.endTime = new Date(targetTime.getTime() + durationMs);
+    } else {
+      updatedTask.endTime = new Date(targetTime);
+      updatedTask.startTime = new Date(targetTime.getTime() - durationMs);
+    }
+
+    onTaskUpdate(updatedTask);
+    snapProposal = null;
+  }
+
   function handleMerge() {
     if (!mergeProposal || !onTaskDelete || !onTaskUpdate) return;
 
@@ -403,7 +473,9 @@
       ) {
         // Check for merge BEFORE calling onTaskUpdate if it is a move or resize
         if (!checkForMerge(dragInfo.currentTask)) {
-          onTaskUpdate(dragInfo.currentTask);
+          if (!checkForSnap(dragInfo.currentTask)) {
+            onTaskUpdate(dragInfo.currentTask);
+          }
         }
       }
     }
@@ -598,6 +670,27 @@
           mergeProposal = null;
         }}>No</button>
         <button class="btn-confirm" onclick={handleMerge}>Yes, Merge</button>
+      </div>
+    </div>
+  </div>
+{/if}
+
+{#if snapProposal}
+  <div class="merge-modal-backdrop" onclick={() => (snapProposal = null)} role="presentation">
+    <div class="merge-modal" onclick={(e) => e.stopPropagation()} role="presentation">
+      <h3>Close the gap?</h3>
+      <p>
+        There is a small gap between this task and the {snapProposal.snapTo === 'before' ? 'previous' : 'next'} one. 
+        Would you like to snap them together?
+      </p>
+      <div class="merge-actions">
+        <button class="btn-cancel" onclick={() => {
+          if (snapProposal && onTaskUpdate) {
+            onTaskUpdate(snapProposal.task);
+          }
+          snapProposal = null;
+        }}>No</button>
+        <button class="btn-confirm" onclick={handleSnap}>Yes, Snap</button>
       </div>
     </div>
   </div>
