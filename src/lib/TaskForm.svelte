@@ -4,7 +4,7 @@
   import { formatDateForInput } from './utils';
   import { TASK_TYPES } from './config';
   import Modal from './Modal.svelte';
-  import type { Task } from './db';
+  import type { Task, RecentTask } from './db';
 
   interface Props {
     taskStore?: TaskStore;
@@ -25,6 +25,10 @@
   }: Props = $props();
 
   let errorMessage = $state('');
+  let title = $state(editingTask?.title || '');
+  let description = $state(editingTask?.description || '');
+  let project = $state(editingTask?.project || '');
+  let taskType = $state(editingTask?.type || 'General');
   let startTime = $state(
     initialStartTime ||
       (editingTask ? formatDateForInput(editingTask.startTime) : ''),
@@ -39,6 +43,29 @@
   let showCollisionModal = $state(false);
   let pendingTaskData = $state<Task | null>(null);
   let isSmartFill = $state(false);
+  let recentTasks = $state<RecentTask[]>([]);
+  let selectedRecentIndex = $state('');
+
+  // Fetch recent tasks on mount
+  $effect(() => {
+    refreshRecentTasks();
+  });
+
+  async function refreshRecentTasks() {
+    recentTasks = await taskStore.getRecentTasks();
+  }
+
+  function onRecentTaskChange(e: Event) {
+    const indexStr = (e.target as HTMLSelectElement).value;
+    if (indexStr !== '') {
+      const index = parseInt(indexStr);
+      const task = recentTasks[index];
+      title = task.title;
+      description = task.description;
+      project = task.project;
+      taskType = task.type;
+    }
+  }
 
   // Initialize duration from times
   $effect.pre(() => {
@@ -99,10 +126,16 @@
     if (success) {
       showCollisionModal = false;
       pendingTaskData = null;
+      title = '';
+      description = '';
+      project = '';
+      taskType = 'General';
       startTime = '';
       endTime = '';
       hours = 0;
       minutes = 0;
+      selectedRecentIndex = '';
+      await refreshRecentTasks();
 
       if (onSuccess) {
         try {
@@ -118,12 +151,10 @@
     e.preventDefault();
     errorMessage = '';
 
-    const form = e.currentTarget as HTMLFormElement;
-    const formData = new FormData(form);
-    const title = formData.get('title') as string;
-    const description = (formData.get('description') as string) || title;
-    const project = formData.get('project') as string;
-    const taskType = formData.get('taskType') as string;
+    const currentTitle = title;
+    const currentDescription = description || currentTitle;
+    const currentProject = project;
+    const currentTaskType = taskType;
 
     if (isSmartFill) {
       if (!startTime || (hours === 0 && minutes === 0)) {
@@ -136,19 +167,29 @@
 
       try {
         await taskStore.addWithSmartFill(
-          { title, description, project, type: taskType },
+          {
+            title: currentTitle,
+            description: currentDescription,
+            project: currentProject,
+            type: currentTaskType,
+          },
           start,
           durationMs,
         );
-        if (project) {
-          await projectStore.upsertProject(project);
+        if (currentProject) {
+          await projectStore.upsertProject(currentProject);
         }
-        form.reset();
         isSmartFill = false;
+        title = '';
+        description = '';
+        project = '';
+        taskType = 'General';
         startTime = '';
         endTime = '';
         hours = 0;
         minutes = 0;
+        selectedRecentIndex = '';
+        await refreshRecentTasks();
         if (onSuccess) await onSuccess();
       } catch (err) {
         errorMessage = 'Failed to perform smart fill';
@@ -171,10 +212,10 @@
     }
 
     const taskData: Task = {
-      title,
-      description,
-      project,
-      type: taskType,
+      title: currentTitle,
+      description: currentDescription,
+      project: currentProject,
+      type: currentTaskType,
       startTime: start,
       endTime: end,
     };
@@ -196,7 +237,6 @@
       }
 
       await saveTask(taskData);
-      form.reset();
     } catch (err) {
       errorMessage = 'An error occurred while checking for collisions';
       console.error(err);
@@ -205,23 +245,32 @@
 </script>
 
 <form onsubmit={handleSubmit} class="task-form" novalidate>
+  {#if recentTasks.length > 0}
+    <div class="field">
+      <label for="recentTasks">Recent Tasks</label>
+      <select
+        id="recentTasks"
+        bind:value={selectedRecentIndex}
+        onchange={onRecentTaskChange}
+      >
+        <option value="">-- Select a recent task --</option>
+        {#each recentTasks as task, i}
+          <option value={i.toString()}>
+            {task.title} ({task.project})
+          </option>
+        {/each}
+      </select>
+    </div>
+  {/if}
+
   <div class="field">
     <label for="title">Title</label>
-    <input
-      id="title"
-      name="title"
-      type="text"
-      required
-      value={editingTask?.title || ''}
-    />
+    <input id="title" name="title" type="text" required bind:value={title} />
   </div>
 
   <div class="field">
     <label for="description">Description</label>
-    <textarea
-      id="description"
-      name="description"
-      value={editingTask?.description || ''}
+    <textarea id="description" name="description" bind:value={description}
     ></textarea>
   </div>
 
@@ -232,17 +281,13 @@
       name="project"
       type="text"
       required
-      value={editingTask?.project || ''}
+      bind:value={project}
     />
   </div>
 
   <div class="field">
     <label for="taskType">Task Type</label>
-    <select
-      id="taskType"
-      name="taskType"
-      value={editingTask?.type || 'General'}
-    >
+    <select id="taskType" name="taskType" bind:value={taskType}>
       {#each TASK_TYPES as type (type.name)}
         <option value={type.name}>{type.name}</option>
       {/each}
