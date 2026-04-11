@@ -4,7 +4,7 @@
 - [x] **Task: Parametrizable Task Types** 63c7992
   - [ ] Create a `src/lib/config.ts` to define the array of available task types and their properties (e.g., `isBillable`).
   - [ ] Write unit tests to ensure the configuration is structured correctly and "Rest" is identifiable.
-- [ ] **Task: History Purger Logic**
+- [x] **Task: History Purger Logic** 5fdd4ba
   - [ ] Write failing tests in `taskStore.spec.ts` for a function that identifies and deletes recent tasks not used in the last 14 days.
   - [ ] Implement the purger function in `TaskStore`.
   - [ ] Integrate the purger to run automatically upon saving a new task.
