@@ -5,12 +5,9 @@ describe('ProjectStore operations', () => {
   let store: ProjectStore;
 
   beforeEach(async () => {
-    // Clear databases before each test
-    const dbs = await window.indexedDB.databases();
-    dbs.forEach((db) => {
-      if (db.name) window.indexedDB.deleteDatabase(db.name);
-    });
-    store = new ProjectStore('test-project-db');
+    // Use unique database name per test for isolation
+    const dbName = `test-project-db-${Math.random().toString(36).substring(7)}`;
+    store = new ProjectStore(dbName);
   });
 
   it('should add a project and retrieve it', async () => {

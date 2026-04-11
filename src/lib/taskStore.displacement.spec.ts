@@ -6,12 +6,9 @@ describe('TaskStore Displacement Logic', () => {
   let store: TaskStore;
 
   beforeEach(async () => {
-    // Clear databases before each test
-    const dbs = await window.indexedDB.databases();
-    for (const db of dbs) {
-      if (db.name) await window.indexedDB.deleteDatabase(db.name);
-    }
-    store = new TaskStore('test-displacement-db');
+    // Use unique database name per test for isolation
+    const dbName = `test-displacement-db-${Math.random().toString(36).substring(7)}`;
+    store = new TaskStore(dbName);
   });
 
   it('should split and shift an existing task when a new one is inserted in the middle', async () => {

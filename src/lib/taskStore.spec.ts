@@ -6,12 +6,9 @@ describe('TaskStore CRUD operations', () => {
   let store: TaskStore;
 
   beforeEach(async () => {
-    // Clear databases before each test
-    const dbs = await window.indexedDB.databases();
-    dbs.forEach((db) => {
-      if (db.name) window.indexedDB.deleteDatabase(db.name);
-    });
-    store = new TaskStore('test-task-db');
+    // Use unique database name per test for isolation
+    const dbName = `test-task-db-${Math.random().toString(36).substring(7)}`;
+    store = new TaskStore(dbName);
   });
 
   it('should add a task and retrieve it', async () => {

@@ -52,7 +52,9 @@
   });
 
   async function refreshRecentTasks() {
-    recentTasks = await taskStore.getRecentTasks();
+    if (typeof taskStore.getRecentTasks === 'function') {
+      recentTasks = await taskStore.getRecentTasks();
+    }
   }
 
   function onRecentTaskChange(e: Event) {
