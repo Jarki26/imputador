@@ -110,4 +110,24 @@ describe('TaskStore Smart Fill Logic', () => {
     expect(fillTaskDay2?.startTime.getHours()).toBe(0);
     expect(fillTaskDay2?.endTime.getHours()).toBe(1);
   });
+
+  it('should start filling from the provided time on the first day', async () => {
+    const startDate = new Date(2026, 3, 11, 14, 0); // 14:00
+    const taskData: Omit<Task, 'startTime' | 'endTime'> = {
+      title: 'Afternoon Fill',
+      description: '',
+      project: '',
+      type: '',
+    };
+
+    // 2 hours
+    const durationMs = 2 * 60 * 60 * 1000;
+
+    await store.addWithSmartFill(taskData, startDate, durationMs);
+
+    const tasks = await store.getTasksForDay(startDate);
+    expect(tasks).toHaveLength(1);
+    expect(tasks[0].startTime.getHours()).toBe(14);
+    expect(tasks[0].endTime.getHours()).toBe(16);
+  });
 });

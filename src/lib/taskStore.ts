@@ -252,7 +252,8 @@ export class TaskStore {
   ): Promise<void> {
     let remaining = totalDurationMs;
     const current = new Date(startDate);
-    current.setHours(0, 0, 0, 0);
+    // Keep the time if it's the first day, but for subsequent days we'll start at 00:00
+    let isFirstDay = true;
 
     while (remaining > 0) {
       const dayTasks = (await this.getTasksForDay(current)).sort(
@@ -261,12 +262,23 @@ export class TaskStore {
 
       const gaps: { start: Date; end: Date }[] = [];
       let lastEnd = new Date(current);
+      if (isFirstDay) {
+        // lastEnd is already startDate (including time)
+      } else {
+        lastEnd.setHours(0, 0, 0, 0);
+      }
 
       for (const task of dayTasks) {
-        if (task.startTime > lastEnd) {
+        // Skip tasks that end before our starting point
+        if (task.endTime <= lastEnd) continue;
+
+        const effectiveStart =
+          task.startTime < lastEnd ? lastEnd : task.startTime;
+
+        if (effectiveStart > lastEnd) {
           gaps.push({
             start: new Date(lastEnd),
-            end: new Date(task.startTime),
+            end: new Date(effectiveStart),
           });
         }
         if (task.endTime > lastEnd) {
@@ -298,6 +310,8 @@ export class TaskStore {
 
       if (remaining > 0) {
         current.setDate(current.getDate() + 1);
+        current.setHours(0, 0, 0, 0);
+        isFirstDay = false;
         // Safety break to prevent infinite loops (e.g., if we go too far in the future)
         if (current.getFullYear() > startDate.getFullYear() + 1) break;
       }
