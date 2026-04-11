@@ -13,11 +13,11 @@
 ## Phase 2: UI Integration
 - [x] **Task: Task Types UI Update** 96b2e51
   - [x] Update `TaskForm.svelte` to dynamically render the task type `<select>` options from `src/lib/config.ts`.
-- [ ] **Task: Recent Tasks UI**
-  - [ ] Write failing tests for rendering a dedicated "Recent Tasks" dropdown in `TaskForm.svelte`.
-  - [ ] Implement logic in `TaskStore` to fetch the last 10 unique used tasks.
-  - [ ] Implement the dropdown UI in `TaskForm.svelte`.
-  - [ ] Add an event handler so that selecting a recent task populates the Title, Description, Project, and Task Type fields.
+- [x] **Task: Recent Tasks UI** 6f172f5
+  - [x] Write failing tests for rendering a dedicated "Recent Tasks" dropdown in `TaskForm.svelte`.
+  - [x] Implement logic in `TaskStore` to fetch the last 10 unique used tasks.
+  - [x] Implement the dropdown UI in `TaskForm.svelte`.
+  - [x] Add an event handler so that selecting a recent task populates the Title, Description, Project, and Task Type fields.
 - [ ] **Task: Conductor - User Manual Verification 'UI Integration' (Protocol in workflow.md)**
 
 ## Phase 3: Finalization
