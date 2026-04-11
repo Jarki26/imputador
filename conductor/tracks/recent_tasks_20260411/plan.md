@@ -1,0 +1,27 @@
+# Implementation Plan - Project Management and Recent Tasks
+
+## Phase 1: Core Configuration and Store Logic (TDD)
+- [ ] **Task: Parametrizable Task Types**
+  - [ ] Create a `src/lib/config.ts` to define the array of available task types and their properties (e.g., `isBillable`).
+  - [ ] Write unit tests to ensure the configuration is structured correctly and "Rest" is identifiable.
+- [ ] **Task: History Purger Logic**
+  - [ ] Write failing tests in `taskStore.spec.ts` for a function that identifies and deletes recent tasks not used in the last 14 days.
+  - [ ] Implement the purger function in `TaskStore`.
+  - [ ] Integrate the purger to run automatically upon saving a new task.
+- [ ] **Task: Conductor - User Manual Verification 'Core Configuration and Store Logic (TDD)' (Protocol in workflow.md)**
+
+## Phase 2: UI Integration
+- [ ] **Task: Task Types UI Update**
+  - [ ] Update `TaskForm.svelte` to dynamically render the task type `<select>` options from `src/lib/config.ts`.
+- [ ] **Task: Recent Tasks UI**
+  - [ ] Write failing tests for rendering a dedicated "Recent Tasks" dropdown in `TaskForm.svelte`.
+  - [ ] Implement logic in `TaskStore` to fetch the last 10 unique used tasks.
+  - [ ] Implement the dropdown UI in `TaskForm.svelte`.
+  - [ ] Add an event handler so that selecting a recent task populates the Title, Description, Project, and Task Type fields.
+- [ ] **Task: Conductor - User Manual Verification 'UI Integration' (Protocol in workflow.md)**
+
+## Phase 3: Finalization
+- [ ] **Task: Update Pending Tasks Document**
+  - [ ] Open `conductor/tareas_pendientes.md`.
+  - [ ] Mark the items under "2. Gestión de Proyectos y Tareas Recientes" as completed (change `[ ]` to `[x]`).
+- [ ] **Task: Conductor - User Manual Verification 'Finalization' (Protocol in workflow.md)**
