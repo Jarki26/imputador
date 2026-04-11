@@ -15,10 +15,10 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Record Management' (32dfd1b)
 
 ## Phase 2: Navigation & Visualization
-- [ ] Task: Implement Week Navigation Arrows
+- [x] Task: Implement Week Navigation Arrows (b390fbc)
     - [ ] Write failing tests for week navigation state changes.
     - [ ] Add arrow buttons to the header and wire them to change the current week.
-- [ ] Task: Implement Daily View Access from Header
+- [~] Task: Implement Daily View Access from Header
     - [ ] Write failing test for navigation to Daily View on day header click.
     - [ ] Make day headers clickable and route to the specific day's view.
 - [ ] Task: Implement Mobile Time Column (Floating Overlay)
