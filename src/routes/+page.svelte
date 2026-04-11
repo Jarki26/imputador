@@ -81,6 +81,11 @@
     }
   }
 
+  function handleNavigate(date: Date) {
+    today = date;
+    loadTasks();
+  }
+
   async function handleTaskDelete(taskId: number) {
     await taskStore.deleteTask(taskId);
     await loadTasks();
@@ -155,6 +160,7 @@
         onTaskUpdate={handleTaskUpdate}
         onTaskDelete={handleTaskDelete}
         onTaskCopyToRecents={handleTaskCopyToRecents}
+        onNavigate={handleNavigate}
       />
     </div>
   {/if}
