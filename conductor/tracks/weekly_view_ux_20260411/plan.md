@@ -38,9 +38,9 @@
     - [x] Write failing tests for action locks preventing state changes.
     - [x] Add floating action buttons (FABs) to toggle edit, move, and create locks.
     - [x] Enforce locks in the UI interaction handlers.
-- [~] Task: Correct Edit Logic from Weekly View
-    - [ ] Write failing tests covering division and displacement when editing directly from `WeeklyView`.
-    - [ ] Fix the underlying logic to apply the correct strategy (overwrite/displace) during inline edits.
+- [x] Task: Correct Edit Logic from Weekly View (c838576)
+    - [x] Write failing tests covering division and displacement when editing directly from `WeeklyView`.
+    - [x] Fix the underlying logic to apply the correct strategy (overwrite/displace) during inline edits.
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Interaction & Control' (Protocol in workflow.md)
 
 ## Phase 4: Post-Implementation Documentation
