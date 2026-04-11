@@ -14,20 +14,20 @@
     - [x] Connect gesture to the recent tasks history addition logic.
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Record Management' (32dfd1b)
 
-## Phase 2: Navigation & Visualization
+## Phase 2: Navigation & Visualization [checkpoint: 8986700]
 - [x] Task: Implement Week Navigation Arrows (b390fbc)
-    - [ ] Write failing tests for week navigation state changes.
-    - [ ] Add arrow buttons to the header and wire them to change the current week.
+    - [x] Write failing tests for week navigation state changes.
+    - [x] Add arrow buttons to the header and wire them to change the current week.
 - [x] Task: Implement Daily View Access from Header (848452f)
-    - [ ] Write failing test for navigation to Daily View on day header click.
-    - [ ] Make day headers clickable and route to the specific day's view.
+    - [x] Write failing test for navigation to Daily View on day header click.
+    - [x] Make day headers clickable and route to the specific day's view.
 - [x] Task: Implement Mobile Time Column (Floating Overlay) (4e7adcb)
-    - [ ] Add CSS/styling tests or visual regression checks if applicable.
-    - [ ] Update CSS to make the time column sticky/floating during horizontal scroll on small screens.
-- [~] Task: Adjust Visual Scale of Cells
-    - [ ] Write failing tests verifying the calculated height styles based on task duration.
-    - [ ] Update rendering logic to ensure exact proportional heights (e.g., 30min = 50% height).
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Navigation & Visualization' (Protocol in workflow.md)
+    - [x] Add CSS/styling tests or visual regression checks if applicable.
+    - [x] Update CSS to make the time column sticky/floating during horizontal scroll on small screens.
+- [x] Task: Adjust Visual Scale of Cells (a166ff9)
+    - [x] Write failing tests verifying the calculated height styles based on task duration.
+    - [x] Update rendering logic to ensure exact proportional heights (e.g., 30min = 50% height).
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Navigation & Visualization' (8986700)
 
 ## Phase 3: Interaction & Control
 - [ ] Task: Implement No-Gap Sequencing Prompt
