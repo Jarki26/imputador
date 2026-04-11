@@ -78,6 +78,13 @@
     targetTime: Date;
   } | null>(null);
 
+  // Action Locks
+  let locks = $state({
+    move: false,
+    edit: false,
+    create: false,
+  });
+
   function formatDay(date: Date): string {
     return date.toLocaleDateString('en-US', { weekday: 'long' });
   }
@@ -347,6 +354,7 @@
   }
 
   function handleSlotClick(day: Date, hour: number) {
+    if (locks.create) return;
     if (onSlotClick) {
       const clickedDate = new Date(day);
       clickedDate.setHours(hour, 0, 0, 0);
@@ -360,6 +368,7 @@
     mode: 'move' | 'resize',
   ) {
     if (e.button !== 0) return; // Left click only
+    if (locks.move) return;
     e.stopPropagation();
 
     if (mode === 'move') {
@@ -587,11 +596,13 @@
                 onpointerdown={(e) => handlePointerDown(e, task, 'move')}
                 onclick={(e) => {
                   e.stopPropagation();
+                  if (locks.edit) return;
                   if (onTaskClick) onTaskClick(task);
                 }}
                 onkeydown={(e) => {
                   if (e.key === 'Enter') {
                     e.stopPropagation();
+                    if (locks.edit) return;
                     if (onTaskClick) onTaskClick(task);
                   }
                 }}
@@ -603,12 +614,14 @@
                   class="delete-btn"
                   onclick={(e) => {
                     e.stopPropagation();
+                    if (locks.edit) return;
                     if (onTaskDelete && task.id !== undefined)
                       onTaskDelete(task.id);
                   }}
                   onkeydown={(e) => {
                     if (e.key === 'Enter') {
                       e.stopPropagation();
+                      if (locks.edit) return;
                       if (onTaskDelete && task.id !== undefined)
                         onTaskDelete(task.id);
                     }
@@ -635,7 +648,9 @@
                 <!-- Resize Handle -->
                 <div
                   class="resize-handle"
-                  onpointerdown={(e) => handlePointerDown(e, task, 'resize')}
+                  onpointerdown={(e) => {
+                    if (!locks.move) handlePointerDown(e, task, 'resize');
+                  }}
                   role="presentation"
                 ></div>
               </div>
@@ -695,6 +710,57 @@
     </div>
   </div>
 {/if}
+
+<div class="action-locks">
+  <button
+    class="lock-btn"
+    class:active={locks.move}
+    onclick={() => (locks.move = !locks.move)}
+    title="Lock Movement"
+    aria-label="Toggle Movement Lock"
+  >
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+      <path
+        d={locks.move
+          ? 'M18,8H17V6A5,5 0 0,0 12,1A5,5 0 0,0 7,6V8H6A2,2 0 0,0 4,10V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V10A2,2 0 0,0 18,8M12,17A3,3 0 0,1 9,14A3,3 0 0,1 12,11A3,3 0 0,1 15,14A3,3 0 0,1 12,17M15,8H9V6A3,3 0 0,1 12,3A3,3 0 0,1 15,6V8Z'
+          : 'M12,17A3,3 0 0,1 9,14A3,3 0 0,1 12,11A3,3 0 0,1 15,14A3,3 0 0,1 12,17M18,8H17V6A5,5 0 0,0 12,1A5,5 0 0,0 7,6V8H6A2,2 0 0,0 4,10V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V10A2,2 0 0,0 18,8M9,6A3,3 0 0,1 12,3A3,3 0 0,1 15,6V8H9V6Z'}
+      />
+    </svg>
+    <span>Move</span>
+  </button>
+  <button
+    class="lock-btn"
+    class:active={locks.edit}
+    onclick={() => (locks.edit = !locks.edit)}
+    title="Lock Editing"
+    aria-label="Toggle Editing Lock"
+  >
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+      <path
+        d={locks.edit
+          ? 'M18,8H17V6A5,5 0 0,0 12,1A5,5 0 0,0 7,6V8H6A2,2 0 0,0 4,10V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V10A2,2 0 0,0 18,8M12,17A3,3 0 0,1 9,14A3,3 0 0,1 12,11A3,3 0 0,1 15,14A3,3 0 0,1 12,17M15,8H9V6A3,3 0 0,1 12,3A3,3 0 0,1 15,6V8Z'
+          : 'M12,17A3,3 0 0,1 9,14A3,3 0 0,1 12,11A3,3 0 0,1 15,14A3,3 0 0,1 12,17M18,8H17V6A5,5 0 0,0 12,1A5,5 0 0,0 7,6V8H6A2,2 0 0,0 4,10V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V10A2,2 0 0,0 18,8M9,6A3,3 0 0,1 12,3A3,3 0 0,1 15,6V8H9V6Z'}
+      />
+    </svg>
+    <span>Edit</span>
+  </button>
+  <button
+    class="lock-btn"
+    class:active={locks.create}
+    onclick={() => (locks.create = !locks.create)}
+    title="Lock Creation"
+    aria-label="Toggle Creation Lock"
+  >
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+      <path
+        d={locks.create
+          ? 'M18,8H17V6A5,5 0 0,0 12,1A5,5 0 0,0 7,6V8H6A2,2 0 0,0 4,10V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V10A2,2 0 0,0 18,8M12,17A3,3 0 0,1 9,14A3,3 0 0,1 12,11A3,3 0 0,1 15,14A3,3 0 0,1 12,17M15,8H9V6A3,3 0 0,1 12,3A3,3 0 0,1 15,6V8Z'
+          : 'M12,17A3,3 0 0,1 9,14A3,3 0 0,1 12,11A3,3 0 0,1 15,14A3,3 0 0,1 12,17M18,8H17V6A5,5 0 0,0 12,1A5,5 0 0,0 7,6V8H6A2,2 0 0,0 4,10V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V10A2,2 0 0,0 18,8M9,6A3,3 0 0,1 12,3A3,3 0 0,1 15,6V8H9V6Z'}
+      />
+    </svg>
+    <span>Create</span>
+  </button>
+</div>
 
 <style>
   .merge-modal-backdrop {
@@ -773,6 +839,43 @@
   .btn-cancel:hover,
   .btn-confirm:hover {
     opacity: 0.8;
+  }
+
+  .action-locks {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    z-index: 50;
+  }
+
+  .lock-btn {
+    background-color: var(--md-sys-color-surface-container-high);
+    color: var(--md-sys-color-primary);
+    border: 1px solid var(--md-sys-color-outline-variant);
+    border-radius: 24px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .lock-btn.active {
+    background-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+    border-color: var(--md-sys-color-primary);
+  }
+
+  .lock-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
   }
 
   .weekly-view {
