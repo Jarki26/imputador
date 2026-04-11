@@ -4,16 +4,16 @@ Esta lista identifica las funcionalidades definidas en `docs/Descripción.md` qu
 
 ## 1. Lógica de Inserción y Edición Avanzada
 
-- [ ] **Implementar Inserción con Sobre-escritura:**
+- [x] **Implementar Inserción con Sobre-escritura:**
   - Lógica para dividir registros existentes cuando un nuevo registro solapa parcialmente.
   - Pruebas unitarias para casos de solape al inicio, medio y fin.
-- [ ] **Implementar Inserción con Desplazamiento:**
+- [x] **Implementar Inserción con Desplazamiento:**
   - Lógica para "empujar" tareas posteriores al insertar una nueva en medio de una secuencia.
   - Asegurar que las duraciones de las tareas desplazadas se mantengan intactas.
-- [ ] **Modo Relleno de Huecos (Smart Fill):**
+- [x] **Modo Relleno de Huecos (Smart Fill):**
   - Checkbox en el formulario de creación.
   - Algoritmo para repartir una duración total entre los huecos disponibles del día.
-- [ ] **Edición por Duración:**
+- [x] **Edición por Duración:**
   - Permitir al usuario introducir `00h 00m 00s` en lugar de hora de fin para calcular el término del registro.
 
 ## 2. Gestión de Proyectos y Tareas Recientes
