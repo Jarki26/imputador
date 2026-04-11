@@ -326,6 +326,7 @@
               <div
                 class="task-block"
                 class:has-overlap={task.hasOverlap}
+                class:is-rest={!isBillable(task.type)}
                 class:is-dragging={dragInfo?.taskId === task.id}
                 style={getTaskStyle(task)}
                 onpointerdown={(e) => handlePointerDown(e, task, 'move')}
@@ -532,6 +533,13 @@
 
   .task-block.is-dragging {
     cursor: grabbing;
+  }
+
+  .task-block.is-rest {
+    background-color: var(--md-sys-color-surface-variant);
+    color: var(--md-sys-color-on-surface-variant);
+    border-color: var(--md-sys-color-outline-variant);
+    opacity: 0.8;
   }
 
   .task-block.has-overlap {
