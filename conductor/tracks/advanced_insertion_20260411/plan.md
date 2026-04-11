@@ -35,10 +35,10 @@
 
 ## Phase 3: Smart Fill UI
 
-- [ ] **Task: Smart Fill Toggle**
+- [x] **Task: Smart Fill Toggle** 1f696e5
   - [ ] Add a "Smart Fill" checkbox to the `TaskForm`.
   - [ ] Adjust form fields dynamically (e.g., hide End Time, require Total Duration) when Smart Fill is active.
-- [ ] **Task: Integrate Smart Fill Flow**
+- [x] **Task: Integrate Smart Fill Flow** 1f696e5
   - [ ] Connect the form submission in Smart Fill mode to the backend algorithm.
   - [ ] Handle UI updates (loading state, success message, redirect to view the newly filled days).
 - [ ] **Task: Conductor - User Manual Verification 'Smart Fill UI' (Protocol in workflow.md)**
