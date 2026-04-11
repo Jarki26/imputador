@@ -27,9 +27,10 @@
   - [ ] Implement the collision detection check before saving in `TaskForm` or a parent component.
   - [ ] Create and integrate a generic modal component or dialog to prompt the user with "Overwrite", "Displacement", or "Cancel".
 
-- [ ] **Task: Integrate Resolution Modes**
+- [x] **Task: Integrate Resolution Modes** 49b3c7b
   - [ ] Connect the "Overwrite" modal choice to the newly implemented TaskStore overwrite logic.
   - [ ] Connect the "Displacement" modal choice to the newly implemented TaskStore displacement logic.
+
 - [ ] **Task: Conductor - User Manual Verification 'UI Integration (TaskForm & Collision)' (Protocol in workflow.md)**
 
 ## Phase 3: Smart Fill UI
