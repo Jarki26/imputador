@@ -15,7 +15,7 @@
 
 - [ ] **Task: Conductor - User Manual Verification 'Core Algorithms (TDD)' (Protocol in workflow.md)**
 
-## Phase 2: UI Integration (TaskForm & Collision)
+## Phase 2: UI Integration (TaskForm & Collision) [checkpoint: dcfef2e]
 
 - [x] **Task: Duration Editing UI** f8550b1
   - [ ] Write failing tests for rendering and updating separate Hours and Minutes inputs in `TaskForm`.
