@@ -1,0 +1,8 @@
+{
+  "track_id": "weekly_view_ux_20260411",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-04-11T12:00:00Z",
+  "updated_at": "2026-04-11T12:00:00Z",
+  "description": "Implementar el apartado 4.1 de conductor/tareas_pendientes.md (Mejoras de UX en WeeklyView.svelte) y actualizar el fichero marcando las tareas como completadas"
+}
