@@ -45,7 +45,7 @@
 
 ## Phase 4: Finalization
 
-- [ ] **Task: Update Pending Tasks Document**
+- [x] **Task: Update Pending Tasks Document** 0a02abe
   - [ ] Open `conductor/tareas_pendientes.md`.
   - [ ] Mark the items under "1. Lógica de Inserción y Edición Avanzada" as completed (change `[ ]` to `[x]`).
 - [ ] **Task: Conductor - User Manual Verification 'Finalization' (Protocol in workflow.md)**
