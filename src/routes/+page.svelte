@@ -86,6 +86,12 @@
     loadTasks();
   }
 
+  function handleDayClick(date: Date) {
+    today = date;
+    view = 'daily';
+    loadTasks();
+  }
+
   async function handleTaskDelete(taskId: number) {
     await taskStore.deleteTask(taskId);
     await loadTasks();
@@ -161,6 +167,7 @@
         onTaskDelete={handleTaskDelete}
         onTaskCopyToRecents={handleTaskCopyToRecents}
         onNavigate={handleNavigate}
+        onDayClick={handleDayClick}
       />
     </div>
   {/if}

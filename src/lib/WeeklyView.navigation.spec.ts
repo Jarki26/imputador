@@ -33,4 +33,23 @@ describe('WeeklyView.svelte - Navigation', () => {
     expect(nextDate.getDate()).toBe(13);
     expect(nextDate.getMonth()).toBe(3); // April
   });
+
+  it('should trigger onDayClick when a day header is clicked', async () => {
+    cleanup();
+    const onDayClick = vi.fn();
+    const startDate = new Date('2026-04-06'); // Monday
+    render(WeeklyView, { props: { startDate, onDayClick } });
+
+    // Find the Monday header
+    const mondayHeader = screen.getByText(/Monday/i).closest('.day-header');
+    expect(mondayHeader).toBeDefined();
+
+    // Click the header
+    await fireEvent.click(mondayHeader!);
+
+    expect(onDayClick).toHaveBeenCalled();
+    const clickedDate = onDayClick.mock.calls[0][0];
+    expect(clickedDate.getDate()).toBe(6);
+    expect(clickedDate.getMonth()).toBe(3); // April
+  });
 });

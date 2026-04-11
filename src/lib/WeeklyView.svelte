@@ -13,11 +13,13 @@
     onTaskDelete,
     onTaskCopyToRecents,
     onNavigate,
+    onDayClick,
   }: {
     startDate: Date;
     tasks: Task[];
     weeklyTarget?: number;
     onSlotClick?: (date: Date) => void;
+    onDayClick?: (date: Date) => void;
     onTaskClick?: (task: Task) => void;
     onTaskUpdate?: (task: Task) => void;
     onTaskDelete?: (taskId: number) => void;
@@ -456,7 +458,14 @@
     <div class="grid-header">
       <div class="time-axis-spacer"></div>
       {#each daysOfWeek as day}
-        <div class="day-header">
+        <div
+          class="day-header"
+          onclick={() => onDayClick && onDayClick(day)}
+          onkeydown={(e) => e.key === 'Enter' && onDayClick && onDayClick(day)}
+          role="button"
+          tabindex="0"
+          aria-label="View daily details for {formatDay(day)}"
+        >
           <span class="day-name">{formatDay(day)}</span>
           <span class="day-date">{day.toLocaleDateString()}</span>
           <div class="totals">
@@ -761,6 +770,17 @@
     padding: 0.75rem 0.5rem;
     border-right: 1px solid var(--md-sys-color-outline-variant);
     min-width: 120px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    user-select: none;
+  }
+
+  .day-header:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  .day-header:active {
+    background-color: rgba(0, 0, 0, 0.1);
   }
 
   .day-header:last-child {
