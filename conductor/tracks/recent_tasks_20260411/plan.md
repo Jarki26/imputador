@@ -1,14 +1,14 @@
 # Implementation Plan - Project Management and Recent Tasks
 
-## Phase 1: Core Configuration and Store Logic (TDD)
+## Phase 1: Core Configuration and Store Logic (TDD) [checkpoint: 20037b4]
 - [x] **Task: Parametrizable Task Types** 63c7992
-  - [ ] Create a `src/lib/config.ts` to define the array of available task types and their properties (e.g., `isBillable`).
-  - [ ] Write unit tests to ensure the configuration is structured correctly and "Rest" is identifiable.
+  - [x] Create a `src/lib/config.ts` to define the array of available task types and their properties (e.g., `isBillable`).
+  - [x] Write unit tests to ensure the configuration is structured correctly and "Rest" is identifiable.
 - [x] **Task: History Purger Logic** 5fdd4ba
-  - [ ] Write failing tests in `taskStore.spec.ts` for a function that identifies and deletes recent tasks not used in the last 14 days.
-  - [ ] Implement the purger function in `TaskStore`.
-  - [ ] Integrate the purger to run automatically upon saving a new task.
-- [ ] **Task: Conductor - User Manual Verification 'Core Configuration and Store Logic (TDD)' (Protocol in workflow.md)**
+  - [x] Write failing tests in `taskStore.spec.ts` for a function that identifies and deletes recent tasks not used in the last 14 days.
+  - [x] Implement the purger function in `TaskStore`.
+  - [x] Integrate the purger to run automatically upon saving a new task.
+- [x] **Task: Conductor - User Manual Verification 'Core Configuration and Store Logic (TDD)' (Protocol in workflow.md)**
 
 ## Phase 2: UI Integration
 - [ ] **Task: Task Types UI Update**
