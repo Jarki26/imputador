@@ -5,7 +5,7 @@
 - [x] **Task: Implement Overwrite Logic in TaskStore** efccd9e
   - [ ] Write failing tests for splitting an existing task when a new one is inserted (start, middle, and end overlaps).
   - [ ] Implement the overwrite logic, ensuring original task data is preserved in the split segments.
-- [ ] **Task: Implement Displacement Logic in TaskStore**
+- [x] **Task: Implement Displacement Logic in TaskStore** 9cd1e9b
   - [ ] Write failing tests for shifting existing tasks forward when a new one is inserted, verifying durations remain constant.
   - [ ] Implement the displacement logic, ensuring all subsequent conflicting tasks are recursively shifted.
 - [ ] **Task: Implement Smart Fill Algorithm**
