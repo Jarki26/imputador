@@ -1,7 +1,7 @@
 # Implementation Plan: UX Improvements - Weekly View (4.1)
 
 ## Phase 1: Record Management
-- [ ] Task: Implement Delete Task Button
+- [x] Task: Implement Delete Task Button (28998a2)
     - [ ] Write failing test for task deletion from `WeeklyView`.
     - [ ] Implement UI button and connect to task deletion logic.
 - [ ] Task: Implement Merge Identical Tasks Prompt
