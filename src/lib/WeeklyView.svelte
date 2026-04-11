@@ -575,16 +575,17 @@
   }
 
   .merge-modal {
-    background: var(--md-sys-color-surface-container-high);
+    background: white; /* Fallback */
+    background: var(--md-sys-color-surface);
     padding: 1.5rem;
     border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.3);
     max-width: 400px;
     width: 90%;
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    border: 1px solid var(--md-sys-color-outline-variant);
+    border: 2px solid var(--md-sys-color-primary);
   }
 
   .merge-modal h3 {

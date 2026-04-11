@@ -4,11 +4,11 @@
 - [x] Task: Implement Delete Task Button (28998a2)
     - [ ] Write failing test for task deletion from `WeeklyView`.
     - [ ] Implement UI button and connect to task deletion logic.
-- [ ] Task: Implement Merge Identical Tasks Prompt
+- [x] Task: Implement Merge Identical Tasks Prompt (2144e50)
     - [ ] Write failing test for detecting consecutive identical tasks.
     - [ ] Implement logic to detect identical adjacent tasks upon movement/editing.
     - [ ] Implement confirmation popup and merge logic.
-- [ ] Task: Implement Copy to Recents (Long Press)
+- [x] Task: Implement Copy to Recents (Long Press) (216ee56)
     - [ ] Write failing test for triggering the copy action.
     - [ ] Implement long-press gesture detector on task cards.
     - [ ] Connect gesture to the recent tasks history addition logic.
