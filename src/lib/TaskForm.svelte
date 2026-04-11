@@ -37,6 +37,7 @@
 
   let showCollisionModal = $state(false);
   let pendingTaskData = $state<Task | null>(null);
+  let isSmartFill = $state(false);
 
   // Initialize duration from times
   $effect.pre(() => {
@@ -124,6 +125,38 @@
     const description = (formData.get('description') as string) || title;
     const project = formData.get('project') as string;
     const taskType = formData.get('taskType') as string;
+
+    if (isSmartFill) {
+      if (!startTime || (hours === 0 && minutes === 0)) {
+        errorMessage = 'Please provide a start date and a valid duration';
+        return;
+      }
+
+      const start = new Date(startTime);
+      const durationMs = hours * 60 * 60 * 1000 + minutes * 60 * 1000;
+
+      try {
+        await taskStore.addWithSmartFill(
+          { title, description, project, type: taskType },
+          start,
+          durationMs,
+        );
+        if (project) {
+          await projectStore.upsertProject(project);
+        }
+        form.reset();
+        isSmartFill = false;
+        startTime = '';
+        endTime = '';
+        hours = 0;
+        minutes = 0;
+        if (onSuccess) await onSuccess();
+      } catch (err) {
+        errorMessage = 'Failed to perform smart fill';
+        console.error(err);
+      }
+      return;
+    }
 
     if (!startTime || !endTime) {
       errorMessage = 'Please provide valid start and end times';
@@ -235,10 +268,18 @@
       id="endTime"
       name="endTime"
       type="datetime-local"
-      required
+      required={!isSmartFill}
+      disabled={isSmartFill}
       bind:value={endTime}
       oninput={updateDurationFromTimes}
     />
+  </div>
+
+  <div class="field checkbox-field">
+    <label for="smartFill">
+      <input id="smartFill" type="checkbox" bind:checked={isSmartFill} />
+      Smart Fill (auto-distribute duration in gaps)
+    </label>
   </div>
 
   <div class="duration-fields">
@@ -324,6 +365,24 @@
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
+  }
+
+  .checkbox-field {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .checkbox-field label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+  }
+
+  .checkbox-field input {
+    width: auto;
+    margin: 0;
   }
 
   label {
