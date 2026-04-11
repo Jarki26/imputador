@@ -1,18 +1,18 @@
 # Implementation Plan: UX Improvements - Weekly View (4.1)
 
-## Phase 1: Record Management
+## Phase 1: Record Management [checkpoint: 32dfd1b]
 - [x] Task: Implement Delete Task Button (28998a2)
-    - [ ] Write failing test for task deletion from `WeeklyView`.
-    - [ ] Implement UI button and connect to task deletion logic.
+    - [x] Write failing test for task deletion from `WeeklyView`.
+    - [x] Implement UI button and connect to task deletion logic.
 - [x] Task: Implement Merge Identical Tasks Prompt (2144e50)
-    - [ ] Write failing test for detecting consecutive identical tasks.
-    - [ ] Implement logic to detect identical adjacent tasks upon movement/editing.
-    - [ ] Implement confirmation popup and merge logic.
+    - [x] Write failing test for detecting consecutive identical tasks.
+    - [x] Implement logic to detect identical adjacent tasks upon movement/editing.
+    - [x] Implement confirmation popup and merge logic.
 - [x] Task: Implement Copy to Recents (Long Press) (216ee56)
-    - [ ] Write failing test for triggering the copy action.
-    - [ ] Implement long-press gesture detector on task cards.
-    - [ ] Connect gesture to the recent tasks history addition logic.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Record Management' (Protocol in workflow.md)
+    - [x] Write failing test for triggering the copy action.
+    - [x] Implement long-press gesture detector on task cards.
+    - [x] Connect gesture to the recent tasks history addition logic.
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Record Management' (32dfd1b)
 
 ## Phase 2: Navigation & Visualization
 - [ ] Task: Implement Week Navigation Arrows
