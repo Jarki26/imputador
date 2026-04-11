@@ -30,7 +30,7 @@ describe('TaskList.svelte', () => {
         type: 'Feature',
         startTime: new Date('2026-04-09T10:00:00Z'),
         endTime: new Date('2026-04-09T11:00:00Z'),
-      }
+      },
     ];
 
     render(TaskList, { props: { tasks } });
@@ -58,7 +58,7 @@ describe('TaskList.svelte', () => {
         type: 'Feature',
         startTime: new Date('2026-04-09T11:00:00Z'),
         endTime: new Date('2026-04-09T12:00:00Z'),
-      }
+      },
     ];
 
     render(TaskList, { props: { tasks } });

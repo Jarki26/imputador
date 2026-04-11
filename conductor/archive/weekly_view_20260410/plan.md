@@ -40,11 +40,11 @@
   - [x] Implement the click handler to open the `TaskForm` populated with the clicked task's data.
 - [x] **Task: Conductor - User Manual Verification 'Interactive Features (Click & Add/Edit)' (Protocol in workflow.md)** (692d2ca)
 
-## Phase 4: Advanced Interactions (Drag & Drop) - *Stretch Goal*
+## Phase 4: Advanced Interactions (Drag & Drop) - _Stretch Goal_
 
 - [x] **Task: Research and Select Drag-and-Drop Library (or Native HTML5)** (b1bbe01)
   - [x] Evaluate Svelte-specific dnd libraries vs native HTML5 Drag and Drop API for performance and ease of use in a grid context. Document choice in `tech-stack.md` if external library added.
-  - *Decision: We will use native Pointer Events (`pointerdown`, `pointermove`, `pointerup`) combined with Svelte 5 Runes for optimal performance and precise control over the 2D grid, avoiding heavy external dependencies.*
+  - _Decision: We will use native Pointer Events (`pointerdown`, `pointermove`, `pointerup`) combined with Svelte 5 Runes for optimal performance and precise control over the 2D grid, avoiding heavy external dependencies._
 - [x] **Task: Implement Drag to Move Task (TDD)** (b1bbe01)
   - [x] Write failing tests for updating a task's start and end times when dragged to a new slot.
   - [x] Implement the drag-to-move logic and visual feedback during dragging.
@@ -54,4 +54,5 @@
 - [x] **Task: Conductor - User Manual Verification 'Advanced Interactions (Drag & Drop)' (Protocol in workflow.md)** (85ec2c3)
 
 ## Phase: Review Fixes
+
 - [x] Task: Apply review suggestions (66176bd)

@@ -14,16 +14,16 @@ describe('+page.svelte', () => {
   it('should toggle between Weekly and Daily views', async () => {
     cleanup();
     render(Page);
-    
+
     const dailyToggle = screen.getByRole('button', { name: /Daily View/i });
     await fireEvent.click(dailyToggle);
-    
+
     // Daily Log title should appear (from TaskList section)
     expect(screen.getByText(/Daily Log/i)).toBeDefined();
-    
+
     const weeklyToggle = screen.getByRole('button', { name: /Weekly View/i });
     await fireEvent.click(weeklyToggle);
-    
+
     expect(screen.getByText(/Monday/i)).toBeDefined();
   });
 });

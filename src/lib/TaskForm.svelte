@@ -81,7 +81,9 @@
         await onSuccess();
       }
     } catch (err) {
-      errorMessage = editingTask ? 'Failed to update task' : 'Failed to save task';
+      errorMessage = editingTask
+        ? 'Failed to update task'
+        : 'Failed to save task';
       console.error(err);
     }
   }
@@ -90,22 +92,42 @@
 <form onsubmit={handleSubmit} class="task-form" novalidate>
   <div class="field">
     <label for="title">Title</label>
-    <input id="title" name="title" type="text" required value={editingTask?.title || ''} />
+    <input
+      id="title"
+      name="title"
+      type="text"
+      required
+      value={editingTask?.title || ''}
+    />
   </div>
 
   <div class="field">
     <label for="description">Description</label>
-    <textarea id="description" name="description" value={editingTask?.description || ''}></textarea>
+    <textarea
+      id="description"
+      name="description"
+      value={editingTask?.description || ''}
+    ></textarea>
   </div>
 
   <div class="field">
     <label for="project">Project</label>
-    <input id="project" name="project" type="text" required value={editingTask?.project || ''} />
+    <input
+      id="project"
+      name="project"
+      type="text"
+      required
+      value={editingTask?.project || ''}
+    />
   </div>
 
   <div class="field">
     <label for="taskType">Task Type</label>
-    <select id="taskType" name="taskType" value={editingTask?.type || 'General'}>
+    <select
+      id="taskType"
+      name="taskType"
+      value={editingTask?.type || 'General'}
+    >
       {#each taskTypes as type}
         <option value={type}>{type}</option>
       {/each}
@@ -119,7 +141,8 @@
       name="startTime"
       type="datetime-local"
       required
-      value={initialStartTime || (editingTask ? formatDateForInput(editingTask.startTime) : '')}
+      value={initialStartTime ||
+        (editingTask ? formatDateForInput(editingTask.startTime) : '')}
     />
   </div>
 
@@ -130,7 +153,8 @@
       name="endTime"
       type="datetime-local"
       required
-      value={initialEndTime || (editingTask ? formatDateForInput(editingTask.endTime) : '')}
+      value={initialEndTime ||
+        (editingTask ? formatDateForInput(editingTask.endTime) : '')}
     />
   </div>
 

@@ -50,7 +50,7 @@
     selectedEndTime = formatDateForInput(end);
     editingTask = null;
     showModal = true;
-    }
+  }
 
   function handleTaskClick(task: Task) {
     editingTask = task;
@@ -125,7 +125,11 @@
 
   {#if showModal}
     <div class="modal-backdrop" onclick={closeModal} role="presentation">
-      <div class="modal-content" onclick={(e) => e.stopPropagation()} role="presentation">
+      <div
+        class="modal-content"
+        onclick={(e) => e.stopPropagation()}
+        role="presentation"
+      >
         <header class="modal-header">
           <h2>{editingTask ? 'Edit Task' : 'Register Task'}</h2>
           <button class="close-btn" onclick={closeModal}>&times;</button>

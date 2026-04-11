@@ -62,8 +62,8 @@
     const dayEnd = new Date(date);
     dayEnd.setHours(23, 59, 59, 999);
 
-    const effectiveTasks = dragInfo 
-      ? tasks.map(t => t.id === dragInfo?.taskId ? dragInfo.currentTask : t)
+    const effectiveTasks = dragInfo
+      ? tasks.map((t) => (t.id === dragInfo?.taskId ? dragInfo.currentTask : t))
       : tasks;
 
     const dailyTasks = effectiveTasks
@@ -111,8 +111,8 @@
     const dayEnd = new Date(date);
     dayEnd.setHours(23, 59, 59, 999);
 
-    const effectiveTasks = dragInfo 
-      ? tasks.map(t => t.id === dragInfo?.taskId ? dragInfo.currentTask : t)
+    const effectiveTasks = dragInfo
+      ? tasks.map((t) => (t.id === dragInfo?.taskId ? dragInfo.currentTask : t))
       : tasks;
 
     const dailyTasks: TaskWithOverlap[] = effectiveTasks
@@ -141,12 +141,13 @@
     const startMinutes = start.getHours() * 60 + start.getMinutes();
     const durationMinutes = (end.getTime() - start.getTime()) / (1000 * 60);
 
-    const top = startMinutes; 
-    const height = Math.max(durationMinutes, 45); 
+    const top = startMinutes;
+    const height = Math.max(durationMinutes, 45);
 
     let style = `top: ${top}px; height: ${height}px;`;
     if (dragInfo && dragInfo.taskId === task.id) {
-      style += 'z-index: 100; opacity: 0.8; box-shadow: 0 8px 16px rgba(0,0,0,0.2); cursor: grabbing !important;';
+      style +=
+        'z-index: 100; opacity: 0.8; box-shadow: 0 8px 16px rgba(0,0,0,0.2); cursor: grabbing !important;';
     }
     return style;
   }
@@ -165,16 +166,24 @@
   }
 
   // Pointer Handlers
-  function handlePointerDown(e: PointerEvent, task: Task, mode: 'move' | 'resize') {
+  function handlePointerDown(
+    e: PointerEvent,
+    task: Task,
+    mode: 'move' | 'resize',
+  ) {
     if (e.button !== 0) return; // Left click only
     e.stopPropagation();
-    
-    const startMinutes = task.startTime.getHours() * 60 + task.startTime.getMinutes();
-    const durationMinutes = (task.endTime.getTime() - task.startTime.getTime()) / (1000 * 60);
-    
+
+    const startMinutes =
+      task.startTime.getHours() * 60 + task.startTime.getMinutes();
+    const durationMinutes =
+      (task.endTime.getTime() - task.startTime.getTime()) / (1000 * 60);
+
     const dayStart = new Date(task.startTime);
-    dayStart.setHours(0,0,0,0);
-    const dayIndex = daysOfWeek.findIndex(d => d.getTime() === dayStart.getTime());
+    dayStart.setHours(0, 0, 0, 0);
+    const dayIndex = daysOfWeek.findIndex(
+      (d) => d.getTime() === dayStart.getTime(),
+    );
 
     dragInfo = {
       taskId: task.id!,
@@ -184,7 +193,7 @@
       initialStart: startMinutes,
       initialDuration: durationMinutes,
       initialDayIndex: dayIndex,
-      currentTask: { ...task }
+      currentTask: { ...task },
     };
   }
 
@@ -192,14 +201,17 @@
     if (!dragInfo) return;
 
     const deltaY = e.clientY - dragInfo.startY;
-    const minutesDelta = Math.round(deltaY / 15) * 15; 
+    const minutesDelta = Math.round(deltaY / 15) * 15;
 
     const updatedTask = { ...dragInfo.currentTask };
 
     if (dragInfo.mode === 'move') {
-      const newStartMinutes = Math.max(0, Math.min(23 * 60, dragInfo.initialStart + minutesDelta));
+      const newStartMinutes = Math.max(
+        0,
+        Math.min(23 * 60, dragInfo.initialStart + minutesDelta),
+      );
       const duration = dragInfo.initialDuration;
-      
+
       if (gridContentRef) {
         const rect = gridContentRef.getBoundingClientRect();
         const colWidth = rect.width / 7;
@@ -207,18 +219,27 @@
         const dayDelta = Math.round(deltaX / colWidth);
         let newDayIndex = dragInfo.initialDayIndex + dayDelta;
         newDayIndex = Math.max(0, Math.min(6, newDayIndex));
-        
+
         const newDay = new Date(daysOfWeek[newDayIndex]);
-        
+
         updatedTask.startTime = new Date(newDay);
-        updatedTask.startTime.setHours(Math.floor(newStartMinutes / 60), newStartMinutes % 60, 0, 0);
-        
-        updatedTask.endTime = new Date(updatedTask.startTime.getTime() + duration * 60000);
+        updatedTask.startTime.setHours(
+          Math.floor(newStartMinutes / 60),
+          newStartMinutes % 60,
+          0,
+          0,
+        );
+
+        updatedTask.endTime = new Date(
+          updatedTask.startTime.getTime() + duration * 60000,
+        );
       }
     } else if (dragInfo.mode === 'resize') {
       const newDuration = Math.max(15, dragInfo.initialDuration + minutesDelta);
-      updatedTask.endTime = new Date(updatedTask.startTime.getTime() + newDuration * 60000);
-      
+      updatedTask.endTime = new Date(
+        updatedTask.startTime.getTime() + newDuration * 60000,
+      );
+
       // Limit to end of day
       const dayEnd = new Date(updatedTask.startTime);
       dayEnd.setHours(23, 59, 59, 999);
@@ -232,23 +253,25 @@
 
   function handlePointerUp() {
     if (!dragInfo) return;
-    
+
     if (onTaskUpdate && dragInfo.currentTask) {
-      const original = tasks.find(t => t.id === dragInfo?.taskId);
-      if (original && (
-        original.startTime.getTime() !== dragInfo.currentTask.startTime.getTime() ||
-        original.endTime.getTime() !== dragInfo.currentTask.endTime.getTime()
-      )) {
+      const original = tasks.find((t) => t.id === dragInfo?.taskId);
+      if (
+        original &&
+        (original.startTime.getTime() !==
+          dragInfo.currentTask.startTime.getTime() ||
+          original.endTime.getTime() !== dragInfo.currentTask.endTime.getTime())
+      ) {
         onTaskUpdate(dragInfo.currentTask);
       }
     }
-    
+
     dragInfo = null;
   }
 </script>
 
-<svelte:window 
-  onpointermove={handlePointerMove} 
+<svelte:window
+  onpointermove={handlePointerMove}
   onpointerup={handlePointerUp}
   onpointercancel={handlePointerUp}
 />
@@ -282,10 +305,13 @@
               <div
                 class="hour-cell"
                 onclick={() => handleSlotClick(day, hour)}
-                onkeydown={(e) => e.key === 'Enter' && handleSlotClick(day, hour)}
+                onkeydown={(e) =>
+                  e.key === 'Enter' && handleSlotClick(day, hour)}
                 role="button"
                 tabindex="0"
-                aria-label="Add task at {formatTime(hour)} on {day.toLocaleDateString()}"
+                aria-label="Add task at {formatTime(
+                  hour,
+                )} on {day.toLocaleDateString()}"
               ></div>
             {/each}
             {#each getTasksForDay(day) as task (task.id)}
@@ -315,8 +341,8 @@
                   <span class="task-duration">{getTaskDuration(task)}</span>
                 </div>
                 <!-- Resize Handle -->
-                <div 
-                  class="resize-handle" 
+                <div
+                  class="resize-handle"
                   onpointerdown={(e) => handlePointerDown(e, task, 'resize')}
                   role="presentation"
                 ></div>
@@ -342,7 +368,8 @@
   }
 
   /* Local border-box reset */
-  .weekly-view, .weekly-view * {
+  .weekly-view,
+  .weekly-view * {
     box-sizing: border-box;
   }
 

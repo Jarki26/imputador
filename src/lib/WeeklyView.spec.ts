@@ -6,9 +6,17 @@ describe('WeeklyView.svelte', () => {
   it('should render a 7-day grid', () => {
     cleanup();
     render(WeeklyView, { props: { startDate: new Date('2026-04-06') } }); // Monday
-    
-    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    days.forEach(day => {
+
+    const days = [
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+      'Sunday',
+    ];
+    days.forEach((day) => {
       expect(screen.getByText(new RegExp(day, 'i'))).toBeDefined();
     });
   });
@@ -16,7 +24,7 @@ describe('WeeklyView.svelte', () => {
   it('should render a time axis', () => {
     cleanup();
     render(WeeklyView, { props: { startDate: new Date('2026-04-06') } });
-    
+
     // Check for some hours
     expect(screen.getByText('08:00')).toBeDefined();
     expect(screen.getByText('12:00')).toBeDefined();
@@ -32,10 +40,10 @@ describe('WeeklyView.svelte', () => {
         project: 'Project A',
         startTime: new Date('2026-04-06T09:00:00Z'),
         endTime: new Date('2026-04-06T10:00:00Z'), // 1 hour
-      }
+      },
     ];
     render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks } });
-    
+
     expect(screen.getByText(/Total: 1\.00h/i)).toBeDefined();
   });
 
@@ -55,11 +63,11 @@ describe('WeeklyView.svelte', () => {
         project: 'P2',
         startTime: new Date('2026-04-06T09:30:00Z'),
         endTime: new Date('2026-04-06T11:00:00Z'),
-      }
+      },
     ];
     // Total should be from 09:00 to 11:00 = 2.00h, NOT 1h + 1.5h = 2.5h
     render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks } });
-    
+
     expect(screen.getByText(/Total: 2\.00h/i)).toBeDefined();
   });
 
@@ -74,7 +82,7 @@ describe('WeeklyView.svelte', () => {
         type: 'Feature',
         startTime: new Date('2026-04-06T09:00:00Z'),
         endTime: new Date('2026-04-06T10:30:00Z'), // 1.5 hours
-      }
+      },
     ];
 
     render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks } });
@@ -100,7 +108,7 @@ describe('WeeklyView.svelte', () => {
         project: 'P2',
         startTime: new Date('2026-04-06T09:30:00Z'),
         endTime: new Date('2026-04-06T11:00:00Z'),
-      }
+      },
     ];
 
     render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks } });
@@ -122,7 +130,7 @@ describe('WeeklyView.svelte', () => {
     const dayColumns = document.querySelectorAll('.day-column');
     const mondayColumn = dayColumns[0];
     const hourCells = mondayColumn.querySelectorAll('.hour-cell');
-    
+
     // Click on 09:00 slot (index 9)
     await fireEvent.click(hourCells[9]);
 
@@ -144,7 +152,7 @@ describe('WeeklyView.svelte', () => {
         project: 'Project X',
         startTime: new Date('2026-04-06T10:00:00Z'),
         endTime: new Date('2026-04-06T11:00:00Z'),
-      }
+      },
     ];
     render(WeeklyView, { props: { tasks, onTaskClick } });
 
@@ -164,12 +172,12 @@ describe('WeeklyView.svelte', () => {
         project: 'Project D',
         startTime: new Date('2026-04-06T09:00:00Z'),
         endTime: new Date('2026-04-06T10:00:00Z'),
-      }
+      },
     ];
     render(WeeklyView, { props: { tasks, onTaskUpdate } });
 
     const taskBlock = screen.getByText('Draggable Task').closest('.task-block');
-    
+
     // Simulate drag start
     await fireEvent.pointerDown(taskBlock!, { clientY: 0, pointerId: 1 });
     // Move 60px down (1 hour)
@@ -194,13 +202,13 @@ describe('WeeklyView.svelte', () => {
         project: 'Project R',
         startTime: new Date('2026-04-06T09:00:00Z'),
         endTime: new Date('2026-04-06T10:00:00Z'),
-      }
+      },
     ];
     render(WeeklyView, { props: { tasks, onTaskUpdate } });
 
     const taskBlock = screen.getByText('Resizable Task').closest('.task-block');
     const resizeHandle = taskBlock?.querySelector('.resize-handle');
-    
+
     // Simulate resize start
     await fireEvent.pointerDown(resizeHandle!, { clientY: 60, pointerId: 2 });
     // Move 30px down (30 mins)
@@ -231,10 +239,12 @@ describe('WeeklyView.svelte', () => {
         project: 'P2',
         startTime: new Date('2026-04-06T09:30:00Z'), // Overlaps
         endTime: new Date('2026-04-06T11:00:00Z'),
-      }
+      },
     ];
 
-    const { component, rerender } = render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks } });
+    const { component, rerender } = render(WeeklyView, {
+      props: { startDate: new Date('2026-04-06'), tasks },
+    });
 
     let task1 = screen.getByText('Task 1').closest('.task-block');
     let task2 = screen.getByText('Task 2').closest('.task-block');
@@ -249,7 +259,7 @@ describe('WeeklyView.svelte', () => {
         ...tasks[1],
         startTime: new Date('2026-04-06T10:00:00Z'), // No longer overlaps
         endTime: new Date('2026-04-06T11:30:00Z'),
-      }
+      },
     ];
 
     await rerender({ tasks: updatedTasks });
@@ -277,7 +287,7 @@ describe('WeeklyView.svelte', () => {
         project: 'P2',
         startTime: new Date('2026-04-06T09:30:00Z'), // Overlaps
         endTime: new Date('2026-04-06T11:00:00Z'),
-      }
+      },
     ];
 
     render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks } });
@@ -289,8 +299,12 @@ describe('WeeklyView.svelte', () => {
     expect(task2?.classList.contains('has-overlap')).toBe(true);
 
     // Start dragging Task 2
-    await fireEvent.pointerDown(task2!, { clientY: 30, pointerId: 3, button: 0 });
-    
+    await fireEvent.pointerDown(task2!, {
+      clientY: 30,
+      pointerId: 3,
+      button: 0,
+    });
+
     // Move Task 2 down by 60px (1 hour) -> starts at 10:30, no longer overlaps
     await fireEvent.pointerMove(window, { clientY: 90, pointerId: 3 });
 
