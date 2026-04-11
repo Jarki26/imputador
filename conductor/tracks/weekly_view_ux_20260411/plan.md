@@ -30,11 +30,11 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Navigation & Visualization' (8986700)
 
 ## Phase 3: Interaction & Control
-- [ ] Task: Implement No-Gap Sequencing Prompt
+- [x] Task: Implement No-Gap Sequencing Prompt (a167ab8)
     - [ ] Write failing test for detecting near-drops.
     - [ ] Implement logic to detect when a task is dropped near another task.
     - [ ] Implement confirmation popup proposing magnetic snapping.
-- [ ] Task: Implement Action Lock Switches (Floating Buttons)
+- [~] Task: Implement Action Lock Switches (Floating Buttons)
     - [ ] Write failing tests for action locks preventing state changes.
     - [ ] Add floating action buttons (FABs) to toggle edit, move, and create locks.
     - [ ] Enforce locks in the UI interaction handlers.
