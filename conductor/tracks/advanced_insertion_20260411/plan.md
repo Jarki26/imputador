@@ -17,10 +17,11 @@
 
 ## Phase 2: UI Integration (TaskForm & Collision)
 
-- [ ] **Task: Duration Editing UI**
+- [x] **Task: Duration Editing UI** f8550b1
   - [ ] Write failing tests for rendering and updating separate Hours and Minutes inputs in `TaskForm`.
   - [ ] Implement the UI changes in `TaskForm.svelte`.
   - [ ] Implement logic to automatically update the 'End Time' when duration changes based on 'Start Time'.
+
 - [ ] **Task: Collision Detection & Modal**
   - [ ] Write failing tests for intercepting a task save operation when a collision is detected.
   - [ ] Implement the collision detection check before saving in `TaskForm` or a parent component.
