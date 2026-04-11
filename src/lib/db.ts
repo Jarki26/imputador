@@ -23,6 +23,18 @@ export interface Project {
 }
 
 /**
+ * Interface for a recent task suggestion.
+ */
+export interface RecentTask {
+  title: string;
+  description: string;
+  project: string;
+  type: string;
+  lastUsedAt: Date;
+  isBillable: boolean;
+}
+
+/**
  * Initializes the IndexedDB database.
  * @param dbName - The name of the database.
  * @returns A promise that resolves to the database instance.
@@ -30,20 +42,29 @@ export interface Project {
 export async function initDB(
   dbName: string = 'imputador-db',
 ): Promise<IDBPDatabase> {
-  return openDB(dbName, 1, {
-    upgrade(db) {
-      // Create tasks store with an index on date (start time)
-      const taskStore = db.createObjectStore('tasks', {
-        keyPath: 'id',
-        autoIncrement: true,
-      });
-      taskStore.createIndex('date', 'startTime');
+  return openDB(dbName, 2, {
+    upgrade(db, oldVersion) {
+      if (oldVersion < 1) {
+        // Create tasks store with an index on date (start time)
+        const taskStore = db.createObjectStore('tasks', {
+          keyPath: 'id',
+          autoIncrement: true,
+        });
+        taskStore.createIndex('date', 'startTime');
 
-      // Create projects store
-      const projectStore = db.createObjectStore('projects', {
-        keyPath: 'name',
-      });
-      projectStore.createIndex('lastUsedAt', 'lastUsedAt');
+        // Create projects store
+        const projectStore = db.createObjectStore('projects', {
+          keyPath: 'name',
+        });
+        projectStore.createIndex('lastUsedAt', 'lastUsedAt');
+      }
+      if (oldVersion < 2) {
+        // Create recent tasks store with a composite key on title and project
+        const recentStore = db.createObjectStore('recent_tasks', {
+          keyPath: ['title', 'project'],
+        });
+        recentStore.createIndex('lastUsedAt', 'lastUsedAt');
+      }
     },
   });
 }

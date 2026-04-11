@@ -1,13 +1,22 @@
-import { initDB, type Task } from './db';
+import { initDB, type Task, type RecentTask } from './db';
+import { isBillable } from './config';
 
 /**
  * Service for managing tasks in IndexedDB.
  */
 export class TaskStore {
   private dbName: string;
+  private dbPromise: Promise<IDBPDatabase> | null = null;
 
   constructor(dbName: string = 'imputador-db') {
     this.dbName = dbName;
+  }
+
+  private getDB(): Promise<IDBPDatabase> {
+    if (!this.dbPromise) {
+      this.dbPromise = initDB(this.dbName);
+    }
+    return this.dbPromise;
   }
 
   /**
@@ -16,8 +25,10 @@ export class TaskStore {
    * @returns A promise that resolves to the auto-generated ID.
    */
   async addTask(task: Task): Promise<number | undefined> {
-    const db = await initDB(this.dbName);
+    const db = await this.getDB();
     const id = await db.add('tasks', task);
+    await this.upsertRecentTask(task);
+    await this.purgeHistory();
     return id as number;
   }
 
@@ -27,7 +38,7 @@ export class TaskStore {
    * @returns A promise that resolves to an array of tasks.
    */
   async getTasksForDay(date: Date): Promise<Task[]> {
-    const db = await initDB(this.dbName);
+    const db = await this.getDB();
     const startOfDay = new Date(date);
     startOfDay.setHours(0, 0, 0, 0);
 
@@ -44,7 +55,7 @@ export class TaskStore {
    * @returns A promise that resolves to an array of tasks.
    */
   async getTasksForWeek(date: Date): Promise<Task[]> {
-    const db = await initDB(this.dbName);
+    const db = await this.getDB();
 
     // Find Monday of the current week
     const current = new Date(date);
@@ -67,7 +78,7 @@ export class TaskStore {
    * @param updates - Partial task object containing updates.
    */
   async updateTask(id: number, updates: Partial<Task>): Promise<void> {
-    const db = await initDB(this.dbName);
+    const db = await this.getDB();
     const tx = db.transaction('tasks', 'readwrite');
     const store = tx.objectStore('tasks');
 
@@ -79,6 +90,11 @@ export class TaskStore {
     const updatedTask = { ...task, ...updates };
     await store.put(updatedTask);
     await tx.done;
+
+    // Also update recents if title or project changed
+    if (updates.title || updates.project) {
+      await this.upsertRecentTask(updatedTask);
+    }
   }
 
   /**
@@ -86,7 +102,7 @@ export class TaskStore {
    * @param id - The ID of the task to delete.
    */
   async deleteTask(id: number): Promise<void> {
-    const db = await initDB(this.dbName);
+    const db = await this.getDB();
     await db.delete('tasks', id);
   }
 
@@ -95,7 +111,7 @@ export class TaskStore {
    * @param newTask - The new task to add.
    */
   async addWithOverwrite(newTask: Task): Promise<number | undefined> {
-    const db = await initDB(this.dbName);
+    const db = await this.getDB();
     const tx = db.transaction('tasks', 'readwrite');
     const store = tx.objectStore('tasks');
     const index = store.index('date');
@@ -145,6 +161,9 @@ export class TaskStore {
 
     const id = await store.add(newTask);
     await tx.done;
+
+    await this.upsertRecentTask(newTask);
+    await this.purgeHistory();
     return id as number;
   }
 
@@ -153,7 +172,7 @@ export class TaskStore {
    * @param newTask - The new task to add.
    */
   async addWithDisplacement(newTask: Task): Promise<number | undefined> {
-    const db = await initDB(this.dbName);
+    const db = await this.getDB();
     const tx = db.transaction('tasks', 'readwrite');
     const store = tx.objectStore('tasks');
 
@@ -165,7 +184,56 @@ export class TaskStore {
 
     const id = await store.add(newTask);
     await tx.done;
+
+    await this.upsertRecentTask(newTask);
+    await this.purgeHistory();
     return id as number;
+  }
+
+  /**
+   * Retrieves the last 10 unique used tasks.
+   */
+  async getRecentTasks(): Promise<RecentTask[]> {
+    const db = await this.getDB();
+    const recents = await db.getAllFromIndex('recent_tasks', 'lastUsedAt');
+    // Index gives ascending order, we want most recent first
+    return recents.reverse().slice(0, 10);
+  }
+
+  /**
+   * Upserts a task into the recent tasks store.
+   */
+  private async upsertRecentTask(task: Task): Promise<void> {
+    const db = await this.getDB();
+    const recent: RecentTask = {
+      title: task.title,
+      description: task.description,
+      project: task.project,
+      type: task.type,
+      lastUsedAt: new Date(),
+      isBillable: isBillable(task.type),
+    };
+    await db.put('recent_tasks', recent);
+  }
+
+  /**
+   * Deletes recent tasks that haven't been used in the last 14 days.
+   */
+  async purgeHistory(): Promise<void> {
+    const db = await this.getDB();
+    const twoWeeksAgo = new Date();
+    twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+
+    const tx = db.transaction('recent_tasks', 'readwrite');
+    const index = tx.store.index('lastUsedAt');
+    const range = IDBKeyRange.upperBound(twoWeeksAgo);
+
+    let cursor = await index.openCursor(range);
+    while (cursor) {
+      await cursor.delete();
+      cursor = await cursor.continue();
+    }
+    await tx.done;
   }
   /**
    * Recursively shifts tasks that overlap with the given range.
@@ -250,6 +318,7 @@ export class TaskStore {
     startDate: Date,
     totalDurationMs: number,
   ): Promise<void> {
+    await this.getDB();
     let remaining = totalDurationMs;
     const current = new Date(startDate);
     // Keep the time if it's the first day, but for subsequent days we'll start at 00:00
