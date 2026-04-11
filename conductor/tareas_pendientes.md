@@ -29,10 +29,10 @@ Esta lista identifica las funcionalidades definidas en `docs/Descripción.md` qu
 
 ## 3. Visualización y Objetivos Semanales
 
-- [ ] **Configuración de Horas Semanales:**
+- [x] **Configuración de Horas Semanales:**
   - Interfaz para editar el objetivo de horas (default 41h).
   - Persistencia de esta configuración en IndexedDB.
-- [ ] **Cómputo Comparativo:**
+- [x] **Cómputo Comparativo:**
   - Mostrar en la Vista Semanal el total de horas realizadas frente al objetivo semanal.
 
 ## 4. Características de Interoperabilidad (Futuro)
