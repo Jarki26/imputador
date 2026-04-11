@@ -2,7 +2,3 @@
 
 This file tracks all major tracks for the project. Each track has its own detailed plan in its respective folder.
 
----
-
-- [x] **Track: Advanced Insertion and Editing Logic**
-  _Link: [./tracks/advanced_insertion_20260411/](./tracks/advanced_insertion_20260411/)_
