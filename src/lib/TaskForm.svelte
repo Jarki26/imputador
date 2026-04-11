@@ -2,6 +2,7 @@
   import { TaskStore } from './taskStore';
   import { ProjectStore } from './projectStore';
   import { formatDateForInput } from './utils';
+  import { TASK_TYPES } from './config';
   import Modal from './Modal.svelte';
   import type { Task } from './db';
 
@@ -64,8 +65,6 @@
       endTime = formatDateForInput(end);
     }
   }
-
-  const taskTypes = ['General', 'Feature', 'Bug', 'Rest', 'Meeting'];
 
   async function saveTask(
     task: Task,
@@ -244,8 +243,8 @@
       name="taskType"
       value={editingTask?.type || 'General'}
     >
-      {#each taskTypes as type (type)}
-        <option value={type}>{type}</option>
+      {#each TASK_TYPES as type (type.name)}
+        <option value={type.name}>{type.name}</option>
       {/each}
     </select>
   </div>
