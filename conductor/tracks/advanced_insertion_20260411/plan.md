@@ -33,7 +33,7 @@
 
 - [ ] **Task: Conductor - User Manual Verification 'UI Integration (TaskForm & Collision)' (Protocol in workflow.md)**
 
-## Phase 3: Smart Fill UI
+## Phase 3: Smart Fill UI [checkpoint: fd4ba1f]
 
 - [x] **Task: Smart Fill Toggle** 1f696e5
   - [ ] Add a "Smart Fill" checkbox to the `TaskForm`.
