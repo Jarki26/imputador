@@ -54,6 +54,13 @@
   let dragInfo = $state<DragInfo | null>(null);
   let gridContentRef = $state<HTMLElement | null>(null);
 
+  // Merge State
+  let mergeProposal = $state<{
+    task1: Task;
+    task2: Task;
+    movedTask: Task; // Keep track of the actual moved task
+  } | null>(null);
+
   function formatDay(date: Date): string {
     return date.toLocaleDateString('en-US', { weekday: 'long' });
   }
@@ -186,6 +193,67 @@
     return (durationMs / (1000 * 60 * 60)).toFixed(2) + 'h';
   }
 
+  function checkForMerge(updatedTask: Task) {
+    // Look for adjacent tasks on the same day with same project and type
+    const dayStart = new Date(updatedTask.startTime);
+    dayStart.setHours(0, 0, 0, 0);
+    const dayEnd = new Date(updatedTask.startTime);
+    dayEnd.setHours(23, 59, 59, 999);
+
+    const dailyTasks = tasks
+      .filter((t) => t.id !== updatedTask.id) // Exclude the task itself
+      .filter((t) => t.startTime >= dayStart && t.startTime <= dayEnd)
+      .filter(
+        (t) =>
+          t.project === updatedTask.project &&
+          t.type === updatedTask.type &&
+          t.title === updatedTask.title,
+      );
+
+    // Case 1: updatedTask ends when another task starts
+    const taskAfter = dailyTasks.find(
+      (t) =>
+        Math.abs(t.startTime.getTime() - updatedTask.endTime.getTime()) < 60000,
+    );
+    if (taskAfter) {
+      mergeProposal = { task1: updatedTask, task2: taskAfter, movedTask: updatedTask };
+      return true;
+    }
+
+    // Case 2: another task ends when updatedTask starts
+    const taskBefore = dailyTasks.find(
+      (t) =>
+        Math.abs(updatedTask.startTime.getTime() - t.endTime.getTime()) < 60000,
+    );
+    if (taskBefore) {
+      mergeProposal = { task1: taskBefore, task2: updatedTask, movedTask: updatedTask };
+      return true;
+    }
+
+    return false;
+  }
+
+  function handleMerge() {
+    if (!mergeProposal || !onTaskDelete || !onTaskUpdate) return;
+
+    const { task1, task2 } = mergeProposal;
+
+    // Combine into task1
+    const mergedTask = {
+      ...task1,
+      startTime: new Date(Math.min(task1.startTime.getTime(), task2.startTime.getTime())),
+      endTime: new Date(Math.max(task1.endTime.getTime(), task2.endTime.getTime())),
+    };
+
+    // Update task1 and delete task2
+    if (task2.id !== undefined) {
+      onTaskDelete(task2.id);
+    }
+    onTaskUpdate(mergedTask);
+
+    mergeProposal = null;
+  }
+
   function handleSlotClick(day: Date, hour: number) {
     if (onSlotClick) {
       const clickedDate = new Date(day);
@@ -291,7 +359,10 @@
           dragInfo.currentTask.startTime.getTime() ||
           original.endTime.getTime() !== dragInfo.currentTask.endTime.getTime())
       ) {
-        onTaskUpdate(dragInfo.currentTask);
+        // Check for merge BEFORE calling onTaskUpdate if it is a move or resize
+        if (!checkForMerge(dragInfo.currentTask)) {
+          onTaskUpdate(dragInfo.currentTask);
+        }
       }
     }
 
@@ -423,7 +494,112 @@
   </div>
 </div>
 
+{#if mergeProposal}
+  <div class="merge-modal-backdrop" onclick={() => (mergeProposal = null)} role="presentation">
+    <div class="merge-modal" onclick={(e) => e.stopPropagation()} role="presentation">
+      <h3>Merge identical tasks?</h3>
+      <p>
+        These tasks are consecutive and identical. Would you like to merge them into a single record?
+      </p>
+      <div class="merge-details">
+        <div>
+          <strong>{mergeProposal.task1.title}</strong> ({mergeProposal.task1.project})
+        </div>
+        <div>
+          {mergeProposal.task1.startTime.toLocaleTimeString()} - {mergeProposal.task2.endTime.toLocaleTimeString()}
+        </div>
+      </div>
+      <div class="merge-actions">
+        <button class="btn-cancel" onclick={() => {
+          if (mergeProposal && onTaskUpdate) {
+            onTaskUpdate(mergeProposal.movedTask);
+          }
+          mergeProposal = null;
+        }}>No</button>
+        <button class="btn-confirm" onclick={handleMerge}>Yes, Merge</button>
+      </div>
+    </div>
+  </div>
+{/if}
+
 <style>
+  .merge-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+
+  .merge-modal {
+    background: var(--md-sys-color-surface-container-high);
+    padding: 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border: 1px solid var(--md-sys-color-outline-variant);
+  }
+
+  .merge-modal h3 {
+    margin: 0;
+    color: var(--md-sys-color-primary);
+  }
+
+  .merge-modal p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--md-sys-color-on-surface);
+  }
+
+  .merge-details {
+    background: var(--md-sys-color-surface-variant);
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    border: 1px dashed var(--md-sys-color-outline);
+  }
+
+  .merge-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .btn-cancel,
+  .btn-confirm {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.2s;
+  }
+
+  .btn-cancel {
+    background: var(--md-sys-color-surface-variant);
+    color: var(--md-sys-color-on-surface-variant);
+  }
+
+  .btn-confirm {
+    background: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+  }
+
+  .btn-cancel:hover,
+  .btn-confirm:hover {
+    opacity: 0.8;
+  }
+
   .weekly-view {
     display: flex;
     flex-direction: column;
