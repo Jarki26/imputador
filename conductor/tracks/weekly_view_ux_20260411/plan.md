@@ -44,6 +44,6 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Interaction & Control' (baffdfb)
 
 ## Phase 4: Post-Implementation Documentation
-- [~] Task: Update Pending Tasks List
-    - [ ] Check off all items in section 4.1 of `conductor/tareas_pendientes.md`.
+- [x] Task: Update Pending Tasks List (c8aeb0e)
+    - [x] Check off all items in section 4.1 of `conductor/tareas_pendientes.md`.
 - [ ] Task: Conductor - User Manual Verification 'Phase 4: Post-Implementation Documentation' (Protocol in workflow.md)
