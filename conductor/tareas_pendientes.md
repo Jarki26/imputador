@@ -38,16 +38,16 @@ Esta lista identifica las funcionalidades definidas en `docs/Descripción.md` qu
 ## 4. Mejoras de UX
 
 ### 4.1 Vista Semanal (`WeeklyView.svelte`)
-- [ ] **Gestión de Registros:**
+- [x] **Gestión de Registros:**
     - Botón para eliminar tareas directamente desde la vista.
     - Proponer combinación automática de registros consecutivos idénticos (mismo proyecto/tarea).
     - Copiar registros existentes al historial de tareas recientes (plantillas rápidas).
-- [ ] **Navegación y Visualización:**
+- [x] **Navegación y Visualización:**
     - Selector de flechas para navegar entre semanas.
     - Acceso a la vista diaria al pulsar en la cabecera de un día.
     - Mantener columna de horas visible en dispositivos móviles.
     - Ajustar escala visual de celdas (ej: que 30min ocupe exactamente la mitad de la celda).
-- [ ] **Interacción y Control:**
+- [x] **Interacción y Control:**
     - Sugerir secuenciación sin huecos al mover tareas cerca de otras.
     - Switches de bloqueo para acciones táctiles (bloquear edición, movimiento o creación accidental).
     - Corregir lógica de división/desplazamiento al editar registros desde esta vista.
