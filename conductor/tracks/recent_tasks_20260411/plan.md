@@ -21,8 +21,8 @@
 - [x] **Task: Conductor - User Manual Verification 'UI Integration' (Protocol in workflow.md)**
 
 
-## Phase 3: Finalization
+## Phase 3: Finalization [checkpoint: 3dfde12]
 - [x] **Task: Update Pending Tasks Document** b0cbf57
   - [x] Open `conductor/tareas_pendientes.md`.
   - [x] Mark the items under "2. Gestión de Proyectos y Tareas Recientes" as completed (change `[ ]` to `[x]`).
-- [ ] **Task: Conductor - User Manual Verification 'Finalization' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Finalization' (Protocol in workflow.md)**
