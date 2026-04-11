@@ -34,11 +34,11 @@
     - [ ] Write failing test for detecting near-drops.
     - [ ] Implement logic to detect when a task is dropped near another task.
     - [ ] Implement confirmation popup proposing magnetic snapping.
-- [~] Task: Implement Action Lock Switches (Floating Buttons)
-    - [ ] Write failing tests for action locks preventing state changes.
-    - [ ] Add floating action buttons (FABs) to toggle edit, move, and create locks.
-    - [ ] Enforce locks in the UI interaction handlers.
-- [ ] Task: Correct Edit Logic from Weekly View
+- [x] Task: Implement Action Lock Switches (Floating Buttons) (df3b885)
+    - [x] Write failing tests for action locks preventing state changes.
+    - [x] Add floating action buttons (FABs) to toggle edit, move, and create locks.
+    - [x] Enforce locks in the UI interaction handlers.
+- [~] Task: Correct Edit Logic from Weekly View
     - [ ] Write failing tests covering division and displacement when editing directly from `WeeklyView`.
     - [ ] Fix the underlying logic to apply the correct strategy (overwrite/displace) during inline edits.
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Interaction & Control' (Protocol in workflow.md)
