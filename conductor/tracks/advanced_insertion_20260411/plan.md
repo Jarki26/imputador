@@ -8,10 +8,11 @@
 - [x] **Task: Implement Displacement Logic in TaskStore** 9cd1e9b
   - [ ] Write failing tests for shifting existing tasks forward when a new one is inserted, verifying durations remain constant.
   - [ ] Implement the displacement logic, ensuring all subsequent conflicting tasks are recursively shifted.
-- [ ] **Task: Implement Smart Fill Algorithm**
+- [x] **Task: Implement Smart Fill Algorithm** 490bdb3
   - [ ] Write failing tests for calculating available gaps in a day and distributing a total duration into them.
   - [ ] Write failing tests for carrying over remaining duration to the next day when gaps are exhausted.
   - [ ] Implement the Smart Fill logic.
+
 - [ ] **Task: Conductor - User Manual Verification 'Core Algorithms (TDD)' (Protocol in workflow.md)**
 
 ## Phase 2: UI Integration (TaskForm & Collision)
