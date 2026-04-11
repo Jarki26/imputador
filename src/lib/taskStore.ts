@@ -167,17 +167,16 @@ export class TaskStore {
     await tx.done;
     return id as number;
   }
-/**
- * Recursively shifts tasks that overlap with the given range.
- */
-private async pushConflict(
-  start: number,
-  end: number,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  store: any,
-  excludeId?: number,
-): Promise<void> {
-
+  /**
+   * Recursively shifts tasks that overlap with the given range.
+   */
+  private async pushConflict(
+    start: number,
+    end: number,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    store: any,
+    excludeId?: number,
+  ): Promise<void> {
     const index = store.index('date');
     // Get all tasks for the day (to be safe, though we could optimize with range)
     const startOfDay = new Date(start);
@@ -236,6 +235,71 @@ private async pushConflict(
           // excludeId is important here to not push 'updatedTask' again
           await this.pushConflict(newStart, newEnd, store, updatedTask.id);
         }
+      }
+    }
+  }
+
+  /**
+   * Automatically distributes a total duration across available empty slots starting from a given date.
+   * @param taskData - Base task information (title, project, etc.).
+   * @param startDate - The date to start filling from (starts at 00:00).
+   * @param totalDurationMs - The total duration to distribute in milliseconds.
+   */
+  async addWithSmartFill(
+    taskData: Omit<Task, 'startTime' | 'endTime'>,
+    startDate: Date,
+    totalDurationMs: number,
+  ): Promise<void> {
+    let remaining = totalDurationMs;
+    const current = new Date(startDate);
+    current.setHours(0, 0, 0, 0);
+
+    while (remaining > 0) {
+      const dayTasks = (await this.getTasksForDay(current)).sort(
+        (a, b) => a.startTime.getTime() - b.startTime.getTime(),
+      );
+
+      const gaps: { start: Date; end: Date }[] = [];
+      let lastEnd = new Date(current);
+
+      for (const task of dayTasks) {
+        if (task.startTime > lastEnd) {
+          gaps.push({
+            start: new Date(lastEnd),
+            end: new Date(task.startTime),
+          });
+        }
+        if (task.endTime > lastEnd) {
+          lastEnd = new Date(task.endTime);
+        }
+      }
+
+      const dayEnd = new Date(current);
+      dayEnd.setHours(24, 0, 0, 0);
+      if (lastEnd < dayEnd) {
+        gaps.push({ start: new Date(lastEnd), end: dayEnd });
+      }
+
+      for (const gap of gaps) {
+        const gapDuration = gap.end.getTime() - gap.start.getTime();
+        const fillDuration = Math.min(gapDuration, remaining);
+
+        if (fillDuration > 0) {
+          await this.addTask({
+            ...taskData,
+            startTime: new Date(gap.start),
+            endTime: new Date(gap.start.getTime() + fillDuration),
+          } as Task);
+          remaining -= fillDuration;
+        }
+
+        if (remaining <= 0) break;
+      }
+
+      if (remaining > 0) {
+        current.setDate(current.getDate() + 1);
+        // Safety break to prevent infinite loops (e.g., if we go too far in the future)
+        if (current.getFullYear() > startDate.getFullYear() + 1) break;
       }
     }
   }
