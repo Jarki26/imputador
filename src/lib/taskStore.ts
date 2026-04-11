@@ -203,7 +203,7 @@ export class TaskStore {
   /**
    * Upserts a task into the recent tasks store.
    */
-  private async upsertRecentTask(task: Task): Promise<void> {
+  async upsertRecentTask(task: Task): Promise<void> {
     const db = await this.getDB();
     const recent: RecentTask = {
       title: task.title,

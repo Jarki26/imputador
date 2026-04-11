@@ -86,6 +86,12 @@
     await loadTasks();
   }
 
+  async function handleTaskCopyToRecents(task: Task) {
+    await taskStore.upsertRecentTask(task);
+    // Visual feedback is already handled by WeeklyView if needed, 
+    // but here we could add a toast.
+  }
+
   async function handleSettingsSave(target: number) {
     await configStore.setWeeklyHoursTarget(target);
     weeklyTarget = target;
@@ -148,6 +154,7 @@
         onTaskClick={handleTaskClick}
         onTaskUpdate={handleTaskUpdate}
         onTaskDelete={handleTaskDelete}
+        onTaskCopyToRecents={handleTaskCopyToRecents}
       />
     </div>
   {/if}

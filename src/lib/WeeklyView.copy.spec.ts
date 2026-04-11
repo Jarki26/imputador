@@ -1,0 +1,42 @@
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen, cleanup, fireEvent, act } from '@testing-library/svelte';
+import WeeklyView from './WeeklyView.svelte';
+
+describe('WeeklyView.svelte - Copy to Recents (Long Press)', () => {
+  it('should trigger onTaskCopyToRecents when a task is long-pressed', async () => {
+    cleanup();
+    vi.useFakeTimers();
+    const onTaskCopyToRecents = vi.fn();
+    const tasks = [
+      {
+        id: 1,
+        title: 'Task to Copy',
+        project: 'Project C',
+        startTime: new Date('2026-04-06T09:00:00Z'),
+        endTime: new Date('2026-04-06T10:00:00Z'),
+      },
+    ];
+    render(WeeklyView, { props: { tasks, onTaskCopyToRecents } });
+
+    const taskBlock = screen.getByText('Task to Copy').closest('.task-block');
+    expect(taskBlock).toBeDefined();
+
+    // Start long press
+    await fireEvent.pointerDown(taskBlock!, { button: 0, pointerId: 1 });
+    
+    // Fast-forward time by 600ms (typical long press threshold is 500ms)
+    await act(() => {
+      vi.advanceTimersByTime(600);
+    });
+
+    // Release
+    await fireEvent.pointerUp(taskBlock!, { pointerId: 1 });
+
+    expect(onTaskCopyToRecents).toHaveBeenCalledWith(expect.objectContaining({
+      title: 'Task to Copy',
+      project: 'Project C'
+    }));
+    
+    vi.useRealTimers();
+  });
+});

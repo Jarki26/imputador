@@ -11,6 +11,7 @@
     onTaskClick,
     onTaskUpdate,
     onTaskDelete,
+    onTaskCopyToRecents,
   }: {
     startDate: Date;
     tasks: Task[];
@@ -19,6 +20,7 @@
     onTaskClick?: (task: Task) => void;
     onTaskUpdate?: (task: Task) => void;
     onTaskDelete?: (taskId: number) => void;
+    onTaskCopyToRecents?: (task: Task) => void;
   } = $props();
 
   const daysOfWeek = $derived.by(() => {
@@ -54,6 +56,10 @@
   let dragInfo = $state<DragInfo | null>(null);
   let gridContentRef = $state<HTMLElement | null>(null);
 
+  // Long Press State
+  let longPressTimer = $state<number | null>(null);
+  const LONG_PRESS_THRESHOLD = 500; // ms
+
   // Merge State
   let mergeProposal = $state<{
     task1: Task;
@@ -67,6 +73,18 @@
 
   function formatTime(hour: number): string {
     return `${hour.toString().padStart(2, '0')}:00`;
+  }
+
+  function handleLongPress(task: Task) {
+    if (onTaskCopyToRecents) {
+      onTaskCopyToRecents(task);
+      // Feedback visual
+      const taskEl = document.querySelector(`[aria-label="Edit task: ${task.title}"]`);
+      if (taskEl) {
+        taskEl.classList.add('copied-feedback');
+        setTimeout(() => taskEl.classList.remove('copied-feedback'), 1000);
+      }
+    }
   }
 
   function getIntervalTotal(dailyTasks: Task[]): string {
@@ -262,7 +280,6 @@
     }
   }
 
-  // Pointer Handlers
   function handlePointerDown(
     e: PointerEvent,
     task: Task,
@@ -271,8 +288,16 @@
     if (e.button !== 0) return; // Left click only
     e.stopPropagation();
 
+    if (mode === 'move') {
+      longPressTimer = window.setTimeout(() => {
+        handleLongPress(task);
+        longPressTimer = null;
+      }, LONG_PRESS_THRESHOLD);
+    }
+
     const startMinutes =
       task.startTime.getHours() * 60 + task.startTime.getMinutes();
+
     const durationMinutes =
       (task.endTime.getTime() - task.startTime.getTime()) / (1000 * 60);
 
@@ -298,6 +323,14 @@
     if (!dragInfo) return;
 
     const deltaY = e.clientY - dragInfo.startY;
+    const deltaX = e.clientX - dragInfo.startX;
+
+    // If moved more than 5px, cancel long press
+    if (longPressTimer && (Math.abs(deltaY) > 5 || Math.abs(deltaX) > 5)) {
+      clearTimeout(longPressTimer);
+      longPressTimer = null;
+    }
+
     const minutesDelta = Math.round(deltaY / 15) * 15;
 
     const updatedTask = { ...dragInfo.currentTask };
@@ -349,6 +382,11 @@
   }
 
   function handlePointerUp() {
+    if (longPressTimer) {
+      clearTimeout(longPressTimer);
+      longPressTimer = null;
+    }
+
     if (!dragInfo) return;
 
     if (onTaskUpdate && dragInfo.currentTask) {
@@ -800,6 +838,30 @@
     border-color: var(--md-sys-color-error);
     opacity: 0.9;
     z-index: 2;
+  }
+
+  .task-block.copied-feedback {
+    animation: copied-pulse 1s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 10;
+  }
+
+  @keyframes copied-pulse {
+    0% {
+      transform: scale(1);
+      background-color: var(--md-sys-color-primary-container);
+      box-shadow: 0 0 0 0 var(--md-sys-color-primary);
+    }
+    20% {
+      transform: scale(1.02);
+      background-color: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
+      box-shadow: 0 0 10px 4px var(--md-sys-color-primary-fixed-dim);
+    }
+    100% {
+      transform: scale(1);
+      background-color: var(--md-sys-color-primary-container);
+      box-shadow: 0 0 0 0 transparent;
+    }
   }
 
   .task-info {
