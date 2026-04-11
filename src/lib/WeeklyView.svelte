@@ -1,15 +1,18 @@
 <script lang="ts">
   import type { Task } from './db';
+  import { calculateTotalHours } from './utils';
 
   let {
     startDate = new Date(),
     tasks = [],
+    weeklyTarget = 41,
     onSlotClick,
     onTaskClick,
     onTaskUpdate,
   }: {
     startDate: Date;
     tasks: Task[];
+    weeklyTarget?: number;
     onSlotClick?: (date: Date) => void;
     onTaskClick?: (task: Task) => void;
     onTaskUpdate?: (task: Task) => void;
@@ -277,6 +280,9 @@
 />
 
 <div class="weekly-view">
+  <div class="weekly-summary">
+    Logged: {calculateTotalHours(tasks).toFixed(2)}h / Target: {weeklyTarget}h
+  </div>
   <div class="grid-scroll-container">
     <div class="grid-header">
       <div class="time-axis-spacer"></div>
@@ -365,6 +371,15 @@
     border-radius: 12px;
     overflow: hidden;
     touch-action: none;
+  }
+
+  .weekly-summary {
+    background-color: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    text-align: center;
+    border-bottom: 1px solid var(--md-sys-color-outline);
   }
 
   /* Local border-box reset */

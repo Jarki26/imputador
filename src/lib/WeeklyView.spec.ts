@@ -47,6 +47,33 @@ describe('WeeklyView.svelte', () => {
     expect(screen.getByText(/Total: 1\.00h/i)).toBeDefined();
   });
 
+  it('should display weekly total vs target', () => {
+    cleanup();
+    const tasks = [
+      {
+        id: 1,
+        title: 'Task 1',
+        project: 'Project A',
+        type: 'General',
+        startTime: new Date('2026-04-06T09:00:00Z'),
+        endTime: new Date('2026-04-06T11:00:00Z'), // 2 hours
+      },
+      {
+        id: 2,
+        title: 'Rest',
+        project: '-',
+        type: 'Rest',
+        startTime: new Date('2026-04-06T13:00:00Z'),
+        endTime: new Date('2026-04-06T14:00:00Z'), // 1 hour (excluded)
+      },
+    ];
+    render(WeeklyView, {
+      props: { startDate: new Date('2026-04-06'), tasks, weeklyTarget: 41 },
+    });
+
+    expect(screen.getByText(/Logged: 2\.00h \/ Target: 41h/i)).toBeDefined();
+  });
+
   it('should calculate daily total excluding overlapping time', () => {
     cleanup();
     const tasks = [
@@ -89,7 +116,7 @@ describe('WeeklyView.svelte', () => {
 
     expect(screen.getByText('Weekly Task')).toBeDefined();
     expect(screen.getByText('Project Weekly')).toBeDefined();
-    expect(screen.getAllByText(/1\.50h/i)).toHaveLength(2);
+    expect(screen.getAllByText(/1\.50h/i)).toHaveLength(3);
   });
 
   it('should highlight overlapping tasks with an error state', () => {

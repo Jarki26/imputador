@@ -138,6 +138,7 @@
       <WeeklyView
         startDate={today}
         {tasks}
+        {weeklyTarget}
         onSlotClick={handleSlotClick}
         onTaskClick={handleTaskClick}
         onTaskUpdate={handleTaskUpdate}
