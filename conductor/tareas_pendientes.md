@@ -18,12 +18,12 @@ Esta lista identifica las funcionalidades definidas en `docs/Descripción.md` qu
 
 ## 2. Gestión de Proyectos y Tareas Recientes
 
-- [ ] **Sistema de Tareas Recientes:**
+- [x] **Sistema de Tareas Recientes:**
   - Almacenar las últimas 10 tareas únicas utilizadas.
   - Mostrar estas tareas en un desplegable rápido en el formulario.
-- [ ] **Purger de Historial:**
+- [x] **Purger de Historial:**
   - Lógica para eliminar del historial tareas que no se hayan usado en las últimas 2 semanas.
-- [ ] **Tipos de Tarea Parametrizables:**
+- [x] **Tipos de Tarea Parametrizables:**
   - Definir la "lista cerrada" de valores para tipos de tarea.
   - Asegurar que el tipo "Descanso" tenga el tratamiento adecuado (no facturable/justificado).
 
