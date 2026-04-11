@@ -89,4 +89,62 @@ export class TaskStore {
     const db = await initDB(this.dbName);
     await db.delete('tasks', id);
   }
+
+  /**
+   * Adds a new task, overwriting (splitting or deleting) any existing tasks that collide.
+   * @param newTask - The new task to add.
+   */
+  async addWithOverwrite(newTask: Task): Promise<number | undefined> {
+    const db = await initDB(this.dbName);
+    const tx = db.transaction('tasks', 'readwrite');
+    const store = tx.objectStore('tasks');
+    const index = store.index('date');
+
+    // Get all tasks for the day
+    const startOfDay = new Date(newTask.startTime);
+    startOfDay.setHours(0, 0, 0, 0);
+    const endOfDay = new Date(newTask.startTime);
+    endOfDay.setHours(23, 59, 59, 999);
+    const range = IDBKeyRange.bound(startOfDay, endOfDay);
+    const tasks: Task[] = await index.getAll(range);
+
+    const newStart = newTask.startTime.getTime();
+    const newEnd = newTask.endTime.getTime();
+
+    for (const task of tasks) {
+      if (!task.id) continue;
+
+      const oldStart = task.startTime.getTime();
+      const oldEnd = task.endTime.getTime();
+
+      // Check for overlap
+      if (oldStart < newEnd && oldEnd > newStart) {
+        if (oldStart >= newStart && oldEnd <= newEnd) {
+          // Complete overlap: Delete existing task
+          await store.delete(task.id);
+        } else if (oldStart < newStart && oldEnd > newEnd) {
+          // Middle overlap: Split existing task
+          const taskBefore = { ...task, endTime: new Date(newStart) };
+          const taskAfterData = { ...task };
+          delete taskAfterData.id;
+          const taskAfter = {
+            ...taskAfterData,
+            startTime: new Date(newEnd),
+          };
+          await store.put(taskBefore);
+          await store.add(taskAfter);
+        } else if (oldStart < newStart && oldEnd > newStart) {
+          // Truncate end of existing task
+          await store.put({ ...task, endTime: new Date(newStart) });
+        } else if (oldStart < newEnd && oldEnd > newEnd) {
+          // Truncate start of existing task
+          await store.put({ ...task, startTime: new Date(newEnd) });
+        }
+      }
+    }
+
+    const id = await store.add(newTask);
+    await tx.done;
+    return id as number;
+  }
 }

@@ -99,7 +99,25 @@ describe('TaskStore CRUD operations', () => {
 
     const weekTasks = await store.getTasksForWeek(new Date('2026-04-06'));
     expect(weekTasks).toHaveLength(2);
-    expect(weekTasks.some(t => t.title === 'Monday Task')).toBe(true);
-    expect(weekTasks.some(t => t.title === 'Sunday Task')).toBe(true);
+    expect(weekTasks.some((t) => t.title === 'Monday Task')).toBe(true);
+    expect(weekTasks.some((t) => t.title === 'Sunday Task')).toBe(true);
+  });
+
+  it('should correctly calculate week range when the date is Sunday', async () => {
+    const sunday = new Date('2026-04-12T10:00:00Z');
+    const monday = new Date('2026-04-06T10:00:00Z');
+
+    await store.addTask({
+      title: 'Monday Task',
+      startTime: monday,
+      endTime: new Date('2026-04-06T11:00:00Z'),
+      description: '',
+      project: '',
+      type: '',
+    });
+
+    const weekTasks = await store.getTasksForWeek(sunday);
+    expect(weekTasks).toHaveLength(1);
+    expect(weekTasks[0].title).toBe('Monday Task');
   });
 });
