@@ -10,6 +10,7 @@
     onSlotClick,
     onTaskClick,
     onTaskUpdate,
+    onTaskDelete,
   }: {
     startDate: Date;
     tasks: Task[];
@@ -17,6 +18,7 @@
     onSlotClick?: (date: Date) => void;
     onTaskClick?: (task: Task) => void;
     onTaskUpdate?: (task: Task) => void;
+    onTaskDelete?: (taskId: number) => void;
   } = $props();
 
   const daysOfWeek = $derived.by(() => {
@@ -373,6 +375,34 @@
                 tabindex="0"
                 aria-label="Edit task: {task.title}"
               >
+                <button
+                  class="delete-btn"
+                  onclick={(e) => {
+                    e.stopPropagation();
+                    if (onTaskDelete && task.id !== undefined)
+                      onTaskDelete(task.id);
+                  }}
+                  onkeydown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.stopPropagation();
+                      if (onTaskDelete && task.id !== undefined)
+                        onTaskDelete(task.id);
+                    }
+                  }}
+                  title="Delete Task"
+                  aria-label="Delete task: {task.title}"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="12"
+                    height="12"
+                    fill="currentColor"
+                  >
+                    <path
+                      d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19V4M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
+                    />
+                  </svg>
+                </button>
                 <div class="task-info">
                   <span class="task-title">{task.title}</span>
                   <span class="task-project">{task.project}</span>
@@ -601,6 +631,40 @@
     flex-direction: column;
     height: 100%;
     gap: 1px;
+    padding-right: 16px; /* Space for delete button */
+  }
+
+  .delete-btn {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: none;
+    border: none;
+    color: inherit;
+    padding: 2px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    opacity: 0;
+    transition:
+      opacity 0.2s,
+      background-color 0.2s;
+    z-index: 10;
+  }
+
+  .task-block:hover .delete-btn {
+    opacity: 0.7;
+  }
+
+  .delete-btn:hover {
+    opacity: 1 !important;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .is-rest .delete-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
   }
 
   .task-title {

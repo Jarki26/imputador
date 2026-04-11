@@ -81,6 +81,11 @@
     }
   }
 
+  async function handleTaskDelete(taskId: number) {
+    await taskStore.deleteTask(taskId);
+    await loadTasks();
+  }
+
   async function handleSettingsSave(target: number) {
     await configStore.setWeeklyHoursTarget(target);
     weeklyTarget = target;
@@ -142,6 +147,7 @@
         onSlotClick={handleSlotClick}
         onTaskClick={handleTaskClick}
         onTaskUpdate={handleTaskUpdate}
+        onTaskDelete={handleTaskDelete}
       />
     </div>
   {/if}
