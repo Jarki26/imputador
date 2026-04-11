@@ -70,26 +70,33 @@
     task: Task,
     mode: 'normal' | 'overwrite' | 'displacement' = 'normal',
   ) {
+    let success = false;
+    const taskSnapshot = $state.snapshot(task);
     try {
       if (editingTask && editingTask.id) {
-        // For updates, the current implementation doesn't have updateWithOverwrite yet
-        // but we can delete and re-add or improve TaskStore later.
-        // For now, let's stick to specification which mostly talks about "Insert".
-        await taskStore.updateTask(editingTask.id, task);
+        await taskStore.updateTask(editingTask.id, taskSnapshot);
       } else {
         if (mode === 'overwrite') {
-          await taskStore.addWithOverwrite(task);
+          await taskStore.addWithOverwrite(taskSnapshot);
         } else if (mode === 'displacement') {
-          await taskStore.addWithDisplacement(task);
+          await taskStore.addWithDisplacement(taskSnapshot);
         } else {
-          await taskStore.addTask(task);
+          await taskStore.addTask(taskSnapshot);
         }
       }
 
-      if (task.project) {
-        await projectStore.upsertProject(task.project);
+      if (taskSnapshot.project) {
+        await projectStore.upsertProject(taskSnapshot.project);
       }
+      success = true;
+    } catch (err) {
+      errorMessage = editingTask
+        ? 'Failed to update task'
+        : 'Failed to save task';
+      console.error(err);
+    }
 
+    if (success) {
       showCollisionModal = false;
       pendingTaskData = null;
       startTime = '';
@@ -98,13 +105,12 @@
       minutes = 0;
 
       if (onSuccess) {
-        await onSuccess();
+        try {
+          await onSuccess();
+        } catch (err) {
+          console.error('Error in onSuccess callback:', err);
+        }
       }
-    } catch (err) {
-      errorMessage = editingTask
-        ? 'Failed to update task'
-        : 'Failed to save task';
-      console.error(err);
     }
   }
 
