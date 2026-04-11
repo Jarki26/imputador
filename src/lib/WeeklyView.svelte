@@ -760,6 +760,10 @@
     width: 64px;
     flex-shrink: 0;
     border-right: 1px solid var(--md-sys-color-outline-variant);
+    position: sticky;
+    left: 0;
+    z-index: 25;
+    background-color: var(--md-sys-color-surface-variant);
   }
 
   .day-header {
@@ -842,6 +846,9 @@
     background-color: var(--md-sys-color-surface-variant);
     border-right: 1px solid var(--md-sys-color-outline-variant);
     min-height: 1440px;
+    position: sticky;
+    left: 0;
+    z-index: 10;
   }
 
   .hour-label {
