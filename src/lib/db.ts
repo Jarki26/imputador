@@ -42,7 +42,7 @@ export interface RecentTask {
 export async function initDB(
   dbName: string = 'imputador-db',
 ): Promise<IDBPDatabase> {
-  return openDB(dbName, 2, {
+  return openDB(dbName, 3, {
     upgrade(db, oldVersion) {
       if (oldVersion < 1) {
         // Create tasks store with an index on date (start time)
@@ -64,6 +64,10 @@ export async function initDB(
           keyPath: ['title', 'project'],
         });
         recentStore.createIndex('lastUsedAt', 'lastUsedAt');
+      }
+      if (oldVersion < 3) {
+        // Create config store
+        db.createObjectStore('config', { keyPath: 'key' });
       }
     },
   });

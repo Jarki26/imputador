@@ -10,10 +10,12 @@ describe('IndexedDB Initialization', () => {
     });
   });
 
-  it('should initialize the database with tasks and projects stores', async () => {
+  it('should initialize the database with tasks, projects and config stores', async () => {
     const db = await initDB('test-db');
     expect(db.objectStoreNames).toContain('tasks');
     expect(db.objectStoreNames).toContain('projects');
+    expect(db.objectStoreNames).toContain('recent_tasks');
+    expect(db.objectStoreNames).toContain('config');
     db.close();
   });
 

@@ -2,20 +2,26 @@
   import TaskForm from '$lib/TaskForm.svelte';
   import TaskList from '$lib/TaskList.svelte';
   import WeeklyView from '$lib/WeeklyView.svelte';
+  import Settings from '$lib/Settings.svelte';
+  import Modal from '$lib/Modal.svelte';
   import { TaskStore } from '$lib/taskStore';
   import { ProjectStore } from '$lib/projectStore';
+  import { ConfigStore } from '$lib/configStore';
   import { formatDateForInput } from '$lib/utils';
   import { onMount } from 'svelte';
   import type { Task } from '$lib/db';
 
   const taskStore = new TaskStore();
   const projectStore = new ProjectStore();
+  const configStore = new ConfigStore();
 
   let tasks: Task[] = $state([]);
   let today = new Date();
   let view: 'daily' | 'weekly' = $state('weekly');
 
   let showModal = $state(false);
+  let showSettings = $state(false);
+  let weeklyTarget = $state(41);
   let selectedStartTime = $state('');
   let selectedEndTime = $state('');
   let editingTask: Task | null = $state(null);
@@ -34,6 +40,7 @@
 
   onMount(async () => {
     await loadTasks();
+    weeklyTarget = await configStore.getWeeklyHoursTarget();
   });
 
   async function onTaskAdded() {
@@ -73,12 +80,27 @@
       await loadTasks();
     }
   }
+
+  async function handleSettingsSave(target: number) {
+    await configStore.setWeeklyHoursTarget(target);
+    weeklyTarget = target;
+    showSettings = false;
+  }
 </script>
 
 <div class="dashboard">
   <header>
     <div class="header-content">
-      <h1>Imputador</h1>
+      <div class="title-row">
+        <h1>Imputador</h1>
+        <button
+          class="settings-btn"
+          onclick={() => (showSettings = true)}
+          aria-label="Settings"
+        >
+          ⚙️
+        </button>
+      </div>
       <p class="subtitle">Log your workday efficiently.</p>
     </div>
     <div class="view-toggle">
@@ -145,6 +167,14 @@
       </div>
     </div>
   {/if}
+
+  <Modal
+    show={showSettings}
+    title="Settings"
+    onClose={() => (showSettings = false)}
+  >
+    <Settings {weeklyTarget} onSave={handleSettingsSave} />
+  </Modal>
 </div>
 
 <style>
@@ -158,6 +188,27 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+
+  .title-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .settings-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    line-height: 1;
+    transition: background-color 0.2s;
+  }
+
+  .settings-btn:hover {
+    background-color: var(--md-sys-color-surface-container-high);
   }
 
   header h1 {
