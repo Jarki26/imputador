@@ -1,6 +1,6 @@
 # Implementation Plan - Advanced Insertion and Editing Logic
 
-## Phase 1: Core Algorithms (TDD)
+## Phase 1: Core Algorithms (TDD) [checkpoint: 24ebee5]
 
 - [x] **Task: Implement Overwrite Logic in TaskStore** efccd9e
   - [ ] Write failing tests for splitting an existing task when a new one is inserted (start, middle, and end overlaps).
