@@ -3,6 +3,7 @@
 - **Language**: TypeScript
 - **Package Manager**: npm
 - **Add-ons**: prettier, eslint, vitest
+- **Terminal**: PowerShell (use `;` for command concatenation, `&&` is not supported)
 
 ---
 
