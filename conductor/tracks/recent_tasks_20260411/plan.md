@@ -11,8 +11,8 @@
 - [x] **Task: Conductor - User Manual Verification 'Core Configuration and Store Logic (TDD)' (Protocol in workflow.md)**
 
 ## Phase 2: UI Integration
-- [ ] **Task: Task Types UI Update**
-  - [ ] Update `TaskForm.svelte` to dynamically render the task type `<select>` options from `src/lib/config.ts`.
+- [x] **Task: Task Types UI Update** 96b2e51
+  - [x] Update `TaskForm.svelte` to dynamically render the task type `<select>` options from `src/lib/config.ts`.
 - [ ] **Task: Recent Tasks UI**
   - [ ] Write failing tests for rendering a dedicated "Recent Tasks" dropdown in `TaskForm.svelte`.
   - [ ] Implement logic in `TaskStore` to fetch the last 10 unique used tasks.
