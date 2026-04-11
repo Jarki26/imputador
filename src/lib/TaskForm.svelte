@@ -200,7 +200,11 @@
 
   <div class="field">
     <label for="taskType">Task Type</label>
-    <select id="taskType" name="taskType" value={editingTask?.type || 'General'}>
+    <select
+      id="taskType"
+      name="taskType"
+      value={editingTask?.type || 'General'}
+    >
       {#each taskTypes as type (type)}
         <option value={type}>{type}</option>
       {/each}

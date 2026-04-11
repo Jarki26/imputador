@@ -11,12 +11,17 @@ describe('TaskForm.svelte Collision Detection', () => {
   beforeEach(() => {
     cleanup();
     mockTaskStore = {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       addTask: vi.fn().mockResolvedValue(1) as any,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       getTasksForDay: vi.fn().mockResolvedValue([]) as any,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       addWithOverwrite: vi.fn().mockResolvedValue(1) as any,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       addWithDisplacement: vi.fn().mockResolvedValue(1) as any,
     };
     mockProjectStore = {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       upsertProject: vi.fn().mockResolvedValue(undefined) as any,
     };
   });
@@ -58,5 +63,81 @@ describe('TaskForm.svelte Collision Detection', () => {
 
     // Should show collision modal
     expect(await screen.findByText(/Collision Detected/i)).toBeDefined();
+  });
+
+  it('should call addWithOverwrite when Overwrite is clicked in modal', async () => {
+    const start = new Date(2026, 3, 11, 10, 0);
+    const end = new Date(2026, 3, 11, 11, 0);
+
+    mockTaskStore.getTasksForDay.mockResolvedValue([
+      {
+        id: 1,
+        title: 'Existing',
+        startTime: start,
+        endTime: end,
+      },
+    ]);
+
+    render(TaskForm, {
+      props: { taskStore: mockTaskStore, projectStore: mockProjectStore },
+    });
+
+    fireEvent.input(screen.getByLabelText(/Title/i), {
+      target: { value: 'New' },
+    });
+    fireEvent.input(screen.getByLabelText(/Start Time/i), {
+      target: { value: '2026-04-11T10:30' },
+    });
+    fireEvent.input(screen.getByLabelText(/End Time/i), {
+      target: { value: '2026-04-11T11:30' },
+    });
+
+    await fireEvent.click(screen.getByRole('button', { name: /Add Task/i }));
+
+    const overwriteBtn = await screen.findByRole('button', {
+      name: /Overwrite/i,
+    });
+    await fireEvent.click(overwriteBtn);
+
+    expect(mockTaskStore.addWithOverwrite).toHaveBeenCalled();
+    expect(mockTaskStore.addTask).not.toHaveBeenCalled();
+  });
+
+  it('should call addWithDisplacement when Displacement is clicked in modal', async () => {
+    const start = new Date(2026, 3, 11, 10, 0);
+    const end = new Date(2026, 3, 11, 11, 0);
+
+    mockTaskStore.getTasksForDay.mockResolvedValue([
+      {
+        id: 1,
+        title: 'Existing',
+        startTime: start,
+        endTime: end,
+      },
+    ]);
+
+    render(TaskForm, {
+      props: { taskStore: mockTaskStore, projectStore: mockProjectStore },
+    });
+
+    fireEvent.input(screen.getByLabelText(/Title/i), {
+      target: { value: 'New' },
+    });
+    fireEvent.input(screen.getByLabelText(/Start Time/i), {
+      target: { value: '2026-04-11T10:30' },
+    });
+    fireEvent.input(screen.getByLabelText(/End Time/i), {
+      target: { value: '2026-04-11T11:30' },
+    });
+
+    await fireEvent.click(screen.getByRole('button', { name: /Add Task/i }));
+
+    const displacementBtn = await screen.findByRole('button', {
+      name: /Displacement/i,
+    });
+    await fireEvent.click(displacementBtn);
+
+    expect(mockTaskStore.addWithDisplacement).toHaveBeenCalled();
+    expect(mockTaskStore.addTask).not.toHaveBeenCalled();
   });
 });

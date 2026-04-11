@@ -11,10 +11,13 @@ describe('TaskForm.svelte Duration Editing', () => {
   beforeEach(() => {
     cleanup();
     mockTaskStore = {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       addTask: vi.fn().mockResolvedValue(1) as any,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       getTasksForDay: vi.fn().mockResolvedValue([]) as any,
     };
     mockProjectStore = {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       upsertProject: vi.fn().mockResolvedValue(undefined) as any,
     };
   });
