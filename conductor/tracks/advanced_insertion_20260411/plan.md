@@ -22,10 +22,11 @@
   - [ ] Implement the UI changes in `TaskForm.svelte`.
   - [ ] Implement logic to automatically update the 'End Time' when duration changes based on 'Start Time'.
 
-- [ ] **Task: Collision Detection & Modal**
+- [x] **Task: Collision Detection & Modal** e9f2674
   - [ ] Write failing tests for intercepting a task save operation when a collision is detected.
   - [ ] Implement the collision detection check before saving in `TaskForm` or a parent component.
   - [ ] Create and integrate a generic modal component or dialog to prompt the user with "Overwrite", "Displacement", or "Cancel".
+
 - [ ] **Task: Integrate Resolution Modes**
   - [ ] Connect the "Overwrite" modal choice to the newly implemented TaskStore overwrite logic.
   - [ ] Connect the "Displacement" modal choice to the newly implemented TaskStore displacement logic.
