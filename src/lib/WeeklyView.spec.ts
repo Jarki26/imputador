@@ -44,7 +44,7 @@ describe('WeeklyView.svelte', () => {
     ];
     render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks } });
 
-    expect(screen.getByText(/Total: 1\.00h/i)).toBeDefined();
+    expect(screen.getAllByTitle('Billable Hours')[0]).toHaveTextContent('1.00h');
   });
 
   it('should display weekly total vs target', () => {
@@ -94,7 +94,8 @@ describe('WeeklyView.svelte', () => {
     ];
     render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks } });
 
-    expect(screen.getByText(/Total: 2\.00h/i)).toBeDefined();
+    expect(screen.getAllByTitle('Billable Hours')[0]).toHaveTextContent('2.00h');
+    expect(screen.getAllByTitle('Rest/Non-billable Hours')[0]).toHaveTextContent('1.00h');
   });
 
   it('should calculate daily total excluding overlapping time', () => {
@@ -118,7 +119,7 @@ describe('WeeklyView.svelte', () => {
     // Total should be from 09:00 to 11:00 = 2.00h, NOT 1h + 1.5h = 2.5h
     render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks } });
 
-    expect(screen.getByText(/Total: 2\.00h/i)).toBeDefined();
+    expect(screen.getAllByTitle('Billable Hours')[0]).toHaveTextContent('2.00h');
   });
 
   it('should render task blocks on the grid', () => {

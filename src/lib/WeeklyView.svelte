@@ -60,21 +60,7 @@
     return `${hour.toString().padStart(2, '0')}:00`;
   }
 
-  function getDailyTotal(date: Date): string {
-    const dayStart = new Date(date);
-    dayStart.setHours(0, 0, 0, 0);
-    const dayEnd = new Date(date);
-    dayEnd.setHours(23, 59, 59, 999);
-
-    const effectiveTasks = dragInfo
-      ? tasks.map((t) => (t.id === dragInfo?.taskId ? dragInfo.currentTask : t))
-      : tasks;
-
-    const dailyTasks = effectiveTasks
-      .filter((t) => t.startTime >= dayStart && t.startTime <= dayEnd)
-      .filter((t) => isBillable(t.type))
-      .sort((a, b) => a.startTime.getTime() - b.startTime.getTime());
-
+  function getIntervalTotal(dailyTasks: Task[]): string {
     if (dailyTasks.length === 0) return '0.00';
 
     const mergedIntervals: { start: Date; end: Date }[] = [];
@@ -104,6 +90,42 @@
     }, 0);
 
     return (totalMs / (1000 * 60 * 60)).toFixed(2);
+  }
+
+  function getDailyTotal(date: Date): string {
+    const dayStart = new Date(date);
+    dayStart.setHours(0, 0, 0, 0);
+    const dayEnd = new Date(date);
+    dayEnd.setHours(23, 59, 59, 999);
+
+    const effectiveTasks = dragInfo
+      ? tasks.map((t) => (t.id === dragInfo?.taskId ? dragInfo.currentTask : t))
+      : tasks;
+
+    const dailyTasks = effectiveTasks
+      .filter((t) => t.startTime >= dayStart && t.startTime <= dayEnd)
+      .filter((t) => isBillable(t.type))
+      .sort((a, b) => a.startTime.getTime() - b.startTime.getTime());
+
+    return getIntervalTotal(dailyTasks);
+  }
+
+  function getDailyRestTotal(date: Date): string {
+    const dayStart = new Date(date);
+    dayStart.setHours(0, 0, 0, 0);
+    const dayEnd = new Date(date);
+    dayEnd.setHours(23, 59, 59, 999);
+
+    const effectiveTasks = dragInfo
+      ? tasks.map((t) => (t.id === dragInfo?.taskId ? dragInfo.currentTask : t))
+      : tasks;
+
+    const dailyTasks = effectiveTasks
+      .filter((t) => t.startTime >= dayStart && t.startTime <= dayEnd)
+      .filter((t) => !isBillable(t.type))
+      .sort((a, b) => a.startTime.getTime() - b.startTime.getTime());
+
+    return getIntervalTotal(dailyTasks);
   }
 
   interface TaskWithOverlap extends Task {
@@ -292,7 +314,14 @@
         <div class="day-header">
           <span class="day-name">{formatDay(day)}</span>
           <span class="day-date">{day.toLocaleDateString()}</span>
-          <span class="day-total">Total: {getDailyTotal(day)}h</span>
+          <div class="totals">
+            <span class="day-total" title="Billable Hours">
+              {getDailyTotal(day)}h
+            </span>
+            <span class="day-total-rest" title="Rest/Non-billable Hours">
+              {getDailyRestTotal(day)}h
+            </span>
+          </div>
         </div>
       {/each}
     </div>
@@ -442,14 +471,31 @@
     margin-top: 2px;
   }
 
-  .day-total {
+  .totals {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
     margin-top: 6px;
+    align-items: center;
+  }
+
+  .day-total {
     font-size: 0.8rem;
     font-weight: 600;
     color: var(--md-sys-color-primary);
     background-color: var(--md-sys-color-primary-container);
     padding: 2px 8px;
     border-radius: 12px;
+  }
+
+  .day-total-rest {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--md-sys-color-on-surface-variant);
+    background-color: var(--md-sys-color-surface-variant);
+    padding: 2px 6px;
+    border-radius: 10px;
+    opacity: 0.8;
   }
 
   .grid-body {
