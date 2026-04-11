@@ -29,11 +29,11 @@
     - [x] Update rendering logic to ensure exact proportional heights (e.g., 30min = 50% height).
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Navigation & Visualization' (8986700)
 
-## Phase 3: Interaction & Control
+## Phase 3: Interaction & Control [checkpoint: baffdfb]
 - [x] Task: Implement No-Gap Sequencing Prompt (a167ab8)
-    - [ ] Write failing test for detecting near-drops.
-    - [ ] Implement logic to detect when a task is dropped near another task.
-    - [ ] Implement confirmation popup proposing magnetic snapping.
+    - [x] Write failing test for detecting near-drops.
+    - [x] Implement logic to detect when a task is dropped near another task.
+    - [x] Implement confirmation popup proposing magnetic snapping.
 - [x] Task: Implement Action Lock Switches (Floating Buttons) (df3b885)
     - [x] Write failing tests for action locks preventing state changes.
     - [x] Add floating action buttons (FABs) to toggle edit, move, and create locks.
@@ -41,9 +41,9 @@
 - [x] Task: Correct Edit Logic from Weekly View (c838576)
     - [x] Write failing tests covering division and displacement when editing directly from `WeeklyView`.
     - [x] Fix the underlying logic to apply the correct strategy (overwrite/displace) during inline edits.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Interaction & Control' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Interaction & Control' (baffdfb)
 
 ## Phase 4: Post-Implementation Documentation
-- [ ] Task: Update Pending Tasks List
+- [~] Task: Update Pending Tasks List
     - [ ] Check off all items in section 4.1 of `conductor/tareas_pendientes.md`.
 - [ ] Task: Conductor - User Manual Verification 'Phase 4: Post-Implementation Documentation' (Protocol in workflow.md)
