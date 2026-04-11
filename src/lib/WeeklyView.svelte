@@ -200,7 +200,7 @@
     const durationMinutes = (end.getTime() - start.getTime()) / (1000 * 60);
 
     const top = startMinutes;
-    const height = Math.max(durationMinutes, 45);
+    const height = durationMinutes;
 
     let style = `top: ${top}px; height: ${height}px;`;
     if (dragInfo && dragInfo.taskId === task.id) {
@@ -740,7 +740,7 @@
 
   .grid-scroll-container {
     flex: 1;
-    overflow-y: auto;
+    overflow: auto;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -754,6 +754,7 @@
     background-color: var(--md-sys-color-surface-variant);
     border-bottom: 1px solid var(--md-sys-color-outline);
     flex-shrink: 0;
+    min-width: max-content;
   }
 
   .time-axis-spacer {
@@ -836,6 +837,7 @@
     flex: 1;
     position: relative;
     min-height: min-content;
+    min-width: max-content;
   }
 
   .time-axis {
