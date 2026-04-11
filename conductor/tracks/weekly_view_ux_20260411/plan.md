@@ -21,10 +21,10 @@
 - [x] Task: Implement Daily View Access from Header (848452f)
     - [ ] Write failing test for navigation to Daily View on day header click.
     - [ ] Make day headers clickable and route to the specific day's view.
-- [~] Task: Implement Mobile Time Column (Floating Overlay)
+- [x] Task: Implement Mobile Time Column (Floating Overlay) (4e7adcb)
     - [ ] Add CSS/styling tests or visual regression checks if applicable.
     - [ ] Update CSS to make the time column sticky/floating during horizontal scroll on small screens.
-- [ ] Task: Adjust Visual Scale of Cells
+- [~] Task: Adjust Visual Scale of Cells
     - [ ] Write failing tests verifying the calculated height styles based on task duration.
     - [ ] Update rendering logic to ensure exact proportional heights (e.g., 30min = 50% height).
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Navigation & Visualization' (Protocol in workflow.md)
