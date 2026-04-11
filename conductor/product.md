@@ -36,7 +36,7 @@ Imputador is a specialized task registration and time-tracking application desig
 
 ### 4. Smart Gap Filling
 
-- A specialized "filler" mode where the system automatically distributes a total duration across available empty slots in the day.
+- A specialized "filler" mode where the system automatically distributes a total duration across available empty slots in the day, with automatic carryover to subsequent days if needed.
 
 ### 5. Task Management
 
