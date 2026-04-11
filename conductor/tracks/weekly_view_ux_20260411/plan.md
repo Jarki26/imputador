@@ -18,10 +18,10 @@
 - [x] Task: Implement Week Navigation Arrows (b390fbc)
     - [ ] Write failing tests for week navigation state changes.
     - [ ] Add arrow buttons to the header and wire them to change the current week.
-- [~] Task: Implement Daily View Access from Header
+- [x] Task: Implement Daily View Access from Header (848452f)
     - [ ] Write failing test for navigation to Daily View on day header click.
     - [ ] Make day headers clickable and route to the specific day's view.
-- [ ] Task: Implement Mobile Time Column (Floating Overlay)
+- [~] Task: Implement Mobile Time Column (Floating Overlay)
     - [ ] Add CSS/styling tests or visual regression checks if applicable.
     - [ ] Update CSS to make the time column sticky/floating during horizontal scroll on small screens.
 - [ ] Task: Adjust Visual Scale of Cells
