@@ -1,18 +1,21 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, cleanup, fireEvent } from '@testing-library/svelte';
 import TaskForm from './TaskForm.svelte';
+import type { TaskStore } from './taskStore';
+import type { ProjectStore } from './projectStore';
 
 describe('TaskForm.svelte Duration Editing', () => {
-  let mockTaskStore: any;
-  let mockProjectStore: any;
+  let mockTaskStore: vi.Mocked<Partial<TaskStore>>;
+  let mockProjectStore: vi.Mocked<Partial<ProjectStore>>;
 
   beforeEach(() => {
     cleanup();
     mockTaskStore = {
-      addTask: vi.fn().mockResolvedValue(1),
+      addTask: vi.fn().mockResolvedValue(1) as any,
+      getTasksForDay: vi.fn().mockResolvedValue([]) as any,
     };
     mockProjectStore = {
-      upsertProject: vi.fn().mockResolvedValue(undefined),
+      upsertProject: vi.fn().mockResolvedValue(undefined) as any,
     };
   });
 
@@ -26,10 +29,10 @@ describe('TaskForm.svelte Duration Editing', () => {
 
   it('should update End Time when Duration (Hours/Minutes) changes', async () => {
     render(TaskForm, {
-      props: { 
-        taskStore: mockTaskStore, 
+      props: {
+        taskStore: mockTaskStore,
         projectStore: mockProjectStore,
-        initialStartTime: '2026-04-11T09:00'
+        initialStartTime: '2026-04-11T09:00',
       },
     });
 
@@ -45,12 +48,12 @@ describe('TaskForm.svelte Duration Editing', () => {
   });
 
   it('should update Duration when End Time changes', async () => {
-     render(TaskForm, {
-      props: { 
-        taskStore: mockTaskStore, 
+    render(TaskForm, {
+      props: {
+        taskStore: mockTaskStore,
         projectStore: mockProjectStore,
         initialStartTime: '2026-04-11T09:00',
-        initialEndTime: '2026-04-11T10:00' // Initial 1h
+        initialEndTime: '2026-04-11T10:00', // Initial 1h
       },
     });
 
@@ -61,7 +64,9 @@ describe('TaskForm.svelte Duration Editing', () => {
     expect(hoursInput.value).toBe('1');
     expect(minutesInput.value).toBe('0');
 
-    await fireEvent.input(endTimeInput, { target: { value: '2026-04-11T10:45' } });
+    await fireEvent.input(endTimeInput, {
+      target: { value: '2026-04-11T10:45' },
+    });
 
     // 09:00 to 10:45 = 1h 45m
     expect(hoursInput.value).toBe('1');

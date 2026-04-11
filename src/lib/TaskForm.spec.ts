@@ -1,18 +1,21 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, cleanup, fireEvent } from '@testing-library/svelte';
 import TaskForm from './TaskForm.svelte';
+import type { TaskStore } from './taskStore';
+import type { ProjectStore } from './projectStore';
 
 describe('TaskForm.svelte', () => {
-  let mockTaskStore: any;
-  let mockProjectStore: any;
+  let mockTaskStore: vi.Mocked<Partial<TaskStore>>;
+  let mockProjectStore: vi.Mocked<Partial<ProjectStore>>;
 
   beforeEach(() => {
     cleanup();
     mockTaskStore = {
-      addTask: vi.fn().mockResolvedValue(1),
+      addTask: vi.fn().mockResolvedValue(1) as any,
+      getTasksForDay: vi.fn().mockResolvedValue([]) as any,
     };
     mockProjectStore = {
-      upsertProject: vi.fn().mockResolvedValue(undefined),
+      upsertProject: vi.fn().mockResolvedValue(undefined) as any,
     };
   });
 
