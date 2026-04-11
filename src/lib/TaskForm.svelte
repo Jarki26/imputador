@@ -103,7 +103,13 @@
     const taskSnapshot = $state.snapshot(task);
     try {
       if (editingTask && editingTask.id) {
-        await taskStore.updateTask(editingTask.id, taskSnapshot);
+        if (mode === 'overwrite') {
+          await taskStore.updateWithOverwrite(editingTask.id, taskSnapshot);
+        } else if (mode === 'displacement') {
+          await taskStore.updateWithDisplacement(editingTask.id, taskSnapshot);
+        } else {
+          await taskStore.updateTask(editingTask.id, taskSnapshot);
+        }
       } else {
         if (mode === 'overwrite') {
           await taskStore.addWithOverwrite(taskSnapshot);

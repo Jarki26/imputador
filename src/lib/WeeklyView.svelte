@@ -21,7 +21,10 @@
     onSlotClick?: (date: Date) => void;
     onDayClick?: (date: Date) => void;
     onTaskClick?: (task: Task) => void;
-    onTaskUpdate?: (task: Task) => void;
+    onTaskUpdate?: (
+      task: Task,
+      mode?: 'normal' | 'overwrite' | 'displacement',
+    ) => void;
     onTaskDelete?: (taskId: number) => void;
     onTaskCopyToRecents?: (task: Task) => void;
     onNavigate?: (date: Date) => void;
@@ -77,6 +80,9 @@
     snapTo: 'before' | 'after';
     targetTime: Date;
   } | null>(null);
+
+  // Collision State
+  let collisionProposal = $state<Task | null>(null);
 
   // Action Locks
   let locks = $state({
@@ -313,6 +319,21 @@
     return false;
   }
 
+  function checkForCollision(updatedTask: Task) {
+    const collision = tasks.some(
+      (t) =>
+        t.id !== updatedTask.id &&
+        t.startTime < updatedTask.endTime &&
+        t.endTime > updatedTask.startTime,
+    );
+
+    if (collision) {
+      collisionProposal = updatedTask;
+      return true;
+    }
+    return false;
+  }
+
   function handleSnap() {
     if (!snapProposal || !onTaskUpdate) return;
 
@@ -483,7 +504,9 @@
         // Check for merge BEFORE calling onTaskUpdate if it is a move or resize
         if (!checkForMerge(dragInfo.currentTask)) {
           if (!checkForSnap(dragInfo.currentTask)) {
-            onTaskUpdate(dragInfo.currentTask);
+            if (!checkForCollision(dragInfo.currentTask)) {
+              onTaskUpdate(dragInfo.currentTask);
+            }
           }
         }
       }
@@ -706,6 +729,34 @@
           snapProposal = null;
         }}>No</button>
         <button class="btn-confirm" onclick={handleSnap}>Yes, Snap</button>
+      </div>
+    </div>
+  </div>
+{/if}
+
+{#if collisionProposal}
+  <div class="merge-modal-backdrop" onclick={() => (collisionProposal = null)} role="presentation">
+    <div class="merge-modal" onclick={(e) => e.stopPropagation()} role="presentation">
+      <h3>Collision Detected</h3>
+      <p>
+        This move overlaps with existing tasks. How would you like to proceed?
+      </p>
+      <div class="merge-actions">
+        <button class="btn-cancel" onclick={() => {
+          collisionProposal = null;
+        }}>Cancel</button>
+        <button class="btn-confirm" onclick={() => {
+          if (collisionProposal && onTaskUpdate) {
+            onTaskUpdate(collisionProposal, 'overwrite');
+          }
+          collisionProposal = null;
+        }}>Overwrite</button>
+        <button class="btn-confirm" onclick={() => {
+          if (collisionProposal && onTaskUpdate) {
+            onTaskUpdate(collisionProposal, 'displacement');
+          }
+          collisionProposal = null;
+        }}>Displace</button>
       </div>
     </div>
   </div>

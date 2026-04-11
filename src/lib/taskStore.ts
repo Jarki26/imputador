@@ -114,6 +114,45 @@ export class TaskStore {
     const db = await this.getDB();
     const tx = db.transaction('tasks', 'readwrite');
     const store = tx.objectStore('tasks');
+
+    await this.applyOverwriteLogic(newTask, store);
+
+    const id = await store.add(newTask);
+    await tx.done;
+
+    await this.upsertRecentTask(newTask);
+    await this.purgeHistory();
+    return id as number;
+  }
+
+  /**
+   * Updates an existing task with overwrite strategy.
+   */
+  async updateWithOverwrite(id: number, updates: Partial<Task>): Promise<void> {
+    const db = await this.getDB();
+    const tx = db.transaction('tasks', 'readwrite');
+    const store = tx.objectStore('tasks');
+
+    const existing = await store.get(id);
+    if (!existing) throw new Error(`Task ${id} not found`);
+
+    const updatedTask = { ...existing, ...updates };
+    await this.applyOverwriteLogic(updatedTask, store, id);
+
+    await store.put(updatedTask);
+    await tx.done;
+
+    if (updates.title || updates.project) {
+      await this.upsertRecentTask(updatedTask);
+    }
+  }
+
+  private async applyOverwriteLogic(
+    newTask: Task,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    store: any,
+    excludeId?: number,
+  ): Promise<void> {
     const index = store.index('date');
 
     // Get all tasks for the day
@@ -128,7 +167,7 @@ export class TaskStore {
     const newEnd = newTask.endTime.getTime();
 
     for (const task of tasks) {
-      if (!task.id) continue;
+      if (!task.id || task.id === excludeId) continue;
 
       const oldStart = task.startTime.getTime();
       const oldEnd = task.endTime.getTime();
@@ -158,13 +197,6 @@ export class TaskStore {
         }
       }
     }
-
-    const id = await store.add(newTask);
-    await tx.done;
-
-    await this.upsertRecentTask(newTask);
-    await this.purgeHistory();
-    return id as number;
   }
 
   /**
@@ -188,6 +220,34 @@ export class TaskStore {
     await this.upsertRecentTask(newTask);
     await this.purgeHistory();
     return id as number;
+  }
+
+  /**
+   * Updates an existing task with displacement strategy.
+   */
+  async updateWithDisplacement(id: number, updates: Partial<Task>): Promise<void> {
+    const db = await this.getDB();
+    const tx = db.transaction('tasks', 'readwrite');
+    const store = tx.objectStore('tasks');
+
+    const existing = await store.get(id);
+    if (!existing) throw new Error(`Task ${id} not found`);
+
+    const updatedTask = { ...existing, ...updates };
+
+    await this.pushConflict(
+      updatedTask.startTime.getTime(),
+      updatedTask.endTime.getTime(),
+      store,
+      id, // Exclude the task being updated
+    );
+
+    await store.put(updatedTask);
+    await tx.done;
+
+    if (updates.title || updates.project) {
+      await this.upsertRecentTask(updatedTask);
+    }
   }
 
   /**

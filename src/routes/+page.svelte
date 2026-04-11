@@ -73,10 +73,19 @@
     selectedEndTime = '';
   }
 
-  async function handleTaskUpdate(updatedTask: Task) {
+  async function handleTaskUpdate(
+    updatedTask: Task,
+    mode: 'normal' | 'overwrite' | 'displacement' = 'normal',
+  ) {
     if (updatedTask.id) {
       const { id, ...data } = updatedTask;
-      await taskStore.updateTask(id, data);
+      if (mode === 'overwrite') {
+        await taskStore.updateWithOverwrite(id, data);
+      } else if (mode === 'displacement') {
+        await taskStore.updateWithDisplacement(id, data);
+      } else {
+        await taskStore.updateTask(id, data);
+      }
       await loadTasks();
     }
   }
