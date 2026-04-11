@@ -22,6 +22,42 @@
   }: Props = $props();
 
   let errorMessage = $state('');
+  let startTime = $state(
+    initialStartTime ||
+      (editingTask ? formatDateForInput(editingTask.startTime) : ''),
+  );
+  let endTime = $state(
+    initialEndTime ||
+      (editingTask ? formatDateForInput(editingTask.endTime) : ''),
+  );
+  let hours = $state(0);
+  let minutes = $state(0);
+
+  // Initialize duration from times
+  $effect.pre(() => {
+    updateDurationFromTimes();
+  });
+
+  function updateDurationFromTimes() {
+    if (startTime && endTime) {
+      const start = new Date(startTime);
+      const end = new Date(endTime);
+      if (end >= start) {
+        const diff = end.getTime() - start.getTime();
+        hours = Math.floor(diff / (1000 * 60 * 60));
+        minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      }
+    }
+  }
+
+  function updateEndTimeFromDuration() {
+    if (startTime) {
+      const start = new Date(startTime);
+      const durationMs = hours * 60 * 60 * 1000 + minutes * 60 * 1000;
+      const end = new Date(start.getTime() + durationMs);
+      endTime = formatDateForInput(end);
+    }
+  }
 
   const taskTypes = ['General', 'Feature', 'Bug', 'Rest', 'Meeting'];
 
@@ -35,16 +71,14 @@
     const description = (formData.get('description') as string) || title;
     const project = formData.get('project') as string;
     const taskType = formData.get('taskType') as string;
-    const startTimeStr = formData.get('startTime') as string;
-    const endTimeStr = formData.get('endTime') as string;
 
-    if (!startTimeStr || !endTimeStr) {
+    if (!startTime || !endTime) {
       errorMessage = 'Please provide valid start and end times';
       return;
     }
 
-    const start = new Date(startTimeStr);
-    const end = new Date(endTimeStr);
+    const start = new Date(startTime);
+    const end = new Date(endTime);
 
     if (end <= start) {
       errorMessage = 'End time must be after start time';
@@ -77,6 +111,12 @@
       }
 
       form.reset();
+      // Reset local state
+      startTime = '';
+      endTime = '';
+      hours = 0;
+      minutes = 0;
+
       if (onSuccess) {
         await onSuccess();
       }
@@ -141,8 +181,8 @@
       name="startTime"
       type="datetime-local"
       required
-      value={initialStartTime ||
-        (editingTask ? formatDateForInput(editingTask.startTime) : '')}
+      bind:value={startTime}
+      oninput={updateDurationFromTimes}
     />
   </div>
 
@@ -153,9 +193,33 @@
       name="endTime"
       type="datetime-local"
       required
-      value={initialEndTime ||
-        (editingTask ? formatDateForInput(editingTask.endTime) : '')}
+      bind:value={endTime}
+      oninput={updateDurationFromTimes}
     />
+  </div>
+
+  <div class="duration-fields">
+    <div class="field">
+      <label for="durationHours">Hours</label>
+      <input
+        id="durationHours"
+        type="number"
+        min="0"
+        bind:value={hours}
+        oninput={updateEndTimeFromDuration}
+      />
+    </div>
+    <div class="field">
+      <label for="durationMinutes">Minutes</label>
+      <input
+        id="durationMinutes"
+        type="number"
+        min="0"
+        max="59"
+        bind:value={minutes}
+        oninput={updateEndTimeFromDuration}
+      />
+    </div>
   </div>
 
   {#if errorMessage}
@@ -176,6 +240,15 @@
     background: var(--md-sys-color-surface-variant);
     border-radius: 1rem;
     max-width: 500px;
+  }
+
+  .duration-fields {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .duration-fields .field {
+    flex: 1;
   }
 
   .field {
