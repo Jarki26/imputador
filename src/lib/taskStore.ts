@@ -147,4 +147,96 @@ export class TaskStore {
     await tx.done;
     return id as number;
   }
+
+  /**
+   * Adds a new task, shifting any existing tasks that collide forward in time.
+   * @param newTask - The new task to add.
+   */
+  async addWithDisplacement(newTask: Task): Promise<number | undefined> {
+    const db = await initDB(this.dbName);
+    const tx = db.transaction('tasks', 'readwrite');
+    const store = tx.objectStore('tasks');
+
+    await this.pushConflict(
+      newTask.startTime.getTime(),
+      newTask.endTime.getTime(),
+      store,
+    );
+
+    const id = await store.add(newTask);
+    await tx.done;
+    return id as number;
+  }
+/**
+ * Recursively shifts tasks that overlap with the given range.
+ */
+private async pushConflict(
+  start: number,
+  end: number,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  store: any,
+  excludeId?: number,
+): Promise<void> {
+
+    const index = store.index('date');
+    // Get all tasks for the day (to be safe, though we could optimize with range)
+    const startOfDay = new Date(start);
+    startOfDay.setHours(0, 0, 0, 0);
+    const endOfDay = new Date(start);
+    endOfDay.setHours(23, 59, 59, 999);
+    const range = IDBKeyRange.bound(startOfDay, endOfDay);
+    const tasks: Task[] = await index.getAll(range);
+
+    for (const oldTask of tasks) {
+      if (!oldTask.id || oldTask.id === excludeId) continue;
+
+      // Fetch the latest version of the task as it might have been shifted by a recursive call
+      const task = await store.get(oldTask.id);
+      if (!task) continue;
+
+      const oldStart = task.startTime.getTime();
+      const oldEnd = task.endTime.getTime();
+
+      // Check for overlap with the pushing range [start, end]
+      if (oldStart < end && oldEnd > start) {
+        if (oldStart < start) {
+          // Split task
+          const taskBefore = { ...task, endTime: new Date(start) };
+          const shiftDuration = oldEnd - start;
+          const newStart = end;
+          const newEnd = end + shiftDuration;
+
+          await store.put(taskBefore);
+
+          const taskAfterData = { ...task };
+          delete taskAfterData.id;
+          const taskAfter = {
+            ...taskAfterData,
+            startTime: new Date(newStart),
+            endTime: new Date(newEnd),
+          };
+
+          // Recursively push what this new part might collide with
+          await this.pushConflict(newStart, newEnd, store);
+          await store.add(taskAfter);
+        } else {
+          // Shift whole task
+          const duration = oldEnd - oldStart;
+          const newStart = end;
+          const newEnd = end + duration;
+
+          const updatedTask = {
+            ...task,
+            startTime: new Date(newStart),
+            endTime: new Date(newEnd),
+          };
+          await store.put(updatedTask);
+
+          // Recursively push what this shifted task might collide with
+          // excludeId is important here to not push 'updatedTask' again
+          await this.pushConflict(newStart, newEnd, store, updatedTask.id);
+        }
+      }
+    }
+  }
 }
