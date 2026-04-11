@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Task } from './db';
   import { calculateTotalHours } from './utils';
+  import { isBillable } from './config';
 
   let {
     startDate = new Date(),
@@ -71,6 +72,7 @@
 
     const dailyTasks = effectiveTasks
       .filter((t) => t.startTime >= dayStart && t.startTime <= dayEnd)
+      .filter((t) => isBillable(t.type))
       .sort((a, b) => a.startTime.getTime() - b.startTime.getTime());
 
     if (dailyTasks.length === 0) return '0.00';
