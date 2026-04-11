@@ -1,7 +1,7 @@
 # Implementation Plan - Project Management and Recent Tasks
 
 ## Phase 1: Core Configuration and Store Logic (TDD)
-- [ ] **Task: Parametrizable Task Types**
+- [x] **Task: Parametrizable Task Types** 63c7992
   - [ ] Create a `src/lib/config.ts` to define the array of available task types and their properties (e.g., `isBillable`).
   - [ ] Write unit tests to ensure the configuration is structured correctly and "Rest" is identifiable.
 - [ ] **Task: History Purger Logic**
