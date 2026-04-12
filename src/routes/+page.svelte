@@ -7,6 +7,7 @@
   import { TaskStore } from '$lib/taskStore';
   import { ProjectStore } from '$lib/projectStore';
   import { ConfigStore } from '$lib/configStore';
+  import { HistoryStore } from '$lib/historyStore';
   import { formatDateForInput } from '$lib/utils';
   import { onMount } from 'svelte';
   import type { Task } from '$lib/db';
@@ -14,6 +15,7 @@
   const taskStore = new TaskStore();
   const projectStore = new ProjectStore();
   const configStore = new ConfigStore();
+  const historyStore = new HistoryStore();
 
   let tasks: Task[] = $state([]);
   let today = $state(new Date());
@@ -26,16 +28,27 @@
   let selectedEndTime = $state('');
   let editingTask: Task | null = $state(null);
 
-  async function loadTasks() {
+  let canUndo = $state(false);
+  let canRedo = $state(false);
+
+  async function loadTasks(pushToHistory = false) {
+    let newTasks: Task[] = [];
     if (view === 'weekly') {
-      tasks = await taskStore.getTasksForWeek(today);
+      newTasks = await taskStore.getTasksForWeek(today);
     } else {
-      tasks = await taskStore.getTasksForDay(today);
+      newTasks = await taskStore.getTasksForDay(today);
     }
+    tasks = newTasks;
+
+    if (pushToHistory) {
+      historyStore.push({ tasks: [...newTasks] });
+    }
+    canUndo = historyStore.canUndo();
+    canRedo = historyStore.canRedo();
   }
 
   $effect(() => {
-    loadTasks();
+    loadTasks(false);
   });
 
   onMount(async () => {
@@ -43,8 +56,38 @@
     weeklyTarget = await configStore.getWeeklyHoursTarget();
   });
 
+  async function handleUndo() {
+    const prevState = historyStore.undo();
+    if (prevState) {
+      await taskStore.setTasksForWeek(today, prevState.tasks);
+      await loadTasks(false);
+    }
+  }
+
+  async function handleRedo() {
+    const nextState = historyStore.redo();
+    if (nextState) {
+      await taskStore.setTasksForWeek(today, nextState.tasks);
+      await loadTasks(false);
+    }
+  }
+
+  function handleKeyDown(e: KeyboardEvent) {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
+      if (e.shiftKey) {
+        handleRedo();
+      } else {
+        handleUndo();
+      }
+      e.preventDefault();
+    } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'y') {
+      handleRedo();
+      e.preventDefault();
+    }
+  }
+
   async function onTaskAdded() {
-    await loadTasks();
+    await loadTasks(true);
     closeModal();
   }
 
@@ -86,24 +129,24 @@
       } else {
         await taskStore.updateTask(id, data);
       }
-      await loadTasks();
+      await loadTasks(true);
     }
   }
 
   function handleNavigate(date: Date) {
     today = date;
-    loadTasks();
+    loadTasks(false);
   }
 
   function handleDayClick(date: Date) {
     today = date;
     view = 'daily';
-    loadTasks();
+    loadTasks(false);
   }
 
   async function handleTaskDelete(taskId: number) {
     await taskStore.deleteTask(taskId);
-    await loadTasks();
+    await loadTasks(true);
   }
 
   async function handleTaskCopyToRecents(task: Task) {
@@ -119,11 +162,37 @@
   }
 </script>
 
+<svelte:window onkeydown={handleKeyDown} />
+
 <div class="dashboard">
   <header>
     <div class="header-content">
       <div class="title-row">
         <h1>Imputador</h1>
+        <div class="history-controls">
+          <button
+            class="history-btn"
+            disabled={!canUndo}
+            onclick={handleUndo}
+            title="Undo (Ctrl+Z)"
+            aria-label="Undo"
+          >
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path d="M12.5,8C9.85,8 7.45,9 5.6,10.6L2,7V16H11L7.38,12.38C8.77,11.22 10.54,10.5 12.5,10.5C16.04,10.5 19.05,12.81 20.1,16L22.47,15.22C21.08,11.03 17.13,8 12.5,8Z" />
+            </svg>
+          </button>
+          <button
+            class="history-btn"
+            disabled={!canRedo}
+            onclick={handleRedo}
+            title="Redo (Ctrl+Y)"
+            aria-label="Redo"
+          >
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path d="M18.4,10.6C16.55,9 14.15,8 11.5,8C6.87,8 2.92,11.03 1.53,15.22L3.9,16C4.95,12.81 7.96,10.5 11.5,10.5C13.46,10.5 15.23,11.22 16.62,12.38L13,16H22V7L18.4,10.6Z" />
+            </svg>
+          </button>
+        </div>
         <button
           class="settings-btn"
           onclick={() => (showSettings = true)}
@@ -238,6 +307,35 @@
     display: flex;
     align-items: center;
     gap: 1rem;
+  }
+
+  .history-controls {
+    display: flex;
+    gap: 0.25rem;
+    margin-left: 1rem;
+  }
+
+  .history-btn {
+    background: none;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    color: var(--md-sys-color-primary);
+    border-radius: 50%;
+    transition: background-color 0.2s, opacity 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .history-btn:hover:not(:disabled) {
+    background-color: var(--md-sys-color-surface-container-high);
+  }
+
+  .history-btn:disabled {
+    color: var(--md-sys-color-outline-variant);
+    cursor: not-allowed;
+    opacity: 0.5;
   }
 
   .settings-btn {

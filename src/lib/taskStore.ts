@@ -366,6 +366,44 @@ export class TaskStore {
       }
     }
   }
+  /**
+   * Replaces all tasks for a specific week with a new set of tasks.
+   * Useful for Undo/Redo restoration.
+   */
+  async setTasksForWeek(date: Date, newTasks: Task[]): Promise<void> {
+    const db = await this.getDB();
+    const tx = db.transaction('tasks', 'readwrite');
+    const store = tx.objectStore('tasks');
+    const index = store.index('date');
+
+    // Find Monday of the current week
+    const current = new Date(date);
+    current.setHours(0, 0, 0, 0);
+    const day = current.getDay();
+    const diff = current.getDate() - day + (day === 0 ? -6 : 1);
+    const startOfWeek = new Date(current.setDate(diff));
+
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6);
+    endOfWeek.setHours(23, 59, 59, 999);
+
+    const range = IDBKeyRange.bound(startOfWeek, endOfWeek);
+    const existingTasks: Task[] = await index.getAll(range);
+
+    // Delete existing
+    for (const task of existingTasks) {
+      if (task.id) await store.delete(task.id);
+    }
+
+    // Add new (without IDs to avoid collisions, or with IDs if we want to preserve them)
+    for (const task of newTasks) {
+      const taskToSave = { ...task };
+      delete taskToSave.id; // Let DB generate new IDs or we can keep them if we use put
+      await store.add(taskToSave);
+    }
+
+    await tx.done;
+  }
 
   /**
    * Automatically distributes a total duration across available empty slots starting from a given date.
@@ -378,7 +416,6 @@ export class TaskStore {
     startDate: Date,
     totalDurationMs: number,
   ): Promise<void> {
-    await this.getDB();
     let remaining = totalDurationMs;
     const current = new Date(startDate);
     // Keep the time if it's the first day, but for subsequent days we'll start at 00:00
