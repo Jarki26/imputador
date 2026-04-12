@@ -8,13 +8,13 @@
 - [x] Task: Implement the patterned/striped styling in UI components for the new task type. 5781f28
 - [x] Task: Conductor - User Manual Verification 'Phase 1: "Ausencia Facturable" Task Type' (Protocol in workflow.md)
 
-## Phase 2: Undo/Redo System
-- [~] Task: Define the History Stack state structure (past, present, future) in a new store or extend existing ones.
-- [ ] Task: Write tests for the Undo/Redo logic (recording state, undoing an action, redoing an action, clearing future on new action).
-- [ ] Task: Implement the granular Undo/Redo stack logic.
-- [ ] Task: Write tests for UI integration (Undo/Redo buttons or keyboard shortcuts).
-- [ ] Task: Implement UI controls for Undo/Redo.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Undo/Redo System' (Protocol in workflow.md)
+## Phase 2: Undo/Redo System [checkpoint: 6b8f266]
+- [x] Task: Define the History Stack state structure (past, present, future) in a new store or extend existing ones. 4ac7823
+- [x] Task: Write tests for the Undo/Redo logic (recording state, undoing an action, redoing an action, clearing future on new action). 4ac7823
+- [x] Task: Implement the granular Undo/Redo stack logic. 4ac7823
+- [x] Task: Write tests for UI integration (Undo/Redo buttons or keyboard shortcuts). 4ac7823
+- [x] Task: Implement UI controls for Undo/Redo. 4ac7823
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Undo/Redo System' (Protocol in workflow.md)
 
 ## Phase 3: Interactive Tutorial
 - [ ] Task: Create a new `Tutorial.svelte` component to act as the overlay/step-by-step guide.
