@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { HistoryStore, type HistoryState } from './historyStore';
+import { HistoryStore, type HistoryState } from './historyStore.svelte';
 import { type Task } from './db';
 
 describe('HistoryStore', () => {
@@ -13,19 +13,19 @@ describe('HistoryStore', () => {
 
   it('should push new state and clear future', () => {
     store.push({ tasks: [initialTask, nextTask] });
-    expect(store.canUndo()).toBe(true);
-    expect(store.canRedo()).toBe(false);
+    expect(store.canUndo).toBe(true);
+    expect(store.canRedo).toBe(false);
   });
 
   it('should undo and redo', () => {
     store.push({ tasks: [initialTask, nextTask] });
     const undone = store.undo();
     expect(undone?.tasks.length).toBe(1);
-    expect(store.canRedo()).toBe(true);
+    expect(store.canRedo).toBe(true);
 
     const redone = store.redo();
     expect(redone?.tasks.length).toBe(2);
-    expect(store.canUndo()).toBe(true);
+    expect(store.canUndo).toBe(true);
   });
 
   it('should limit history size', () => {

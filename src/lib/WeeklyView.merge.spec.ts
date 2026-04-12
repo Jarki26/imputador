@@ -1,8 +1,13 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, cleanup, fireEvent } from '@testing-library/svelte';
 import WeeklyView from './WeeklyView.svelte';
+import { i18n } from './i18n.svelte';
 
 describe('WeeklyView.svelte - Merge Tasks', () => {
+  beforeEach(async () => {
+    await i18n.setLocale('es');
+  });
+
   it('should trigger a merge prompt when a task is moved adjacent to an identical one', async () => {
     cleanup();
     const onTaskUpdate = vi.fn();
@@ -42,10 +47,10 @@ describe('WeeklyView.svelte - Merge Tasks', () => {
     await fireEvent.pointerUp(window, { clientY: 600, clientX: 100, pointerId: 1 });
 
     // Check if a merge prompt is visible
-    expect(screen.getByText(/Merge identical tasks/i)).toBeDefined();
+    expect(screen.getByText('¿Combinar tareas idénticas?')).toBeDefined();
   });
 
-  it('should merge tasks when "Yes, Merge" is clicked', async () => {
+  it('should merge tasks when "Sí" is clicked', async () => {
     cleanup();
     const onTaskUpdate = vi.fn();
     const onTaskDelete = vi.fn();
@@ -78,8 +83,8 @@ describe('WeeklyView.svelte - Merge Tasks', () => {
     await fireEvent.pointerMove(window, { clientY: 600, clientX: 100, pointerId: 1 });
     await fireEvent.pointerUp(window, { clientY: 600, clientX: 100, pointerId: 1 });
 
-    // Click "Yes, Merge"
-    const confirmButton = screen.getByText(/Yes, Merge/i);
+    // Click "Sí"
+    const confirmButton = screen.getByText('Sí');
     await fireEvent.click(confirmButton);
 
     // Verify task 2 was deleted and task 1 was updated with combined range

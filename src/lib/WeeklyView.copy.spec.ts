@@ -1,8 +1,13 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, cleanup, fireEvent, act } from '@testing-library/svelte';
 import WeeklyView from './WeeklyView.svelte';
+import { i18n } from './i18n.svelte';
 
 describe('WeeklyView.svelte - Copy to Recents (Long Press)', () => {
+  beforeEach(async () => {
+    await i18n.setLocale('es');
+  });
+
   it('should trigger onTaskCopyToRecents when a task is long-pressed', async () => {
     cleanup();
     vi.useFakeTimers();
@@ -14,6 +19,7 @@ describe('WeeklyView.svelte - Copy to Recents (Long Press)', () => {
         project: 'Project C',
         startTime: new Date('2026-04-06T09:00:00Z'),
         endTime: new Date('2026-04-06T10:00:00Z'),
+        type: 'General',
       },
     ];
     render(WeeklyView, { props: { tasks, onTaskCopyToRecents } });

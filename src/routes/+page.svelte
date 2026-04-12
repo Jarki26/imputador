@@ -1,484 +1,371 @@
 <script lang="ts">
-  import TaskForm from '$lib/TaskForm.svelte';
-  import TaskList from '$lib/TaskList.svelte';
+  import { onMount } from 'svelte';
+  import { TaskStore } from '$lib/taskStore';
+  import { ConfigStore } from '$lib/configStore';
+  import { HistoryStore } from '$lib/historyStore.svelte';
   import WeeklyView from '$lib/WeeklyView.svelte';
+  import TaskList from '$lib/TaskList.svelte';
+  import TaskForm from '$lib/TaskForm.svelte';
   import Settings from '$lib/Settings.svelte';
   import Modal from '$lib/Modal.svelte';
   import Tutorial from '$lib/Tutorial.svelte';
-  import { TaskStore } from '$lib/taskStore';
-  import { ProjectStore } from '$lib/projectStore';
-  import { ConfigStore } from '$lib/configStore';
-  import { HistoryStore } from '$lib/historyStore';
-  import { formatDateForInput } from '$lib/utils';
-  import { onMount } from 'svelte';
   import type { Task } from '$lib/db';
+  import { i18n } from '$lib/i18n.svelte';
 
   const taskStore = new TaskStore();
-  const projectStore = new ProjectStore();
   const configStore = new ConfigStore();
   const historyStore = new HistoryStore();
 
-  let tasks: Task[] = $state([]);
-  let today = $state(new Date());
-  let view: 'daily' | 'weekly' = $state('weekly');
-
-  let showModal = $state(false);
-  let showSettings = $state(false);
-  let showTutorial = $state(false);
+  let tasks = $state<Task[]>([]);
   let weeklyTarget = $state(41);
-  let selectedStartTime = $state('');
-  let selectedEndTime = $state('');
-  let editingTask: Task | null = $state(null);
+  let view = $state<'weekly' | 'daily'>('weekly');
+  let selectedDate = $state(new Date());
+  let showAddModal = $state(false);
+  let showSettingsModal = $state(false);
+  let editingTask = $state<Task | null>(null);
+  let initialStartTime = $state('');
 
-  let canUndo = $state(false);
-  let canRedo = $state(false);
-
-  async function loadTasks(pushToHistory = false) {
-    let newTasks: Task[] = [];
-    if (view === 'weekly') {
-      newTasks = await taskStore.getTasksForWeek(today);
-    } else {
-      newTasks = await taskStore.getTasksForDay(today);
-    }
-    tasks = newTasks;
-
-    if (pushToHistory) {
-      historyStore.push({ tasks: [...newTasks] });
-    }
-    canUndo = historyStore.canUndo();
-    canRedo = historyStore.canRedo();
+  async function loadTasks() {
+    tasks = await taskStore.getTasksForWeek(selectedDate);
   }
 
-  $effect(() => {
-    loadTasks(false);
-  });
+  async function loadConfig() {
+    weeklyTarget = await configStore.getWeeklyHoursTarget();
+  }
 
   onMount(async () => {
     await loadTasks();
-    weeklyTarget = await configStore.getWeeklyHoursTarget();
+    await loadConfig();
   });
 
-  async function handleUndo() {
-    const prevState = historyStore.undo();
-    if (prevState) {
-      await taskStore.setTasksForWeek(today, prevState.tasks);
-      await loadTasks(false);
-    }
-  }
-
-  async function handleRedo() {
-    const nextState = historyStore.redo();
-    if (nextState) {
-      await taskStore.setTasksForWeek(today, nextState.tasks);
-      await loadTasks(false);
-    }
-  }
-
-  function handleKeyDown(e: KeyboardEvent) {
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
-      if (e.shiftKey) {
-        handleRedo();
+  async function handleTaskUpdate(
+    task: Task,
+    mode: 'normal' | 'overwrite' | 'displacement' = 'normal',
+  ) {
+    if (task.id) {
+      if (mode === 'overwrite') {
+        await taskStore.updateWithOverwrite(task.id, task);
+      } else if (mode === 'displacement') {
+        await taskStore.updateWithDisplacement(task.id, task);
       } else {
-        handleUndo();
+        await taskStore.updateTask(task.id, task);
       }
-      e.preventDefault();
-    } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'y') {
-      handleRedo();
-      e.preventDefault();
+      await loadTasks();
     }
   }
 
-  async function onTaskAdded() {
-    await loadTasks(true);
-    closeModal();
+  async function handleTaskDelete(id: number) {
+    await taskStore.deleteTask(id);
+    await loadTasks();
   }
 
   function handleSlotClick(date: Date) {
-    const start = new Date(date);
-    const end = new Date(date);
-    end.setHours(start.getHours() + 1);
-
-    selectedStartTime = formatDateForInput(start);
-    selectedEndTime = formatDateForInput(end);
+    initialStartTime = date.toISOString();
     editingTask = null;
-    showModal = true;
+    showAddModal = true;
   }
 
   function handleTaskClick(task: Task) {
     editingTask = task;
-    selectedStartTime = '';
-    selectedEndTime = '';
-    showModal = true;
+    initialStartTime = '';
+    showAddModal = true;
   }
 
-  function closeModal() {
-    showModal = false;
-    editingTask = null;
-    selectedStartTime = '';
-    selectedEndTime = '';
-  }
-
-  async function handleTaskUpdate(
-    updatedTask: Task,
-    mode: 'normal' | 'overwrite' | 'displacement' = 'normal',
-  ) {
-    if (updatedTask.id) {
-      const { id, ...data } = updatedTask;
-      if (mode === 'overwrite') {
-        await taskStore.updateWithOverwrite(id, data);
-      } else if (mode === 'displacement') {
-        await taskStore.updateWithDisplacement(id, data);
-      } else {
-        await taskStore.updateTask(id, data);
-      }
-      await loadTasks(true);
-    }
-  }
-
-  function handleNavigate(date: Date) {
-    today = date;
-    loadTasks(false);
-  }
-
-  function handleDayClick(date: Date) {
-    today = date;
-    view = 'daily';
-    loadTasks(false);
-  }
-
-  async function handleTaskDelete(taskId: number) {
-    await taskStore.deleteTask(taskId);
-    await loadTasks(true);
-  }
-
-  async function handleTaskCopyToRecents(task: Task) {
-    await taskStore.upsertRecentTask(task);
-    // Visual feedback is already handled by WeeklyView if needed, 
-    // but here we could add a toast.
-  }
-
-  async function handleSettingsSave(target: number) {
+  async function handleSaveSettings(target: number) {
     await configStore.setWeeklyHoursTarget(target);
     weeklyTarget = target;
-    showSettings = false;
+    showSettingsModal = false;
+  }
+
+  const dailyTasks = $derived(
+    tasks.filter((t) => {
+      const d1 = new Date(t.startTime);
+      const d2 = new Date(selectedDate);
+      return (
+        d1.getFullYear() === d2.getFullYear() &&
+        d1.getMonth() === d2.getMonth() &&
+        d1.getDate() === d2.getDate()
+      );
+    }),
+  );
+
+  function handleUndo() {
+    historyStore.undo();
+    loadTasks();
+  }
+
+  function handleRedo() {
+    historyStore.redo();
+    loadTasks();
+  }
+
+  function handleKeydown(e: KeyboardEvent) {
+    if (e.ctrlKey && e.key === 'z') {
+      e.preventDefault();
+      handleUndo();
+    } else if (e.ctrlKey && e.key === 'y') {
+      e.preventDefault();
+      handleRedo();
+    }
   }
 </script>
 
-<svelte:window onkeydown={handleKeyDown} />
+<svelte:window onkeydown={handleKeydown} />
 
-<div class="dashboard">
-  <header>
-    <div class="header-content">
-      <div class="title-row">
-        <h1>Imputador</h1>
-        <div class="history-controls">
-          <button
-            class="history-btn"
-            disabled={!canUndo}
-            onclick={handleUndo}
-            title="Undo (Ctrl+Z)"
-            aria-label="Undo"
-          >
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-              <path d="M12.5,8C9.85,8 7.45,9 5.6,10.6L2,7V16H11L7.38,12.38C8.77,11.22 10.54,10.5 12.5,10.5C16.04,10.5 19.05,12.81 20.1,16L22.47,15.22C21.08,11.03 17.13,8 12.5,8Z" />
-            </svg>
-          </button>
-          <button
-            class="history-btn"
-            disabled={!canRedo}
-            onclick={handleRedo}
-            title="Redo (Ctrl+Y)"
-            aria-label="Redo"
-          >
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-              <path d="M18.4,10.6C16.55,9 14.15,8 11.5,8C6.87,8 2.92,11.03 1.53,15.22L3.9,16C4.95,12.81 7.96,10.5 11.5,10.5C13.46,10.5 15.23,11.22 16.62,12.38L13,16H22V7L18.4,10.6Z" />
-            </svg>
-          </button>
-        </div>
+<main class="app-container">
+  <header class="app-header">
+    <div class="logo">
+      <h1>{i18n.t('app.title')}</h1>
+    </div>
+    <div class="header-actions">
+      <div class="view-toggle">
         <button
-          class="help-btn"
-          onclick={() => (showTutorial = true)}
-          aria-label="Help Tutorial"
-          title="Tutorial"
+          class:active={view === 'weekly'}
+          onclick={() => (view = 'weekly')}
         >
-          ❓
+          {i18n.t('app.weekly_view')}
         </button>
-        <button
-          class="settings-btn"
-          onclick={() => (showSettings = true)}
-          aria-label="Settings"
-        >
-          ⚙️
+        <button class:active={view === 'daily'} onclick={() => (view = 'daily')}>
+          {i18n.t('app.daily_view')}
         </button>
       </div>
-      <p class="subtitle">Log your workday efficiently.</p>
-    </div>
-    <div class="view-toggle">
-      <button
-        class="toggle-btn"
-        class:active={view === 'weekly'}
-        onclick={() => (view = 'weekly')}
-      >
-        Weekly View
-      </button>
-      <button
-        class="toggle-btn"
-        class:active={view === 'daily'}
-        onclick={() => {
-          view = 'daily';
-          today = new Date();
-        }}
-      >
-        Daily View
+      <button class="icon-btn" onclick={() => (showSettingsModal = true)}>
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+          <path
+            d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.35 19.43,11.03L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.97 19.05,5.05L16.56,5.9C16.04,5.53 15.47,5.22 14.86,5.03L14.49,2.37C14.45,2.13 14.24,1.95 14,1.95H10C13.76,1.95 13.55,2.13 13.51,2.37L13.14,5.03C12.53,5.22 11.96,5.53 11.44,5.9L8.95,5.05C8.73,4.97 8.46,5.05 8.34,5.27L6.34,8.73C6.22,8.95 6.27,9.22 6.46,9.37L8.57,11.03C8.53,11.35 8.5,11.67 8.5,12C8.5,12.33 8.53,12.65 8.57,12.97L6.46,14.63C6.27,14.78 6.22,15.05 6.34,15.27L8.34,18.73C8.46,18.95 8.73,19.03 8.95,18.95L11.44,18.1C11.96,18.47 12.53,18.78 13.14,18.97L13.51,21.63C13.55,21.87 13.76,22.05 14,22.05H10C10.24,22.05 10.45,21.87 10.49,21.63L10.86,18.97C11.47,18.78 12.04,18.47 12.56,18.1L15.05,18.95C15.27,19.03 15.54,18.95 15.66,18.73L17.66,15.27C17.78,15.05 17.73,14.78 17.54,14.63L19.43,12.97Z"
+          />
+        </svg>
       </button>
     </div>
   </header>
 
-  {#if view === 'daily'}
-    <div class="grid">
-      <section class="form-section">
-        <h2>Register Task</h2>
-        <TaskForm
-          {taskStore}
-          {projectStore}
-          onSuccess={onTaskAdded}
-          initialStartTime={formatDateForInput(today)}
-        />
-      </section>
-
-      <section class="list-section">
-        <h2>Daily Log - {today.toLocaleDateString()}</h2>
-        <TaskList {tasks} />
-      </section>
-    </div>
-  {:else}
-    <div class="weekly-container">
+  <div class="content-area">
+    {#if view === 'weekly'}
       <WeeklyView
-        startDate={today}
+        startDate={selectedDate}
         {tasks}
         {weeklyTarget}
         onSlotClick={handleSlotClick}
         onTaskClick={handleTaskClick}
         onTaskUpdate={handleTaskUpdate}
         onTaskDelete={handleTaskDelete}
-        onTaskCopyToRecents={handleTaskCopyToRecents}
-        onNavigate={handleNavigate}
-        onDayClick={handleDayClick}
+        onNavigate={async (date) => {
+          selectedDate = date;
+          await loadTasks();
+        }}
+        onDayClick={(date) => {
+          selectedDate = date;
+          view = 'daily';
+        }}
+        onTaskCopyToRecents={async (task) => {
+          await taskStore.addTaskToRecents(task);
+        }}
       />
-    </div>
-  {/if}
+    {:else}
+      <section class="daily-section">
+        <div class="section-header">
+          <h2>{i18n.t('daily.log')} - {selectedDate.toLocaleDateString()}</h2>
+          <button class="add-btn" onclick={() => (showAddModal = true)}>
+            {i18n.t('common.add')}
+          </button>
+        </div>
+        <TaskList tasks={dailyTasks} />
+      </section>
+    {/if}
+  </div>
 
-  {#if showModal}
-    <div class="modal-backdrop" onclick={closeModal} role="presentation">
-      <div
-        class="modal-content"
-        onclick={(e) => e.stopPropagation()}
-        role="presentation"
-      >
-        <header class="modal-header">
-          <h2>{editingTask ? 'Edit Task' : 'Register Task'}</h2>
-          <button class="close-btn" onclick={closeModal}>&times;</button>
-        </header>
-        <TaskForm
-          {taskStore}
-          {projectStore}
-          onSuccess={onTaskAdded}
-          initialStartTime={selectedStartTime}
-          initialEndTime={selectedEndTime}
-          {editingTask}
-        />
-      </div>
-    </div>
-  {/if}
+  <div class="history-controls">
+    <button
+      onclick={handleUndo}
+      disabled={historyStore.undoStack.length === 0}
+      title={`${i18n.t('common.undo')} (Ctrl+Z)`}
+    >
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+        <path d="M12.5,8C9.85,8 7.45,9 5.6,10.6L2,7V16H10.6L7.38,12.77C8.77,11.66 10.55,11 12.5,11C16.04,11 19.05,13.05 20.5,16L22.5,15.2C20.69,11.25 16.89,8.5 12.5,8Z" />
+      </svg>
+    </button>
+    <button
+      onclick={handleRedo}
+      disabled={historyStore.redoStack.length === 0}
+      title={`${i18n.t('common.redo')} (Ctrl+Y)`}
+    >
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+        <path d="M18.4,10.6C16.55,9 14.15,8 11.5,8C7.11,8 3.31,11.25 1.5,15.2L3.5,16C4.95,13.05 7.96,11 11.5,11C13.45,11 15.23,11.66 16.62,12.77L13.4,16H22V7L18.4,10.6Z" />
+      </svg>
+    </button>
+  </div>
 
-  <Modal
-    show={showSettings}
-    title="Settings"
-    onClose={() => (showSettings = false)}
-  >
-    <Settings {weeklyTarget} onSave={handleSettingsSave} />
-  </Modal>
+  <Tutorial />
+</main>
 
-  <Tutorial
-    show={showTutorial}
-    onClose={() => (showTutorial = false)}
-    setView={(v) => (view = v)}
+<Modal
+  show={showAddModal}
+  title={editingTask ? i18n.t('task.form_title_edit') : i18n.t('task.form_title_add')}
+  onClose={() => (showAddModal = false)}
+>
+  <TaskForm
+    {taskStore}
+    {editingTask}
+    {initialStartTime}
+    onSuccess={async () => {
+      showAddModal = false;
+      await loadTasks();
+    }}
   />
-</div>
+</Modal>
+
+<Modal
+  show={showSettingsModal}
+  title={i18n.t('settings.title')}
+  onClose={() => (showSettingsModal = false)}
+>
+  <Settings {weeklyTarget} onSave={handleSaveSettings} />
+</Modal>
 
 <style>
-  .dashboard {
+  .app-container {
+    height: 100vh;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    background-color: var(--md-sys-color-surface);
+    color: var(--md-sys-color-on-surface);
   }
 
-  header {
+  .app-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0.5rem 1.5rem;
+    background-color: var(--md-sys-color-surface-container);
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
   }
 
-  .title-row {
+  .logo h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--md-sys-color-primary);
+  }
+
+  .header-actions {
     display: flex;
     align-items: center;
     gap: 1rem;
   }
 
-  .history-controls {
-    display: flex;
-    gap: 0.25rem;
-    margin-left: 1rem;
-  }
-
-  .history-btn {
-    background: none;
-    border: none;
-    padding: 0.5rem;
-    cursor: pointer;
-    color: var(--md-sys-color-primary);
-    border-radius: 50%;
-    transition: background-color 0.2s, opacity 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .history-btn:hover:not(:disabled) {
-    background-color: var(--md-sys-color-surface-container-high);
-  }
-
-  .history-btn:disabled {
-    color: var(--md-sys-color-outline-variant);
-    cursor: not-allowed;
-    opacity: 0.5;
-  }
-
-  .help-btn,
-  .settings-btn {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 50%;
-    line-height: 1;
-    transition: background-color 0.2s;
-  }
-
-  .help-btn:hover,
-  .settings-btn:hover {
-    background-color: var(--md-sys-color-surface-container-high);
-  }
-
-  header h1 {
-    margin: 0;
-    color: var(--md-sys-color-primary);
-    font-size: 2.5rem;
-  }
-
-  .subtitle {
-    margin: 0.25rem 0 0 0;
-    color: var(--md-sys-color-on-surface-variant);
-  }
-
   .view-toggle {
     display: flex;
-    background-color: var(--md-sys-color-secondary-container);
+    background-color: var(--md-sys-color-surface-container-high);
     padding: 4px;
     border-radius: 20px;
   }
 
-  .toggle-btn {
-    padding: 8px 16px;
+  .view-toggle button {
+    padding: 6px 16px;
     border: none;
     background: none;
     border-radius: 16px;
     cursor: pointer;
     font-weight: 500;
-    color: var(--md-sys-color-on-secondary-container);
-    transition:
-      background-color 0.2s,
-      color 0.2s;
+    color: var(--md-sys-color-on-surface-variant);
+    transition: all 0.2s;
   }
 
-  .toggle-btn.active {
-    background-color: var(--md-sys-color-primary);
-    color: var(--md-sys-color-on-primary);
+  .view-toggle button.active {
+    background-color: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
   }
 
-  .grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    align-items: start;
-  }
-
-  @media (max-width: 800px) {
-    .grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .weekly-container {
-    height: 700px;
-  }
-
-  h2 {
-    margin: 0 0 1rem 0;
-    font-size: 1.5rem;
-    color: var(--md-sys-color-secondary);
-  }
-
-  .form-section,
-  .list-section {
-    background: var(--md-sys-color-surface);
-    padding: 1.5rem;
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  }
-
-  /* Modal Styles */
-  .modal-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+  .icon-btn {
+    background: none;
+    border: none;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    color: var(--md-sys-color-on-surface-variant);
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1000;
+    transition: background-color 0.2s;
   }
 
-  .modal-content {
-    background: var(--md-sys-color-surface);
-    padding: 2rem;
-    border-radius: 1.5rem;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    width: 90%;
-    max-width: 550px;
-    max-height: 90vh;
+  .icon-btn:hover {
+    background-color: var(--md-sys-color-surface-container-highest);
+  }
+
+  .content-area {
+    flex: 1;
+    overflow: hidden;
+    padding: 1rem;
+  }
+
+  .daily-section {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    height: 100%;
     overflow-y: auto;
   }
 
-  .modal-header {
+  .section-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
   }
 
-  .modal-header h2 {
+  .section-header h2 {
     margin: 0;
+    font-size: 1.25rem;
   }
 
-  .close-btn {
-    background: none;
+  .add-btn {
+    background-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
     border: none;
-    font-size: 2rem;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: 500;
     cursor: pointer;
-    color: var(--md-sys-color-on-surface-variant);
+    transition: opacity 0.2s;
+  }
+
+  .add-btn:hover {
+    opacity: 0.9;
+  }
+
+  .history-controls {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    display: flex;
+    gap: 0.5rem;
+    z-index: 100;
+  }
+
+  .history-controls button {
+    background-color: var(--md-sys-color-surface-container-highest);
+    color: var(--md-sys-color-primary);
+    border: 1px solid var(--md-sys-color-outline-variant);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s;
+  }
+
+  .history-controls button:hover:not(:disabled) {
+    transform: scale(1.1);
+    background-color: var(--md-sys-color-primary-container);
+  }
+
+  .history-controls button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    color: var(--md-sys-color-outline);
   }
 </style>

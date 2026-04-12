@@ -9,6 +9,7 @@
   import { TASK_TYPES } from './config';
   import Modal from './Modal.svelte';
   import type { Task, RecentTask } from './db';
+  import { i18n } from './i18n.svelte';
 
   interface Props {
     taskStore?: TaskStore;
@@ -29,39 +30,45 @@
   }: Props = $props();
 
   let errorMessage = $state('');
-  let title = $state(editingTask?.title || '');
-  let description = $state(editingTask?.description || '');
-  let project = $state(editingTask?.project || '');
-  let taskType = $state(editingTask?.type || 'General');
-  let taskDate = $state(
-    editingTask
-      ? formatDateOnlyForInput(editingTask.startTime)
-      : initialStartTime
-        ? formatDateOnlyForInput(new Date(initialStartTime))
-        : formatDateOnlyForInput(new Date()),
-  );
+  let title = $state('');
+  let description = $state('');
+  let project = $state('');
+  let taskType = $state('General');
+  let taskDate = $state(formatDateOnlyForInput(new Date()));
+  let startTimeStr = $state(formatTimeOnlyForInput(new Date()));
+  let endTimeStr = $state(formatTimeOnlyForInput(new Date(Date.now() + 3600000)));
 
-  let startTimeStr = $state(
-    editingTask
-      ? formatTimeOnlyForInput(editingTask.startTime)
-      : initialStartTime && !editingTask
-        ? formatTimeOnlyForInput(new Date(initialStartTime))
-        : formatTimeOnlyForInput(new Date()),
-  );
-
-  let endTimeStr = $state(
-    editingTask
-      ? formatTimeOnlyForInput(editingTask.endTime)
-      : initialEndTime && !editingTask
-        ? formatTimeOnlyForInput(new Date(initialEndTime))
-        : initialStartTime && !editingTask
-          ? formatTimeOnlyForInput(
-              new Date(new Date(initialStartTime).getTime() + 60 * 60 * 1000),
-            )
-          : formatTimeOnlyForInput(
-              new Date(new Date().getTime() + 60 * 60 * 1000),
-            ),
-  );
+  // Synchronization with props
+  $effect(() => {
+    if (editingTask) {
+      title = editingTask.title || '';
+      description = editingTask.description || '';
+      project = editingTask.project || '';
+      taskType = editingTask.type || 'General';
+      taskDate = formatDateOnlyForInput(editingTask.startTime);
+      startTimeStr = formatTimeOnlyForInput(editingTask.startTime);
+      endTimeStr = formatTimeOnlyForInput(editingTask.endTime);
+    } else {
+      title = '';
+      description = '';
+      project = '';
+      taskType = 'General';
+      if (initialStartTime) {
+        const start = new Date(initialStartTime);
+        taskDate = formatDateOnlyForInput(start);
+        startTimeStr = formatTimeOnlyForInput(start);
+        if (initialEndTime) {
+          endTimeStr = formatTimeOnlyForInput(new Date(initialEndTime));
+        } else {
+          endTimeStr = formatTimeOnlyForInput(new Date(start.getTime() + 3600000));
+        }
+      } else {
+        taskDate = formatDateOnlyForInput(new Date());
+        startTimeStr = formatTimeOnlyForInput(new Date());
+        endTimeStr = formatTimeOnlyForInput(new Date(Date.now() + 3600000));
+      }
+    }
+  });
 
   let startTime = $derived(`${taskDate}T${startTimeStr}`);
   let endTime = $derived(`${taskDate}T${endTimeStr}`);
@@ -164,8 +171,8 @@
       success = true;
     } catch (err) {
       errorMessage = editingTask
-        ? 'Failed to update task'
-        : 'Failed to save task';
+        ? i18n.t('task.error_update_failed')
+        : i18n.t('task.error_save_failed');
       console.error(err);
     }
 
@@ -207,7 +214,7 @@
 
     if (isSmartFill) {
       if (!startTime || (hours === 0 && minutes === 0)) {
-        errorMessage = 'Please provide a start date and a valid duration';
+        errorMessage = i18n.t('task.error_smart_fill');
         return;
       }
 
@@ -244,14 +251,14 @@
         await refreshRecentTasks();
         if (onSuccess) await onSuccess();
       } catch (err) {
-        errorMessage = 'Failed to perform smart fill';
+        errorMessage = i18n.t('task.error_save_failed'); // Or specific smart fill error if needed
         console.error(err);
       }
       return;
     }
 
     if (!startTimeStr || !endTimeStr) {
-      errorMessage = 'Please provide valid start and end times';
+      errorMessage = i18n.t('task.error_missing_times');
       return;
     }
 
@@ -263,13 +270,12 @@
     const endDay = formatDateOnlyForInput(end);
 
     if (startDay !== endDay) {
-      errorMessage =
-        'Tasks must be restricted to a single day (cannot cross 23:59)';
+      errorMessage = i18n.t('task.error_single_day');
       return;
     }
 
     if (end <= start) {
-      errorMessage = 'End time must be after start time (tasks cannot cross midnight)';
+      errorMessage = i18n.t('task.error_midnight');
       return;
     }
 
@@ -300,7 +306,7 @@
 
       await saveTask(taskData);
     } catch (err) {
-      errorMessage = 'An error occurred while checking for collisions';
+      errorMessage = i18n.t('task.error_collision_check');
       console.error(err);
     }
   }
@@ -309,13 +315,13 @@
 <form onsubmit={handleSubmit} class="task-form" novalidate>
   {#if recentTasks.length > 0}
     <div class="field">
-      <label for="recentTasks">Recent Tasks</label>
+      <label for="recentTasks">{i18n.t('task.recent_tasks')}</label>
       <select
         id="recentTasks"
         bind:value={selectedRecentIndex}
         onchange={onRecentTaskChange}
       >
-        <option value="">-- Select a recent task --</option>
+        <option value="">{i18n.t('task.select_recent')}</option>
         {#each recentTasks as task, i}
           <option value={i.toString()}>
             {task.title} ({task.project})
@@ -326,18 +332,18 @@
   {/if}
 
   <div class="field">
-    <label for="title">Title</label>
+    <label for="title">{i18n.t('task.title')}</label>
     <input id="title" name="title" type="text" required bind:value={title} />
   </div>
 
   <div class="field">
-    <label for="description">Description</label>
+    <label for="description">{i18n.t('task.description')}</label>
     <textarea id="description" name="description" bind:value={description}
     ></textarea>
   </div>
 
   <div class="field">
-    <label for="project">Project</label>
+    <label for="project">{i18n.t('task.project')}</label>
     <input
       id="project"
       name="project"
@@ -348,16 +354,19 @@
   </div>
 
   <div class="field">
-    <label for="taskType">Task Type</label>
+    <label for="taskType">{i18n.t('task.type')}</label>
     <select id="taskType" name="taskType" bind:value={taskType}>
       {#each TASK_TYPES as type (type.name)}
         <option value={type.name}>{type.name}</option>
+      {#if false} <!-- Keep i18n.t calls for static analysis if needed, though they aren't used here as names are dynamic from config -->
+        {i18n.t('task.type')}
+      {/if}
       {/each}
     </select>
   </div>
 
   <div class="field">
-    <label for="taskDate">Date</label>
+    <label for="taskDate">{i18n.t('task.date')}</label>
     <input
       id="taskDate"
       name="taskDate"
@@ -368,7 +377,7 @@
   </div>
 
   <div class="field">
-    <label for="startTime">Start Time</label>
+    <label for="startTime">{i18n.t('task.start_time')}</label>
     <input
       id="startTime"
       name="startTime"
@@ -385,8 +394,8 @@
       class="lock-btn"
       class:active={isLocked}
       onclick={() => (isLocked = !isLocked)}
-      title="Toggle Duration Lock"
-      aria-label="Toggle Duration Lock"
+      title={i18n.t('task.toggle_lock')}
+      aria-label={i18n.t('task.toggle_lock')}
       aria-pressed={isLocked}
     >
       <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
@@ -402,12 +411,12 @@
       </svg>
     </button>
     <span class="lock-info">
-      {isLocked ? 'Duración bloqueada' : 'Duración libre'}
+      {isLocked ? i18n.t('task.duration_locked') : i18n.t('task.duration_free')}
     </span>
   </div>
 
   <div class="field">
-    <label for="endTime">End Time</label>
+    <label for="endTime">{i18n.t('task.end_time')}</label>
     <input
       id="endTime"
       name="endTime"
@@ -422,13 +431,13 @@
   <div class="field checkbox-field">
     <label for="smartFill">
       <input id="smartFill" type="checkbox" bind:checked={isSmartFill} />
-      Smart Fill (auto-distribute duration in gaps)
+      {i18n.t('task.smart_fill')}
     </label>
   </div>
 
   <div class="duration-fields">
     <div class="field">
-      <label for="durationHours">Hours</label>
+      <label for="durationHours">{i18n.t('task.hours')}</label>
       <input
         id="durationHours"
         type="number"
@@ -438,7 +447,7 @@
       />
     </div>
     <div class="field">
-      <label for="durationMinutes">Minutes</label>
+      <label for="durationMinutes">{i18n.t('task.minutes')}</label>
       <input
         id="durationMinutes"
         type="number"
@@ -455,32 +464,32 @@
   {/if}
 
   <button type="submit" class="submit-btn">
-    {editingTask ? 'Update Task' : 'Add Task'}
+    {editingTask ? i18n.t('task.form_title_edit') : i18n.t('task.form_title_add')}
   </button>
 </form>
 
 <Modal
   show={showCollisionModal}
-  title="Collision Detected"
+  title={i18n.t('task.collision_title')}
   onClose={() => (showCollisionModal = false)}
 >
-  <p>This task overlaps with existing tasks. How would you like to proceed?</p>
+  <p>{i18n.t('task.collision_msg')}</p>
   <div class="modal-actions">
     <button class="btn secondary" onclick={() => (showCollisionModal = false)}>
-      Cancel
+      {i18n.t('common.cancel')}
     </button>
     <button
       class="btn primary"
       onclick={() => pendingTaskData && saveTask(pendingTaskData, 'overwrite')}
     >
-      Overwrite
+      {i18n.t('task.overwrite')}
     </button>
     <button
       class="btn primary"
       onclick={() =>
         pendingTaskData && saveTask(pendingTaskData, 'displacement')}
     >
-      Displacement
+      {i18n.t('task.displacement')}
     </button>
   </div>
 </Modal>

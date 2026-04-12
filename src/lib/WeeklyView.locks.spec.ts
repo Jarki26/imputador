@@ -1,10 +1,15 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, cleanup, fireEvent } from '@testing-library/svelte';
 import WeeklyView from './WeeklyView.svelte';
+import { i18n } from './i18n.svelte';
 
 describe('WeeklyView.svelte - Action Locks', () => {
-  it('should prevent moving a task when the movement lock is active', async () => {
+  beforeEach(async () => {
     cleanup();
+    await i18n.setLocale('es');
+  });
+
+  it('should prevent moving a task when the movement lock is active', async () => {
     const onTaskUpdate = vi.fn();
     const tasks = [
       {
@@ -17,7 +22,7 @@ describe('WeeklyView.svelte - Action Locks', () => {
     render(WeeklyView, { props: { tasks, onTaskUpdate } });
 
     // Find the move lock toggle (we'll use title or aria-label)
-    const moveLockBtn = screen.getByTitle(/Lock Movement/i);
+    const moveLockBtn = screen.getByTitle(i18n.t('weekly.lock_move'));
     expect(moveLockBtn).toBeDefined();
 
     // Activate the lock

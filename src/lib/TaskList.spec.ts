@@ -1,17 +1,21 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/svelte';
 import TaskList from './TaskList.svelte';
 import type { Task } from './db';
+import { i18n } from './i18n.svelte';
 
 describe('TaskList.svelte', () => {
-  it('should render empty state message', () => {
+  beforeEach(async () => {
     cleanup();
+    await i18n.setLocale('es');
+  });
+
+  it('should render empty state message', () => {
     render(TaskList, { props: { tasks: [] } });
-    expect(screen.getByText(/No tasks for this day/i)).toBeDefined();
+    expect(screen.getByText(/No hay tareas para este día/i)).toBeDefined();
   });
 
   it('should render a list of tasks', () => {
-    cleanup();
     const tasks: Task[] = [
       {
         id: 1,
@@ -39,7 +43,6 @@ describe('TaskList.svelte', () => {
   });
 
   it('should highlight gaps between tasks', () => {
-    cleanup();
     const tasks: Task[] = [
       {
         id: 1,
@@ -63,11 +66,10 @@ describe('TaskList.svelte', () => {
 
     render(TaskList, { props: { tasks } });
     // Gap is between 10:00 and 11:00
-    expect(screen.getByText(/Gap detected/i)).toBeDefined();
+    expect(screen.getByText(/Hueco detectado/i)).toBeDefined();
   });
 
   it('should apply is-billable-absence class to Ausencia Facturable tasks', () => {
-    cleanup();
     const tasks: Task[] = [
       {
         id: 1,

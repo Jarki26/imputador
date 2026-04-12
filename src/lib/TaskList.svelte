@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Task } from './db';
+  import { i18n } from './i18n.svelte';
 
   let { tasks = [] }: { tasks: Task[] } = $props();
 
@@ -20,14 +21,16 @@
 
 <div class="task-list">
   {#if sortedTasks.length === 0}
-    <p class="empty-message">No tasks for this day</p>
+    <p class="empty-message">{i18n.t('daily.empty')}</p>
   {:else}
     {#each sortedTasks as task, i (task.id || i)}
       {#if i > 0 && hasGap(sortedTasks[i - 1], task)}
         <div class="gap-alert">
           <p>
-            Gap detected between {formatTime(sortedTasks[i - 1].endTime)} and
-            {formatTime(task.startTime)}
+            {i18n.t('daily.gap_detected', {
+              start: formatTime(sortedTasks[i - 1].endTime),
+              end: formatTime(task.startTime),
+            })}
           </p>
         </div>
       {/if}

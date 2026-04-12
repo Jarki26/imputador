@@ -5,26 +5,26 @@ export interface HistoryState {
 }
 
 export class HistoryStore {
-  private past: HistoryState[] = [];
-  private present: HistoryState | null = null;
-  private future: HistoryState[] = [];
+  private past = $state<HistoryState[]>([]);
+  private present = $state<HistoryState | null>(null);
+  private future = $state<HistoryState[]>([]);
   private maxHistory: number;
 
   constructor(initialState?: HistoryState, maxHistory = 50) {
     if (initialState) {
-      this.present = initialState;
+      this.present = $state.snapshot(initialState);
     }
     this.maxHistory = maxHistory;
   }
 
   push(newState: HistoryState) {
     if (this.present) {
-      this.past.push(this.present);
+      this.past.push(this.present); // Already snapshotted on entry
       if (this.past.length > this.maxHistory) {
         this.past.shift();
       }
     }
-    this.present = newState;
+    this.present = $state.snapshot(newState);
     this.future = []; // Clear future on new action
   }
 
@@ -34,7 +34,8 @@ export class HistoryStore {
     if (this.present) {
       this.future.unshift(this.present);
     }
-    this.present = this.past.pop() || null;
+    const next = this.past.pop();
+    this.present = next || null;
     return this.present;
   }
 
@@ -44,16 +45,26 @@ export class HistoryStore {
     if (this.present) {
       this.past.push(this.present);
     }
-    this.present = this.future.shift() || null;
+    const next = this.future.shift();
+    this.present = next || null;
     return this.present;
   }
 
-  canUndo(): boolean {
+  get canUndo(): boolean {
     return this.past.length > 0;
   }
 
-  canRedo(): boolean {
+  get canRedo(): boolean {
     return this.future.length > 0;
+  }
+
+  // For compatibility with the bug in +page.svelte and to make it easier for templates
+  get undoStack() {
+    return this.past;
+  }
+
+  get redoStack() {
+    return this.future;
   }
 
   // For testing

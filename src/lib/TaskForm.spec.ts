@@ -3,13 +3,15 @@ import { render, screen, cleanup, fireEvent } from '@testing-library/svelte';
 import TaskForm from './TaskForm.svelte';
 import type { TaskStore } from './taskStore';
 import type { ProjectStore } from './projectStore';
+import { i18n } from './i18n.svelte';
 
 describe('TaskForm.svelte', () => {
   let mockTaskStore: vi.Mocked<Partial<TaskStore>>;
   let mockProjectStore: vi.Mocked<Partial<ProjectStore>>;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     cleanup();
+    await i18n.setLocale('es');
     mockTaskStore = {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       addTask: vi.fn().mockResolvedValue(1) as any,
@@ -28,13 +30,13 @@ describe('TaskForm.svelte', () => {
     render(TaskForm, {
       props: { taskStore: mockTaskStore, projectStore: mockProjectStore },
     });
-    expect(screen.getByLabelText(/Title/i)).toBeDefined();
-    expect(screen.getByLabelText(/Description/i)).toBeDefined();
-    expect(screen.getByLabelText(/Project/i)).toBeDefined();
-    expect(screen.getByLabelText(/Task Type/i)).toBeDefined();
-    expect(screen.getByLabelText(/Date/i)).toBeDefined();
-    expect(screen.getByLabelText(/Start Time/i)).toBeDefined();
-    expect(screen.getByLabelText(/End Time/i)).toBeDefined();
+    expect(screen.getByLabelText(/Título/i)).toBeDefined();
+    expect(screen.getByLabelText(/Descripción/i)).toBeDefined();
+    expect(screen.getByLabelText(/Proyecto/i)).toBeDefined();
+    expect(screen.getByLabelText(/Tipo de Tarea/i)).toBeDefined();
+    expect(screen.getByLabelText(/Fecha/i)).toBeDefined();
+    expect(screen.getByLabelText(/Hora de Inicio/i)).toBeDefined();
+    expect(screen.getByLabelText(/Hora de Fin/i)).toBeDefined();
   });
 
   it('should show error if times are missing', async () => {
@@ -43,14 +45,14 @@ describe('TaskForm.svelte', () => {
     });
 
     // Clear default values
-    fireEvent.input(screen.getByLabelText(/Start Time/i), { target: { value: '' } });
-    fireEvent.input(screen.getByLabelText(/End Time/i), { target: { value: '' } });
+    fireEvent.input(screen.getByLabelText(/Hora de Inicio/i), { target: { value: '' } });
+    fireEvent.input(screen.getByLabelText(/Hora de Fin/i), { target: { value: '' } });
 
-    const submitBtn = screen.getByRole('button', { name: /Add Task/i });
+    const submitBtn = screen.getByRole('button', { name: /Añadir Tarea/i });
     await fireEvent.click(submitBtn);
 
     expect(
-      await screen.findByText(/Please provide valid start and end times/i),
+      await screen.findByText(/Por favor, introduce horas de inicio y fin válidas/i),
     ).toBeDefined();
     expect(mockTaskStore.addTask).not.toHaveBeenCalled();
   });
@@ -60,23 +62,23 @@ describe('TaskForm.svelte', () => {
       props: { taskStore: mockTaskStore, projectStore: mockProjectStore },
     });
 
-    fireEvent.input(screen.getByLabelText(/Title/i), {
+    fireEvent.input(screen.getByLabelText(/Título/i), {
       target: { value: 'New Task' },
     });
-    fireEvent.input(screen.getByLabelText(/Project/i), {
+    fireEvent.input(screen.getByLabelText(/Proyecto/i), {
       target: { value: 'Project X' },
     });
-    fireEvent.input(screen.getByLabelText(/Date/i), {
+    fireEvent.input(screen.getByLabelText(/Fecha/i), {
       target: { value: '2026-04-09' },
     });
-    fireEvent.input(screen.getByLabelText(/Start Time/i), {
+    fireEvent.input(screen.getByLabelText(/Hora de Inicio/i), {
       target: { value: '09:00' },
     });
-    fireEvent.input(screen.getByLabelText(/End Time/i), {
+    fireEvent.input(screen.getByLabelText(/Hora de Fin/i), {
       target: { value: '10:00' },
     });
 
-    const submitBtn = screen.getByRole('button', { name: /Add Task/i });
+    const submitBtn = screen.getByRole('button', { name: /Añadir Tarea/i });
     await fireEvent.click(submitBtn);
 
     expect(mockTaskStore.addTask).toHaveBeenCalled();
@@ -88,26 +90,26 @@ describe('TaskForm.svelte', () => {
       props: { taskStore: mockTaskStore, projectStore: mockProjectStore },
     });
 
-    fireEvent.input(screen.getByLabelText(/Title/i), {
+    fireEvent.input(screen.getByLabelText(/Título/i), {
       target: { value: 'New Task' },
     });
-    fireEvent.input(screen.getByLabelText(/Project/i), {
+    fireEvent.input(screen.getByLabelText(/Proyecto/i), {
       target: { value: 'Project X' },
     });
-    fireEvent.input(screen.getByLabelText(/Date/i), {
+    fireEvent.input(screen.getByLabelText(/Fecha/i), {
       target: { value: '2026-04-09' },
     });
-    fireEvent.input(screen.getByLabelText(/Start Time/i), {
+    fireEvent.input(screen.getByLabelText(/Hora de Inicio/i), {
       target: { value: '09:00' },
     });
-    fireEvent.input(screen.getByLabelText(/End Time/i), {
+    fireEvent.input(screen.getByLabelText(/Hora de Fin/i), {
       target: { value: '10:00' },
     });
 
-    const submitBtn = screen.getByRole('button', { name: /Add Task/i });
+    const submitBtn = screen.getByRole('button', { name: /Añadir Tarea/i });
     await fireEvent.click(submitBtn);
 
-    expect(await screen.findByText(/Failed to save task/i)).toBeDefined();
+    expect(await screen.findByText(/Error al guardar la tarea/i)).toBeDefined();
   });
 
   describe('Default Date Behavior', () => {
@@ -117,7 +119,7 @@ describe('TaskForm.svelte', () => {
         props: { taskStore: mockTaskStore, projectStore: mockProjectStore },
       });
 
-      const dateInput = screen.getByLabelText(/Date/i) as HTMLInputElement;
+      const dateInput = screen.getByLabelText(/Fecha/i) as HTMLInputElement;
       expect(dateInput.value).toBe(today);
     });
 
@@ -133,8 +135,8 @@ describe('TaskForm.svelte', () => {
         },
       });
 
-      const dateInput = screen.getByLabelText(/Date/i) as HTMLInputElement;
-      const startTimeInput = screen.getByLabelText(/Start Time/i) as HTMLInputElement;
+      const dateInput = screen.getByLabelText(/Fecha/i) as HTMLInputElement;
+      const startTimeInput = screen.getByLabelText(/Hora de Inicio/i) as HTMLInputElement;
       expect(dateInput.value).toBe(expectedDate);
       expect(startTimeInput.value).toBe(expectedTime);
     });
@@ -146,34 +148,28 @@ describe('TaskForm.svelte', () => {
         props: { taskStore: mockTaskStore, projectStore: mockProjectStore },
       });
 
-      fireEvent.input(screen.getByLabelText(/Title/i), {
+      fireEvent.input(screen.getByLabelText(/Título/i), {
         target: { value: 'Cross-day Task' },
       });
-      fireEvent.input(screen.getByLabelText(/Project/i), {
+      fireEvent.input(screen.getByLabelText(/Proyecto/i), {
         target: { value: 'Project X' },
       });
-      fireEvent.input(screen.getByLabelText(/Date/i), {
+      fireEvent.input(screen.getByLabelText(/Fecha/i), {
         target: { value: '2026-04-09' },
       });
       // Set start time to 23:30
-      fireEvent.input(screen.getByLabelText(/Start Time/i), {
+      fireEvent.input(screen.getByLabelText(/Hora de Inicio/i), {
         target: { value: '23:30' },
       });
       
-      // Since it's a split input, we can't easily cross day with just the "End Time" input bound to the same date.
-      // But the logic in handleSubmit checks the derived full strings.
-      // If we manually change the derived endTime string to next day...
-      // Wait, the UI doesn't allow changing the date of end time separately.
-      // But we can simulate a case where the logic *might* cross day if duration is long.
-      
-      const hoursInput = screen.getByLabelText(/Hours/i) as HTMLInputElement;
+      const hoursInput = screen.getByLabelText(/Horas/i) as HTMLInputElement;
       await fireEvent.input(hoursInput, { target: { value: '1' } }); // 23:30 + 1h = 00:30 next day
 
-      const submitBtn = screen.getByRole('button', { name: /Add Task/i });
+      const submitBtn = screen.getByRole('button', { name: /Añadir Tarea/i });
       await fireEvent.click(submitBtn);
 
       expect(
-        await screen.findByText(/End time must be after start time \(tasks cannot cross midnight\)/i),
+        await screen.findByText(/La hora de fin debe ser posterior a la de inicio \(las tareas no pueden cruzar la medianoche\)/i),
       ).toBeDefined();
       expect(mockTaskStore.addTask).not.toHaveBeenCalled();
     });

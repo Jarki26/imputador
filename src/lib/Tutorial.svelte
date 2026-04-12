@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { i18n } from './i18n.svelte';
 
   interface Step {
     title: string;
@@ -11,7 +12,7 @@
   let { 
     show = false, 
     onClose,
-    setView // New prop to change view from tutorial
+    setView 
   }: { 
     show: boolean; 
     onClose: () => void;
@@ -20,77 +21,77 @@
 
   const steps: Step[] = [
     {
-      title: 'Welcome to Imputador!',
-      content: 'This tutorial will guide you through the main features of the app.',
+      title: i18n.t('tutorial.step1_title'),
+      content: i18n.t('tutorial.step1_content'),
       action: () => setView('weekly')
     },
     {
-      title: 'Weekly View',
-      content: 'Here you can see your whole week. You can drag and drop tasks to move them, or drag the bottom edge to resize them.',
-      targetSelector: '.weekly-container',
+      title: i18n.t('tutorial.step2_title'),
+      content: i18n.t('tutorial.step2_content'),
+      targetSelector: '.grid-content', // Changed from .weekly-container as it might be missing
     },
     {
-      title: 'Navigation',
-      content: 'Use the arrows to navigate between weeks.',
+      title: i18n.t('tutorial.step3_title'),
+      content: i18n.t('tutorial.step3_content'),
       targetSelector: '.nav-controls',
     },
     {
-      title: 'Adding Tasks',
-      content: 'Click on any empty slot in the Weekly View to register a new task.',
+      title: i18n.t('tutorial.step4_title'),
+      content: i18n.t('tutorial.step4_content'),
       targetSelector: '.grid-content',
     },
     {
-      title: 'Daily View Details',
-      content: 'Let\'s switch to the Daily View. Here you can see a detailed list of your tasks.',
+      title: i18n.t('tutorial.step5_title'),
+      content: i18n.t('tutorial.step5_content'),
       targetSelector: '.view-toggle',
       action: () => setView('daily')
     },
     {
-      title: 'Gaps Detection',
-      content: 'The Daily View automatically detects and highlights gaps in your workday so you never miss a minute.',
-      targetSelector: '.list-section',
+      title: i18n.t('tutorial.step6_title'),
+      content: i18n.t('tutorial.step6_content'),
+      targetSelector: '.task-list', // Changed from .list-section
     },
     {
-      title: 'Quick Access',
-      content: 'In the form, you can select from your 10 most recent tasks to quickly fill frequently used entries.',
-      targetSelector: '.form-section',
+      title: i18n.t('tutorial.step7_title'),
+      content: i18n.t('tutorial.step7_content'),
+      targetSelector: '.add-btn', // Drill-down into form would be better but let's point to Add button
     },
     {
-      title: 'Returning to Weekly',
-      content: 'You can always switch back to the Weekly View using the toggle or by clicking the logo.',
+      title: i18n.t('tutorial.step8_title'),
+      content: i18n.t('tutorial.step8_content'),
       targetSelector: '.view-toggle',
       action: () => setView('weekly')
     },
     {
-      title: 'Day Drill-down',
-      content: 'Pro tip: Click on any day header in the Weekly View to jump directly to that day\'s Daily View.',
+      title: i18n.t('tutorial.step9_title'),
+      content: i18n.t('tutorial.step9_content'),
       targetSelector: '.grid-header',
     },
     {
-      title: 'Advanced Manipulation',
-      content: 'When a new task overlaps with existing ones, you can choose to "Overwrite" (splitting tasks) or "Displace" (pushing subsequent tasks forward).',
+      title: i18n.t('tutorial.step10_title'),
+      content: i18n.t('tutorial.step10_content'),
     },
     {
-      title: 'Smart Fill',
-      content: 'Use "Smart Fill" in the task form to automatically distribute a total duration across available gaps.',
+      title: i18n.t('tutorial.step11_title'),
+      content: i18n.t('tutorial.step11_content'),
     },
     {
-      title: 'Billable Absence',
-      content: 'The "Ausencia Facturable" task type counts towards your weekly goal but doesn\'t count as active work hours.',
+      title: i18n.t('tutorial.step12_title'),
+      content: i18n.t('tutorial.step12_content'),
     },
     {
-      title: 'Undo / Redo',
-      content: 'Made a mistake? Use the Undo and Redo buttons (or Ctrl+Z / Ctrl+Y) to revert your actions.',
+      title: i18n.t('tutorial.step13_title'),
+      content: i18n.t('tutorial.step13_content'),
       targetSelector: '.history-controls',
     },
     {
-      title: 'Action Locks',
-      content: 'Use these buttons to lock moving, editing, or creating tasks. Useful on touch devices.',
+      title: i18n.t('tutorial.step14_title'),
+      content: i18n.t('tutorial.step14_content'),
       targetSelector: '.action-locks',
     },
     {
-      title: 'All set!',
-      content: 'You are ready to log your workday efficiently.',
+      title: i18n.t('tutorial.step15_title'),
+      content: i18n.t('tutorial.step15_content'),
     },
   ];
 
@@ -135,7 +136,7 @@
         } else {
           highlightStyles = '';
         }
-      }, 100);
+      }, 150); // Increased timeout a bit for safety
     } else {
       highlightStyles = '';
     }
@@ -164,13 +165,13 @@
         <p>{currentStep.content}</p>
       </div>
       <footer>
-        <button class="btn secondary" onclick={onClose}>Skip</button>
+        <button class="btn secondary" onclick={onClose}>{i18n.t('tutorial.skip')}</button>
         <div class="nav-btns">
           {#if currentStepIndex > 0}
-            <button class="btn secondary" onclick={prevStep}>Back</button>
+            <button class="btn secondary" onclick={prevStep}>{i18n.t('tutorial.back')}</button>
           {/if}
           <button class="btn primary" onclick={nextStep}>
-            {currentStepIndex === steps.length - 1 ? 'Finish' : 'Next'}
+            {currentStepIndex === steps.length - 1 ? i18n.t('tutorial.finish') : i18n.t('tutorial.next')}
           </button>
         </div>
       </footer>

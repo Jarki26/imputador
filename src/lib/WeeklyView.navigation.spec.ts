@@ -1,8 +1,13 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, cleanup, fireEvent } from '@testing-library/svelte';
 import WeeklyView from './WeeklyView.svelte';
+import { i18n } from './i18n.svelte';
 
 describe('WeeklyView.svelte - Navigation', () => {
+  beforeEach(async () => {
+    await i18n.setLocale('es');
+  });
+
   it('should trigger onNavigate when previous/next week arrows are clicked', async () => {
     cleanup();
     const onNavigate = vi.fn();
@@ -10,11 +15,11 @@ describe('WeeklyView.svelte - Navigation', () => {
     render(WeeklyView, { props: { startDate, onNavigate } });
 
     // Find previous week button
-    const prevButton = screen.getByTitle(/Previous Week/i);
+    const prevButton = screen.getByTitle('Semana Anterior');
     expect(prevButton).toBeDefined();
 
     // Find next week button
-    const nextButton = screen.getByTitle(/Next Week/i);
+    const nextButton = screen.getByTitle('Semana Siguiente');
     expect(nextButton).toBeDefined();
 
     // Click previous week
@@ -41,7 +46,7 @@ describe('WeeklyView.svelte - Navigation', () => {
     render(WeeklyView, { props: { startDate, onDayClick } });
 
     // Find the Monday header
-    const mondayHeader = screen.getByText(/Monday/i).closest('.day-header');
+    const mondayHeader = screen.getByText('Lunes').closest('.day-header');
     expect(mondayHeader).toBeDefined();
 
     // Click the header

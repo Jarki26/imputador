@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
+  import { i18n } from './i18n.svelte';
 
   interface Props {
     show: boolean;
@@ -30,7 +31,7 @@
     >
       <div class="modal-header">
         <h2 id="modal-title">{title}</h2>
-        <button class="close-btn" onclick={onClose} aria-label="Close">×</button
+        <button class="close-btn" onclick={onClose} aria-label={i18n.t('common.close')}>×</button
         >
       </div>
       <div class="modal-body">

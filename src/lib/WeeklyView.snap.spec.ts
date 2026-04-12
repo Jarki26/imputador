@@ -1,10 +1,15 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, cleanup, fireEvent, act } from '@testing-library/svelte';
 import WeeklyView from './WeeklyView.svelte';
+import { i18n } from './i18n.svelte';
 
 describe('WeeklyView.svelte - No-Gap Snapping', () => {
-  it('should trigger a snap prompt when a task is dropped near another one (e.g. 5 min gap)', async () => {
+  beforeEach(async () => {
     cleanup();
+    await i18n.setLocale('es');
+  });
+
+  it('should trigger a snap prompt when a task is dropped near another one (e.g. 5 min gap)', async () => {
     const onTaskUpdate = vi.fn();
     const tasks = [
       {
@@ -36,11 +41,10 @@ describe('WeeklyView.svelte - No-Gap Snapping', () => {
     });
 
     // Check if a snap prompt is visible
-    expect(screen.getByText(/Close the gap/i)).toBeDefined();
+    expect(screen.getByText(i18n.t('weekly.snap_title'))).toBeDefined();
   });
 
-  it('should snap the task when "Yes, Snap" is clicked', async () => {
-    cleanup();
+  it('should snap the task when "Sí" is clicked', async () => {
     const onTaskUpdate = vi.fn();
     const tasks = [
       {
@@ -68,8 +72,8 @@ describe('WeeklyView.svelte - No-Gap Snapping', () => {
       await fireEvent.pointerUp(window, { clientY: 615, clientX: 100, pointerId: 1 });
     });
 
-    // Click "Yes, Snap"
-    const confirmButton = screen.getByText(/Yes, Snap/i);
+    // Click "Sí"
+    const confirmButton = screen.getByText(i18n.t('common.yes'));
     await fireEvent.click(confirmButton);
 
     expect(onTaskUpdate).toHaveBeenCalledWith(expect.objectContaining({

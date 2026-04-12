@@ -1,20 +1,25 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, cleanup, fireEvent } from '@testing-library/svelte';
 import WeeklyView from './WeeklyView.svelte';
+import { i18n } from './i18n.svelte';
 
 describe('WeeklyView.svelte', () => {
-  it('should render a 7-day grid', () => {
+  beforeEach(async () => {
     cleanup();
+    await i18n.setLocale('es');
+  });
+
+  it('should render a 7-day grid', () => {
     render(WeeklyView, { props: { startDate: new Date('2026-04-06') } }); // Monday
 
     const days = [
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday',
-      'Sunday',
+      'Lunes',
+      'Martes',
+      'Miércoles',
+      'Jueves',
+      'Viernes',
+      'Sábado',
+      'Domingo',
     ];
     days.forEach((day) => {
       expect(screen.getByText(new RegExp(day, 'i'))).toBeDefined();
@@ -22,7 +27,6 @@ describe('WeeklyView.svelte', () => {
   });
 
   it('should render a time axis', () => {
-    cleanup();
     render(WeeklyView, { props: { startDate: new Date('2026-04-06') } });
 
     // Check for some hours
@@ -32,7 +36,6 @@ describe('WeeklyView.svelte', () => {
   });
 
   it('should display daily totals', () => {
-    cleanup();
     const tasks = [
       {
         id: 1,
@@ -44,11 +47,10 @@ describe('WeeklyView.svelte', () => {
     ];
     render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks } });
 
-    expect(screen.getAllByTitle('Billable Hours')[0]).toHaveTextContent('1.00h');
+    expect(screen.getAllByTitle('Horas Facturables')[0]).toHaveTextContent('1.00h');
   });
 
   it('should display weekly total vs target', () => {
-    cleanup();
     const tasks = [
       {
         id: 1,
@@ -71,11 +73,11 @@ describe('WeeklyView.svelte', () => {
       props: { startDate: new Date('2026-04-06'), tasks, weeklyTarget: 41 },
     });
 
-    expect(screen.getByText(/Logged: 2\.00h \/ Target: 41h/i)).toBeDefined();
+    // Registrado: 2.00h / Objetivo: 41.00h
+    expect(screen.getByText(/Registrado: 2\.00h \/ Objetivo: 41\.00h/i)).toBeDefined();
   });
 
   it('should exclude Rest tasks from daily total', () => {
-    cleanup();
     const tasks = [
       {
         id: 1,
@@ -94,12 +96,11 @@ describe('WeeklyView.svelte', () => {
     ];
     render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks } });
 
-    expect(screen.getAllByTitle('Billable Hours')[0]).toHaveTextContent('2.00h');
-    expect(screen.getAllByTitle('Rest/Non-billable Hours')[0]).toHaveTextContent('1.00h');
+    expect(screen.getAllByTitle('Horas Facturables')[0]).toHaveTextContent('2.00h');
+    expect(screen.getAllByTitle('Horas de Descanso/No facturables')[0]).toHaveTextContent('1.00h');
   });
 
   it('should calculate daily total excluding overlapping time', () => {
-    cleanup();
     const tasks = [
       {
         id: 1,
@@ -119,11 +120,10 @@ describe('WeeklyView.svelte', () => {
     // Total should be from 09:00 to 11:00 = 2.00h, NOT 1h + 1.5h = 2.5h
     render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks } });
 
-    expect(screen.getAllByTitle('Billable Hours')[0]).toHaveTextContent('2.00h');
+    expect(screen.getAllByTitle('Horas Facturables')[0]).toHaveTextContent('2.00h');
   });
 
   it('should render task blocks on the grid', () => {
-    cleanup();
     const tasks = [
       {
         id: 1,
@@ -144,7 +144,6 @@ describe('WeeklyView.svelte', () => {
   });
 
   it('should highlight overlapping tasks with an error state', () => {
-    cleanup();
     const tasks = [
       {
         id: 1,
@@ -172,7 +171,6 @@ describe('WeeklyView.svelte', () => {
   });
 
   it('should trigger onSlotClick when an empty slot is clicked', async () => {
-    cleanup();
     const onSlotClick = vi.fn();
     const startDate = new Date('2026-04-06'); // Monday
     render(WeeklyView, { props: { startDate, onSlotClick } });
@@ -194,7 +192,6 @@ describe('WeeklyView.svelte', () => {
   });
 
   it('should trigger onTaskClick when a task block is clicked', async () => {
-    cleanup();
     const onTaskClick = vi.fn();
     const tasks = [
       {
@@ -214,7 +211,6 @@ describe('WeeklyView.svelte', () => {
   });
 
   it('should trigger onTaskUpdate when a task is dragged to a new time', async () => {
-    cleanup();
     const onTaskUpdate = vi.fn();
     const tasks = [
       {
@@ -244,7 +240,6 @@ describe('WeeklyView.svelte', () => {
   });
 
   it('should trigger onTaskUpdate when a task is resized', async () => {
-    cleanup();
     const onTaskUpdate = vi.fn();
     const tasks = [
       {
@@ -275,7 +270,6 @@ describe('WeeklyView.svelte', () => {
   });
 
   it('should remove has-overlap class when tasks no longer overlap', async () => {
-    cleanup();
     const tasks = [
       {
         id: 1,
@@ -293,7 +287,7 @@ describe('WeeklyView.svelte', () => {
       },
     ];
 
-    const { component, rerender } = render(WeeklyView, {
+    const { rerender } = render(WeeklyView, {
       props: { startDate: new Date('2026-04-06'), tasks },
     });
 
@@ -323,7 +317,6 @@ describe('WeeklyView.svelte', () => {
   });
 
   it('should remove has-overlap class during drag when overlap is resolved', async () => {
-    cleanup();
     const tasks = [
       {
         id: 1,

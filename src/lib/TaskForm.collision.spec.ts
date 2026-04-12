@@ -3,18 +3,22 @@ import { render, screen, cleanup, fireEvent } from '@testing-library/svelte';
 import TaskForm from './TaskForm.svelte';
 import type { TaskStore } from './taskStore';
 import type { ProjectStore } from './projectStore';
+import { i18n } from './i18n.svelte';
 
 describe('TaskForm.svelte Collision Detection', () => {
   let mockTaskStore: vi.Mocked<Partial<TaskStore>>;
   let mockProjectStore: vi.Mocked<Partial<ProjectStore>>;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     cleanup();
+    await i18n.setLocale('es');
     mockTaskStore = {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       addTask: vi.fn().mockResolvedValue(1) as any,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       getTasksForDay: vi.fn().mockResolvedValue([]) as any,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      getRecentTasks: vi.fn().mockResolvedValue([]) as any,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       addWithOverwrite: vi.fn().mockResolvedValue(1) as any,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -27,10 +31,11 @@ describe('TaskForm.svelte Collision Detection', () => {
   });
 
   it('should detect collision and NOT call addTask immediately', async () => {
-    const start = new Date(2026, 3, 11, 10, 0);
-    const end = new Date(2026, 3, 11, 11, 0);
+    const today = new Date().toISOString().split('T')[0];
+    const start = new Date(`${today}T10:00:00`);
+    const end = new Date(`${today}T11:00:00`);
 
-    // Mock existing task from 10:00 to 11:00 LOCAL
+    // Mock existing task
     mockTaskStore.getTasksForDay.mockResolvedValue([
       {
         id: 1,
@@ -44,30 +49,34 @@ describe('TaskForm.svelte Collision Detection', () => {
       props: { taskStore: mockTaskStore, projectStore: mockProjectStore },
     });
 
-    // Fill form with colliding task (10:30 to 11:30 LOCAL)
-    fireEvent.input(screen.getByLabelText(/Title/i), {
+    // Fill form with colliding task
+    fireEvent.input(screen.getByLabelText(/Título/i), {
       target: { value: 'New Colliding Task' },
     });
-    fireEvent.input(screen.getByLabelText(/Start Time/i), {
-      target: { value: '2026-04-11T10:30' },
+    fireEvent.input(screen.getByLabelText(/Fecha/i), {
+      target: { value: today },
     });
-    fireEvent.input(screen.getByLabelText(/End Time/i), {
-      target: { value: '2026-04-11T11:30' },
+    fireEvent.input(screen.getByLabelText(/Hora de Inicio/i), {
+      target: { value: '10:30' },
+    });
+    fireEvent.input(screen.getByLabelText(/Hora de Fin/i), {
+      target: { value: '11:30' },
     });
 
-    const submitBtn = screen.getByRole('button', { name: /Add Task/i });
+    const submitBtn = screen.getByRole('button', { name: /Añadir Tarea/i });
     await fireEvent.click(submitBtn);
 
     // Should NOT have called addTask yet because collision was detected
     expect(mockTaskStore.addTask).not.toHaveBeenCalled();
 
     // Should show collision modal
-    expect(await screen.findByText(/Collision Detected/i)).toBeDefined();
+    expect(await screen.findByText(/Colisión Detectada/i)).toBeDefined();
   });
 
   it('should call addWithOverwrite when Overwrite is clicked in modal', async () => {
-    const start = new Date(2026, 3, 11, 10, 0);
-    const end = new Date(2026, 3, 11, 11, 0);
+    const today = new Date().toISOString().split('T')[0];
+    const start = new Date(`${today}T10:00:00`);
+    const end = new Date(`${today}T11:00:00`);
 
     mockTaskStore.getTasksForDay.mockResolvedValue([
       {
@@ -82,20 +91,23 @@ describe('TaskForm.svelte Collision Detection', () => {
       props: { taskStore: mockTaskStore, projectStore: mockProjectStore },
     });
 
-    fireEvent.input(screen.getByLabelText(/Title/i), {
+    fireEvent.input(screen.getByLabelText(/Título/i), {
       target: { value: 'New' },
     });
-    fireEvent.input(screen.getByLabelText(/Start Time/i), {
-      target: { value: '2026-04-11T10:30' },
+    fireEvent.input(screen.getByLabelText(/Fecha/i), {
+      target: { value: today },
     });
-    fireEvent.input(screen.getByLabelText(/End Time/i), {
-      target: { value: '2026-04-11T11:30' },
+    fireEvent.input(screen.getByLabelText(/Hora de Inicio/i), {
+      target: { value: '10:30' },
+    });
+    fireEvent.input(screen.getByLabelText(/Hora de Fin/i), {
+      target: { value: '11:30' },
     });
 
-    await fireEvent.click(screen.getByRole('button', { name: /Add Task/i }));
+    await fireEvent.click(screen.getByRole('button', { name: /Añadir Tarea/i }));
 
     const overwriteBtn = await screen.findByRole('button', {
-      name: /Overwrite/i,
+      name: /Sobrescribir/i,
     });
     await fireEvent.click(overwriteBtn);
 
@@ -104,8 +116,9 @@ describe('TaskForm.svelte Collision Detection', () => {
   });
 
   it('should call addWithDisplacement when Displacement is clicked in modal', async () => {
-    const start = new Date(2026, 3, 11, 10, 0);
-    const end = new Date(2026, 3, 11, 11, 0);
+    const today = new Date().toISOString().split('T')[0];
+    const start = new Date(`${today}T10:00:00`);
+    const end = new Date(`${today}T11:00:00`);
 
     mockTaskStore.getTasksForDay.mockResolvedValue([
       {
@@ -120,20 +133,23 @@ describe('TaskForm.svelte Collision Detection', () => {
       props: { taskStore: mockTaskStore, projectStore: mockProjectStore },
     });
 
-    fireEvent.input(screen.getByLabelText(/Title/i), {
+    fireEvent.input(screen.getByLabelText(/Título/i), {
       target: { value: 'New' },
     });
-    fireEvent.input(screen.getByLabelText(/Start Time/i), {
-      target: { value: '2026-04-11T10:30' },
+    fireEvent.input(screen.getByLabelText(/Fecha/i), {
+      target: { value: today },
     });
-    fireEvent.input(screen.getByLabelText(/End Time/i), {
-      target: { value: '2026-04-11T11:30' },
+    fireEvent.input(screen.getByLabelText(/Hora de Inicio/i), {
+      target: { value: '10:30' },
+    });
+    fireEvent.input(screen.getByLabelText(/Hora de Fin/i), {
+      target: { value: '11:30' },
     });
 
-    await fireEvent.click(screen.getByRole('button', { name: /Add Task/i }));
+    await fireEvent.click(screen.getByRole('button', { name: /Añadir Tarea/i }));
 
     const displacementBtn = await screen.findByRole('button', {
-      name: /Displacement/i,
+      name: /Desplazamiento/i,
     });
     await fireEvent.click(displacementBtn);
 

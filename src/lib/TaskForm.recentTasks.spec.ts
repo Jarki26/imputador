@@ -1,23 +1,21 @@
 import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/svelte';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import TaskForm from './TaskForm.svelte';
-import { TaskStore } from './taskStore';
+import { i18n } from './i18n.svelte';
 import type { RecentTask } from './db';
 
 describe('TaskForm Recent Tasks UI', () => {
   let mockTaskStore: any;
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    cleanup();
+    await i18n.setLocale('es');
     mockTaskStore = {
       getRecentTasks: vi.fn().mockResolvedValue([]),
       getTasksForDay: vi.fn().mockResolvedValue([]),
       addTask: vi.fn().mockResolvedValue(1),
       purgeHistory: vi.fn().mockResolvedValue(undefined),
     };
-  });
-
-  afterEach(() => {
-    cleanup();
   });
 
   it('should render the Recent Tasks dropdown when tasks are available', async () => {
@@ -33,9 +31,9 @@ describe('TaskForm Recent Tasks UI', () => {
     ];
     mockTaskStore.getRecentTasks.mockResolvedValue(recentTasks);
 
-    render(TaskForm, { taskStore: mockTaskStore as any });
+    render(TaskForm, { props: { taskStore: mockTaskStore as any } });
 
-    const select = await screen.findByLabelText(/Recent Tasks/i);
+    const select = await screen.findByLabelText(/Tareas Recientes/i);
     expect(select).toBeDefined();
     expect(screen.getByText('Recent Task 1 (Project 1)')).toBeDefined();
   });
@@ -53,16 +51,16 @@ describe('TaskForm Recent Tasks UI', () => {
     ];
     mockTaskStore.getRecentTasks.mockResolvedValue(recentTasks);
 
-    render(TaskForm, { taskStore: mockTaskStore as any });
+    render(TaskForm, { props: { taskStore: mockTaskStore as any } });
 
-    const select = await screen.findByLabelText(/Recent Tasks/i);
+    const select = await screen.findByLabelText(/Tareas Recientes/i);
     await fireEvent.change(select, { target: { value: '0' } });
 
     await waitFor(() => {
-      const titleInput = screen.getByLabelText('Title') as HTMLInputElement;
-      const descInput = screen.getByLabelText('Description') as HTMLTextAreaElement;
-      const projectInput = screen.getByLabelText('Project') as HTMLInputElement;
-      const typeSelect = screen.getByLabelText('Task Type') as HTMLSelectElement;
+      const titleInput = screen.getByLabelText(/Título/i) as HTMLInputElement;
+      const descInput = screen.getByLabelText(/Descripción/i) as HTMLTextAreaElement;
+      const projectInput = screen.getByLabelText(/Proyecto/i) as HTMLInputElement;
+      const typeSelect = screen.getByLabelText(/Tipo de Tarea/i) as HTMLSelectElement;
 
       expect(titleInput.value).toBe('Recent Task 1');
       expect(descInput.value).toBe('Desc 1');

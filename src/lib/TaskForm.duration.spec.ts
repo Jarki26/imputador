@@ -3,13 +3,15 @@ import { render, screen, cleanup, fireEvent } from '@testing-library/svelte';
 import TaskForm from './TaskForm.svelte';
 import type { TaskStore } from './taskStore';
 import type { ProjectStore } from './projectStore';
+import { i18n } from './i18n.svelte';
 
 describe('TaskForm.svelte Duration Editing', () => {
   let mockTaskStore: vi.Mocked<Partial<TaskStore>>;
   let mockProjectStore: vi.Mocked<Partial<ProjectStore>>;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     cleanup();
+    await i18n.setLocale('es');
     mockTaskStore = {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       addTask: vi.fn().mockResolvedValue(1) as any,
@@ -28,8 +30,8 @@ describe('TaskForm.svelte Duration Editing', () => {
     render(TaskForm, {
       props: { taskStore: mockTaskStore, projectStore: mockProjectStore },
     });
-    expect(screen.getByLabelText(/Hours/i)).toBeDefined();
-    expect(screen.getByLabelText(/Minutes/i)).toBeDefined();
+    expect(screen.getByLabelText(/Horas/i)).toBeDefined();
+    expect(screen.getByLabelText(/Minutos/i)).toBeDefined();
   });
 
   it('should update End Time when Duration (Hours/Minutes) changes', async () => {
@@ -41,15 +43,15 @@ describe('TaskForm.svelte Duration Editing', () => {
       },
     });
 
-    const hoursInput = screen.getByLabelText(/Hours/i) as HTMLInputElement;
-    const minutesInput = screen.getByLabelText(/Minutes/i) as HTMLInputElement;
-    const endTimeInput = screen.getByLabelText(/End Time/i) as HTMLInputElement;
+    const hoursInput = screen.getByLabelText(/Horas/i) as HTMLInputElement;
+    const minutesInput = screen.getByLabelText(/Minutos/i) as HTMLInputElement;
+    const endTimeInput = screen.getByLabelText(/Hora de Fin/i) as HTMLInputElement;
 
     await fireEvent.input(hoursInput, { target: { value: '1' } });
     await fireEvent.input(minutesInput, { target: { value: '30' } });
 
-    // 00:00 (due to initialStartTime provided) + 1h 30m = 01:30
-    expect(endTimeInput.value).toBe('01:30');
+    // 09:00 (due to initialStartTime provided) + 1h 30m = 10:30
+    expect(endTimeInput.value).toBe('10:30');
   });
 
   it('should update Duration when End Time changes', async () => {
@@ -62,11 +64,11 @@ describe('TaskForm.svelte Duration Editing', () => {
       },
     });
 
-    const hoursInput = screen.getByLabelText(/Hours/i) as HTMLInputElement;
-    const minutesInput = screen.getByLabelText(/Minutes/i) as HTMLInputElement;
-    const endTimeInput = screen.getByLabelText(/End Time/i) as HTMLInputElement;
+    const hoursInput = screen.getByLabelText(/Horas/i) as HTMLInputElement;
+    const minutesInput = screen.getByLabelText(/Minutos/i) as HTMLInputElement;
+    const endTimeInput = screen.getByLabelText(/Hora de Fin/i) as HTMLInputElement;
 
-    // Start 00:00, End 01:00 (default for initialStartTime)
+    // Start 09:00, End 10:00 (default for initialStartTime)
     expect(hoursInput.value).toBe('1');
     expect(minutesInput.value).toBe('0');
 
@@ -74,8 +76,8 @@ describe('TaskForm.svelte Duration Editing', () => {
       target: { value: '10:45' },
     });
 
-    // 00:00 to 10:45 = 10h 45m
-    expect(hoursInput.value).toBe('10');
+    // 09:00 to 10:45 = 1h 45m
+    expect(hoursInput.value).toBe('1');
     expect(minutesInput.value).toBe('45');
   });
 
@@ -115,8 +117,8 @@ describe('TaskForm.svelte Duration Editing', () => {
       });
 
       const lockBtn = screen.getByTitle(/Toggle Duration Lock/i);
-      const startTimeInput = screen.getByLabelText(/Start Time/i) as HTMLInputElement;
-      const endTimeInput = screen.getByLabelText(/End Time/i) as HTMLInputElement;
+      const startTimeInput = screen.getByLabelText(/Hora de Inicio/i) as HTMLInputElement;
+      const endTimeInput = screen.getByLabelText(/Hora de Fin/i) as HTMLInputElement;
 
       // Activate lock
       await fireEvent.click(lockBtn);
@@ -138,21 +140,20 @@ describe('TaskForm.svelte Duration Editing', () => {
         },
       });
 
-      const startTimeInput = screen.getByLabelText(/Start Time/i) as HTMLInputElement;
-      const endTimeInput = screen.getByLabelText(/End Time/i) as HTMLInputElement;
+      const startTimeInput = screen.getByLabelText(/Hora de Inicio/i) as HTMLInputElement;
+      const endTimeInput = screen.getByLabelText(/Hora de Fin/i) as HTMLInputElement;
 
       // Lock is INACTIVE by default
 
       // Change Start Time to 08:00
       await fireEvent.input(startTimeInput, { target: { value: '08:00' } });
 
-      // End Time should stay at 01:00 (initialized from start 00:00)
-      expect(endTimeInput.value).toBe('01:00');
+      // End Time should stay at 10:00
+      expect(endTimeInput.value).toBe('10:00');
       
-      const hoursInput = screen.getByLabelText(/Hours/i) as HTMLInputElement;
-      // Start 08:00, End 01:00. End < Start. Duration logic doesn't update.
-      // Initial duration was 1h.
-      expect(hoursInput.value).toBe('1');
+      const hoursInput = screen.getByLabelText(/Horas/i) as HTMLInputElement;
+      // 08:00 to 10:00 = 2h
+      expect(hoursInput.value).toBe('2');
     });
   });
 });

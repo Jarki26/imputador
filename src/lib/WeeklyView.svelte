@@ -2,6 +2,7 @@
   import type { Task } from './db';
   import { calculateWorkHours, calculateGoalAbsenceHours } from './utils';
   import { isBillable } from './config';
+  import { i18n } from './i18n.svelte';
 
   let {
     startDate = new Date(),
@@ -92,7 +93,16 @@
   });
 
   function formatDay(date: Date): string {
-    return date.toLocaleDateString('en-US', { weekday: 'long' });
+    const dayNames = [
+      'sunday',
+      'monday',
+      'tuesday',
+      'wednesday',
+      'thursday',
+      'friday',
+      'saturday',
+    ];
+    return i18n.t(`days.${dayNames[date.getDay()]}`);
   }
 
   function formatTime(hour: number): string {
@@ -103,7 +113,7 @@
     if (onTaskCopyToRecents) {
       onTaskCopyToRecents(task);
       // Feedback visual
-      const taskEl = document.querySelector(`[aria-label="Edit task: ${task.title}"]`);
+      const taskEl = document.querySelector(`[aria-label="${i18n.t('weekly.edit_task', { title: task.title })}"]`);
       if (taskEl) {
         taskEl.classList.add('copied-feedback');
         setTimeout(() => taskEl.classList.remove('copied-feedback'), 1000);
@@ -532,8 +542,8 @@
           prev.setDate(prev.getDate() - 7);
           if (onNavigate) onNavigate(prev);
         }}
-        title="Previous Week"
-        aria-label="Previous Week"
+        title={i18n.t('weekly.prev_week')}
+        aria-label={i18n.t('weekly.prev_week')}
       >
         <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
           <path d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
@@ -546,8 +556,8 @@
           next.setDate(next.getDate() + 7);
           if (onNavigate) onNavigate(next);
         }}
-        title="Next Week"
-        aria-label="Next Week"
+        title={i18n.t('weekly.next_week')}
+        aria-label={i18n.t('weekly.next_week')}
       >
         <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
           <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
@@ -555,7 +565,7 @@
       </button>
     </div>
     <div class="weekly-summary">
-      Logged: {calculateWorkHours(tasks).toFixed(2)}h / Target: {(
+      {i18n.t('weekly.logged')}: {calculateWorkHours(tasks).toFixed(2)}h / {i18n.t('weekly.target')}: {(
         weeklyTarget - calculateGoalAbsenceHours(tasks)
       ).toFixed(2)}h
     </div>
@@ -570,15 +580,15 @@
           onkeydown={(e) => e.key === 'Enter' && onDayClick && onDayClick(day)}
           role="button"
           tabindex="0"
-          aria-label="View daily details for {formatDay(day)}"
+          aria-label={i18n.t('weekly.view_daily', { day: formatDay(day) })}
         >
           <span class="day-name">{formatDay(day)}</span>
           <span class="day-date">{day.toLocaleDateString()}</span>
           <div class="totals">
-            <span class="day-total" title="Billable Hours">
+            <span class="day-total" title={i18n.t('weekly.billable_hours')}>
               {getDailyTotal(day)}h
             </span>
-            <span class="day-total-rest" title="Rest/Non-billable Hours">
+            <span class="day-total-rest" title={i18n.t('weekly.rest_hours')}>
               {getDailyRestTotal(day)}h
             </span>
           </div>
@@ -606,9 +616,10 @@
                   e.key === 'Enter' && handleSlotClick(day, hour)}
                 role="button"
                 tabindex="0"
-                aria-label="Add task at {formatTime(
-                  hour,
-                )} on {day.toLocaleDateString()}"
+                aria-label={i18n.t('weekly.add_task_at', {
+                  time: formatTime(hour),
+                  date: day.toLocaleDateString(),
+                })}
               ></div>
             {/each}
             {#each getTasksForDay(day) as task (task.id)}
@@ -634,7 +645,7 @@
                 }}
                 role="button"
                 tabindex="0"
-                aria-label="Edit task: {task.title}"
+                aria-label={i18n.t('weekly.edit_task', { title: task.title })}
               >
                 <button
                   class="delete-btn"
@@ -652,8 +663,8 @@
                         onTaskDelete(task.id);
                     }
                   }}
-                  title="Delete Task"
-                  aria-label="Delete task: {task.title}"
+                  title={i18n.t('common.delete')}
+                  aria-label={i18n.t('weekly.delete_task', { title: task.title })}
                 >
                   <svg
                     viewBox="0 0 24 24"
@@ -691,10 +702,8 @@
 {#if mergeProposal}
   <div class="merge-modal-backdrop" onclick={() => (mergeProposal = null)} role="presentation">
     <div class="merge-modal" onclick={(e) => e.stopPropagation()} role="presentation">
-      <h3>Merge identical tasks?</h3>
-      <p>
-        These tasks are consecutive and identical. Would you like to merge them into a single record?
-      </p>
+      <h3>{i18n.t('weekly.merge_title')}</h3>
+      <p>{i18n.t('weekly.merge_msg')}</p>
       <div class="merge-details">
         <div>
           <strong>{mergeProposal.task1.title}</strong> ({mergeProposal.task1.project})
@@ -709,8 +718,8 @@
             onTaskUpdate(mergeProposal.movedTask);
           }
           mergeProposal = null;
-        }}>No</button>
-        <button class="btn-confirm" onclick={handleMerge}>Yes, Merge</button>
+        }}>{i18n.t('common.no')}</button>
+        <button class="btn-confirm" onclick={handleMerge}>{i18n.t('common.yes')}</button>
       </div>
     </div>
   </div>
@@ -719,10 +728,11 @@
 {#if snapProposal}
   <div class="merge-modal-backdrop" onclick={() => (snapProposal = null)} role="presentation">
     <div class="merge-modal" onclick={(e) => e.stopPropagation()} role="presentation">
-      <h3>Close the gap?</h3>
+      <h3>{i18n.t('weekly.snap_title')}</h3>
       <p>
-        There is a small gap between this task and the {snapProposal.snapTo === 'before' ? 'previous' : 'next'} one. 
-        Would you like to snap them together?
+        {i18n.t('weekly.snap_msg', {
+          side: i18n.t(`weekly.snap_${snapProposal.snapTo}`),
+        })}
       </p>
       <div class="merge-actions">
         <button class="btn-cancel" onclick={() => {
@@ -730,8 +740,8 @@
             onTaskUpdate(snapProposal.task);
           }
           snapProposal = null;
-        }}>No</button>
-        <button class="btn-confirm" onclick={handleSnap}>Yes, Snap</button>
+        }}>{i18n.t('common.no')}</button>
+        <button class="btn-confirm" onclick={handleSnap}>{i18n.t('common.yes')}</button>
       </div>
     </div>
   </div>
@@ -740,26 +750,24 @@
 {#if collisionProposal}
   <div class="merge-modal-backdrop" onclick={() => (collisionProposal = null)} role="presentation">
     <div class="merge-modal" onclick={(e) => e.stopPropagation()} role="presentation">
-      <h3>Collision Detected</h3>
-      <p>
-        This move overlaps with existing tasks. How would you like to proceed?
-      </p>
+      <h3>{i18n.t('weekly.collision_move_title')}</h3>
+      <p>{i18n.t('weekly.collision_move_msg')}</p>
       <div class="merge-actions">
         <button class="btn-cancel" onclick={() => {
           collisionProposal = null;
-        }}>Cancel</button>
+        }}>{i18n.t('common.cancel')}</button>
         <button class="btn-confirm" onclick={() => {
           if (collisionProposal && onTaskUpdate) {
             onTaskUpdate(collisionProposal, 'overwrite');
           }
           collisionProposal = null;
-        }}>Overwrite</button>
+        }}>{i18n.t('task.overwrite')}</button>
         <button class="btn-confirm" onclick={() => {
           if (collisionProposal && onTaskUpdate) {
             onTaskUpdate(collisionProposal, 'displacement');
           }
           collisionProposal = null;
-        }}>Displace</button>
+        }}>{i18n.t('weekly.displace')}</button>
       </div>
     </div>
   </div>
@@ -770,8 +778,8 @@
     class="lock-btn"
     class:active={locks.move}
     onclick={() => (locks.move = !locks.move)}
-    title="Lock Movement"
-    aria-label="Toggle Movement Lock"
+    title={i18n.t('weekly.lock_move')}
+    aria-label={i18n.t('weekly.toggle_lock_move')}
   >
     <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
       <path
@@ -780,14 +788,14 @@
           : 'M12,17A3,3 0 0,1 9,14A3,3 0 0,1 12,11A3,3 0 0,1 15,14A3,3 0 0,1 12,17M18,8H17V6A5,5 0 0,0 12,1A5,5 0 0,0 7,6V8H6A2,2 0 0,0 4,10V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V10A2,2 0 0,0 18,8M9,6A3,3 0 0,1 12,3A3,3 0 0,1 15,6V8H9V6Z'}
       />
     </svg>
-    <span>Move</span>
+    <span>{i18n.t('weekly.move')}</span>
   </button>
   <button
     class="lock-btn"
     class:active={locks.edit}
     onclick={() => (locks.edit = !locks.edit)}
-    title="Lock Editing"
-    aria-label="Toggle Editing Lock"
+    title={i18n.t('weekly.lock_edit')}
+    aria-label={i18n.t('weekly.toggle_lock_edit')}
   >
     <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
       <path
@@ -796,14 +804,14 @@
           : 'M12,17A3,3 0 0,1 9,14A3,3 0 0,1 12,11A3,3 0 0,1 15,14A3,3 0 0,1 12,17M18,8H17V6A5,5 0 0,0 12,1A5,5 0 0,0 7,6V8H6A2,2 0 0,0 4,10V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V10A2,2 0 0,0 18,8M9,6A3,3 0 0,1 12,3A3,3 0 0,1 15,6V8H9V6Z'}
       />
     </svg>
-    <span>Edit</span>
+    <span>{i18n.t('weekly.edit')}</span>
   </button>
   <button
     class="lock-btn"
     class:active={locks.create}
     onclick={() => (locks.create = !locks.create)}
-    title="Lock Creation"
-    aria-label="Toggle Creation Lock"
+    title={i18n.t('weekly.lock_create')}
+    aria-label={i18n.t('weekly.toggle_lock_create')}
   >
     <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
       <path
@@ -812,7 +820,7 @@
           : 'M12,17A3,3 0 0,1 9,14A3,3 0 0,1 12,11A3,3 0 0,1 15,14A3,3 0 0,1 12,17M18,8H17V6A5,5 0 0,0 12,1A5,5 0 0,0 7,6V8H6A2,2 0 0,0 4,10V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V10A2,2 0 0,0 18,8M9,6A3,3 0 0,1 12,3A3,3 0 0,1 15,6V8H9V6Z'}
       />
     </svg>
-    <span>Create</span>
+    <span>{i18n.t('weekly.create')}</span>
   </button>
 </div>
 
@@ -1275,6 +1283,10 @@
     text-overflow: ellipsis;
     opacity: 0.85;
     font-weight: 500;
+  }
+
+  .task-title, .task-project {
+    user-select: text;
   }
 
   .task-duration {
