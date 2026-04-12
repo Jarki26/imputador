@@ -45,18 +45,22 @@
     editingTask
       ? formatTimeOnlyForInput(editingTask.startTime)
       : initialStartTime && !editingTask
-        ? '00:00'
+        ? formatTimeOnlyForInput(new Date(initialStartTime))
         : formatTimeOnlyForInput(new Date()),
   );
 
   let endTimeStr = $state(
     editingTask
       ? formatTimeOnlyForInput(editingTask.endTime)
-      : initialStartTime && !editingTask
-        ? '01:00'
-        : formatTimeOnlyForInput(
-            new Date(new Date().getTime() + 60 * 60 * 1000),
-          ),
+      : initialEndTime && !editingTask
+        ? formatTimeOnlyForInput(new Date(initialEndTime))
+        : initialStartTime && !editingTask
+          ? formatTimeOnlyForInput(
+              new Date(new Date(initialStartTime).getTime() + 60 * 60 * 1000),
+            )
+          : formatTimeOnlyForInput(
+              new Date(new Date().getTime() + 60 * 60 * 1000),
+            ),
   );
 
   let startTime = $derived(`${taskDate}T${startTimeStr}`);

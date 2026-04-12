@@ -121,10 +121,10 @@ describe('TaskForm.svelte', () => {
       expect(dateInput.value).toBe(today);
     });
 
-    it('should respect the initialStartTime if provided and set time to 00:00', () => {
+    it('should respect the initialStartTime if provided and its time', () => {
       const customDate = '2026-05-20T10:00';
       const expectedDate = '2026-05-20';
-      const expectedTime = '00:00';
+      const expectedTime = '10:00';
       render(TaskForm, {
         props: { 
           taskStore: mockTaskStore, 
