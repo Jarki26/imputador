@@ -1,13 +1,13 @@
 # Implementation Plan: TaskForm UX Improvements (Section 4.2)
 
 ## Phase 1: Duration Lock UI and Logic
-- [ ] Task: Write failing tests for Duration Lock UI state and interactions in `src/lib/TaskForm.duration.spec.ts`.
-- [ ] Task: Implement Duration Lock padlock icon in `TaskForm.svelte`.
-- [ ] Task: Implement state management for the lock (active/inactive).
-- [ ] Task: Implement logic: changing start time adjusts end time when locked.
-- [ ] Task: Implement logic: changing start time adjusts duration when unlocked.
-- [ ] Task: Ensure all duration lock tests pass.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Duration Lock UI and Logic' (Protocol in workflow.md)
+- [x] Task: Write failing tests for Duration Lock UI state and interactions in `src/lib/TaskForm.duration.spec.ts`.
+- [x] Task: Implement Duration Lock padlock icon in `TaskForm.svelte`.
+- [x] Task: Implement state management for the lock (active/inactive).
+- [x] Task: Implement logic: changing start time adjusts end time when locked.
+- [x] Task: Implement logic: changing start time adjusts duration when unlocked.
+- [x] Task: Ensure all duration lock tests pass.
+- [~] Task: Conductor - User Manual Verification 'Phase 1: Duration Lock UI and Logic' (Protocol in workflow.md)
 
 ## Phase 2: Default Date Selection
 - [ ] Task: Write failing tests for default date behavior in `src/lib/TaskForm.spec.ts`.

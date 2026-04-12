@@ -75,4 +75,79 @@ describe('TaskForm.svelte Duration Editing', () => {
     expect(hoursInput.value).toBe('1');
     expect(minutesInput.value).toBe('45');
   });
+
+  describe('Duration Lock Logic', () => {
+    it('should render the padlock icon', () => {
+      render(TaskForm, {
+        props: { taskStore: mockTaskStore, projectStore: mockProjectStore },
+      });
+      const lockBtn = screen.getByTitle(/Toggle Duration Lock/i);
+      expect(lockBtn).toBeDefined();
+    });
+
+    it('should toggle the lock state when clicked', async () => {
+      render(TaskForm, {
+        props: { taskStore: mockTaskStore, projectStore: mockProjectStore },
+      });
+      const lockBtn = screen.getByTitle(/Toggle Duration Lock/i);
+      
+      // Default should be unlocked (assuming based on standard UX, but we can verify class/aria-pressed)
+      expect(lockBtn.getAttribute('aria-pressed')).toBe('false');
+
+      await fireEvent.click(lockBtn);
+      expect(lockBtn.getAttribute('aria-pressed')).toBe('true');
+
+      await fireEvent.click(lockBtn);
+      expect(lockBtn.getAttribute('aria-pressed')).toBe('false');
+    });
+
+    it('should update End Time when Start Time changes and lock is ACTIVE', async () => {
+      render(TaskForm, {
+        props: {
+          taskStore: mockTaskStore,
+          projectStore: mockProjectStore,
+          initialStartTime: '2026-04-11T09:00',
+          initialEndTime: '2026-04-11T10:00', // 1h duration
+        },
+      });
+
+      const lockBtn = screen.getByTitle(/Toggle Duration Lock/i);
+      const startTimeInput = screen.getByLabelText(/Start Time/i) as HTMLInputElement;
+      const endTimeInput = screen.getByLabelText(/End Time/i) as HTMLInputElement;
+
+      // Activate lock
+      await fireEvent.click(lockBtn);
+
+      // Change Start Time to 11:00
+      await fireEvent.input(startTimeInput, { target: { value: '2026-04-11T11:00' } });
+
+      // End Time should move to 12:00 to maintain 1h duration
+      expect(endTimeInput.value).toBe('2026-04-11T12:00');
+    });
+
+    it('should NOT update End Time when Start Time changes and lock is INACTIVE', async () => {
+      render(TaskForm, {
+        props: {
+          taskStore: mockTaskStore,
+          projectStore: mockProjectStore,
+          initialStartTime: '2026-04-11T09:00',
+          initialEndTime: '2026-04-11T10:00', // 1h duration
+        },
+      });
+
+      const startTimeInput = screen.getByLabelText(/Start Time/i) as HTMLInputElement;
+      const endTimeInput = screen.getByLabelText(/End Time/i) as HTMLInputElement;
+
+      // Lock is INACTIVE by default
+
+      // Change Start Time to 08:00
+      await fireEvent.input(startTimeInput, { target: { value: '2026-04-11T08:00' } });
+
+      // End Time should stay at 10:00 (duration becomes 2h)
+      expect(endTimeInput.value).toBe('2026-04-11T10:00');
+      
+      const hoursInput = screen.getByLabelText(/Hours/i) as HTMLInputElement;
+      expect(hoursInput.value).toBe('2');
+    });
+  });
 });

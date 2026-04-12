@@ -39,6 +39,7 @@
   );
   let hours = $state(0);
   let minutes = $state(0);
+  let isLocked = $state(false);
 
   let showCollisionModal = $state(false);
   let pendingTaskData = $state<Task | null>(null);
@@ -83,6 +84,14 @@
         hours = Math.floor(diff / (1000 * 60 * 60));
         minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
       }
+    }
+  }
+
+  function handleStartTimeInput() {
+    if (isLocked) {
+      updateEndTimeFromDuration();
+    } else {
+      updateDurationFromTimes();
     }
   }
 
@@ -310,8 +319,35 @@
       type="datetime-local"
       required
       bind:value={startTime}
-      oninput={updateDurationFromTimes}
+      oninput={handleStartTimeInput}
     />
+  </div>
+
+  <div class="lock-container">
+    <button
+      type="button"
+      class="lock-btn"
+      class:active={isLocked}
+      onclick={() => (isLocked = !isLocked)}
+      title="Toggle Duration Lock"
+      aria-label="Toggle Duration Lock"
+      aria-pressed={isLocked}
+    >
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+        {#if isLocked}
+          <path
+            d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM9 8V6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9z"
+          />
+        {:else}
+          <path
+            d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6h1.9c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm0 12H6V10h12v10z"
+          />
+        {/if}
+      </svg>
+    </button>
+    <span class="lock-info">
+      {isLocked ? 'Duración bloqueada' : 'Duración libre'}
+    </span>
   </div>
 
   <div class="field">
@@ -411,6 +447,40 @@
 
   .duration-fields .field {
     flex: 1;
+  }
+
+  .lock-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin: -0.5rem 0;
+  }
+
+  .lock-info {
+    font-size: 0.75rem;
+    color: var(--md-sys-color-on-surface-variant);
+    font-style: italic;
+  }
+
+  .lock-btn {
+    background: none;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    color: var(--md-sys-color-outline);
+    border-radius: 50%;
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+  }
+
+  .lock-btn:hover {
+    background-color: var(--md-sys-color-surface-container-highest);
+  }
+
+  .lock-btn.active {
+    color: var(--md-sys-color-primary);
   }
 
   .field {
