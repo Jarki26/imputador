@@ -1,0 +1,8 @@
+{
+  "track_id": "mobile_layout_20260412",
+  "type": "bug",
+  "status": "new",
+  "created_at": "2026-04-12T12:00:00Z",
+  "updated_at": "2026-04-12T12:00:00Z",
+  "description": "Fix mobile rendering and scrolling issues in daily view (use 100dvh, fix overflow)"
+}
