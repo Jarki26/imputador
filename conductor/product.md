@@ -38,7 +38,8 @@ Imputador is a specialized task registration and time-tracking application desig
 
 - **Insertion with Overwrite:** Inserting a task into a range splits existing tasks to avoid overlaps.
 - **Insertion with Displacement:** Inserting a task pushes subsequent tasks forward while maintaining their original durations.
-- **Duration-based Editing:** Adjusting the end time by providing a duration (e.g., `01h 30m 00s`) from a given start time.
+- **Duration-based Editing:** Adjusting the end time by providing a duration (e.g., `01h 30m 00s`) from a given start time. Includes a **Duration Lock** feature that, when active, automatically shifts the end time when the start time is modified to maintain a constant duration.
+- **Single-Day Enforcement:** Tasks are strictly restricted to a single calendar day to simplify logic and user mental model. The interface prevents tasks from crossing the midnight boundary.
 
 ### 4. Smart Gap Filling
 
@@ -59,4 +60,4 @@ Imputador is a specialized task registration and time-tracking application desig
 ## User Experience Focus
 
 - **Information Density:** A design that maximizes the visibility of the week's data, allowing for quick assessment of missing time and project distribution.
-- **Smart Components:** Using autocomplete for projects and intuitive dropdowns for task types to speed up data entry.
+- **Smart Components:** Using autocomplete for projects, intuitive dropdowns for task types, and **split date/time selectors** with context-aware defaults (today's date or selected day) to minimize input overhead.
