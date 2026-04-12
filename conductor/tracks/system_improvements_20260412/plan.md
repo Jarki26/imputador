@@ -24,6 +24,6 @@
 - [x] Task: Implement the trigger mechanism for the tutorial. 4a764b6
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Interactive Tutorial' (Protocol in workflow.md)
 
-## Phase 4: Finalization
-- [ ] Task: Update `conductor/tareas_pendientes.md` section 4.3 to mark all items as complete.
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Finalization' (Protocol in workflow.md)
+## Phase 4: Finalization [checkpoint: a775cdb]
+- [x] Task: Update `conductor/tareas_pendientes.md` section 4.3 to mark all items as complete. 89e76ac
+- [x] Task: Conductor - User Manual Verification 'Phase 4: Finalization' (Protocol in workflow.md)
