@@ -26,8 +26,12 @@
   let editingTask = $state<Task | null>(null);
   let initialStartTime = $state('');
 
-  async function loadTasks() {
-    tasks = await taskStore.getTasksForWeek(selectedDate);
+  async function loadTasks(pushToHistory = false) {
+    const newTasks = await taskStore.getTasksForWeek(selectedDate);
+    tasks = newTasks;
+    if (pushToHistory) {
+      historyStore.push({ tasks: [...newTasks], date: new Date(selectedDate) });
+    }
   }
 
   async function loadConfig() {
@@ -35,7 +39,7 @@
   }
 
   onMount(async () => {
-    await loadTasks();
+    await loadTasks(true); // Initial state for history
     await loadConfig();
   });
 
@@ -51,13 +55,13 @@
       } else {
         await taskStore.updateTask(task.id, task);
       }
-      await loadTasks();
+      await loadTasks(true);
     }
   }
 
   async function handleTaskDelete(id: number) {
     await taskStore.deleteTask(id);
-    await loadTasks();
+    await loadTasks(true);
   }
 
   function handleSlotClick(date: Date) {
@@ -90,21 +94,37 @@
     }),
   );
 
-  function handleUndo() {
-    historyStore.undo();
-    loadTasks();
+  async function handleUndo() {
+    const prevState = historyStore.undo();
+    if (prevState) {
+      selectedDate = new Date(prevState.date);
+      await taskStore.setTasksForWeek(selectedDate, prevState.tasks);
+      await loadTasks(false);
+    }
   }
 
-  function handleRedo() {
-    historyStore.redo();
-    loadTasks();
+  async function handleRedo() {
+    const nextState = historyStore.redo();
+    if (nextState) {
+      selectedDate = new Date(nextState.date);
+      await taskStore.setTasksForWeek(selectedDate, nextState.tasks);
+      await loadTasks(false);
+    }
   }
 
   function handleKeydown(e: KeyboardEvent) {
-    if (e.ctrlKey && e.key === 'z') {
+    const isZ = e.key.toLowerCase() === 'z';
+    const isY = e.key.toLowerCase() === 'y';
+    const mod = e.ctrlKey || e.metaKey;
+
+    if (mod && isZ) {
       e.preventDefault();
-      handleUndo();
-    } else if (e.ctrlKey && e.key === 'y') {
+      if (e.shiftKey) {
+        handleRedo();
+      } else {
+        handleUndo();
+      }
+    } else if (mod && isY) {
       e.preventDefault();
       handleRedo();
     }
@@ -169,11 +189,12 @@
         onTaskDelete={handleTaskDelete}
         onNavigate={async (date) => {
           selectedDate = date;
-          await loadTasks();
+          await loadTasks(true);
         }}
         onDayClick={(date) => {
           selectedDate = date;
           view = 'daily';
+          loadTasks(true);
         }}
         onTaskCopyToRecents={async (task) => {
           await taskStore.addTaskToRecents(task);
@@ -229,7 +250,7 @@
     {initialStartTime}
     onSuccess={async () => {
       showAddModal = false;
-      await loadTasks();
+      await loadTasks(true);
     }}
   />
 </Modal>

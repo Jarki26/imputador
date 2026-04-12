@@ -2,6 +2,7 @@ import { type Task } from './db';
 
 export interface HistoryState {
   tasks: Task[];
+  date: Date;
 }
 
 export class HistoryStore {
