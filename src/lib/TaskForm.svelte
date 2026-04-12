@@ -29,7 +29,7 @@
     editingTask = null,
   }: Props = $props();
 
-  let errorMessage = $state('');
+  let errorMessage = $state<{ key: string; vars?: Record<string, string> } | null>(null);
   let title = $state('');
   let description = $state('');
   let project = $state('');
@@ -170,9 +170,9 @@
       }
       success = true;
     } catch (err) {
-      errorMessage = editingTask
-        ? i18n.t('task.error_update_failed')
-        : i18n.t('task.error_save_failed');
+      errorMessage = {
+        key: editingTask ? 'task.error_update_failed' : 'task.error_save_failed',
+      };
       console.error(err);
     }
 
@@ -205,7 +205,7 @@
 
   async function handleSubmit(e: SubmitEvent) {
     e.preventDefault();
-    errorMessage = '';
+    errorMessage = null;
 
     const currentTitle = title;
     const currentDescription = description || currentTitle;
@@ -214,7 +214,7 @@
 
     if (isSmartFill) {
       if (!startTime || (hours === 0 && minutes === 0)) {
-        errorMessage = i18n.t('task.error_smart_fill');
+        errorMessage = { key: 'task.error_smart_fill' };
         return;
       }
 
@@ -251,14 +251,14 @@
         await refreshRecentTasks();
         if (onSuccess) await onSuccess();
       } catch (err) {
-        errorMessage = i18n.t('task.error_save_failed'); // Or specific smart fill error if needed
+        errorMessage = { key: 'task.error_save_failed' }; // Or specific smart fill error if needed
         console.error(err);
       }
       return;
     }
 
     if (!startTimeStr || !endTimeStr) {
-      errorMessage = i18n.t('task.error_missing_times');
+      errorMessage = { key: 'task.error_missing_times' };
       return;
     }
 
@@ -270,12 +270,12 @@
     const endDay = formatDateOnlyForInput(end);
 
     if (startDay !== endDay) {
-      errorMessage = i18n.t('task.error_single_day');
+      errorMessage = { key: 'task.error_single_day' };
       return;
     }
 
     if (end <= start) {
-      errorMessage = i18n.t('task.error_midnight');
+      errorMessage = { key: 'task.error_midnight' };
       return;
     }
 
@@ -306,7 +306,7 @@
 
       await saveTask(taskData);
     } catch (err) {
-      errorMessage = i18n.t('task.error_collision_check');
+      errorMessage = { key: 'task.error_collision_check' };
       console.error(err);
     }
   }
@@ -357,10 +357,9 @@
     <label for="taskType">{i18n.t('task.type')}</label>
     <select id="taskType" name="taskType" bind:value={taskType}>
       {#each TASK_TYPES as type (type.name)}
-        <option value={type.name}>{type.name}</option>
-      {#if false} <!-- Keep i18n.t calls for static analysis if needed, though they aren't used here as names are dynamic from config -->
-        {i18n.t('task.type')}
-      {/if}
+        <option value={type.name}>
+          {i18n.t(`task.type_${type.name.toLowerCase().replace(/\s+/g, '_')}`)}
+        </option>
       {/each}
     </select>
   </div>
@@ -460,7 +459,7 @@
   </div>
 
   {#if errorMessage}
-    <p class="error" role="alert">{errorMessage}</p>
+    <p class="error" role="alert">{i18n.t(errorMessage.key, errorMessage.vars)}</p>
   {/if}
 
   <button type="submit" class="submit-btn">

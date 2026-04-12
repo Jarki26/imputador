@@ -12,17 +12,17 @@ describe('i18n Store', () => {
     expect(i18n.locale).toBe('es');
   });
 
-  it('should load language from localStorage on initialization', () => {
+  it('should load language from localStorage on initialization', async () => {
     localStorage.setItem('imputador_locale', 'en');
     // We might need to re-initialize or trigger a reload for the test
     // Assuming i18n.init() or similar exists
-    i18n.setLocale('en'); 
+    await i18n.setLocale('en'); 
     expect(i18n.locale).toBe('en');
     expect(localStorage.getItem('imputador_locale')).toBe('en');
   });
 
-  it('should update locale and persist to localStorage', () => {
-    i18n.setLocale('fr');
+  it('should update locale and persist to localStorage', async () => {
+    await i18n.setLocale('fr');
     expect(i18n.locale).toBe('fr');
     expect(localStorage.getItem('imputador_locale')).toBe('fr');
   });

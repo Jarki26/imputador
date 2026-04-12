@@ -19,7 +19,7 @@
     setView: (view: 'daily' | 'weekly') => void;
   } = $props();
 
-  const steps: Step[] = [
+  const steps: Step[] = $derived([
     {
       title: i18n.t('tutorial.step1_title'),
       content: i18n.t('tutorial.step1_content'),
@@ -93,7 +93,7 @@
       title: i18n.t('tutorial.step15_title'),
       content: i18n.t('tutorial.step15_content'),
     },
-  ];
+  ]);
 
   let currentStepIndex = $state(0);
   let currentStep = $derived(steps[currentStepIndex]);

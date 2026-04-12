@@ -20,11 +20,11 @@ class I18n {
   }
 
   async setLocale(newLocale: string) {
+    await this.loadTranslations(newLocale);
     this.locale = newLocale;
     if (browser) {
       localStorage.setItem('imputador_locale', newLocale);
     }
-    await this.loadTranslations(newLocale);
   }
 
   private async loadTranslations(locale: string) {

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, cleanup, fireEvent } from '@testing-library/svelte';
+import { render, screen, cleanup, fireEvent, waitFor } from '@testing-library/svelte';
 import Settings from './Settings.svelte';
 import { i18n } from './i18n.svelte';
 
@@ -20,7 +20,7 @@ describe('Settings.svelte', () => {
     const selector = screen.getByLabelText(/Idioma/i) as HTMLSelectElement;
     await fireEvent.change(selector, { target: { value: 'en' } });
     
-    expect(i18n.locale).toBe('en');
+    await waitFor(() => expect(i18n.locale).toBe('en'));
   });
 
   it('should render with default value of 41', () => {
