@@ -16,3 +16,4 @@
 - **Type:** Single Page Application (SPA).
 - **Client-Side Only:** All logic and data management will reside within the browser, ensuring privacy and offline capability.
 - **Interactivity:** Native Pointer Events for grid-based interactions (Drag & Drop, Resizing) to ensure performance and cross-platform support.
+- **History Management:** Granular, in-memory Undo/Redo stack for session-based state restoration.

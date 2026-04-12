@@ -48,6 +48,7 @@ Imputador is a specialized task registration and time-tracking application desig
 ### 5. Task Management
 
 - Parametrizable task types from a closed list.
+- Special "Ausencia Facturable" (Billable Absence) type: Counts toward weekly goal but not daily productivity. Rendered with a patterned/striped background.
 - Task entities include: Title, Description, Project (Autocomplete with auto-save), and Task Type.
 - Quick-access list of the 10 most recently used tasks.
 
@@ -55,7 +56,13 @@ Imputador is a specialized task registration and time-tracking application desig
 
 - Configurable weekly hours target (default 41h).
 - Real-time comparison between logged billable hours and the weekly target in the Weekly View.
+- Dynamic Target: "Ausencia Facturable" hours are subtracted from the weekly target to show remaining work needed.
 - Visual distinction between billable and non-billable (Rest) hours in both daily and weekly totals.
+
+### 7. User Assistance
+
+- **Undo/Redo System:** Granular, session-based history stack allowing users to revert any manual task manipulation (Ctrl+Z / Ctrl+Y).
+- **Interactive Tutorial:** A step-by-step guided overlay explaining core app features, view switching, and advanced manipulation logic.
 
 ## User Experience Focus
 
