@@ -2,7 +2,9 @@
   "app": {
     "title": "Imputador",
     "daily_view": "Daily View",
-    "weekly_view": "Weekly View"
+    "weekly_view": "Weekly View",
+    "help": "Help",
+    "settings": "Settings"
   },
   "common": {
     "save": "Save",

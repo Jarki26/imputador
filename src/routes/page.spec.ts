@@ -30,4 +30,16 @@ describe('+page.svelte', () => {
 
     expect(screen.getByText(/Lunes/i)).toBeDefined();
   });
+
+  it('should render the settings button', () => {
+    render(Page);
+    // Looking for button with title/aria-label "Ajustes"
+    expect(screen.getByTitle(/Ajustes/i)).toBeDefined();
+  });
+
+  it('should render the help button', () => {
+    render(Page);
+    // Looking for button with title/aria-label "Ayuda"
+    expect(screen.getByTitle(/Ayuda/i)).toBeDefined();
+  });
 });

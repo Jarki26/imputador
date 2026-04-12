@@ -2,7 +2,9 @@
   "app": {
     "title": "Imputador",
     "daily_view": "Vista Diaria",
-    "weekly_view": "Vista Semanal"
+    "weekly_view": "Vista Semanal",
+    "help": "Ayuda",
+    "settings": "Ajustes"
   },
   "common": {
     "save": "Guardar",

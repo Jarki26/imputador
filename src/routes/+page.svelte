@@ -22,6 +22,7 @@
   let selectedDate = $state(new Date());
   let showAddModal = $state(false);
   let showSettingsModal = $state(false);
+  let showTutorial = $state(false);
   let editingTask = $state<Task | null>(null);
   let initialStartTime = $state('');
 
@@ -129,13 +130,30 @@
           {i18n.t('app.daily_view')}
         </button>
       </div>
-      <button class="icon-btn" onclick={() => (showSettingsModal = true)}>
-        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-          <path
-            d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.35 19.43,11.03L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.97 19.05,5.05L16.56,5.9C16.04,5.53 15.47,5.22 14.86,5.03L14.49,2.37C14.45,2.13 14.24,1.95 14,1.95H10C13.76,1.95 13.55,2.13 13.51,2.37L13.14,5.03C12.53,5.22 11.96,5.53 11.44,5.9L8.95,5.05C8.73,4.97 8.46,5.05 8.34,5.27L6.34,8.73C6.22,8.95 6.27,9.22 6.46,9.37L8.57,11.03C8.53,11.35 8.5,11.67 8.5,12C8.5,12.33 8.53,12.65 8.57,12.97L6.46,14.63C6.27,14.78 6.22,15.05 6.34,15.27L8.34,18.73C8.46,18.95 8.73,19.03 8.95,18.95L11.44,18.1C11.96,18.47 12.53,18.78 13.14,18.97L13.51,21.63C13.55,21.87 13.76,22.05 14,22.05H10C10.24,22.05 10.45,21.87 10.49,21.63L10.86,18.97C11.47,18.78 12.04,18.47 12.56,18.1L15.05,18.95C15.27,19.03 15.54,18.95 15.66,18.73L17.66,15.27C17.78,15.05 17.73,14.78 17.54,14.63L19.43,12.97Z"
-          />
-        </svg>
-      </button>
+      <div class="header-btns">
+        <button
+          class="icon-btn"
+          onclick={() => (showTutorial = true)}
+          title={i18n.t('app.help')}
+          aria-label={i18n.t('app.help')}
+        >
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+            <path d="M11,18H13V16H11V18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,6A4,4 0 0,0 8,10H10A2,2 0 0,1 12,8A2,2 0 0,1 14,10C14,12 11,11.75 11,15H13C13,12.75 16,12.5 16,10A4,4 0 0,0 12,6Z" />
+          </svg>
+        </button>
+        <button
+          class="icon-btn"
+          onclick={() => (showSettingsModal = true)}
+          title={i18n.t('app.settings')}
+          aria-label={i18n.t('app.settings')}
+        >
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+            <path
+              d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.35 19.43,11.03L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.97 19.05,5.05L16.56,5.9C16.04,5.53 15.47,5.22 14.86,5.03L14.49,2.37C14.45,2.13 14.24,1.95 14,1.95H10C13.76,1.95 13.55,2.13 13.51,2.37L13.14,5.03C12.53,5.22 11.96,5.53 11.44,5.9L8.95,5.05C8.73,4.97 8.46,5.05 8.34,5.27L6.34,8.73C6.22,8.95 6.27,9.22 6.46,9.37L8.57,11.03C8.53,11.35 8.5,11.67 8.5,12C8.5,12.33 8.53,12.65 8.57,12.97L6.46,14.63C6.27,14.78 6.22,15.05 6.34,15.27L8.34,18.73C8.46,18.95 8.73,19.03 8.95,18.95L11.44,18.1C11.96,18.47 12.53,18.78 13.14,18.97L13.51,21.63C13.55,21.87 13.76,22.05 14,22.05H10C10.24,22.05 10.45,21.87 10.49,21.63L10.86,18.97C11.47,18.78 12.04,18.47 12.56,18.1L15.05,18.95C15.27,19.03 15.54,18.95 15.66,18.73L17.66,15.27C17.78,15.05 17.73,14.78 17.54,14.63L19.43,12.97Z"
+            />
+          </svg>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -178,7 +196,8 @@
     <button
       onclick={handleUndo}
       disabled={historyStore.undoStack.length === 0}
-      title={`${i18n.t('common.undo')} (Ctrl+Z)`}
+      title={i18n.t('common.undo') + ' (Ctrl+Z)'}
+      aria-label={i18n.t('common.undo')}
     >
       <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
         <path d="M12.5,8C9.85,8 7.45,9 5.6,10.6L2,7V16H10.6L7.38,12.77C8.77,11.66 10.55,11 12.5,11C16.04,11 19.05,13.05 20.5,16L22.5,15.2C20.69,11.25 16.89,8.5 12.5,8Z" />
@@ -187,7 +206,8 @@
     <button
       onclick={handleRedo}
       disabled={historyStore.redoStack.length === 0}
-      title={`${i18n.t('common.redo')} (Ctrl+Y)`}
+      title={i18n.t('common.redo') + ' (Ctrl+Y)'}
+      aria-label={i18n.t('common.redo')}
     >
       <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
         <path d="M18.4,10.6C16.55,9 14.15,8 11.5,8C7.11,8 3.31,11.25 1.5,15.2L3.5,16C4.95,13.05 7.96,11 11.5,11C13.45,11 15.23,11.66 16.62,12.77L13.4,16H22V7L18.4,10.6Z" />
@@ -195,7 +215,7 @@
     </button>
   </div>
 
-  <Tutorial />
+  <Tutorial show={showTutorial} onClose={() => (showTutorial = false)} setView={(v) => (view = v)} />
 </main>
 
 <Modal
@@ -238,6 +258,7 @@
     padding: 0.5rem 1.5rem;
     background-color: var(--md-sys-color-surface-container);
     border-bottom: 1px solid var(--md-sys-color-outline-variant);
+    flex-shrink: 0;
   }
 
   .logo h1 {
@@ -250,6 +271,11 @@
     display: flex;
     align-items: center;
     gap: 1rem;
+  }
+
+  .header-btns {
+    display: flex;
+    gap: 0.5rem;
   }
 
   .view-toggle {
@@ -268,6 +294,7 @@
     font-weight: 500;
     color: var(--md-sys-color-on-surface-variant);
     transition: all 0.2s;
+    white-space: nowrap;
   }
 
   .view-toggle button.active {
@@ -296,6 +323,7 @@
     flex: 1;
     overflow: hidden;
     padding: 1rem;
+    position: relative;
   }
 
   .daily-section {
@@ -367,5 +395,35 @@
     opacity: 0.5;
     cursor: not-allowed;
     color: var(--md-sys-color-outline);
+  }
+
+  /* Media Queries for Mobile */
+  @media (max-width: 600px) {
+    .app-header {
+      padding: 0.5rem 0.75rem;
+    }
+
+    .logo h1 {
+      font-size: 1.2rem;
+    }
+
+    .header-actions {
+      gap: 0.5rem;
+    }
+
+    .view-toggle button {
+      padding: 4px 10px;
+      font-size: 0.85rem;
+    }
+
+    .icon-btn {
+      padding: 6px;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .logo {
+      display: none; /* Hide logo on very small screens to make room for toggle and buttons */
+    }
   }
 </style>
