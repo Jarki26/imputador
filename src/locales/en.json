@@ -1,0 +1,88 @@
+{
+  "app": {
+    "title": "Imputador",
+    "daily_view": "Daily View",
+    "weekly_view": "Weekly View"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "update": "Update",
+    "add": "Add",
+    "yes": "Yes",
+    "no": "No",
+    "close": "Close",
+    "error": "Error"
+  },
+  "days": {
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday"
+  },
+  "settings": {
+    "title": "Settings",
+    "weekly_target": "Weekly Hours Target",
+    "language": "Language",
+    "value_error": "Value must be between 1 and 60"
+  },
+  "task": {
+    "form_title_add": "Add Task",
+    "form_title_edit": "Update Task",
+    "recent_tasks": "Recent Tasks",
+    "select_recent": "-- Select a recent task --",
+    "title": "Title",
+    "description": "Description",
+    "project": "Project",
+    "type": "Task Type",
+    "date": "Date",
+    "start_time": "Start Time",
+    "end_time": "End Time",
+    "duration_locked": "Duration locked",
+    "duration_free": "Duration free",
+    "smart_fill": "Smart Fill (auto-distribute duration in gaps)",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "collision_title": "Collision Detected",
+    "collision_msg": "This task overlaps with existing tasks. How would you like to proceed?",
+    "overwrite": "Overwrite",
+    "displacement": "Displacement",
+    "error_missing_times": "Please provide valid start and end times",
+    "error_single_day": "Tasks must be restricted to a single day (cannot cross 23:59)",
+    "error_midnight": "End time must be after start time (tasks cannot cross midnight)",
+    "error_smart_fill": "Please provide a start date and a valid duration",
+    "error_save_failed": "Failed to save task",
+    "error_update_failed": "Failed to update task",
+    "error_collision_check": "An error occurred while checking for collisions"
+  },
+  "weekly": {
+    "logged": "Logged",
+    "target": "Target",
+    "prev_week": "Previous Week",
+    "next_week": "Next Week",
+    "view_daily": "View daily details for {day}",
+    "billable_hours": "Billable Hours",
+    "rest_hours": "Rest/Non-billable Hours",
+    "add_task_at": "Add task at {time} on {date}",
+    "edit_task": "Edit task: {title}",
+    "delete_task": "Delete task: {title}",
+    "merge_title": "Merge identical tasks?",
+    "merge_msg": "These tasks are consecutive and identical. Would you like to merge them into a single record?",
+    "snap_title": "Close the gap?",
+    "snap_msg": "There is a small gap between this task and the {side} one. Would you like to snap them together?",
+    "snap_before": "previous",
+    "snap_after": "next",
+    "collision_move_title": "Collision Detected",
+    "collision_move_msg": "This move overlaps with existing tasks. How would you like to proceed?",
+    "displace": "Displace"
+  },
+  "daily": {
+    "log": "Daily Log",
+    "empty": "No tasks for this day",
+    "gap_detected": "Gap detected between {start} and {end}"
+  }
+}

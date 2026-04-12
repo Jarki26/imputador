@@ -1,0 +1,88 @@
+{
+  "app": {
+    "title": "Imputador",
+    "daily_view": "日视图",
+    "weekly_view": "周视图"
+  },
+  "common": {
+    "save": "保存",
+    "cancel": "取消",
+    "delete": "删除",
+    "update": "更新",
+    "add": "添加",
+    "yes": "是",
+    "no": "否",
+    "close": "关闭",
+    "error": "错误"
+  },
+  "days": {
+    "monday": "星期一",
+    "tuesday": "星期二",
+    "wednesday": "星期三",
+    "thursday": "星期四",
+    "friday": "星期五",
+    "saturday": "星期六",
+    "sunday": "星期日"
+  },
+  "settings": {
+    "title": "设置",
+    "weekly_target": "周工时目标",
+    "language": "语言",
+    "value_error": "值必须介于 1 到 60 之间"
+  },
+  "task": {
+    "form_title_add": "添加任务",
+    "form_title_edit": "更新任务",
+    "recent_tasks": "最近任务",
+    "select_recent": "-- 选择最近任务 --",
+    "title": "标题",
+    "description": "描述",
+    "project": "项目",
+    "type": "任务类型",
+    "date": "日期",
+    "start_time": "开始时间",
+    "end_time": "结束时间",
+    "duration_locked": "时长已锁定",
+    "duration_free": "时长未锁定",
+    "smart_fill": "智能填充 (自动在间隙中分配时长)",
+    "hours": "小时",
+    "minutes": "分钟",
+    "collision_title": "检测到冲突",
+    "collision_msg": "此任务与现有任务重叠。您想如何处理？",
+    "overwrite": "覆盖",
+    "displacement": "置换",
+    "error_missing_times": "请提供有效的开始和结束时间",
+    "error_single_day": "任务必须限制在同一天内（不能跨越 23:59）",
+    "error_midnight": "结束时间必须晚于开始时间（任务不能跨越午夜）",
+    "error_smart_fill": "请提供开始日期和有效时长",
+    "error_save_failed": "保存任务失败",
+    "error_update_failed": "更新任务失败",
+    "error_collision_check": "检查冲突时出错"
+  },
+  "weekly": {
+    "logged": "已记录",
+    "target": "目标",
+    "prev_week": "前一周",
+    "next_week": "后一周",
+    "view_daily": "查看 {day} 的详细信息",
+    "billable_hours": "计费工时",
+    "rest_hours": "休息/非计费工时",
+    "add_task_at": "在 {date} 的 {time} 添加任务",
+    "edit_task": "编辑任务：{title}",
+    "delete_task": "删除任务：{title}",
+    "merge_title": "合并相同任务？",
+    "merge_msg": "这些任务是连续且相同的。您想将它们合并为一个记录吗？",
+    "snap_title": "关闭间隙？",
+    "snap_msg": "此任务与{side}一个任务之间存在很小的间隙。您想将它们吸附在一起吗？",
+    "snap_before": "前",
+    "snap_after": "后",
+    "collision_move_title": "检测到冲突",
+    "collision_move_msg": "此移动与现有任务重叠。您想如何处理？",
+    "displace": "置换"
+  },
+  "daily": {
+    "log": "每日记录",
+    "empty": "当天没有任务",
+    "gap_detected": "在 {start} 和 {end} 之间检测到间隙"
+  }
+}

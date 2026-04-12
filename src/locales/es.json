@@ -1,0 +1,88 @@
+{
+  "app": {
+    "title": "Imputador",
+    "daily_view": "Vista Diaria",
+    "weekly_view": "Vista Semanal"
+  },
+  "common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "update": "Actualizar",
+    "add": "Añadir",
+    "yes": "Sí",
+    "no": "No",
+    "close": "Cerrar",
+    "error": "Error"
+  },
+  "days": {
+    "monday": "Lunes",
+    "tuesday": "Martes",
+    "wednesday": "Miércoles",
+    "thursday": "Jueves",
+    "friday": "Viernes",
+    "saturday": "Sábado",
+    "sunday": "Domingo"
+  },
+  "settings": {
+    "title": "Ajustes",
+    "weekly_target": "Objetivo de Horas Semanales",
+    "language": "Idioma",
+    "value_error": "El valor debe estar entre 1 y 60"
+  },
+  "task": {
+    "form_title_add": "Añadir Tarea",
+    "form_title_edit": "Actualizar Tarea",
+    "recent_tasks": "Tareas Recientes",
+    "select_recent": "-- Selecciona una tarea reciente --",
+    "title": "Título",
+    "description": "Descripción",
+    "project": "Proyecto",
+    "type": "Tipo de Tarea",
+    "date": "Fecha",
+    "start_time": "Hora de Inicio",
+    "end_time": "Hora de Fin",
+    "duration_locked": "Duración bloqueada",
+    "duration_free": "Duración libre",
+    "smart_fill": "Relleno Inteligente (auto-distribuir duración en huecos)",
+    "hours": "Horas",
+    "minutes": "Minutos",
+    "collision_title": "Colisión Detectada",
+    "collision_msg": "Esta tarea se solapa con tareas existentes. ¿Cómo deseas proceder?",
+    "overwrite": "Sobrescribir",
+    "displacement": "Desplazamiento",
+    "error_missing_times": "Por favor, introduce horas de inicio y fin válidas",
+    "error_single_day": "Las tareas deben restringirse a un solo día (no pueden cruzar las 23:59)",
+    "error_midnight": "La hora de fin debe ser posterior a la de inicio (las tareas no pueden cruzar la medianoche)",
+    "error_smart_fill": "Por favor, introduce una fecha de inicio y una duración válida",
+    "error_save_failed": "Error al guardar la tarea",
+    "error_update_failed": "Error al actualizar la tarea",
+    "error_collision_check": "Ocurrió un error al comprobar colisiones"
+  },
+  "weekly": {
+    "logged": "Registrado",
+    "target": "Objetivo",
+    "prev_week": "Semana Anterior",
+    "next_week": "Semana Siguiente",
+    "view_daily": "Ver detalles diarios para el {day}",
+    "billable_hours": "Horas Facturables",
+    "rest_hours": "Horas de Descanso/No facturables",
+    "add_task_at": "Añadir tarea a las {time} el {date}",
+    "edit_task": "Editar tarea: {title}",
+    "delete_task": "Eliminar tarea: {title}",
+    "merge_title": "¿Combinar tareas idénticas?",
+    "merge_msg": "Estas tareas son consecutivas e idénticas. ¿Deseas combinarlas en un solo registro?",
+    "snap_title": "¿Cerrar el hueco?",
+    "snap_msg": "Hay un pequeño hueco entre esta tarea y la {side}. ¿Deseas ajustarlas?",
+    "snap_before": "anterior",
+    "snap_after": "siguiente",
+    "collision_move_title": "Colisión Detectada",
+    "collision_move_msg": "Este movimiento se solapa con tareas existentes. ¿Cómo deseas proceder?",
+    "displace": "Desplazar"
+  },
+  "daily": {
+    "log": "Registro Diario",
+    "empty": "No hay tareas para este día",
+    "gap_detected": "Hueco detectado entre {start} y {end}"
+  }
+}

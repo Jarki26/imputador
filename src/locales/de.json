@@ -1,0 +1,88 @@
+{
+  "app": {
+    "title": "Imputador",
+    "daily_view": "Tagesansicht",
+    "weekly_view": "Wochenansicht"
+  },
+  "common": {
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "update": "Aktualisieren",
+    "add": "Hinzufügen",
+    "yes": "Ja",
+    "no": "Nein",
+    "close": "Schließen",
+    "error": "Fehler"
+  },
+  "days": {
+    "monday": "Montag",
+    "tuesday": "Dienstag",
+    "wednesday": "Mittwoch",
+    "thursday": "Donnerstag",
+    "friday": "Freitag",
+    "saturday": "Samstag",
+    "sunday": "Sonntag"
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "weekly_target": "Wöchentliches Stundenziel",
+    "language": "Sprache",
+    "value_error": "Der Wert muss zwischen 1 und 60 liegen"
+  },
+  "task": {
+    "form_title_add": "Aufgabe hinzufügen",
+    "form_title_edit": "Aufgabe aktualisieren",
+    "recent_tasks": "Kürzlich verwendete Aufgaben",
+    "select_recent": "-- Wählen Sie eine kürzlich verwendete Aufgabe --",
+    "title": "Titel",
+    "description": "Beschreibung",
+    "project": "Projekt",
+    "type": "Aufgabentyp",
+    "date": "Datum",
+    "start_time": "Startzeit",
+    "end_time": "Endzeit",
+    "duration_locked": "Dauer gesperrt",
+    "duration_free": "Dauer frei",
+    "smart_fill": "Intelligentes Füllen (Dauer automatisch in Lücken verteilen)",
+    "hours": "Stunden",
+    "minutes": "Minuten",
+    "collision_title": "Kollision erkannt",
+    "collision_msg": "Diese Aufgabe überschneidet sich mit bestehenden Aufgaben. Wie möchten Sie fortfahren?",
+    "overwrite": "Überschreiben",
+    "displacement": "Verschiebung",
+    "error_missing_times": "Bitte geben Sie gültige Start- und Endzeiten an",
+    "error_single_day": "Aufgaben müssen auf einen einzigen Tag beschränkt sein (können 23:59 nicht überschreiten)",
+    "error_midnight": "Die Endzeit muss nach der Startzeit liegen (Aufgaben können nicht über Mitternacht gehen)",
+    "error_smart_fill": "Bitte geben Sie ein Startdatum und eine gültige Dauer an",
+    "error_save_failed": "Aufgabe konnte nicht gespeichert werden",
+    "error_update_failed": "Aufgabe konnte nicht aktualisiert werden",
+    "error_collision_check": "Beim Überprüfen auf Kollisionen ist ein Fehler aufgetreten"
+  },
+  "weekly": {
+    "logged": "Erfasst",
+    "target": "Ziel",
+    "prev_week": "Vorherige Woche",
+    "next_week": "Nächste Woche",
+    "view_daily": "Tagesdetails für {day} anzeigen",
+    "billable_hours": "Abrechenbare Stunden",
+    "rest_hours": "Pause/Nicht abrechenbare Stunden",
+    "add_task_at": "Aufgabe um {time} am {date} hinzufügen",
+    "edit_task": "Aufgabe bearbeiten: {title}",
+    "delete_task": "Aufgabe löschen: {title}",
+    "merge_title": "Identische Aufgaben zusammenführen?",
+    "merge_msg": "Diese Aufgaben folgen direkt aufeinander und sind identisch. Möchten Sie sie zu einem einzigen Datensatz zusammenführen?",
+    "snap_title": "Lücke schließen?",
+    "snap_msg": "Es gibt eine kleine Lücke zwischen dieser Aufgabe und der {side}. Möchten Sie sie zusammenschieben?",
+    "snap_before": "vorherigen",
+    "snap_after": "nächsten",
+    "collision_move_title": "Kollision erkannt",
+    "collision_move_msg": "Diese Verschiebung überschneidet sich mit bestehenden Aufgaben. Wie möchten Sie fortfahren?",
+    "displace": "Verschieben"
+  },
+  "daily": {
+    "log": "Tagesprotokoll",
+    "empty": "Keine Aufgaben für diesen Tag",
+    "gap_detected": "Lücke erkannt zwischen {start} und {end}"
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "app": {
+    "title": "Imputador",
+    "daily_view": "Vue Quotidienne",
+    "weekly_view": "Vue Hebdomadaire"
+  },
+  "common": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "update": "Mettre à jour",
+    "add": "Ajouter",
+    "yes": "Oui",
+    "no": "Non",
+    "close": "Fermer",
+    "error": "Erreur"
+  },
+  "days": {
+    "monday": "Lundi",
+    "tuesday": "Mardi",
+    "wednesday": "Mercredi",
+    "thursday": "Jeudi",
+    "friday": "Vendredi",
+    "saturday": "Samedi",
+    "sunday": "Dimanche"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "weekly_target": "Objectif d'heures hebdomadaire",
+    "language": "Langue",
+    "value_error": "La valeur doit être comprise entre 1 et 60"
+  },
+  "task": {
+    "form_title_add": "Ajouter une tâche",
+    "form_title_edit": "Mettre à jour la tâche",
+    "recent_tasks": "Tâches récentes",
+    "select_recent": "-- Sélectionner une tâche récente --",
+    "title": "Titre",
+    "description": "Description",
+    "project": "Projet",
+    "type": "Type de tâche",
+    "date": "Date",
+    "start_time": "Heure de début",
+    "end_time": "Heure de fin",
+    "duration_locked": "Durée verrouillée",
+    "duration_free": "Durée libre",
+    "smart_fill": "Remplissage intelligent (répartition automatique de la durée dans les creux)",
+    "hours": "Heures",
+    "minutes": "Minutes",
+    "collision_title": "Collision détectée",
+    "collision_msg": "Cette tâche chevauche des tâches existantes. Comment souhaitez-vous procéder ?",
+    "overwrite": "Écraser",
+    "displacement": "Déplacement",
+    "error_missing_times": "Veuillez fournir des heures de début et de fin valides",
+    "error_single_day": "Les tâches doivent être limitées à un seul jour (ne peuvent pas dépasser 23h59)",
+    "error_midnight": "L'heure de fin doit être postérieure à l'heure de début (les tâches ne peuvent pas traverser minuit)",
+    "error_smart_fill": "Veuillez fournir une date de début et une durée valide",
+    "error_save_failed": "Échec de l'enregistrement de la tâche",
+    "error_update_failed": "Échec de la mise à jour de la tâche",
+    "error_collision_check": "Une erreur est survenue lors de la vérification des collisions"
+  },
+  "weekly": {
+    "logged": "Enregistré",
+    "target": "Objectif",
+    "prev_week": "Semaine précédente",
+    "next_week": "Semaine suivante",
+    "view_daily": "Voir les détails quotidiens pour {day}",
+    "billable_hours": "Heures facturables",
+    "rest_hours": "Pause/Heures non facturables",
+    "add_task_at": "Ajouter une tâche à {time} le {date}",
+    "edit_task": "Modifier la tâche : {title}",
+    "delete_task": "Supprimer la tâche : {title}",
+    "merge_title": "Fusionner des tâches identiques ?",
+    "merge_msg": "Ces tâches sont consécutives et identiques. Souhaitez-vous les fusionner en un seul enregistrement ?",
+    "snap_title": "Combler le vide ?",
+    "snap_msg": "Il y a un petit espace entre cette tâche et la {side}. Souhaitez-vous les coller ?",
+    "snap_before": "précédente",
+    "snap_after": "suivante",
+    "collision_move_title": "Collision détectée",
+    "collision_move_msg": "Ce déplacement chevauche des tâches existantes. Comment souhaitez-vous procéder ?",
+    "displace": "Déplacer"
+  },
+  "daily": {
+    "log": "Journal quotidien",
+    "empty": "Aucune tâche pour ce jour",
+    "gap_detected": "Vide détecté entre {start} et {end}"
+  }
+}

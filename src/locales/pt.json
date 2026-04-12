@@ -1,0 +1,88 @@
+{
+  "app": {
+    "title": "Imputador",
+    "daily_view": "Vista Diária",
+    "weekly_view": "Vista Semanal"
+  },
+  "common": {
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "delete": "Excluir",
+    "update": "Atualizar",
+    "add": "Adicionar",
+    "yes": "Sim",
+    "no": "Não",
+    "close": "Fechar",
+    "error": "Erro"
+  },
+  "days": {
+    "monday": "Segunda-feira",
+    "tuesday": "Terça-feira",
+    "wednesday": "Quarta-feira",
+    "thursday": "Quinta-feira",
+    "friday": "Sexta-feira",
+    "saturday": "Sábado",
+    "sunday": "Domingo"
+  },
+  "settings": {
+    "title": "Ajustes",
+    "weekly_target": "Meta de Horas Semanais",
+    "language": "Idioma",
+    "value_error": "O valor deve estar entre 1 e 60"
+  },
+  "task": {
+    "form_title_add": "Adicionar Tarefa",
+    "form_title_edit": "Atualizar Tarefa",
+    "recent_tasks": "Tarefas Recentes",
+    "select_recent": "-- Selecione uma tarefa recente --",
+    "title": "Título",
+    "description": "Descrição",
+    "project": "Projeto",
+    "type": "Tipo de Tarefa",
+    "date": "Data",
+    "start_time": "Hora de Início",
+    "end_time": "Hora de Término",
+    "duration_locked": "Duração bloqueada",
+    "duration_free": "Duração livre",
+    "smart_fill": "Preenchimento Inteligente (auto-distribuir duração em intervalos)",
+    "hours": "Horas",
+    "minutes": "Minutos",
+    "collision_title": "Colisão Detectada",
+    "collision_msg": "Esta tarefa se sobrepõe a tarefas existentes. Como deseja prosseguir?",
+    "overwrite": "Sobrescrever",
+    "displacement": "Deslocamento",
+    "error_missing_times": "Por favor, forneça horários de início e término válidos",
+    "error_single_day": "As tarefas devem ser restritas a um único dia (não podem ultrapassar 23:59)",
+    "error_midnight": "A hora de término deve ser após a hora de início (as tarefas não podem cruzar a meia-noite)",
+    "error_smart_fill": "Por favor, forneça uma data de início e uma duração válida",
+    "error_save_failed": "Falha ao salvar a tarefa",
+    "error_update_failed": "Falha ao atualizar a tarefa",
+    "error_collision_check": "Ocorreu um erro ao verificar colisões"
+  },
+  "weekly": {
+    "logged": "Registrado",
+    "target": "Meta",
+    "prev_week": "Semana Anterior",
+    "next_week": "Próxima Semana",
+    "view_daily": "Ver detalhes diários para {day}",
+    "billable_hours": "Horas Faturáveis",
+    "rest_hours": "Horas de Descanso/Não faturáveis",
+    "add_task_at": "Adicionar tarefa às {time} em {date}",
+    "edit_task": "Editar tarefa: {title}",
+    "delete_task": "Excluir tarefa: {title}",
+    "merge_title": "Mesclar tarefas idênticas?",
+    "merge_msg": "Estas tarefas são consecutivas e idênticas. Deseja mesclá-las em um único registro?",
+    "snap_title": "Fechar o intervalo?",
+    "snap_msg": "Há um pequeno intervalo entre esta tarefa e a {side}. Deseja ajustá-las?",
+    "snap_before": "anterior",
+    "snap_after": "próxima",
+    "collision_move_title": "Colisão Detectada",
+    "collision_move_msg": "Este movimento se sobrepõe a tarefas existentes. Como deseja prosseguir?",
+    "displace": "Deslocar"
+  },
+  "daily": {
+    "log": "Registro Diário",
+    "empty": "Nenhuma tarefa para este dia",
+    "gap_detected": "Intervalo detectado entre {start} e {end}"
+  }
+}

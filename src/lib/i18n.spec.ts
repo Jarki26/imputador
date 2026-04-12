@@ -2,9 +2,10 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { i18n } from './i18n.svelte';
 
 describe('i18n Store', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     localStorage.clear();
     vi.clearAllMocks();
+    await i18n.setLocale('es');
   });
 
   it('should default to Spanish (es) if no language is stored', () => {
@@ -27,11 +28,7 @@ describe('i18n Store', () => {
   });
 
   it('should resolve translation keys', async () => {
-    // This will fail initially as dictionaries are not loaded/implemented
-    // Mocking dictionary for 'es'
-    const translations = { 'app.title': 'Imputador' };
-    i18n.setTranslations('es', translations);
-    
+    i18n.setTranslations('es', { app: { title: 'Imputador' } });
     expect(i18n.t('app.title')).toBe('Imputador');
   });
 
@@ -39,14 +36,20 @@ describe('i18n Store', () => {
     expect(i18n.t('non.existent.key')).toBe('non.existent.key');
   });
 
-  it('should change translations when locale changes', () => {
-    i18n.setTranslations('es', { 'greet': 'Hola' });
-    i18n.setTranslations('en', { 'greet': 'Hello' });
+  it('should change translations when locale changes', async () => {
+    i18n.setTranslations('es', { greet: 'Hola' });
+    i18n.setTranslations('en', { greet: 'Hello' });
     
-    i18n.setLocale('es');
+    await i18n.setLocale('es');
     expect(i18n.t('greet')).toBe('Hola');
     
-    i18n.setLocale('en');
+    await i18n.setLocale('en');
     expect(i18n.t('greet')).toBe('Hello');
+  });
+
+  it('should replace placeholders', async () => {
+    await i18n.setLocale('en');
+    i18n.setTranslations('en', { welcome: 'Welcome, {name}!' });
+    expect(i18n.t('welcome', { name: 'Javier' })).toBe('Welcome, Javier!');
   });
 });
