@@ -4,5 +4,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [~] **Track: TaskForm UX Improvements (Section 4.2)**
+- [x] **Track: TaskForm UX Improvements (Section 4.2)**
 *Link: [./tracks/taskform_ux_20260412/](./tracks/taskform_ux_20260412/)*
