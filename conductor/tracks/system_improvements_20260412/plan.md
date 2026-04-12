@@ -1,11 +1,11 @@
 # Implementation Plan: System Improvements (Section 4.3)
 
 ## Phase 1: "Ausencia Facturable" Task Type
-- [ ] Task: Update task types to include "Ausencia Facturable".
-- [ ] Task: Write tests verifying that "Ausencia Facturable" hours are correctly calculated (counting towards weekly goal, but not daily work hours).
-- [ ] Task: Implement calculation logic in the stores.
-- [ ] Task: Write tests verifying the striped pattern rendering for this task type.
-- [ ] Task: Implement the patterned/striped styling in UI components for the new task type.
+- [x] Task: Update task types to include "Ausencia Facturable". 5781f28
+- [x] Task: Write tests verifying that "Ausencia Facturable" hours are correctly calculated (counting towards weekly goal, but not daily work hours). 5781f28
+- [x] Task: Implement calculation logic in the stores. 5781f28
+- [x] Task: Write tests verifying the striped pattern rendering for this task type. 5781f28
+- [x] Task: Implement the patterned/striped styling in UI components for the new task type. 5781f28
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: "Ausencia Facturable" Task Type' (Protocol in workflow.md)
 
 ## Phase 2: Undo/Redo System
