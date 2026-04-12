@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { i18n } from './i18n.svelte';
+
   interface Props {
     weeklyTarget: number;
     onSave: (target: number) => void;
@@ -9,19 +11,33 @@
   let target = $state(weeklyTarget);
   let error = $state('');
 
+  const languages = [
+    { code: 'en', label: '🇬🇧 EN' },
+    { code: 'es', label: '🇪🇸 ES' },
+    { code: 'pt', label: '🇵🇹 PT' },
+    { code: 'de', label: '🇩🇪 DE' },
+    { code: 'fr', label: '🇫🇷 FR' },
+    { code: 'zh', label: '🇨🇳 ZH' },
+  ];
+
   function handleSave() {
     if (target < 1 || target > 60) {
-      error = 'Value must be between 1 and 60';
+      error = i18n.t('settings.value_error');
       return;
     }
     error = '';
     onSave(target);
   }
+
+  function handleLanguageChange(e: Event) {
+    const newLocale = (e.target as HTMLSelectElement).value;
+    i18n.setLocale(newLocale);
+  }
 </script>
 
 <div class="settings-form">
   <div class="form-group">
-    <label for="weeklyTarget">Weekly Hours Target</label>
+    <label for="weeklyTarget">{i18n.t('settings.weekly_target')}</label>
     <input
       type="number"
       id="weeklyTarget"
@@ -35,8 +51,17 @@
     {/if}
   </div>
 
+  <div class="form-group">
+    <label for="language">{i18n.t('settings.language')}</label>
+    <select id="language" value={i18n.locale} onchange={handleLanguageChange}>
+      {#each languages as lang}
+        <option value={lang.code}>{lang.label}</option>
+      {/each}
+    </select>
+  </div>
+
   <div class="actions">
-    <button class="save-btn" onclick={handleSave}>Save</button>
+    <button class="save-btn" onclick={handleSave}>{i18n.t('common.save')}</button>
   </div>
 </div>
 
@@ -58,7 +83,8 @@
     color: var(--md-sys-color-on-surface);
   }
 
-  input {
+  input,
+  select {
     padding: 0.75rem;
     border-radius: 8px;
     border: 1px solid var(--md-sys-color-outline);
