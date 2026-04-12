@@ -65,7 +65,12 @@ Esta lista identifica las funcionalidades definidas en `docs/Descripción.md` qu
 - [x] **Lógica de Negocio:** ✅ 2026-04-12
     - Nuevo tipo "Ausencia Facturable" (no cuenta como trabajo pero descuenta del objetivo semanal).
 
-## 5. Características de Interoperabilidad (Futuro)
+# 5. Internacionalización
+- [x] Localizar todos los textos de elementos de UI: Botones, mensajes, popups, desplegables... y moverlos a un diccionario en JSON para preparar una estructura para alojar en este diccionario nuevos idiomas para la app. Los textos actuales están en Inglés por lo que la estructura debe por este idioma.
+- [x] Incorporar un selector en la pantalla de ajustes para seleccionar el idioma de la aplicación, cuyo valor será almacenado en los datos del navegador para recordar la elección del usuario.
+- [x] Rellena el diccionario traduciendo los textos a Español, Portugués, Alemán, Francés y Chino, manteniendo el Inglés que será el existente. Incorpora en el desplegable un emoticono de la bandera representativa de cada idioma.
+- [x] Establece por defecto el idioma Español.
+## 6. Características de Interoperabilidad (Futuro)
 
 - [ ] **Módulo de Excel:**
   - Exportación de registros diarios/semanales.
