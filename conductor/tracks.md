@@ -4,5 +4,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Fix mobile rendering and scrolling issues in daily view (use 100dvh, fix overflow)**
+- [x] **Track: Fix mobile rendering and scrolling issues in daily view (use 100dvh, fix overflow)**
 *Link: [./tracks/mobile_layout_20260412/](./tracks/mobile_layout_20260412/)*
