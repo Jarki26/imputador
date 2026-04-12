@@ -20,6 +20,7 @@
   let weeklyTarget = $state(41);
   let view = $state<'weekly' | 'daily'>('weekly');
   let selectedDate = $state(new Date());
+  selectedDate.setHours(0, 0, 0, 0);
   let showAddModal = $state(false);
   let showSettingsModal = $state(false);
   let showTutorial = $state(false);
@@ -62,6 +63,12 @@
   async function handleTaskDelete(id: number) {
     await taskStore.deleteTask(id);
     await loadTasks(true);
+  }
+
+  function handleAddTask() {
+    initialStartTime = selectedDate.toISOString();
+    editingTask = null;
+    showAddModal = true;
   }
 
   function handleSlotClick(date: Date) {
@@ -188,11 +195,13 @@
         onTaskUpdate={handleTaskUpdate}
         onTaskDelete={handleTaskDelete}
         onNavigate={async (date) => {
-          selectedDate = date;
+          selectedDate = new Date(date);
+          selectedDate.setHours(0, 0, 0, 0);
           await loadTasks(true);
         }}
         onDayClick={(date) => {
-          selectedDate = date;
+          selectedDate = new Date(date);
+          selectedDate.setHours(0, 0, 0, 0);
           view = 'daily';
           loadTasks(true);
         }}
@@ -204,7 +213,7 @@
       <section class="daily-section">
         <div class="section-header">
           <h2>{i18n.t('daily.log')} - {selectedDate.toLocaleDateString()}</h2>
-          <button class="add-btn" onclick={() => (showAddModal = true)}>
+          <button class="add-btn" onclick={handleAddTask}>
             {i18n.t('common.add')}
           </button>
         </div>
