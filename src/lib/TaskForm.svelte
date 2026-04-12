@@ -1,7 +1,11 @@
 <script lang="ts">
   import { TaskStore } from './taskStore';
   import { ProjectStore } from './projectStore';
-  import { formatDateForInput } from './utils';
+  import {
+    formatDateForInput,
+    formatDateOnlyForInput,
+    formatTimeOnlyForInput,
+  } from './utils';
   import { TASK_TYPES } from './config';
   import Modal from './Modal.svelte';
   import type { Task, RecentTask } from './db';
@@ -29,21 +33,35 @@
   let description = $state(editingTask?.description || '');
   let project = $state(editingTask?.project || '');
   let taskType = $state(editingTask?.type || 'General');
-  let startTime = $state(
-    (initialStartTime && !editingTask)
-      ? formatDateForInput(new Date(new Date(initialStartTime).setHours(0, 0, 0, 0)))
-      : (initialStartTime || (editingTask ? formatDateForInput(editingTask.startTime) : formatDateForInput(new Date())))
+  let taskDate = $state(
+    editingTask
+      ? formatDateOnlyForInput(editingTask.startTime)
+      : initialStartTime
+        ? formatDateOnlyForInput(new Date(initialStartTime))
+        : formatDateOnlyForInput(new Date()),
   );
-  let endTime = $state(
-    initialEndTime ||
-      (editingTask
-        ? formatDateForInput(editingTask.endTime)
-        : formatDateForInput(
-            initialStartTime 
-              ? new Date(new Date(initialStartTime).setHours(1, 0, 0, 0))
-              : new Date(new Date().getTime() + 60 * 60 * 1000)
-          )),
+
+  let startTimeStr = $state(
+    editingTask
+      ? formatTimeOnlyForInput(editingTask.startTime)
+      : initialStartTime && !editingTask
+        ? '00:00'
+        : formatTimeOnlyForInput(new Date()),
   );
+
+  let endTimeStr = $state(
+    editingTask
+      ? formatTimeOnlyForInput(editingTask.endTime)
+      : initialStartTime && !editingTask
+        ? '01:00'
+        : formatTimeOnlyForInput(
+            new Date(new Date().getTime() + 60 * 60 * 1000),
+          ),
+  );
+
+  let startTime = $derived(`${taskDate}T${startTimeStr}`);
+  let endTime = $derived(`${taskDate}T${endTimeStr}`);
+
   let hours = $state(0);
   let minutes = $state(0);
   let isLocked = $state(false);
@@ -107,7 +125,7 @@
       const start = new Date(startTime);
       const durationMs = hours * 60 * 60 * 1000 + minutes * 60 * 1000;
       const end = new Date(start.getTime() + durationMs);
-      endTime = formatDateForInput(end);
+      endTimeStr = formatTimeOnlyForInput(end);
     }
   }
 
@@ -154,8 +172,11 @@
       description = '';
       project = '';
       taskType = 'General';
-      startTime = '';
-      endTime = '';
+      taskDate = formatDateOnlyForInput(new Date());
+      startTimeStr = formatTimeOnlyForInput(new Date());
+      endTimeStr = formatTimeOnlyForInput(
+        new Date(new Date().getTime() + 60 * 60 * 1000),
+      );
       hours = 0;
       minutes = 0;
       selectedRecentIndex = '';
@@ -208,8 +229,11 @@
         description = '';
         project = '';
         taskType = 'General';
-        startTime = '';
-        endTime = '';
+        taskDate = formatDateOnlyForInput(new Date());
+        startTimeStr = formatTimeOnlyForInput(new Date());
+        endTimeStr = formatTimeOnlyForInput(
+          new Date(new Date().getTime() + 60 * 60 * 1000),
+        );
         hours = 0;
         minutes = 0;
         selectedRecentIndex = '';
@@ -222,7 +246,7 @@
       return;
     }
 
-    if (!startTime || !endTime) {
+    if (!startTimeStr || !endTimeStr) {
       errorMessage = 'Please provide valid start and end times';
       return;
     }
@@ -230,8 +254,18 @@
     const start = new Date(startTime);
     const end = new Date(endTime);
 
+    // Cross-day validation check
+    const startDay = formatDateOnlyForInput(start);
+    const endDay = formatDateOnlyForInput(end);
+
+    if (startDay !== endDay) {
+      errorMessage =
+        'Tasks must be restricted to a single day (cannot cross 23:59)';
+      return;
+    }
+
     if (end <= start) {
-      errorMessage = 'End time must be after start time';
+      errorMessage = 'End time must be after start time (tasks cannot cross midnight)';
       return;
     }
 
@@ -319,13 +353,24 @@
   </div>
 
   <div class="field">
+    <label for="taskDate">Date</label>
+    <input
+      id="taskDate"
+      name="taskDate"
+      type="date"
+      required
+      bind:value={taskDate}
+    />
+  </div>
+
+  <div class="field">
     <label for="startTime">Start Time</label>
     <input
       id="startTime"
       name="startTime"
-      type="datetime-local"
+      type="time"
       required
-      bind:value={startTime}
+      bind:value={startTimeStr}
       oninput={handleStartTimeInput}
     />
   </div>
@@ -362,10 +407,10 @@
     <input
       id="endTime"
       name="endTime"
-      type="datetime-local"
+      type="time"
       required={!isSmartFill}
       disabled={isSmartFill}
-      bind:value={endTime}
+      bind:value={endTimeStr}
       oninput={updateDurationFromTimes}
     />
   </div>

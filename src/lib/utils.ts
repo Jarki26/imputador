@@ -11,6 +11,22 @@ export function formatDateForInput(d: Date): string {
 }
 
 /**
+ * Formats a Date object to YYYY-MM-DD
+ */
+export function formatDateOnlyForInput(d: Date): string {
+  const pad = (n: number) => n.toString().padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+}
+
+/**
+ * Formats a Date object to HH:mm
+ */
+export function formatTimeOnlyForInput(d: Date): string {
+  const pad = (n: number) => n.toString().padStart(2, '0');
+  return `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+/**
  * Calculates the total hours from a list of tasks, excluding non-billable types.
  */
 export function calculateTotalHours(tasks: Task[]): number {

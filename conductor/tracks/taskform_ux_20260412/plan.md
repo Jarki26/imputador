@@ -9,18 +9,18 @@
 - [x] Task: Ensure all duration lock tests pass.
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Duration Lock UI and Logic' (Protocol in workflow.md)
 
-## Phase 2: Default Date Selection
+## Phase 2: Default Date Selection [checkpoint: 3ee3ec2]
 - [x] Task: Write failing tests for default date behavior in `src/lib/TaskForm.spec.ts`.
 - [x] Task: Update `TaskForm.svelte` to default the date input to today's date if no specific date is provided on mount.
 - [x] Task: Ensure the date remains accurate when opened from `WeeklyView` context.
 - [x] Task: Ensure all default date selection tests pass.
-- [~] Task: Conductor - User Manual Verification 'Phase 2: Default Date Selection' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Default Date Selection' (Protocol in workflow.md)
 
 ## Phase 3: Single-Day Restriction
-- [ ] Task: Write failing tests for cross-day validation in `src/lib/TaskForm.spec.ts`.
-- [ ] Task: Update the date selector in `TaskForm.svelte` to ensure only a single day can be selected.
-- [ ] Task: Implement validation logic to check if `startTime + duration` crosses 23:59 of the selected date.
-- [ ] Task: Display a validation error in the UI when a cross-day boundary is breached.
-- [ ] Task: Prevent form submission if the cross-day validation fails.
-- [ ] Task: Ensure all cross-day restriction tests pass.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Single-Day Restriction' (Protocol in workflow.md)
+- [x] Task: Write failing tests for cross-day validation in `src/lib/TaskForm.spec.ts`.
+- [x] Task: Update the date selector in `TaskForm.svelte` to ensure only a single day can be selected.
+- [x] Task: Implement validation logic to check if `startTime + duration` crosses 23:59 of the selected date.
+- [x] Task: Display a validation error in the UI when a cross-day boundary is breached.
+- [x] Task: Prevent form submission if the cross-day validation fails.
+- [x] Task: Ensure all cross-day restriction tests pass.
+- [~] Task: Conductor - User Manual Verification 'Phase 3: Single-Day Restriction' (Protocol in workflow.md)

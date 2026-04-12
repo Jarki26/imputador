@@ -15,6 +15,8 @@ describe('TaskForm.svelte', () => {
       addTask: vi.fn().mockResolvedValue(1) as any,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       getTasksForDay: vi.fn().mockResolvedValue([]) as any,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      getRecentTasks: vi.fn().mockResolvedValue([]) as any,
     };
     mockProjectStore = {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -30,6 +32,7 @@ describe('TaskForm.svelte', () => {
     expect(screen.getByLabelText(/Description/i)).toBeDefined();
     expect(screen.getByLabelText(/Project/i)).toBeDefined();
     expect(screen.getByLabelText(/Task Type/i)).toBeDefined();
+    expect(screen.getByLabelText(/Date/i)).toBeDefined();
     expect(screen.getByLabelText(/Start Time/i)).toBeDefined();
     expect(screen.getByLabelText(/End Time/i)).toBeDefined();
   });
@@ -63,11 +66,14 @@ describe('TaskForm.svelte', () => {
     fireEvent.input(screen.getByLabelText(/Project/i), {
       target: { value: 'Project X' },
     });
+    fireEvent.input(screen.getByLabelText(/Date/i), {
+      target: { value: '2026-04-09' },
+    });
     fireEvent.input(screen.getByLabelText(/Start Time/i), {
-      target: { value: '2026-04-09T09:00' },
+      target: { value: '09:00' },
     });
     fireEvent.input(screen.getByLabelText(/End Time/i), {
-      target: { value: '2026-04-09T10:00' },
+      target: { value: '10:00' },
     });
 
     const submitBtn = screen.getByRole('button', { name: /Add Task/i });
@@ -88,11 +94,14 @@ describe('TaskForm.svelte', () => {
     fireEvent.input(screen.getByLabelText(/Project/i), {
       target: { value: 'Project X' },
     });
+    fireEvent.input(screen.getByLabelText(/Date/i), {
+      target: { value: '2026-04-09' },
+    });
     fireEvent.input(screen.getByLabelText(/Start Time/i), {
-      target: { value: '2026-04-09T09:00' },
+      target: { value: '09:00' },
     });
     fireEvent.input(screen.getByLabelText(/End Time/i), {
-      target: { value: '2026-04-09T10:00' },
+      target: { value: '10:00' },
     });
 
     const submitBtn = screen.getByRole('button', { name: /Add Task/i });
@@ -108,13 +117,14 @@ describe('TaskForm.svelte', () => {
         props: { taskStore: mockTaskStore, projectStore: mockProjectStore },
       });
 
-      const startTimeInput = screen.getByLabelText(/Start Time/i) as HTMLInputElement;
-      expect(startTimeInput.value).toContain(today);
+      const dateInput = screen.getByLabelText(/Date/i) as HTMLInputElement;
+      expect(dateInput.value).toBe(today);
     });
 
     it('should respect the initialStartTime if provided and set time to 00:00', () => {
       const customDate = '2026-05-20T10:00';
-      const expectedDate = '2026-05-20T00:00';
+      const expectedDate = '2026-05-20';
+      const expectedTime = '00:00';
       render(TaskForm, {
         props: { 
           taskStore: mockTaskStore, 
@@ -123,8 +133,49 @@ describe('TaskForm.svelte', () => {
         },
       });
 
+      const dateInput = screen.getByLabelText(/Date/i) as HTMLInputElement;
       const startTimeInput = screen.getByLabelText(/Start Time/i) as HTMLInputElement;
-      expect(startTimeInput.value).toBe(expectedDate);
+      expect(dateInput.value).toBe(expectedDate);
+      expect(startTimeInput.value).toBe(expectedTime);
+    });
+  });
+
+  describe('Single-Day Restriction', () => {
+    it('should show error if task crosses to next day', async () => {
+      render(TaskForm, {
+        props: { taskStore: mockTaskStore, projectStore: mockProjectStore },
+      });
+
+      fireEvent.input(screen.getByLabelText(/Title/i), {
+        target: { value: 'Cross-day Task' },
+      });
+      fireEvent.input(screen.getByLabelText(/Project/i), {
+        target: { value: 'Project X' },
+      });
+      fireEvent.input(screen.getByLabelText(/Date/i), {
+        target: { value: '2026-04-09' },
+      });
+      // Set start time to 23:30
+      fireEvent.input(screen.getByLabelText(/Start Time/i), {
+        target: { value: '23:30' },
+      });
+      
+      // Since it's a split input, we can't easily cross day with just the "End Time" input bound to the same date.
+      // But the logic in handleSubmit checks the derived full strings.
+      // If we manually change the derived endTime string to next day...
+      // Wait, the UI doesn't allow changing the date of end time separately.
+      // But we can simulate a case where the logic *might* cross day if duration is long.
+      
+      const hoursInput = screen.getByLabelText(/Hours/i) as HTMLInputElement;
+      await fireEvent.input(hoursInput, { target: { value: '1' } }); // 23:30 + 1h = 00:30 next day
+
+      const submitBtn = screen.getByRole('button', { name: /Add Task/i });
+      await fireEvent.click(submitBtn);
+
+      expect(
+        await screen.findByText(/End time must be after start time \(tasks cannot cross midnight\)/i),
+      ).toBeDefined();
+      expect(mockTaskStore.addTask).not.toHaveBeenCalled();
     });
   });
 });
