@@ -4,6 +4,7 @@
   import WeeklyView from '$lib/WeeklyView.svelte';
   import Settings from '$lib/Settings.svelte';
   import Modal from '$lib/Modal.svelte';
+  import Tutorial from '$lib/Tutorial.svelte';
   import { TaskStore } from '$lib/taskStore';
   import { ProjectStore } from '$lib/projectStore';
   import { ConfigStore } from '$lib/configStore';
@@ -23,6 +24,7 @@
 
   let showModal = $state(false);
   let showSettings = $state(false);
+  let showTutorial = $state(false);
   let weeklyTarget = $state(41);
   let selectedStartTime = $state('');
   let selectedEndTime = $state('');
@@ -194,6 +196,14 @@
           </button>
         </div>
         <button
+          class="help-btn"
+          onclick={() => (showTutorial = true)}
+          aria-label="Help Tutorial"
+          title="Tutorial"
+        >
+          ❓
+        </button>
+        <button
           class="settings-btn"
           onclick={() => (showSettings = true)}
           aria-label="Settings"
@@ -288,6 +298,12 @@
   >
     <Settings {weeklyTarget} onSave={handleSettingsSave} />
   </Modal>
+
+  <Tutorial
+    show={showTutorial}
+    onClose={() => (showTutorial = false)}
+    setView={(v) => (view = v)}
+  />
 </div>
 
 <style>
@@ -338,6 +354,7 @@
     opacity: 0.5;
   }
 
+  .help-btn,
   .settings-btn {
     background: none;
     border: none;
@@ -349,6 +366,7 @@
     transition: background-color 0.2s;
   }
 
+  .help-btn:hover,
   .settings-btn:hover {
     background-color: var(--md-sys-color-surface-container-high);
   }
