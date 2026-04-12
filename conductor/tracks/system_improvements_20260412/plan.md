@@ -16,13 +16,13 @@
 - [x] Task: Implement UI controls for Undo/Redo. 4ac7823
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Undo/Redo System' (Protocol in workflow.md)
 
-## Phase 3: Interactive Tutorial
-- [ ] Task: Create a new `Tutorial.svelte` component to act as the overlay/step-by-step guide.
-- [ ] Task: Write tests verifying the state and navigation of the tutorial steps.
-- [ ] Task: Implement the tutorial content, covering Basic Entry, Advanced Manipulation, Weekly View, Settings & Undo/Redo.
-- [ ] Task: Write tests verifying the tutorial can be triggered from Settings/Help.
-- [ ] Task: Implement the trigger mechanism for the tutorial.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Interactive Tutorial' (Protocol in workflow.md)
+## Phase 3: Interactive Tutorial [checkpoint: 23eae6d]
+- [x] Task: Create a new `Tutorial.svelte` component to act as the overlay/step-by-step guide. 4a764b6
+- [x] Task: Write tests verifying the state and navigation of the tutorial steps. 4a764b6
+- [x] Task: Implement the tutorial content, covering Basic Entry, Advanced Manipulation, Weekly View, Settings & Undo/Redo. 4a764b6
+- [x] Task: Write tests verifying the tutorial can be triggered from Settings/Help. 4a764b6
+- [x] Task: Implement the trigger mechanism for the tutorial. 4a764b6
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Interactive Tutorial' (Protocol in workflow.md)
 
 ## Phase 4: Finalization
 - [ ] Task: Update `conductor/tareas_pendientes.md` section 4.3 to mark all items as complete.
