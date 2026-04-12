@@ -2,12 +2,17 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: 'master' # O la rama que uses
+    branches: 'master'
 
 permissions:
   contents: read
   pages: write
   id-token: write
+
+# Evita que se acumulen despliegues si haces push muy seguidos
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
   build_site:
@@ -19,11 +24,11 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: '22' # Usamos el string para asegurar la última revisión de la v22
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci # 'npm ci' es más limpio para entornos de CI que 'npm install'
 
       - name: Build
         run: npm run build
