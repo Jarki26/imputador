@@ -224,7 +224,7 @@
 
 <style>
   .app-container {
-    height: 100vh;
+    height: 100dvh;
     display: flex;
     flex-direction: column;
     background-color: var(--md-sys-color-surface);
