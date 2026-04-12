@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { TASK_TYPES, getTaskType, countsTowardGoal, isBillable } from './config';
-import { calculateTotalHours } from './utils';
+import { calculateTotalHours, calculateWorkHours, calculateGoalAbsenceHours } from './utils';
 import type { Task } from './db';
 
 describe('Ausencia Facturable Task Type', () => {
@@ -18,7 +18,7 @@ describe('Ausencia Facturable Task Type', () => {
     expect(countsTowardGoal('Ausencia Facturable')).toBe(true);
   });
 
-  it('calculateTotalHours should include Ausencia Facturable but exclude Rest', () => {
+  it('calculateWorkHours should only include General/Feature/Bug etc', () => {
     const tasks: Partial<Task>[] = [
       {
         startTime: new Date('2026-04-12T08:00:00'),
@@ -36,7 +36,9 @@ describe('Ausencia Facturable Task Type', () => {
         type: 'Ausencia Facturable'
       }
     ];
-    // Total should be 2 (General) + 2 (Ausencia Facturable) = 4
-    expect(calculateTotalHours(tasks as Task[])).toBe(4);
+    // Work should be 2
+    expect(calculateWorkHours(tasks as Task[])).toBe(2);
+    // Goal Absence should be 2
+    expect(calculateGoalAbsenceHours(tasks as Task[])).toBe(2);
   });
 });

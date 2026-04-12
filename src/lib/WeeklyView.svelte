@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Task } from './db';
-  import { calculateTotalHours } from './utils';
+  import { calculateWorkHours, calculateGoalAbsenceHours } from './utils';
   import { isBillable } from './config';
 
   let {
@@ -555,7 +555,9 @@
       </button>
     </div>
     <div class="weekly-summary">
-      Logged: {calculateTotalHours(tasks).toFixed(2)}h / Target: {weeklyTarget}h
+      Logged: {calculateWorkHours(tasks).toFixed(2)}h / Target: {(
+        weeklyTarget - calculateGoalAbsenceHours(tasks)
+      ).toFixed(2)}h
     </div>
   </div>
   <div class="grid-scroll-container">

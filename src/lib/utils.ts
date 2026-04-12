@@ -27,12 +27,37 @@ export function formatTimeOnlyForInput(d: Date): string {
 }
 
 /**
- * Calculates the total hours from a list of tasks, excluding non-billable types.
- * "Billable" here refers to everything that counts towards the weekly goal.
+ * Calculates the total hours from a list of tasks that count towards the goal.
  */
 export function calculateTotalHours(tasks: Task[]): number {
   return tasks.reduce((total, task) => {
     if (countsTowardGoal(task.type)) {
+      const diff = task.endTime.getTime() - task.startTime.getTime();
+      return total + diff / (1000 * 60 * 60);
+    }
+    return total;
+  }, 0);
+}
+
+/**
+ * Calculates ONLY active work hours (billable).
+ */
+export function calculateWorkHours(tasks: Task[]): number {
+  return tasks.reduce((total, task) => {
+    if (isBillable(task.type)) {
+      const diff = task.endTime.getTime() - task.startTime.getTime();
+      return total + diff / (1000 * 60 * 60);
+    }
+    return total;
+  }, 0);
+}
+
+/**
+ * Calculates hours for tasks that count toward goal but are NOT active work (e.g. Ausencia Facturable).
+ */
+export function calculateGoalAbsenceHours(tasks: Task[]): number {
+  return tasks.reduce((total, task) => {
+    if (countsTowardGoal(task.type) && !isBillable(task.type)) {
       const diff = task.endTime.getTime() - task.startTime.getTime();
       return total + diff / (1000 * 60 * 60);
     }
