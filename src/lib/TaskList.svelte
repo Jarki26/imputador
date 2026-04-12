@@ -31,7 +31,11 @@
           </p>
         </div>
       {/if}
-      <div class="task-item">
+      <div
+        class="task-item"
+        class:is-rest={task.type === 'Rest'}
+        class:is-billable-absence={task.type === 'Ausencia Facturable'}
+      >
         <div class="task-header">
           <h3>{task.title}</h3>
           <span class="type-badge">{task.type}</span>
@@ -75,6 +79,22 @@
 
   .task-item:hover {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  }
+
+  .task-item.is-rest {
+    background-color: var(--md-sys-color-surface-variant);
+    opacity: 0.8;
+  }
+
+  .task-item.is-billable-absence {
+    background: repeating-linear-gradient(
+      45deg,
+      var(--md-sys-color-tertiary-container),
+      var(--md-sys-color-tertiary-container) 10px,
+      rgba(255, 255, 255, 0.3) 10px,
+      rgba(255, 255, 255, 0.3) 20px
+    );
+    border-color: var(--md-sys-color-tertiary);
   }
 
   .task-header {

@@ -613,7 +613,8 @@
               <div
                 class="task-block"
                 class:has-overlap={task.hasOverlap}
-                class:is-rest={!isBillable(task.type)}
+                class:is-rest={!isBillable(task.type) && task.type !== 'Ausencia Facturable'}
+                class:is-billable-absence={task.type === 'Ausencia Facturable'}
                 class:is-dragging={dragInfo?.taskId === task.id}
                 style={getTaskStyle(task)}
                 onpointerdown={(e) => handlePointerDown(e, task, 'move')}
@@ -1171,6 +1172,18 @@
     color: var(--md-sys-color-on-surface-variant);
     border-color: var(--md-sys-color-outline-variant);
     opacity: 0.8;
+  }
+
+  .task-block.is-billable-absence {
+    background: repeating-linear-gradient(
+      45deg,
+      var(--md-sys-color-tertiary-container),
+      var(--md-sys-color-tertiary-container) 10px,
+      rgba(255, 255, 255, 0.3) 10px,
+      rgba(255, 255, 255, 0.3) 20px
+    );
+    color: var(--md-sys-color-on-tertiary-container);
+    border-color: var(--md-sys-color-tertiary);
   }
 
   .task-block.has-overlap {

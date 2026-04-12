@@ -65,4 +65,23 @@ describe('TaskList.svelte', () => {
     // Gap is between 10:00 and 11:00
     expect(screen.getByText(/Gap detected/i)).toBeDefined();
   });
+
+  it('should apply is-billable-absence class to Ausencia Facturable tasks', () => {
+    cleanup();
+    const tasks: Task[] = [
+      {
+        id: 1,
+        title: 'Absence',
+        description: 'Medical',
+        project: 'Admin',
+        type: 'Ausencia Facturable',
+        startTime: new Date('2026-04-12T09:00:00Z'),
+        endTime: new Date('2026-04-12T10:00:00Z'),
+      },
+    ];
+
+    const { container } = render(TaskList, { props: { tasks } });
+    const taskItem = container.querySelector('.task-item');
+    expect(taskItem?.classList.contains('is-billable-absence')).toBe(true);
+  });
 });

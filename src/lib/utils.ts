@@ -1,5 +1,5 @@
 import type { Task } from './db';
-import { isBillable } from './config';
+import { isBillable, countsTowardGoal } from './config';
 
 /**
  * Formats a Date object to the string format required by HTML datetime-local inputs:
@@ -28,10 +28,11 @@ export function formatTimeOnlyForInput(d: Date): string {
 
 /**
  * Calculates the total hours from a list of tasks, excluding non-billable types.
+ * "Billable" here refers to everything that counts towards the weekly goal.
  */
 export function calculateTotalHours(tasks: Task[]): number {
   return tasks.reduce((total, task) => {
-    if (isBillable(task.type)) {
+    if (countsTowardGoal(task.type)) {
       const diff = task.endTime.getTime() - task.startTime.getTime();
       return total + diff / (1000 * 60 * 60);
     }
