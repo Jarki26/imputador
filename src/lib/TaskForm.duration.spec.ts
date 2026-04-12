@@ -86,7 +86,7 @@ describe('TaskForm.svelte Duration Editing', () => {
       render(TaskForm, {
         props: { taskStore: mockTaskStore, projectStore: mockProjectStore },
       });
-      const lockBtn = screen.getByTitle(/Toggle Duration Lock/i);
+      const lockBtn = screen.getByTitle(/Alternar Bloqueo de Duración/i);
       expect(lockBtn).toBeDefined();
     });
 
@@ -94,7 +94,7 @@ describe('TaskForm.svelte Duration Editing', () => {
       render(TaskForm, {
         props: { taskStore: mockTaskStore, projectStore: mockProjectStore },
       });
-      const lockBtn = screen.getByTitle(/Toggle Duration Lock/i);
+      const lockBtn = screen.getByTitle(/Alternar Bloqueo de Duración/i);
       
       // Default should be unlocked (assuming based on standard UX, but we can verify class/aria-pressed)
       expect(lockBtn.getAttribute('aria-pressed')).toBe('false');
@@ -116,7 +116,7 @@ describe('TaskForm.svelte Duration Editing', () => {
         },
       });
 
-      const lockBtn = screen.getByTitle(/Toggle Duration Lock/i);
+      const lockBtn = screen.getByTitle(/Alternar Bloqueo de Duración/i);
       const startTimeInput = screen.getByLabelText(/Hora de Inicio/i) as HTMLInputElement;
       const endTimeInput = screen.getByLabelText(/Hora de Fin/i) as HTMLInputElement;
 
