@@ -53,7 +53,7 @@ Esta lista identifica las funcionalidades definidas en `docs/Descripción.md` qu
     - Corregir lógica de división/desplazamiento al editar registros desde esta vista.
 
 ### 4.2 Formulario de Tareas (`TaskForm.svelte`)
-- [ ] **Lógica de Entrada:**
+- [x] **Lógica de Entrada:** ✅ 2026-04-12
     - Botón para bloquear duración (ajusta la hora de fin automáticamente al cambiar el inicio).
     - Cargar por defecto la fecha del día seleccionado al abrir el formulario.
     - Restringir registros a un único día para simplificar selectores de hora.
