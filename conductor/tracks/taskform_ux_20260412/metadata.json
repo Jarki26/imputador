@@ -1,8 +1,0 @@
-{
-  "track_id": "taskform_ux_20260412",
-  "type": "feature",
-  "status": "new",
-  "created_at": "2026-04-12T00:00:00Z",
-  "updated_at": "2026-04-12T00:00:00Z",
-  "description": "Implementa el apartado 4.2 de @conductor/tareas_pendientes.md y al finalizar actualiza el estado de las tareas del documento como completadas"
-}

@@ -1,8 +1,0 @@
-{
-  "track_id": "system_improvements_20260412",
-  "type": "feature",
-  "status": "new",
-  "created_at": "2026-04-12T00:00:00Z",
-  "updated_at": "2026-04-12T00:00:00Z",
-  "description": "Implement logic for Undo/Redo/Restore points, interactive tutorial, and 'Billable Absence' task type."
-}
