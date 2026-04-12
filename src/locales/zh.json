@@ -44,7 +44,7 @@
     "type_bug": "错误/缺陷",
     "type_rest": "休息",
     "type_meeting": "会议",
-    "type_absence": "计费缺勤",
+    "type_ausencia_facturable": "计费缺勤",
     "date": "日期",
     "start_time": "开始时间",
     "end_time": "结束时间",

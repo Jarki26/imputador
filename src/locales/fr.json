@@ -44,7 +44,7 @@
     "type_bug": "Erreur/Bug",
     "type_rest": "Repos",
     "type_meeting": "Réunion",
-    "type_absence": "Absence Facturable",
+    "type_ausencia_facturable": "Absence Facturable",
     "date": "Date",
     "start_time": "Heure de début",
     "end_time": "Heure de fin",

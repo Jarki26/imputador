@@ -44,7 +44,7 @@
     "type_bug": "Fehler/Bug",
     "type_rest": "Pause",
     "type_meeting": "Besprechung",
-    "type_absence": "Abrechenbare Abwesenheit",
+    "type_ausencia_facturable": "Abrechenbare Abwesenheit",
     "date": "Datum",
     "start_time": "Startzeit",
     "end_time": "Endzeit",
