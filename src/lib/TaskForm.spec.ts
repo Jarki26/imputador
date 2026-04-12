@@ -39,6 +39,10 @@ describe('TaskForm.svelte', () => {
       props: { taskStore: mockTaskStore, projectStore: mockProjectStore },
     });
 
+    // Clear default values
+    fireEvent.input(screen.getByLabelText(/Start Time/i), { target: { value: '' } });
+    fireEvent.input(screen.getByLabelText(/End Time/i), { target: { value: '' } });
+
     const submitBtn = screen.getByRole('button', { name: /Add Task/i });
     await fireEvent.click(submitBtn);
 
@@ -95,5 +99,32 @@ describe('TaskForm.svelte', () => {
     await fireEvent.click(submitBtn);
 
     expect(await screen.findByText(/Failed to save task/i)).toBeDefined();
+  });
+
+  describe('Default Date Behavior', () => {
+    it('should default the date to today if no date is provided', () => {
+      const today = new Date().toISOString().split('T')[0];
+      render(TaskForm, {
+        props: { taskStore: mockTaskStore, projectStore: mockProjectStore },
+      });
+
+      const startTimeInput = screen.getByLabelText(/Start Time/i) as HTMLInputElement;
+      expect(startTimeInput.value).toContain(today);
+    });
+
+    it('should respect the initialStartTime if provided and set time to 00:00', () => {
+      const customDate = '2026-05-20T10:00';
+      const expectedDate = '2026-05-20T00:00';
+      render(TaskForm, {
+        props: { 
+          taskStore: mockTaskStore, 
+          projectStore: mockProjectStore,
+          initialStartTime: customDate
+        },
+      });
+
+      const startTimeInput = screen.getByLabelText(/Start Time/i) as HTMLInputElement;
+      expect(startTimeInput.value).toBe(expectedDate);
+    });
   });
 });

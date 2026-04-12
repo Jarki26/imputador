@@ -30,12 +30,19 @@
   let project = $state(editingTask?.project || '');
   let taskType = $state(editingTask?.type || 'General');
   let startTime = $state(
-    initialStartTime ||
-      (editingTask ? formatDateForInput(editingTask.startTime) : ''),
+    (initialStartTime && !editingTask)
+      ? formatDateForInput(new Date(new Date(initialStartTime).setHours(0, 0, 0, 0)))
+      : (initialStartTime || (editingTask ? formatDateForInput(editingTask.startTime) : formatDateForInput(new Date())))
   );
   let endTime = $state(
     initialEndTime ||
-      (editingTask ? formatDateForInput(editingTask.endTime) : ''),
+      (editingTask
+        ? formatDateForInput(editingTask.endTime)
+        : formatDateForInput(
+            initialStartTime 
+              ? new Date(new Date(initialStartTime).setHours(1, 0, 0, 0))
+              : new Date(new Date().getTime() + 60 * 60 * 1000)
+          )),
   );
   let hours = $state(0);
   let minutes = $state(0);

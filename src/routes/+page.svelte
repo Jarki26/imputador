@@ -16,7 +16,7 @@
   const configStore = new ConfigStore();
 
   let tasks: Task[] = $state([]);
-  let today = new Date();
+  let today = $state(new Date());
   let view: 'daily' | 'weekly' = $state('weekly');
 
   let showModal = $state(false);
@@ -145,7 +145,10 @@
       <button
         class="toggle-btn"
         class:active={view === 'daily'}
-        onclick={() => (view = 'daily')}
+        onclick={() => {
+          view = 'daily';
+          today = new Date();
+        }}
       >
         Daily View
       </button>
@@ -156,7 +159,12 @@
     <div class="grid">
       <section class="form-section">
         <h2>Register Task</h2>
-        <TaskForm {taskStore} {projectStore} onSuccess={onTaskAdded} />
+        <TaskForm
+          {taskStore}
+          {projectStore}
+          onSuccess={onTaskAdded}
+          initialStartTime={formatDateForInput(today)}
+        />
       </section>
 
       <section class="list-section">
