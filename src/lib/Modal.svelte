@@ -62,6 +62,8 @@
     border-radius: 1rem;
     min-width: 300px;
     max-width: 90%;
+    max-height: 90dvh;
+    overflow-y: auto;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   }
 
