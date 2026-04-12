@@ -197,7 +197,7 @@
           loadTasks(true);
         }}
         onTaskCopyToRecents={async (task) => {
-          await taskStore.addTaskToRecents(task);
+          await taskStore.upsertRecentTask(task);
         }}
       />
     {:else}
