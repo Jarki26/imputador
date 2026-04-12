@@ -59,10 +59,10 @@ Esta lista identifica las funcionalidades definidas en `docs/Descripción.md` qu
     - Restringir registros a un único día para simplificar selectores de hora.
 
 ### 4.3 Sistema General
-- [ ] **Persistencia y Ayuda:**
+- [x] **Persistencia y Ayuda:** ✅ 2026-04-12
     - Sistema de historial (Deshacer/Rehacer) o puntos de restauración.
     - Tutorial interactivo de funcionalidades.
-- [ ] **Lógica de Negocio:**
+- [x] **Lógica de Negocio:** ✅ 2026-04-12
     - Nuevo tipo "Ausencia Facturable" (no cuenta como trabajo pero descuenta del objetivo semanal).
 
 ## 5. Características de Interoperabilidad (Futuro)
