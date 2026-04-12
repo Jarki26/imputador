@@ -1,0 +1,8 @@
+{
+  "track_id": "i18n_20260412",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-04-12T10:00:00Z",
+  "updated_at": "2026-04-12T10:00:00Z",
+  "description": "implementa el apartado 5 de @conductor/tareas_pendientes.md y actualiza el estado de las tareas del documento como completadas como paso final"
+}
