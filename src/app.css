@@ -34,6 +34,12 @@
   --md-sys-typescale-body-large-tracking: 0.03125rem;
 }
 
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
 body {
   margin: 0;
   padding: 0;
