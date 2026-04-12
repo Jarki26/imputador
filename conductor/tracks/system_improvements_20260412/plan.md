@@ -1,15 +1,15 @@
 # Implementation Plan: System Improvements (Section 4.3)
 
-## Phase 1: "Ausencia Facturable" Task Type
+## Phase 1: "Ausencia Facturable" Task Type [checkpoint: a93dd6d]
 - [x] Task: Update task types to include "Ausencia Facturable". 5781f28
 - [x] Task: Write tests verifying that "Ausencia Facturable" hours are correctly calculated (counting towards weekly goal, but not daily work hours). 5781f28
 - [x] Task: Implement calculation logic in the stores. 5781f28
 - [x] Task: Write tests verifying the striped pattern rendering for this task type. 5781f28
 - [x] Task: Implement the patterned/striped styling in UI components for the new task type. 5781f28
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: "Ausencia Facturable" Task Type' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: "Ausencia Facturable" Task Type' (Protocol in workflow.md)
 
 ## Phase 2: Undo/Redo System
-- [ ] Task: Define the History Stack state structure (past, present, future) in a new store or extend existing ones.
+- [~] Task: Define the History Stack state structure (past, present, future) in a new store or extend existing ones.
 - [ ] Task: Write tests for the Undo/Redo logic (recording state, undoing an action, redoing an action, clearing future on new action).
 - [ ] Task: Implement the granular Undo/Redo stack logic.
 - [ ] Task: Write tests for UI integration (Undo/Redo buttons or keyboard shortcuts).
