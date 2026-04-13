@@ -1,7 +1,7 @@
 # Implementation Plan: Configurable Excel Export & Import Foundation
 
 ## Phase 1: Setup & Core Stores
-- [ ] Task: Evaluate and install an Excel manipulation library (e.g., `xlsx` / SheetJS).
+- [x] Task: Evaluate and install an Excel manipulation library (e.g., `xlsx` / SheetJS). [3a705c5]
 - [ ] Task: Create tests for `exportConfigStore` to handle bidirectional template mapping and task type exclusions.
 - [ ] Task: Implement `exportConfigStore` with local persistence (IndexedDB/localStorage) to save the template configuration.
 - [ ] Task: Create tests for the core Excel export service (filtering tasks, mapping to template).
