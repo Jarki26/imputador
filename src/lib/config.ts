@@ -5,12 +5,26 @@ export interface TaskTypeConfig {
 }
 
 export const TASK_TYPES: TaskTypeConfig[] = [
-  { name: 'General', isBillable: true, countsTowardGoal: true },
-  { name: 'Feature', isBillable: true, countsTowardGoal: true },
-  { name: 'Bug', isBillable: true, countsTowardGoal: true },
-  { name: 'Rest', isBillable: false, countsTowardGoal: false },
-  { name: 'Meeting', isBillable: true, countsTowardGoal: true },
-  { name: 'Ausencia Facturable', isBillable: false, countsTowardGoal: true },
+  { name: 'APERTURAS', isBillable: true, countsTowardGoal: true },
+  { name: 'ANALISIS', isBillable: true, countsTowardGoal: true },
+  { name: 'DESARROLLO', isBillable: true, countsTowardGoal: true },
+  { name: 'DESPLIEGUE', isBillable: true, countsTowardGoal: true },
+  { name: 'DOCUMENTACION', isBillable: true, countsTowardGoal: true },
+  { name: 'ENTREVISTAS', isBillable: true, countsTowardGoal: true },
+  { name: 'FORMACION', isBillable: true, countsTowardGoal: true },
+  { name: 'GESTION', isBillable: true, countsTowardGoal: true },
+  { name: 'INCIDENCIAS', isBillable: true, countsTowardGoal: true },
+  { name: 'INVESTIGAR', isBillable: true, countsTowardGoal: true },
+  { name: 'MANTENIMIENTO', isBillable: true, countsTowardGoal: true },
+  { name: 'MONTAJE', isBillable: true, countsTowardGoal: true },
+  { name: 'OTROS', isBillable: true, countsTowardGoal: true },
+  { name: 'REUNIONES', isBillable: true, countsTowardGoal: true },
+  { name: 'SINCRONIZACION', isBillable: true, countsTowardGoal: true },
+  { name: 'SOPORTE', isBillable: true, countsTowardGoal: true },
+  { name: 'TEST', isBillable: true, countsTowardGoal: true },
+  { name: 'VIAJE', isBillable: true, countsTowardGoal: true },
+  { name: 'DESCANSO', isBillable: false, countsTowardGoal: false },
+  { name: 'AUSENCIA FACTURABLE', isBillable: false, countsTowardGoal: true }
 ];
 
 export function getTaskType(name: string): TaskTypeConfig | undefined {
