@@ -1,0 +1,87 @@
+import * as XLSX from 'xlsx';
+import type { Task } from './db';
+import type { ColumnMapping } from './exportConfigStore';
+
+/**
+ * Service to handle Excel export logic.
+ */
+export class ExportService {
+  /**
+   * Generates an Excel file (XLSX) from the provided tasks and template.
+   * Returns a Blob that can be used for download.
+   */
+  async generateExcel(tasks: Task[], template: ColumnMapping[]): Promise<Blob> {
+    const rows = this.mapTasksToRows(tasks, template);
+    const worksheet = XLSX.utils.json_to_sheet(rows);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Tasks');
+
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: 'xlsx',
+      type: 'array',
+    });
+
+    return new Blob([excelBuffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
+  }
+
+  /**
+   * Maps a list of tasks to a list of row objects based on the template.
+   */
+  private mapTasksToRows(tasks: Task[], template: ColumnMapping[]): any[] {
+    return tasks.map((task) => {
+      const row: any = {};
+      template.forEach((mapping) => {
+        if (mapping.fixedValue !== undefined) {
+          row[mapping.columnName] = mapping.fixedValue;
+        } else if (mapping.taskField) {
+          row[mapping.columnName] = this.getFieldValue(task, mapping.taskField);
+        }
+      });
+      return row;
+    });
+  }
+
+  /**
+   * Extracts and formats a specific field from a task.
+   */
+  private getFieldValue(task: Task, field: string): string {
+    const start = new Date(task.startTime);
+    const end = new Date(task.endTime);
+
+    switch (field) {
+      case 'startDate':
+        return this.formatDate(start);
+      case 'startTime':
+        return this.formatTime(start);
+      case 'endDate':
+        return this.formatDate(end);
+      case 'endTime':
+        return this.formatTime(end);
+      case 'project':
+        return task.project;
+      case 'type':
+        return task.type;
+      case 'description':
+        return task.description;
+      case 'duration':
+        const diffMs = end.getTime() - start.getTime();
+        return (diffMs / (1000 * 60 * 60)).toFixed(2);
+      default:
+        return '';
+    }
+  }
+
+  private formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  private formatTime(date: Date): string {
+    const pad = (n: number) => n.toString().padStart(2, '0');
+    return `${pad(date.getHours())}:${pad(date.getMinutes())}`;
+  }
+}
