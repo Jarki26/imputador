@@ -110,6 +110,14 @@
     "empty": "No hay tareas para este día",
     "gap_detected": "Hueco detectado entre {start} y {end}"
   },
+  "export": {
+    "title": "Exportar a Excel",
+    "trigger": "Exportar Excel",
+    "start_date": "Fecha Inicio",
+    "end_date": "Fecha Fin",
+    "action_export": "Exportar",
+    "dialog_title": "Configurar Exportación"
+  },
   "tutorial": {
     "skip": "Saltar",
     "back": "Atrás",
