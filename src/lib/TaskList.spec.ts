@@ -69,14 +69,14 @@ describe('TaskList.svelte', () => {
     expect(screen.getByText(/Hueco detectado/i)).toBeDefined();
   });
 
-  it('should apply is-billable-absence class to Ausencia Facturable tasks', () => {
+  it('should apply is-billable-absence class to AUSENCIA FACTURABLE tasks', () => {
     const tasks: Task[] = [
       {
         id: 1,
         title: 'Absence',
         description: 'Medical',
         project: 'Admin',
-        type: 'Ausencia Facturable',
+        type: 'AUSENCIA FACTURABLE',
         startTime: new Date('2026-04-12T09:00:00Z'),
         endTime: new Date('2026-04-12T10:00:00Z'),
       },

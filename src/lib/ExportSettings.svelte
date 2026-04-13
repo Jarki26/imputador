@@ -33,7 +33,7 @@
     'Facturable',
     'Rest',
     'Personal',
-    'Ausencia Facturable',
+    'AUSENCIA FACTURABLE',
   ];
 
   function addMapping() {

@@ -36,8 +36,8 @@
       {/if}
       <div
         class="task-item"
-        class:is-rest={task.type === 'Rest'}
-        class:is-billable-absence={task.type === 'Ausencia Facturable'}
+        class:is-rest={task.type === 'DESCANSO'}
+        class:is-billable-absence={task.type === 'AUSENCIA FACTURABLE'}
       >
         <div class="task-header">
           <h3>{task.title}</h3>

@@ -626,8 +626,9 @@
               <div
                 class="task-block"
                 class:has-overlap={task.hasOverlap}
-                class:is-rest={!isBillable(task.type) && task.type !== 'Ausencia Facturable'}
-                class:is-billable-absence={task.type === 'Ausencia Facturable'}
+                class:is-rest={!isBillable(task.type) &&
+                  task.type !== 'AUSENCIA FACTURABLE'}
+                class:is-billable-absence={task.type === 'AUSENCIA FACTURABLE'}
                 class:is-dragging={dragInfo?.taskId === task.id}
                 style={getTaskStyle(task)}
                 onpointerdown={(e) => handlePointerDown(e, task, 'move')}
