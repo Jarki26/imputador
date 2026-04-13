@@ -74,14 +74,24 @@
     await loadTasks(true);
   }
 
-  function handleAddTask() {
-    initialStartTime = selectedDate.toISOString();
+  async function handleAddTask() {
+    const latestTask = await taskStore.getLatestTaskOfDay(selectedDate);
+    if (latestTask) {
+      initialStartTime = new Date(latestTask.endTime).toISOString();
+    } else {
+      initialStartTime = selectedDate.toISOString();
+    }
     editingTask = null;
     showAddModal = true;
   }
 
-  function handleSlotClick(date: Date) {
-    initialStartTime = date.toISOString();
+  async function handleSlotClick(date: Date) {
+    const precedingTask = await taskStore.getClosestPrecedingTask(date);
+    if (precedingTask) {
+      initialStartTime = new Date(precedingTask.endTime).toISOString();
+    } else {
+      initialStartTime = date.toISOString();
+    }
     editingTask = null;
     showAddModal = true;
   }

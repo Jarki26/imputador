@@ -6,8 +6,8 @@
 - [x] Task: Conductor - User Manual Verification 'Core Logic' (Protocol in workflow.md) [a08a705]
 
 ## Phase 2: UI Integration
-- [ ] Task: Update tests to verify the 'Add Task' button in Daily View uses the latest task's end time.
-- [ ] Task: Implement the logic for the 'Add Task' button in Daily View (e.g., in `+page.svelte`) to default to the latest task's end time, falling back to 00:00.
-- [ ] Task: Update tests to verify clicking an empty slot in Weekly View defaults to the closest preceding task's end time.
-- [ ] Task: Implement the logic for Weekly View empty slot clicks to adjust the initial start time based on preceding tasks.
-- [ ] Task: Conductor - User Manual Verification 'UI Integration' (Protocol in workflow.md)
+- [x] Task: Update tests to verify the 'Add Task' button in Daily View uses the latest task's end time. [003db5c]
+- [x] Task: Implement the logic for the 'Add Task' button in Daily View (e.g., in `+page.svelte`) to default to the latest task's end time, falling back to 00:00. [003db5c]
+- [x] Task: Update tests to verify clicking an empty slot in Weekly View defaults to the closest preceding task's end time. [003db5c]
+- [x] Task: Implement the logic for Weekly View empty slot clicks to adjust the initial start time based on preceding tasks. [003db5c]
+- [~] Task: Conductor - User Manual Verification 'UI Integration' (Protocol in workflow.md)
