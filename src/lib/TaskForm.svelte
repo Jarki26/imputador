@@ -108,7 +108,9 @@
 
   // Initialize duration from times
   $effect.pre(() => {
-    updateDurationFromTimes();
+    if (!isLocked && !isSmartFill) {
+      updateDurationFromTimes();
+    }
   });
 
   function updateDurationFromTimes() {
