@@ -57,4 +57,9 @@ describe('+page.svelte', () => {
     // Check for the specific Save button
     expect(screen.getByRole('button', { name: /^Guardar$/i })).toBeDefined();
   });
+
+  it('should render the export button in the header', () => {
+    render(Page);
+    expect(screen.getByText(/Exportar Excel/i)).toBeDefined();
+  });
 });
