@@ -16,7 +16,7 @@
 
 ## Phase 3: Export Trigger UI & Integration
 - [x] Task: Create tests for the Date Range Selection dialog and Export trigger button. [a2d1074]
-- [ ] Task: Implement Export button in the application (e.g., Header or Settings).
+- [x] Task: Implement Export button in the application (e.g., Header or Settings). [3c65b98]
 - [ ] Task: Implement Date Range Selection dialog that appears when Export is clicked.
 - [ ] Task: Integrate Date Range dialog with the core Excel export service to generate and download the `.xlsx` file.
 - [ ] Task: Conductor - User Manual Verification 'Export Trigger UI & Integration' (Protocol in workflow.md)
