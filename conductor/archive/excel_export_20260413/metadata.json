@@ -1,0 +1,8 @@
+{
+  "track_id": "excel_export_20260413",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-04-13T00:00:00Z",
+  "updated_at": "2026-04-13T00:00:00Z",
+  "description": "exportar a excel el contenido del registro por tareas con fecha y hora de inicio y fin con los datos adicionales"
+}
