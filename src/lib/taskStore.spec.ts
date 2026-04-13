@@ -117,4 +117,42 @@ describe('TaskStore CRUD operations', () => {
     expect(weekTasks).toHaveLength(1);
     expect(weekTasks[0].title).toBe('Monday Task');
   });
+
+  it('should retrieve tasks for a specific range', async () => {
+    const task1: Task = {
+      title: 'Task 1',
+      startTime: new Date('2026-04-01T10:00:00Z'),
+      endTime: new Date('2026-04-01T11:00:00Z'),
+      description: '',
+      project: '',
+      type: '',
+    };
+    const task2: Task = {
+      title: 'Task 2',
+      startTime: new Date('2026-04-10T10:00:00Z'),
+      endTime: new Date('2026-04-10T11:00:00Z'),
+      description: '',
+      project: '',
+      type: '',
+    };
+    const task3: Task = {
+      title: 'Task 3',
+      startTime: new Date('2026-04-20T10:00:00Z'),
+      endTime: new Date('2026-04-20T11:00:00Z'),
+      description: '',
+      project: '',
+      type: '',
+    };
+
+    await store.addTask(task1);
+    await store.addTask(task2);
+    await store.addTask(task3);
+
+    const rangeTasks = await store.getTasksForRange(
+      new Date('2026-04-05'),
+      new Date('2026-04-15'),
+    );
+    expect(rangeTasks).toHaveLength(1);
+    expect(rangeTasks[0].title).toBe('Task 2');
+  });
 });

@@ -12,11 +12,14 @@
   import type { Task } from '$lib/db';
   import { i18n } from '$lib/i18n.svelte';
   import { ExportConfigStore, type ColumnMapping } from '$lib/exportConfigStore';
+  import { ExportService } from '$lib/exportService';
+  import ExportTrigger from '$lib/ExportTrigger.svelte';
 
   const taskStore = new TaskStore();
   const configStore = new ConfigStore();
   const historyStore = new HistoryStore();
   const exportConfigStore = new ExportConfigStore();
+  const exportService = new ExportService();
 
   let tasks = $state<Task[]>([]);
   let weeklyTarget = $state(41);
@@ -105,6 +108,26 @@
     exportExclusions = data.exclusions;
   }
 
+  async function handleExport(range: { startDate: string; endDate: string }) {
+    const start = new Date(range.startDate);
+    const end = new Date(range.endDate);
+    end.setHours(23, 59, 59, 999);
+
+    const tasksToExport = await taskStore.getTasksForRange(start, end);
+    const filteredTasks = tasksToExport.filter((t) => !exportExclusions.includes(t.type));
+
+    const blob = await exportService.generateExcel(filteredTasks, exportTemplate);
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `imputador_export_${range.startDate}_${range.endDate}.xlsx`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
   const dailyTasks = $derived(
     tasks.filter((t) => {
       const d1 = new Date(t.startTime);
@@ -174,6 +197,7 @@
         </button>
       </div>
       <div class="header-btns">
+        <ExportTrigger onExport={handleExport} />
         <button
           class="icon-btn"
           onclick={() => (showTutorial = true)}

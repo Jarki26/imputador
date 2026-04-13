@@ -73,6 +73,18 @@ export class TaskStore {
   }
 
   /**
+   * Retrieves all tasks within a specific date range.
+   * @param start - Start date of the range.
+   * @param end - End date of the range.
+   * @returns A promise that resolves to an array of tasks.
+   */
+  async getTasksForRange(start: Date, end: Date): Promise<Task[]> {
+    const db = await this.getDB();
+    const range = IDBKeyRange.bound(start, end);
+    return db.getAllFromIndex('tasks', 'date', range);
+  }
+
+  /**
    * Updates an existing task.
    * @param id - The ID of the task to update.
    * @param updates - Partial task object containing updates.
