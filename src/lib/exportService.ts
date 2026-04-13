@@ -59,6 +59,8 @@ export class ExportService {
         return this.formatDate(end);
       case 'endTime':
         return this.formatTime(end);
+      case 'title':
+        return task.title;
       case 'project':
         return task.project;
       case 'type':

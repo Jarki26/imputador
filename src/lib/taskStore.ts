@@ -85,6 +85,31 @@ export class TaskStore {
   }
 
   /**
+   * Finds the chronologically latest task for a given day.
+   */
+  async getLatestTaskOfDay(date: Date): Promise<Task | null> {
+    const tasks = await this.getTasksForDay(date);
+    if (tasks.length === 0) return null;
+    // Sort by endTime descending
+    return tasks.sort((a, b) => b.endTime.getTime() - a.endTime.getTime())[0];
+  }
+
+  /**
+   * Finds the task that ends closest to but before the given time on the same day.
+   */
+  async getClosestPrecedingTask(date: Date): Promise<Task | null> {
+    const tasks = await this.getTasksForDay(date);
+    if (tasks.length === 0) return null;
+
+    const targetTime = date.getTime();
+    const precedingTasks = tasks
+      .filter((t) => t.endTime.getTime() <= targetTime)
+      .sort((a, b) => b.endTime.getTime() - a.endTime.getTime());
+
+    return precedingTasks.length > 0 ? precedingTasks[0] : null;
+  }
+
+  /**
    * Updates an existing task.
    * @param id - The ID of the task to update.
    * @param updates - Partial task object containing updates.

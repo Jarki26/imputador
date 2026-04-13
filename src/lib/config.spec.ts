@@ -6,21 +6,21 @@ describe('config', () => {
     expect(TASK_TYPES.length).toBeGreaterThan(0);
   });
 
-  it('should identify Rest as non-billable', () => {
-    const rest = getTaskType('Rest');
+  it('should identify DESCANSO as non-billable', () => {
+    const rest = getTaskType('DESCANSO');
     expect(rest).toBeDefined();
     expect(rest?.isBillable).toBe(false);
   });
 
-  it('should identify General as billable', () => {
-    const general = getTaskType('General');
+  it('should identify DESARROLLO as billable', () => {
+    const general = getTaskType('DESARROLLO');
     expect(general).toBeDefined();
     expect(general?.isBillable).toBe(true);
   });
 
   it('isBillable helper should work correctly', () => {
-    expect(isBillable('Rest')).toBe(false);
-    expect(isBillable('General')).toBe(true);
+    expect(isBillable('DESCANSO')).toBe(false);
+    expect(isBillable('DESARROLLO')).toBe(true);
     expect(isBillable('Unknown')).toBe(true); // Default to billable
   });
 });

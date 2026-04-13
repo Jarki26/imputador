@@ -75,9 +75,11 @@ describe('ExportService operations', () => {
   it('should handle all task fields', () => {
     const template: ColumnMapping[] = [
       { columnName: 'T', taskField: 'type' },
+      { columnName: 'Título', taskField: 'title' },
     ];
     const rows = (service as any).mapTasksToRows([mockTasks[0]], template);
     expect(rows[0]['T']).toBe('Feature');
+    expect(rows[0]['Título']).toBe('Task 1');
   });
 
   it('should return empty string for unknown fields', () => {

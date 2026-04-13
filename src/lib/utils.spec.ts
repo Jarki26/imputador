@@ -12,28 +12,28 @@ describe('calculateTotalHours', () => {
       {
         startTime: new Date('2026-04-09T08:00:00'),
         endTime: new Date('2026-04-09T10:00:00'), // 2 hours
-        type: 'General'
+        type: 'DESARROLLO'
       },
       {
         startTime: new Date('2026-04-09T11:00:00'),
         endTime: new Date('2026-04-09T12:30:00'), // 1.5 hours
-        type: 'Feature'
+        type: 'TEST'
       }
     ];
     expect(calculateTotalHours(tasks as Task[])).toBe(3.5);
   });
 
-  it('should exclude non-billable (Rest) tasks', () => {
+  it('should exclude non-billable (Rest -> DESCANSO) tasks', () => {
     const tasks: Partial<Task>[] = [
       {
         startTime: new Date('2026-04-09T08:00:00'),
         endTime: new Date('2026-04-09T10:00:00'), // 2 hours
-        type: 'General'
+        type: 'DESARROLLO'
       },
       {
         startTime: new Date('2026-04-09T12:00:00'),
-        endTime: new Date('2026-04-09T13:00:00'), // 1 hour (Rest)
-        type: 'Rest'
+        endTime: new Date('2026-04-09T13:00:00'), // 1 hour (Rest -> DESCANSO)
+        type: 'DESCANSO'
       }
     ];
     expect(calculateTotalHours(tasks as Task[])).toBe(2);

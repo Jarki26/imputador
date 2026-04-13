@@ -5,35 +5,35 @@ import type { Task } from './db';
 
 describe('Ausencia Facturable Task Type', () => {
   it('should be defined in TASK_TYPES', () => {
-    const type = getTaskType('Ausencia Facturable');
+    const type = getTaskType('AUSENCIA FACTURABLE');
     expect(type).toBeDefined();
-    expect(type?.name).toBe('Ausencia Facturable');
+    expect(type?.name).toBe('AUSENCIA FACTURABLE');
   });
 
   it('should NOT be billable (not active work)', () => {
-    expect(isBillable('Ausencia Facturable')).toBe(false);
+    expect(isBillable('AUSENCIA FACTURABLE')).toBe(false);
   });
 
   it('should count toward the weekly goal', () => {
-    expect(countsTowardGoal('Ausencia Facturable')).toBe(true);
+    expect(countsTowardGoal('AUSENCIA FACTURABLE')).toBe(true);
   });
 
   it('calculateWorkHours should only include General/Feature/Bug etc', () => {
     const tasks: Partial<Task>[] = [
       {
         startTime: new Date('2026-04-12T08:00:00'),
-        endTime: new Date('2026-04-12T10:00:00'), // 2 hours (General)
-        type: 'General'
+        endTime: new Date('2026-04-12T10:00:00'), // 2 hours (General -> DESARROLLO)
+        type: 'DESARROLLO'
       },
       {
         startTime: new Date('2026-04-12T10:00:00'),
-        endTime: new Date('2026-04-12T11:00:00'), // 1 hour (Rest)
-        type: 'Rest'
+        endTime: new Date('2026-04-12T11:00:00'), // 1 hour (Rest -> DESCANSO)
+        type: 'DESCANSO'
       },
       {
         startTime: new Date('2026-04-12T11:00:00'),
-        endTime: new Date('2026-04-12T13:00:00'), // 2 hours (Ausencia Facturable)
-        type: 'Ausencia Facturable'
+        endTime: new Date('2026-04-12T13:00:00'), // 2 hours (Ausencia Facturable -> AUSENCIA FACTURABLE)
+        type: 'AUSENCIA FACTURABLE'
       }
     ];
     // Work should be 2

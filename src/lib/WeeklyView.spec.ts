@@ -56,7 +56,7 @@ describe('WeeklyView.svelte', () => {
         id: 1,
         title: 'Task 1',
         project: 'Project A',
-        type: 'General',
+        type: 'DESARROLLO',
         startTime: new Date('2026-04-06T09:00:00Z'),
         endTime: new Date('2026-04-06T11:00:00Z'), // 2 hours
       },
@@ -64,7 +64,7 @@ describe('WeeklyView.svelte', () => {
         id: 2,
         title: 'Rest',
         project: '-',
-        type: 'Rest',
+        type: 'DESCANSO',
         startTime: new Date('2026-04-06T13:00:00Z'),
         endTime: new Date('2026-04-06T14:00:00Z'), // 1 hour (excluded)
       },
@@ -77,19 +77,19 @@ describe('WeeklyView.svelte', () => {
     expect(screen.getByText(/Registrado: 2\.00h \/ Objetivo: 41\.00h/i)).toBeDefined();
   });
 
-  it('should exclude Rest tasks from daily total', () => {
+  it('should exclude DESCANSO tasks from daily total', () => {
     const tasks = [
       {
         id: 1,
         title: 'Work',
-        type: 'General',
+        type: 'DESARROLLO',
         startTime: new Date('2026-04-06T09:00:00Z'),
         endTime: new Date('2026-04-06T11:00:00Z'), // 2 hours
       },
       {
         id: 2,
         title: 'Lunch',
-        type: 'Rest',
+        type: 'DESCANSO',
         startTime: new Date('2026-04-06T13:00:00Z'),
         endTime: new Date('2026-04-06T14:00:00Z'), // 1 hour
       },

@@ -21,6 +21,7 @@
     'startTime',
     'endDate',
     'endTime',
+    'title',
     'project',
     'type',
     'description',

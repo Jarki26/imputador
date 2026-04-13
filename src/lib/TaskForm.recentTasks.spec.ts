@@ -24,7 +24,7 @@ describe('TaskForm Recent Tasks UI', () => {
         title: 'Recent Task 1',
         description: 'Desc 1',
         project: 'Project 1',
-        type: 'General',
+        type: 'DESARROLLO',
         lastUsedAt: new Date(),
         isBillable: true,
       },
@@ -44,7 +44,7 @@ describe('TaskForm Recent Tasks UI', () => {
         title: 'Recent Task 1',
         description: 'Desc 1',
         project: 'Project 1',
-        type: 'Bug',
+        type: 'INCIDENCIAS',
         lastUsedAt: new Date(),
         isBillable: true,
       },
@@ -65,7 +65,7 @@ describe('TaskForm Recent Tasks UI', () => {
       expect(titleInput.value).toBe('Recent Task 1');
       expect(descInput.value).toBe('Desc 1');
       expect(projectInput.value).toBe('Project 1');
-      expect(typeSelect.value).toBe('Bug');
+      expect(typeSelect.value).toBe('INCIDENCIAS');
     });
   });
 });
