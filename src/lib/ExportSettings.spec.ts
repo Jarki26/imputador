@@ -15,7 +15,7 @@ describe('ExportSettings.svelte', () => {
     { columnName: 'Col 2', fixedValue: 'Fixed' },
   ];
 
-  const mockExclusions = ['Rest'];
+  const mockExclusions = ['REST'];
 
   it('should render template mappings', () => {
     render(ExportSettings, {
@@ -70,8 +70,8 @@ describe('ExportSettings.svelte', () => {
       props: { template: mockTemplate, exclusions: [], onSave },
     });
 
-    // Find the 'Rest' checkbox
-    const checkbox = screen.getByLabelText(/Rest/i) as HTMLInputElement;
+    // Find the 'REST' checkbox
+    const checkbox = screen.getByLabelText(/REST/i) as HTMLInputElement;
     await fireEvent.click(checkbox);
     expect(checkbox.checked).toBe(true);
 

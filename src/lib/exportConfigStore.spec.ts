@@ -34,7 +34,7 @@ describe('ExportConfigStore operations', () => {
   });
 
   it('should save and retrieve task type exclusions', async () => {
-    const excludedTypes = ['Rest', 'Personal'];
+    const excludedTypes = ['REST', 'Personal'];
     await store.setExclusions(excludedTypes);
     const retrieved = await store.getExclusions();
     expect(retrieved).toEqual(excludedTypes);

@@ -6,8 +6,8 @@ describe('config', () => {
     expect(TASK_TYPES.length).toBeGreaterThan(0);
   });
 
-  it('should identify DESCANSO as non-billable', () => {
-    const rest = getTaskType('DESCANSO');
+  it('should identify REST as non-billable', () => {
+    const rest = getTaskType('REST');
     expect(rest).toBeDefined();
     expect(rest?.isBillable).toBe(false);
   });
@@ -19,7 +19,7 @@ describe('config', () => {
   });
 
   it('isBillable helper should work correctly', () => {
-    expect(isBillable('DESCANSO')).toBe(false);
+    expect(isBillable('REST')).toBe(false);
     expect(isBillable('DESARROLLO')).toBe(true);
     expect(isBillable('Unknown')).toBe(true); // Default to billable
   });

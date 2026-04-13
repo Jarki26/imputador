@@ -1,6 +1,7 @@
 import * as XLSX from 'xlsx';
 import type { Task } from './db';
 import type { ColumnMapping } from './exportConfigStore';
+import { i18n } from './i18n.svelte';
 
 /**
  * Service to handle Excel export logic.
@@ -64,7 +65,9 @@ export class ExportService {
       case 'project':
         return task.project;
       case 'type':
-        return task.type;
+        const i18nKey = `task.type_${task.type.toLowerCase().replace(/\s+/g, '_')}`;
+        const translatedType = i18n.t(i18nKey);
+        return translatedType === i18nKey ? task.type : translatedType;
       case 'description':
         return task.description;
       case 'duration':

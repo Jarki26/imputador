@@ -23,7 +23,7 @@ export const TASK_TYPES: TaskTypeConfig[] = [
   { name: 'SOPORTE', isBillable: true, countsTowardGoal: true },
   { name: 'TEST', isBillable: true, countsTowardGoal: true },
   { name: 'VIAJE', isBillable: true, countsTowardGoal: true },
-  { name: 'DESCANSO', isBillable: false, countsTowardGoal: false },
+  { name: 'REST', isBillable: false, countsTowardGoal: false },
   { name: 'AUSENCIA FACTURABLE', isBillable: false, countsTowardGoal: true }
 ];
 

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { TASK_TYPES } from './config';
   import type { ColumnMapping } from './exportConfigStore';
   import { i18n } from './i18n.svelte';
 
@@ -28,13 +29,8 @@
     'duration',
   ];
 
-  // Common task types for exclusions (could be dynamic but starting with defaults)
-  const commonTaskTypes = [
-    'Facturable',
-    'Rest',
-    'Personal',
-    'AUSENCIA FACTURABLE',
-  ];
+  // Use task types from config for exclusions
+  const commonTaskTypes = TASK_TYPES.map((t) => t.name);
 
   function addMapping() {
     localTemplate.push({ columnName: '', taskField: 'project' });

@@ -23,7 +23,7 @@ describe('calculateTotalHours', () => {
     expect(calculateTotalHours(tasks as Task[])).toBe(3.5);
   });
 
-  it('should exclude non-billable (Rest -> DESCANSO) tasks', () => {
+  it('should exclude non-billable (Rest -> REST) tasks', () => {
     const tasks: Partial<Task>[] = [
       {
         startTime: new Date('2026-04-09T08:00:00'),
@@ -32,8 +32,8 @@ describe('calculateTotalHours', () => {
       },
       {
         startTime: new Date('2026-04-09T12:00:00'),
-        endTime: new Date('2026-04-09T13:00:00'), // 1 hour (Rest -> DESCANSO)
-        type: 'DESCANSO'
+        endTime: new Date('2026-04-09T13:00:00'), // 1 hour (Rest -> REST)
+        type: 'REST'
       }
     ];
     expect(calculateTotalHours(tasks as Task[])).toBe(2);

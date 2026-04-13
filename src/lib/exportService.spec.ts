@@ -1,7 +1,18 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { ExportService } from './exportService';
 import type { Task } from './db';
 import type { ColumnMapping } from './exportConfigStore';
+import { i18n } from './i18n.svelte';
+
+vi.mock('./i18n.svelte', () => ({
+  i18n: {
+    t: vi.fn((key) => {
+      if (key === 'task.type_rest') return 'Descanso';
+      if (key === 'task.type_feature') return 'Funcionalidad';
+      return key;
+    }),
+  },
+}));
 
 describe('ExportService operations', () => {
   let service: ExportService;
@@ -20,7 +31,7 @@ describe('ExportService operations', () => {
       id: 2,
       title: 'Lunch',
       project: '-',
-      type: 'Rest',
+      type: 'REST',
       description: 'Lunch time',
       startTime: new Date('2026-04-13T13:00:00'),
       endTime: new Date('2026-04-13T14:00:00'),
@@ -29,6 +40,14 @@ describe('ExportService operations', () => {
 
   beforeEach(() => {
     service = new ExportService();
+  });
+
+  it('should translate task types', () => {
+    const template: ColumnMapping[] = [{ columnName: 'Tipo', taskField: 'type' }];
+    const rows = (service as any).mapTasksToRows(mockTasks, template);
+
+    expect(rows[0].Tipo).toBe('Funcionalidad');
+    expect(rows[1].Tipo).toBe('Descanso');
   });
 
   it('should map tasks to rows based on template', () => {
@@ -78,7 +97,7 @@ describe('ExportService operations', () => {
       { columnName: 'Título', taskField: 'title' },
     ];
     const rows = (service as any).mapTasksToRows([mockTasks[0]], template);
-    expect(rows[0]['T']).toBe('Feature');
+    expect(rows[0]['T']).toBe('Funcionalidad');
     expect(rows[0]['Título']).toBe('Task 1');
   });
 

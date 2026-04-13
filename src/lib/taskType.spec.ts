@@ -27,8 +27,8 @@ describe('Ausencia Facturable Task Type', () => {
       },
       {
         startTime: new Date('2026-04-12T10:00:00'),
-        endTime: new Date('2026-04-12T11:00:00'), // 1 hour (Rest -> DESCANSO)
-        type: 'DESCANSO'
+        endTime: new Date('2026-04-12T11:00:00'), // 1 hour (Rest -> REST)
+        type: 'REST'
       },
       {
         startTime: new Date('2026-04-12T11:00:00'),

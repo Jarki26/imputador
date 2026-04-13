@@ -63,7 +63,6 @@
     "type_soporte": "Support",
     "type_test": "Test",
     "type_viaje": "Voyage",
-    "type_descanso": "Repos",
     "date": "Date",
     "start_time": "Heure de début",
     "end_time": "Heure de fin",
