@@ -6,7 +6,7 @@
 - [x] Task: Implement `exportConfigStore` with local persistence (IndexedDB/localStorage) to save the template configuration. [9045eee]
 - [x] Task: Create tests for the core Excel export service (filtering tasks, mapping to template). [e101e9b]
 - [x] Task: Implement the core Excel export service logic (without UI). [e101e9b]
-- [ ] Task: Conductor - User Manual Verification 'Setup & Core Stores' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Setup & Core Stores' (Protocol in workflow.md) [c1d344a]
 
 ## Phase 2: Configuration UI
 - [ ] Task: Create tests for Export Settings UI components (Template builder, Task Type filter).
