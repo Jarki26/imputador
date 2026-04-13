@@ -4,8 +4,8 @@
 - [x] Task: Evaluate and install an Excel manipulation library (e.g., `xlsx` / SheetJS). [3a705c5]
 - [x] Task: Create tests for `exportConfigStore` to handle bidirectional template mapping and task type exclusions. [9045eee]
 - [x] Task: Implement `exportConfigStore` with local persistence (IndexedDB/localStorage) to save the template configuration. [9045eee]
-- [~] Task: Create tests for the core Excel export service (filtering tasks, mapping to template).
-- [ ] Task: Implement the core Excel export service logic (without UI).
+- [x] Task: Create tests for the core Excel export service (filtering tasks, mapping to template). [e101e9b]
+- [x] Task: Implement the core Excel export service logic (without UI). [e101e9b]
 - [ ] Task: Conductor - User Manual Verification 'Setup & Core Stores' (Protocol in workflow.md)
 
 ## Phase 2: Configuration UI
