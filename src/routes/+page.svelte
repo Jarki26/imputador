@@ -11,13 +11,17 @@
   import Tutorial from '$lib/Tutorial.svelte';
   import type { Task } from '$lib/db';
   import { i18n } from '$lib/i18n.svelte';
+  import { ExportConfigStore, type ColumnMapping } from '$lib/exportConfigStore';
 
   const taskStore = new TaskStore();
   const configStore = new ConfigStore();
   const historyStore = new HistoryStore();
+  const exportConfigStore = new ExportConfigStore();
 
   let tasks = $state<Task[]>([]);
   let weeklyTarget = $state(41);
+  let exportTemplate = $state<ColumnMapping[]>([]);
+  let exportExclusions = $state<string[]>([]);
   let view = $state<'weekly' | 'daily'>('weekly');
   let selectedDate = $state(new Date());
   selectedDate.setHours(0, 0, 0, 0);
@@ -37,6 +41,8 @@
 
   async function loadConfig() {
     weeklyTarget = await configStore.getWeeklyHoursTarget();
+    exportTemplate = await exportConfigStore.getTemplate();
+    exportExclusions = await exportConfigStore.getExclusions();
   }
 
   onMount(async () => {
@@ -87,6 +93,16 @@
     await configStore.setWeeklyHoursTarget(target);
     weeklyTarget = target;
     showSettingsModal = false;
+  }
+
+  async function handleSaveExportConfig(data: {
+    template: ColumnMapping[];
+    exclusions: string[];
+  }) {
+    await exportConfigStore.setTemplate(data.template);
+    await exportConfigStore.setExclusions(data.exclusions);
+    exportTemplate = data.template;
+    exportExclusions = data.exclusions;
   }
 
   const dailyTasks = $derived(
@@ -269,9 +285,14 @@
   title={i18n.t('settings.title')}
   onClose={() => (showSettingsModal = false)}
 >
-  <Settings {weeklyTarget} onSave={handleSaveSettings} />
+  <Settings
+    {weeklyTarget}
+    {exportTemplate}
+    {exportExclusions}
+    onSave={handleSaveSettings}
+    onSaveExportConfig={handleSaveExportConfig}
+  />
 </Modal>
-
 <style>
   .app-container {
     height: 100dvh;

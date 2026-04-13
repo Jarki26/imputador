@@ -1,12 +1,26 @@
 <script lang="ts">
   import { i18n } from './i18n.svelte';
+  import ExportSettings from './ExportSettings.svelte';
+  import type { ColumnMapping } from './exportConfigStore';
 
   interface Props {
     weeklyTarget: number;
+    exportTemplate: ColumnMapping[];
+    exportExclusions: string[];
     onSave: (target: number) => void;
+    onSaveExportConfig: (data: {
+      template: ColumnMapping[];
+      exclusions: string[];
+    }) => void;
   }
 
-  let { weeklyTarget, onSave }: Props = $props();
+  let {
+    weeklyTarget,
+    exportTemplate,
+    exportExclusions,
+    onSave,
+    onSaveExportConfig,
+  }: Props = $props();
 
   let target = $state(weeklyTarget);
   let error = $state('');
@@ -59,6 +73,14 @@
       {/each}
     </select>
   </div>
+
+  <hr class="separator" />
+
+  <ExportSettings
+    template={exportTemplate}
+    exclusions={exportExclusions}
+    onSave={onSaveExportConfig}
+  />
 
   <div class="actions">
     <button class="save-btn" onclick={handleSave}>{i18n.t('common.save')}</button>
@@ -122,5 +144,11 @@
   .save-btn:hover {
     background: var(--md-sys-color-primary-fixed);
     color: var(--md-sys-color-on-primary-fixed);
+  }
+
+  .separator {
+    border: none;
+    border-top: 1px solid var(--md-sys-color-outline-variant);
+    margin: 0.5rem 0;
   }
 </style>
