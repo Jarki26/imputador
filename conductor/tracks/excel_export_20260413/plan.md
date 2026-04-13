@@ -9,8 +9,8 @@
 - [x] Task: Conductor - User Manual Verification 'Setup & Core Stores' (Protocol in workflow.md) [c1d344a]
 
 ## Phase 2: Configuration UI
-- [ ] Task: Create tests for Export Settings UI components (Template builder, Task Type filter).
-- [ ] Task: Implement Export Settings section to allow users to define column mappings (dynamic fields, fixed values).
+- [x] Task: Create tests for Export Settings UI components (Template builder, Task Type filter). [c48c9fe]
+- [~] Task: Implement Export Settings section to allow users to define column mappings (dynamic fields, fixed values).
 - [ ] Task: Implement Task Type exclusion filter UI within Export Settings.
 - [ ] Task: Conductor - User Manual Verification 'Configuration UI' (Protocol in workflow.md)
 
