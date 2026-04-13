@@ -26,7 +26,7 @@ describe('WeeklyView.svelte - No-Gap Snapping', () => {
       },
     ];
 
-    render(WeeklyView, { props: { tasks, onTaskUpdate } });
+    render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks, onTaskUpdate } });
 
     // Find Task 2
     const task2Block = screen.getByText('Task 2').closest('.task-block');
@@ -61,7 +61,7 @@ describe('WeeklyView.svelte - No-Gap Snapping', () => {
       },
     ];
 
-    render(WeeklyView, { props: { tasks, onTaskUpdate } });
+    render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks, onTaskUpdate } });
 
     const task2Block = screen.getByText('Task 2').closest('.task-block');
 

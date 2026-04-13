@@ -19,7 +19,7 @@ describe('WeeklyView.svelte - Action Locks', () => {
         endTime: new Date('2026-04-06T10:00:00Z'),
       },
     ];
-    render(WeeklyView, { props: { tasks, onTaskUpdate } });
+    render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks, onTaskUpdate } });
 
     // Find the move lock toggle (we'll use title or aria-label)
     const moveLockBtn = screen.getByTitle(i18n.t('weekly.lock_move'));

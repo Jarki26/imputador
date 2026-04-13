@@ -202,7 +202,7 @@ describe('WeeklyView.svelte', () => {
         endTime: new Date('2026-04-06T11:00:00Z'),
       },
     ];
-    render(WeeklyView, { props: { tasks, onTaskClick } });
+    render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks, onTaskClick } });
 
     const taskBlock = screen.getByText('Clickable Task').closest('.task-block');
     await fireEvent.click(taskBlock!);
@@ -221,7 +221,7 @@ describe('WeeklyView.svelte', () => {
         endTime: new Date('2026-04-06T10:00:00Z'),
       },
     ];
-    render(WeeklyView, { props: { tasks, onTaskUpdate } });
+    render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks, onTaskUpdate } });
 
     const taskBlock = screen.getByText('Draggable Task').closest('.task-block');
 
@@ -250,7 +250,7 @@ describe('WeeklyView.svelte', () => {
         endTime: new Date('2026-04-06T10:00:00Z'),
       },
     ];
-    render(WeeklyView, { props: { tasks, onTaskUpdate } });
+    render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks, onTaskUpdate } });
 
     const taskBlock = screen.getByText('Resizable Task').closest('.task-block');
     const resizeHandle = taskBlock?.querySelector('.resize-handle');

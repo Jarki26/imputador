@@ -30,7 +30,7 @@ describe('WeeklyView.svelte - Merge Tasks', () => {
       },
     ];
 
-    render(WeeklyView, { props: { tasks, onTaskUpdate } });
+    render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks, onTaskUpdate } });
 
     // Find all task blocks with title 'Task A'
     const taskBlocks = screen.getAllByText('Task A').map(el => el.closest('.task-block'));
@@ -73,7 +73,7 @@ describe('WeeklyView.svelte - Merge Tasks', () => {
       },
     ];
 
-    render(WeeklyView, { props: { tasks, onTaskUpdate, onTaskDelete } });
+    render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks, onTaskUpdate, onTaskDelete } });
 
     const taskBlocks = screen.getAllByText('Task A').map(el => el.closest('.task-block'));
     const task2Block = taskBlocks[1];

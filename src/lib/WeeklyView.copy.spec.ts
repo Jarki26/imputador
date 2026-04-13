@@ -22,7 +22,7 @@ describe('WeeklyView.svelte - Copy to Recents (Long Press)', () => {
         type: 'General',
       },
     ];
-    render(WeeklyView, { props: { tasks, onTaskCopyToRecents } });
+    render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks, onTaskCopyToRecents } });
 
     const taskBlock = screen.getByText('Task to Copy').closest('.task-block');
     expect(taskBlock).toBeDefined();
