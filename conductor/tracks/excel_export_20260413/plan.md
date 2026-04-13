@@ -12,10 +12,10 @@
 - [x] Task: Create tests for Export Settings UI components (Template builder, Task Type filter). [c48c9fe]
 - [x] Task: Implement Export Settings section to allow users to define column mappings (dynamic fields, fixed values). [76c5ae3]
 - [x] Task: Implement Task Type exclusion filter UI within Export Settings. [76c5ae3]
-- [ ] Task: Conductor - User Manual Verification 'Configuration UI' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Configuration UI' (Protocol in workflow.md) [20eb56c]
 
 ## Phase 3: Export Trigger UI & Integration
-- [ ] Task: Create tests for the Date Range Selection dialog and Export trigger button.
+- [x] Task: Create tests for the Date Range Selection dialog and Export trigger button. [a2d1074]
 - [ ] Task: Implement Export button in the application (e.g., Header or Settings).
 - [ ] Task: Implement Date Range Selection dialog that appears when Export is clicked.
 - [ ] Task: Integrate Date Range dialog with the core Excel export service to generate and download the `.xlsx` file.
