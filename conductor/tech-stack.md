@@ -18,3 +18,6 @@
 - **Interactivity:** Native Pointer Events for grid-based interactions (Drag & Drop, Resizing) to ensure performance and cross-platform support.
 - **History Management:** Reactive, session-based Undo/Redo stack implemented with Svelte 5 Runes.
 - **Internationalization:** Custom, reactive i18n engine using Svelte 5 Runes for zero-dependency multi-language support.
+- **Excel Manipulation:**
+    - **Library:** `xlsx` (SheetJS) for client-side generation and parsing of `.xlsx` files.
+    - **Capability:** Bidirectional mapping for data portability (Export/Import foundation).
