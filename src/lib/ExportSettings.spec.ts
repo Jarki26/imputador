@@ -1,0 +1,100 @@
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen, cleanup, fireEvent } from '@testing-library/svelte';
+import ExportSettings from './ExportSettings.svelte';
+import { i18n } from './i18n.svelte';
+import type { ColumnMapping } from './exportConfigStore';
+
+describe('ExportSettings.svelte', () => {
+  beforeEach(async () => {
+    cleanup();
+    await i18n.setLocale('es');
+  });
+
+  const mockTemplate: ColumnMapping[] = [
+    { columnName: 'Col 1', taskField: 'project' },
+    { columnName: 'Col 2', fixedValue: 'Fixed' },
+  ];
+
+  const mockExclusions = ['Rest'];
+
+  it('should render template mappings', () => {
+    render(ExportSettings, {
+      props: {
+        template: mockTemplate,
+        exclusions: mockExclusions,
+        onSave: vi.fn(),
+      },
+    });
+    expect(screen.getByDisplayValue('Col 1')).toBeDefined();
+    expect(screen.getByDisplayValue('Col 2')).toBeDefined();
+  });
+
+  it('should allow adding a new mapping', async () => {
+    const onSave = vi.fn();
+    render(ExportSettings, {
+      props: {
+        template: mockTemplate,
+        exclusions: mockExclusions,
+        onSave,
+      },
+    });
+
+    const addBtn = screen.getByText(/Añadir Columna/i);
+    await fireEvent.click(addBtn);
+
+    // Check if a new row appeared
+    const inputs = screen.getAllByPlaceholderText(/Nombre Columna/i);
+    expect(inputs.length).toBe(3);
+  });
+
+  it('should allow deleting a mapping', async () => {
+    const onSave = vi.fn();
+    render(ExportSettings, {
+      props: {
+        template: mockTemplate,
+        exclusions: mockExclusions,
+        onSave,
+      },
+    });
+
+    const deleteBtns = screen.getAllByTitle(/Eliminar/i);
+    await fireEvent.click(deleteBtns[0]);
+
+    const inputs = screen.getAllByPlaceholderText(/Nombre Columna/i);
+    expect(inputs.length).toBe(1);
+  });
+
+  it('should toggle task type exclusions', async () => {
+    const onSave = vi.fn();
+    render(ExportSettings, {
+      props: { template: mockTemplate, exclusions: [], onSave },
+    });
+
+    // Find the 'Rest' checkbox
+    const checkbox = screen.getByLabelText(/Rest/i) as HTMLInputElement;
+    await fireEvent.click(checkbox);
+    expect(checkbox.checked).toBe(true);
+
+    await fireEvent.click(checkbox);
+    expect(checkbox.checked).toBe(false);
+  });
+
+  it('should call onSave with updated data', async () => {
+    const onSave = vi.fn();
+    render(ExportSettings, {
+      props: {
+        template: mockTemplate,
+        exclusions: mockExclusions,
+        onSave,
+      },
+    });
+
+    const saveBtn = screen.getByText(/Guardar Configuración/i);
+    await fireEvent.click(saveBtn);
+
+    expect(onSave).toHaveBeenCalledWith({
+      template: expect.any(Array),
+      exclusions: expect.any(Array),
+    });
+  });
+});

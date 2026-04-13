@@ -32,7 +32,12 @@
     "title": "Settings",
     "weekly_target": "Weekly Hours Target",
     "language": "Language",
-    "value_error": "Value must be between 1 and 60"
+    "value_error": "Value must be between 1 and 60",
+    "export_template_title": "Export Template",
+    "column_name_placeholder": "Column Name",
+    "add_column": "Add Column",
+    "export_exclusions_title": "Exclude Task Types",
+    "save_export_config": "Save Export Config"
   },
   "task": {
     "form_title_add": "Add Task",

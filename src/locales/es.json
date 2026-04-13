@@ -32,7 +32,12 @@
     "title": "Ajustes",
     "weekly_target": "Objetivo de Horas Semanales",
     "language": "Idioma",
-    "value_error": "El valor debe estar entre 1 y 60"
+    "value_error": "El valor debe estar entre 1 y 60",
+    "export_template_title": "Plantilla de Exportación",
+    "column_name_placeholder": "Nombre Columna",
+    "add_column": "Añadir Columna",
+    "export_exclusions_title": "Excluir Tipos de Tarea",
+    "save_export_config": "Guardar Configuración"
   },
   "task": {
     "form_title_add": "Añadir Tarea",
