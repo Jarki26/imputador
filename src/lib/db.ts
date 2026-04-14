@@ -8,9 +8,20 @@ export interface Task {
   title: string;
   description: string;
   project: string;
+  company?: string;
   type: string;
   startTime: Date;
   endTime: Date;
+}
+
+/**
+ * Interface for a company.
+ */
+export interface Company {
+  id?: number;
+  name: string;
+  lastUsedAt: Date;
+  useCount: number;
 }
 
 /**
