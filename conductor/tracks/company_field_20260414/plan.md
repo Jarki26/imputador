@@ -5,9 +5,9 @@
     - [x] Write unit tests for the new Company entity properties.
     - [x] Write unit tests for the Task entity ensuring the new Company property is handled.
     - [x] Implement the TypeScript interfaces and class modifications.
-- [ ] Task: Implement IndexedDB Storage for Companies
-    - [ ] Write unit tests for Company data persistence (adding new companies, reading, listing top 10 used).
-    - [ ] Implement IndexedDB repository/service logic for handling Companies.
+- [x] Task: Implement IndexedDB Storage for Companies 64773b0
+    - [x] Write unit tests for Company data persistence (adding new companies, reading, listing top 10 used).
+    - [x] Implement IndexedDB repository/service logic for handling Companies.
 - [ ] Task: Conductor - User Manual Verification 'Foundation (Data Model & Storage)' (Protocol in workflow.md)
 
 ## Phase 2: UI Implementation (Task Entry Form)
