@@ -42,7 +42,6 @@ describe('ExportSettings.svelte', () => {
     const addBtn = screen.getByText(/Añadir Columna/i);
     await fireEvent.click(addBtn);
 
-    // Check if a new row appeared
     const inputs = screen.getAllByPlaceholderText(/Nombre Columna/i);
     expect(inputs.length).toBe(3);
   });
@@ -70,7 +69,6 @@ describe('ExportSettings.svelte', () => {
       props: { template: mockTemplate, exclusions: [], onSave },
     });
 
-    // Find the 'REST' checkbox
     const checkbox = screen.getByLabelText(/REST/i) as HTMLInputElement;
     await fireEvent.click(checkbox);
     expect(checkbox.checked).toBe(true);
@@ -96,5 +94,57 @@ describe('ExportSettings.svelte', () => {
       template: expect.any(Array),
       exclusions: expect.any(Array),
     });
+  });
+
+  it('should render the Import File button', () => {
+    render(ExportSettings, {
+      props: {
+        template: mockTemplate,
+        exclusions: mockExclusions,
+        onSave: vi.fn(),
+      },
+    });
+
+    const importBtn = screen.getByText(/Importar Archivo/i);
+    expect(importBtn).toBeDefined();
+  });
+
+  it('should show wipe confirmation dialog after file selection', async () => {
+    const { container } = render(ExportSettings, {
+      props: { template: mockTemplate, exclusions: [], onSave: vi.fn() },
+    });
+
+    const file = new File([''], 'test.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const input = container.querySelector('input[type="file"]') as HTMLInputElement;
+
+    await fireEvent.change(input, { target: { files: [file] } });
+
+    expect(await screen.findByText(/Vaciar datos e importar/i)).toBeDefined();
+    expect(screen.getByText(/Escribe 'IMPORTAR' para confirmar/i)).toBeDefined();
+  });
+
+  it('should show results modal after successful import', async () => {
+    const { container } = render(ExportSettings, {
+      props: { template: mockTemplate, exclusions: [], onSave: vi.fn() },
+    });
+
+    const file = new File([''], 'test.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const input = container.querySelector('input[type="file"]') as HTMLInputElement;
+
+    await fireEvent.change(input, { target: { files: [file] } });
+
+    // Wait for confirm dialog
+    await screen.findByText(/Vaciar datos e importar/i);
+
+    const confirmInput = screen.getByPlaceholderText('IMPORTAR');
+    await fireEvent.input(confirmInput, { target: { value: 'IMPORTAR' } });
+
+    const confirmBtn = screen.getByText(/Importar Archivo/i, { selector: 'button.confirm-btn' });
+    await fireEvent.click(confirmBtn);
+
+    // Results modal should appear
+    expect(await screen.findByText(/Importación Finalizada/i)).toBeDefined();
+    // Assuming success: 0, errors: 0 for the mock
+    expect(screen.getByText(/Éxito: 0, Errores: 0/i)).toBeDefined();
   });
 });

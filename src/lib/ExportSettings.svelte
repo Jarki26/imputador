@@ -2,6 +2,8 @@
   import { TASK_TYPES } from './config';
   import type { ColumnMapping } from './exportConfigStore';
   import { i18n } from './i18n.svelte';
+  import { ImportService } from './importService';
+  import Modal from './Modal.svelte';
 
   let {
     template = [],
@@ -12,6 +14,43 @@
     exclusions: string[];
     onSave: (data: { template: ColumnMapping[]; exclusions: string[] }) => void;
   } = $props();
+
+  const importService = new ImportService();
+  let fileInput: HTMLInputElement;
+  let showConfirmWipe = $state(false);
+  let confirmText = $state('');
+  let parsedTasks = $state<any[]>([]);
+  let importErrors = $state<any[]>([]);
+
+  let showResults = $state(false);
+  let importResults = $state<{ successCount: number; errorCount: number } | null>(null);
+
+  function handleImportClick() {
+    fileInput.click();
+  }
+
+  async function handleFileChange(e: Event) {
+    const file = (e.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+
+    const result = await importService.parseFile(file, template);
+    parsedTasks = result.tasks;
+    importErrors = result.errors;
+    
+    showConfirmWipe = true;
+    confirmText = '';
+    // Reset file input so same file can be selected again
+    (e.target as HTMLInputElement).value = '';
+  }
+
+  async function confirmImport() {
+    if (confirmText !== 'IMPORTAR') return;
+    
+    const results = await importService.importTasks(parsedTasks);
+    importResults = results;
+    showConfirmWipe = false;
+    showResults = true;
+  }
 
   let localTemplate = $state([...template]);
   let localExclusions = $state([...exclusions]);
@@ -131,10 +170,79 @@
   </section>
 
   <div class="actions">
+    <input
+      type="file"
+      accept=".xlsx,.xls,.csv"
+      bind:this={fileInput}
+      onchange={handleFileChange}
+      style="display: none"
+    />
+    <button onclick={handleImportClick} class="import-btn">
+      {i18n.t('settings.import_file') || 'Importar Archivo'}
+    </button>
     <button onclick={handleSave} class="save-btn">
       {i18n.t('settings.save_export_config') || 'Guardar Configuración'}
     </button>
   </div>
+
+  <Modal
+    show={showConfirmWipe}
+    title={i18n.t('settings.import_confirm_title')}
+    onClose={() => (showConfirmWipe = false)}
+  >
+    <div class="confirm-dialog">
+      <p class="warning">
+        {i18n.t('settings.import_confirm_msg')}
+      </p>
+      <input
+        type="text"
+        bind:value={confirmText}
+        placeholder="IMPORTAR"
+        class="confirm-input"
+      />
+      <div class="confirm-actions">
+        <button class="cancel-btn" onclick={() => (showConfirmWipe = false)}>
+          {i18n.t('common.cancel')}
+        </button>
+        <button
+          class="confirm-btn"
+          onclick={confirmImport}
+          disabled={confirmText !== 'IMPORTAR'}
+        >
+          {i18n.t('settings.import_file')}
+        </button>
+      </div>
+    </div>
+  </Modal>
+
+  <Modal
+    show={showResults}
+    title={i18n.t('settings.import_success_title')}
+    onClose={() => (showResults = false)}
+  >
+    <div class="results-dialog">
+      <p>
+        {i18n.t('settings.import_results')
+          .replace('{success}', String(importResults?.successCount || 0))
+          .replace('{errors}', String(importResults?.errorCount || 0))}
+      </p>
+      {#if importErrors.length > 0}
+        <div class="error-list">
+          <h4>Errores detallados:</h4>
+          <ul>
+            {#each importErrors as error}
+              <li>Fila {error.row + 1}: {error.message}</li>
+            {/each}
+          </ul>
+        </div>
+      {/if}
+      <div class="confirm-actions">
+        <button class="confirm-btn" onclick={() => (showResults = false)}>
+          {i18n.t('common.close')}
+        </button>
+      </div>
+    </div>
+  </Modal>
 </div>
 
 <style>
@@ -228,8 +336,19 @@
   .actions {
     display: flex;
     justify-content: flex-end;
+    gap: 1rem;
     border-top: 1px solid var(--md-sys-color-outline-variant);
     padding-top: 1rem;
+  }
+
+  .import-btn {
+    background: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+    border: none;
+    padding: 10px 24px;
+    border-radius: 24px;
+    cursor: pointer;
+    font-weight: 600;
   }
 
   .save-btn {
@@ -240,5 +359,85 @@
     border-radius: 24px;
     cursor: pointer;
     font-weight: 600;
+  }
+
+  .confirm-dialog {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 0.5rem;
+    max-width: 400px;
+  }
+
+  .warning {
+    color: var(--md-sys-color-error);
+    font-weight: 500;
+    margin: 0;
+  }
+
+  .confirm-input {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--md-sys-color-outline);
+    background: var(--md-sys-color-surface-container-high);
+    color: var(--md-sys-color-on-surface);
+    text-align: center;
+    font-weight: bold;
+    letter-spacing: 2px;
+  }
+
+  .confirm-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+  }
+
+  .cancel-btn {
+    background: none;
+    border: 1px solid var(--md-sys-color-outline);
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    color: var(--md-sys-color-on-surface);
+  }
+
+  .confirm-btn {
+    background: var(--md-sys-color-error);
+    color: var(--md-sys-color-on-error);
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .confirm-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .results-dialog {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-width: 300px;
+  }
+
+  .error-list {
+    max-height: 200px;
+    overflow-y: auto;
+    background: var(--md-sys-color-error-container);
+    color: var(--md-sys-color-on-error-container);
+    padding: 1rem;
+    border-radius: 8px;
+  }
+
+  .error-list h4 {
+    margin-top: 0;
+  }
+
+  .error-list ul {
+    margin: 0;
+    padding-left: 1.5rem;
   }
 </style>
