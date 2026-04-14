@@ -11,10 +11,10 @@
 - [x] Task: Conductor - User Manual Verification 'Foundation (Data Model & Storage)' (Protocol in workflow.md) f12e3f3
 
 ## Phase 2: UI Implementation (Task Entry Form)
-- [ ] Task: Create Company Autocomplete Component
-    - [ ] Write unit tests for component rendering, user input, and suggestion display.
-    - [ ] Implement the Svelte 5 Company autocomplete input component.
-- [ ] Task: Integrate Company Field into Task Form
+- [x] Task: Create Company Autocomplete Component c16ad48
+    - [x] Write unit tests for component rendering, user input, and suggestion display.
+    - [x] Implement the Svelte 5 Company autocomplete input component.
+- [~] Task: Integrate Company Field into Task Form
     - [ ] Write unit tests for placing the component before the Project field and handling form submission.
     - [ ] Implement form submission and bidirectional data binding for the new field.
 - [ ] Task: Conductor - User Manual Verification 'UI Implementation (Task Entry Form)' (Protocol in workflow.md)
