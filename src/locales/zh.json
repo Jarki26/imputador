@@ -38,6 +38,7 @@
     "title": "标题",
     "description": "描述",
     "project": "项目",
+    "company": "公司",
     "type": "任务类型",
     "type_general": "通用",
     "type_feature": "功能",

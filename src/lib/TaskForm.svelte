@@ -1,6 +1,7 @@
 <script lang="ts">
   import { TaskStore } from './taskStore';
   import { ProjectStore } from './projectStore';
+  import { CompanyStore } from './companyStore';
   import {
     formatDateForInput,
     formatDateOnlyForInput,
@@ -8,12 +9,14 @@
   } from './utils';
   import { TASK_TYPES } from './config';
   import Modal from './Modal.svelte';
-  import type { Task, RecentTask } from './db';
+  import Autocomplete from './Autocomplete.svelte';
+  import type { Task, RecentTask, Company } from './db';
   import { i18n } from './i18n.svelte';
 
   interface Props {
     taskStore?: TaskStore;
     projectStore?: ProjectStore;
+    companyStore?: CompanyStore;
     onSuccess?: () => void | Promise<void>;
     initialStartTime?: string;
     initialEndTime?: string;
@@ -23,6 +26,7 @@
   let {
     taskStore = new TaskStore(),
     projectStore = new ProjectStore(),
+    companyStore = new CompanyStore(),
     onSuccess,
     initialStartTime = '',
     initialEndTime = '',
@@ -33,6 +37,7 @@
   let title = $state('');
   let description = $state('');
   let project = $state('');
+  let company = $state('');
   let taskType = $state('General');
   let taskDate = $state(formatDateOnlyForInput(new Date()));
   let startTimeStr = $state(formatTimeOnlyForInput(new Date()));
@@ -44,6 +49,7 @@
       title = editingTask.title || '';
       description = editingTask.description || '';
       project = editingTask.project || '';
+      company = editingTask.company || '';
       taskType = editingTask.type || 'General';
       taskDate = formatDateOnlyForInput(editingTask.startTime);
       startTimeStr = formatTimeOnlyForInput(editingTask.startTime);
@@ -52,6 +58,7 @@
       title = '';
       description = '';
       project = '';
+      company = '';
       taskType = 'General';
       if (initialStartTime) {
         const start = new Date(initialStartTime);
@@ -82,16 +89,22 @@
   let isSmartFill = $state(false);
   let recentTasks = $state<RecentTask[]>([]);
   let selectedRecentIndex = $state('');
+  let companySuggestions = $state<Company[]>([]);
 
-  // Fetch recent tasks on mount
+  // Fetch recent tasks and companies on mount
   $effect(() => {
     refreshRecentTasks();
+    refreshCompanySuggestions();
   });
 
   async function refreshRecentTasks() {
     if (typeof taskStore.getRecentTasks === 'function') {
       recentTasks = await taskStore.getRecentTasks();
     }
+  }
+
+  async function refreshCompanySuggestions() {
+    companySuggestions = await companyStore.getRecentCompanies(10);
   }
 
   function onRecentTaskChange(e: Event) {
@@ -102,6 +115,7 @@
       title = task.title;
       description = task.description;
       project = task.project;
+      company = task.company || '';
       taskType = task.type;
     }
   }
@@ -170,6 +184,9 @@
       if (taskSnapshot.project) {
         await projectStore.upsertProject(taskSnapshot.project);
       }
+      if (taskSnapshot.company) {
+        await companyStore.upsertCompany(taskSnapshot.company);
+      }
       success = true;
     } catch (err) {
       errorMessage = {
@@ -184,6 +201,7 @@
       title = '';
       description = '';
       project = '';
+      company = '';
       taskType = 'General';
       taskDate = formatDateOnlyForInput(new Date());
       startTimeStr = formatTimeOnlyForInput(new Date());
@@ -194,6 +212,7 @@
       minutes = 0;
       selectedRecentIndex = '';
       await refreshRecentTasks();
+      await refreshCompanySuggestions();
 
       if (onSuccess) {
         try {
@@ -212,6 +231,7 @@
     const currentTitle = title;
     const currentDescription = description || currentTitle;
     const currentProject = project;
+    const currentCompany = company;
     const currentTaskType = taskType;
 
     if (isSmartFill) {
@@ -229,6 +249,7 @@
             title: currentTitle,
             description: currentDescription,
             project: currentProject,
+            company: currentCompany,
             type: currentTaskType,
           },
           start,
@@ -237,10 +258,14 @@
         if (currentProject) {
           await projectStore.upsertProject(currentProject);
         }
+        if (currentCompany) {
+          await companyStore.upsertCompany(currentCompany);
+        }
         isSmartFill = false;
         title = '';
         description = '';
         project = '';
+        company = '';
         taskType = 'General';
         taskDate = formatDateOnlyForInput(new Date());
         startTimeStr = formatTimeOnlyForInput(new Date());
@@ -251,6 +276,7 @@
         minutes = 0;
         selectedRecentIndex = '';
         await refreshRecentTasks();
+        await refreshCompanySuggestions();
         if (onSuccess) await onSuccess();
       } catch (err) {
         errorMessage = { key: 'task.error_save_failed' }; // Or specific smart fill error if needed
@@ -285,6 +311,7 @@
       title: currentTitle,
       description: currentDescription,
       project: currentProject,
+      company: currentCompany,
       type: currentTaskType,
       startTime: start,
       endTime: end,
@@ -343,6 +370,14 @@
     <textarea id="description" name="description" bind:value={description}
     ></textarea>
   </div>
+
+  <Autocomplete
+    id="company"
+    label={i18n.t('task.company')}
+    bind:value={company}
+    suggestions={companySuggestions}
+    placeholder={i18n.t('task.company')}
+  />
 
   <div class="field">
     <label for="project">{i18n.t('task.project')}</label>

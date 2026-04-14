@@ -38,6 +38,7 @@
     "title": "Título",
     "description": "Descrição",
     "project": "Projeto",
+    "company": "Empresa",
     "type": "Tipo de Tarefa",
     "type_general": "Geral",
     "type_feature": "Funcionalidade",
