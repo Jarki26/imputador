@@ -14,9 +14,9 @@
 - [x] Task: Create Company Autocomplete Component c16ad48
     - [x] Write unit tests for component rendering, user input, and suggestion display.
     - [x] Implement the Svelte 5 Company autocomplete input component.
-- [~] Task: Integrate Company Field into Task Form
-    - [ ] Write unit tests for placing the component before the Project field and handling form submission.
-    - [ ] Implement form submission and bidirectional data binding for the new field.
+- [x] Task: Integrate Company Field into Task Form 6437fba
+    - [x] Write unit tests for placing the component before the Project field and handling form submission.
+    - [x] Implement form submission and bidirectional data binding for the new field.
 - [ ] Task: Conductor - User Manual Verification 'UI Implementation (Task Entry Form)' (Protocol in workflow.md)
 
 ## Phase 3: Settings & Management (Company List)
