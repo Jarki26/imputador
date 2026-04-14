@@ -1,5 +1,6 @@
 import { initDB, type Task, type RecentTask } from './db';
 import { isBillable } from './config';
+import { CompanyStore } from './companyStore';
 
 /**
  * Service for managing tasks in IndexedDB.
@@ -7,9 +8,11 @@ import { isBillable } from './config';
 export class TaskStore {
   private dbName: string;
   private dbPromise: Promise<IDBPDatabase> | null = null;
+  private companyStore: CompanyStore;
 
   constructor(dbName: string = 'imputador-db') {
     this.dbName = dbName;
+    this.companyStore = new CompanyStore(dbName);
   }
 
   private getDB(): Promise<IDBPDatabase> {
@@ -129,7 +132,7 @@ export class TaskStore {
     await tx.done;
 
     // Also update recents if title or project changed
-    if (updates.title || updates.project) {
+    if (updates.title || updates.project || updates.company) {
       await this.upsertRecentTask(updatedTask);
     }
   }
@@ -179,7 +182,7 @@ export class TaskStore {
     await store.put(updatedTask);
     await tx.done;
 
-    if (updates.title || updates.project) {
+    if (updates.title || updates.project || updates.company) {
       await this.upsertRecentTask(updatedTask);
     }
   }
@@ -282,7 +285,7 @@ export class TaskStore {
     await store.put(updatedTask);
     await tx.done;
 
-    if (updates.title || updates.project) {
+    if (updates.title || updates.project || updates.company) {
       await this.upsertRecentTask(updatedTask);
     }
   }
@@ -306,11 +309,16 @@ export class TaskStore {
       title: task.title,
       description: task.description,
       project: task.project,
+      company: task.company,
       type: task.type,
       lastUsedAt: new Date(),
       isBillable: isBillable(task.type),
     };
     await db.put('recent_tasks', recent);
+
+    if (task.company) {
+      await this.companyStore.upsertCompany(task.company);
+    }
   }
 
   /**

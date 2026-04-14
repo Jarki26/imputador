@@ -40,6 +40,7 @@ export interface RecentTask {
   title: string;
   description: string;
   project: string;
+  company?: string;
   type: string;
   lastUsedAt: Date;
   isBillable: boolean;
@@ -53,7 +54,7 @@ export interface RecentTask {
 export async function initDB(
   dbName: string = 'imputador-db',
 ): Promise<IDBPDatabase> {
-  return openDB(dbName, 3, {
+  return openDB(dbName, 4, {
     upgrade(db, oldVersion) {
       if (oldVersion < 1) {
         // Create tasks store with an index on date (start time)
@@ -79,6 +80,14 @@ export async function initDB(
       if (oldVersion < 3) {
         // Create config store
         db.createObjectStore('config', { keyPath: 'key' });
+      }
+      if (oldVersion < 4) {
+        // Create companies store
+        const companyStore = db.createObjectStore('companies', {
+          keyPath: 'name',
+        });
+        companyStore.createIndex('useCount', 'useCount');
+        companyStore.createIndex('lastUsedAt', 'lastUsedAt');
       }
     },
   });
