@@ -115,10 +115,10 @@
     left: 0;
     right: 0;
     z-index: 100;
-    background: var(--md-sys-color-surface-container-high);
+    background: var(--md-sys-color-surface, #ffffff);
     border: 1px solid var(--md-sys-color-outline-variant);
     border-radius: 0 0 0.5rem 0.5rem;
-    box-shadow: var(--md-sys-elevation-level-2);
+    box-shadow: var(--md-sys-elevation-level-2, 0 4px 6px rgba(0,0,0,0.1));
     margin: 0;
     padding: 0.5rem 0;
     list-style: none;

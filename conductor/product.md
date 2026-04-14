@@ -49,8 +49,9 @@ Imputador is a specialized task registration and time-tracking application desig
 
 - Parametrizable task types from a closed list.
 - Special "Ausencia Facturable" (Billable Absence) type: Counts toward weekly goal but not daily productivity. Rendered with a patterned/striped background.
-- Task entities include: Title, Description, Project (Autocomplete with auto-save), and Task Type.
-- Quick-access list of the 10 most recently used tasks.
+- Task entities include: Title, Description, Project (Autocomplete with auto-save), Company (Autocomplete with auto-save and management), and Task Type.
+- Quick-access list of the 10 most recently used tasks and companies.
+- **Company Management:** A dedicated settings area to manually add, edit, or delete saved companies from the autocomplete suggestions.
 
 ### 6. Weekly Hour Goals
 

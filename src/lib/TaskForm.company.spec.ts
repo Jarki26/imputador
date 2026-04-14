@@ -25,7 +25,8 @@ describe('TaskForm Company Integration', () => {
         { name: 'Apple', useCount: 10 },
         { name: 'Google', useCount: 5 }
       ]),
-      searchCompanies: vi.fn().mockResolvedValue([])
+      searchCompanies: vi.fn().mockResolvedValue([]),
+      upsertCompany: vi.fn().mockResolvedValue(undefined)
     };
   });
 
@@ -50,21 +51,27 @@ describe('TaskForm Company Integration', () => {
     expect(projectIndex).not.toBe(-1);
   });
 
-  it('should include company in the saved task', async () => {
+  it('should include company in the saved task and upsert it in the company store', async () => {
     render(TaskForm, {
       props: { taskStore: mockTaskStore, companyStore: mockCompanyStore }
     });
 
-    fireEvent.input(screen.getByLabelText(/Título/i), { target: { value: 'Task with Company' } });
-    fireEvent.input(screen.getByLabelText(/Empresa/i), { target: { value: 'My Company' } });
-    fireEvent.input(screen.getByLabelText(/Proyecto/i), { target: { value: 'My Project' } });
+    await fireEvent.input(screen.getByLabelText(/Título/i), { target: { value: 'Task with Company' } });
+    await fireEvent.input(screen.getByLabelText(/Empresa/i), { target: { value: 'My Company' } });
+    await fireEvent.input(screen.getByLabelText(/Proyecto/i), { target: { value: 'My Project' } });
     
     const submitBtn = screen.getByRole('button', { name: /Añadir Tarea/i });
     await fireEvent.click(submitBtn);
 
-    expect(mockTaskStore.addTask).toHaveBeenCalledWith(expect.objectContaining({
-      company: 'My Company'
-    }));
+    await vi.waitFor(() => {
+      expect(mockTaskStore.addTask).toHaveBeenCalledWith(expect.objectContaining({
+        company: 'My Company'
+      }));
+    });
+
+    await vi.waitFor(() => {
+      expect(mockCompanyStore.upsertCompany).toHaveBeenCalledWith('My Company');
+    });
   });
 
   it('should populate company when selecting a recent task', async () => {
@@ -84,5 +91,74 @@ describe('TaskForm Company Integration', () => {
     await fireEvent.change(select, { target: { value: '0' } });
 
     expect((screen.getByLabelText(/Empresa/i) as HTMLInputElement).value).toBe('Recent Co');
+  });
+
+  it('should not call upsertCompany if company field is empty', async () => {
+    render(TaskForm, {
+      props: { taskStore: mockTaskStore, companyStore: mockCompanyStore }
+    });
+
+    await fireEvent.input(screen.getByLabelText(/Título/i), { target: { value: 'Task without Company' } });
+    await fireEvent.input(screen.getByLabelText(/Proyecto/i), { target: { value: 'My Project' } });
+    
+    const submitBtn = screen.getByRole('button', { name: /Añadir Tarea/i });
+    await fireEvent.click(submitBtn);
+
+    await vi.waitFor(() => {
+      expect(mockTaskStore.addTask).toHaveBeenCalled();
+    });
+
+    expect(mockCompanyStore.upsertCompany).not.toHaveBeenCalled();
+  });
+
+  it('should populate company when editing a task', async () => {
+    const editingTask = {
+      id: 1,
+      title: 'Editing Task',
+      description: 'Desc',
+      project: 'Editing Project',
+      company: 'Editing Company',
+      type: 'GENERAL',
+      startTime: new Date('2023-01-01T10:00:00'),
+      endTime: new Date('2023-01-01T11:00:00')
+    };
+
+    render(TaskForm, {
+      props: { 
+        taskStore: mockTaskStore, 
+        companyStore: mockCompanyStore,
+        editingTask: editingTask as any
+      }
+    });
+
+    await tick();
+
+    expect((screen.getByLabelText(/Empresa/i) as HTMLInputElement).value).toBe('Editing Company');
+  });
+
+  it('should include company in smart fill', async () => {
+    mockTaskStore.addWithSmartFill = vi.fn().mockResolvedValue(1);
+
+    render(TaskForm, {
+      props: { taskStore: mockTaskStore, companyStore: mockCompanyStore }
+    });
+
+    await fireEvent.input(screen.getByLabelText(/Título/i), { target: { value: 'Smart Task' } });
+    await fireEvent.input(screen.getByLabelText(/Empresa/i), { target: { value: 'Smart Company' } });
+    await fireEvent.input(screen.getByLabelText(/Proyecto/i), { target: { value: 'Smart Project' } });
+    
+    // Toggle smart fill
+    const smartFillCheckbox = screen.getByLabelText(/Relleno Inteligente/i);
+    await fireEvent.click(smartFillCheckbox);
+
+    // Set duration
+    await fireEvent.input(screen.getByLabelText(/Horas/i), { target: { value: '2' } });
+
+    const submitBtn = screen.getByRole('button', { name: /Añadir Tarea/i });
+    await fireEvent.click(submitBtn);
+
+    await vi.waitFor(() => {
+      expect(mockCompanyStore.upsertCompany).toHaveBeenCalledWith('Smart Company');
+    });
   });
 });

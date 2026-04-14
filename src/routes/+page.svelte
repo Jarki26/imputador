@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { TaskStore } from '$lib/taskStore';
   import { ConfigStore } from '$lib/configStore';
+  import { CompanyStore } from '$lib/companyStore';
   import { HistoryStore } from '$lib/historyStore.svelte';
   import WeeklyView from '$lib/WeeklyView.svelte';
   import TaskList from '$lib/TaskList.svelte';
@@ -17,6 +18,7 @@
 
   const taskStore = new TaskStore();
   const configStore = new ConfigStore();
+  const companyStore = new CompanyStore();
   const historyStore = new HistoryStore();
   const exportConfigStore = new ExportConfigStore();
   const exportService = new ExportService();
@@ -305,6 +307,7 @@
 >
   <TaskForm
     {taskStore}
+    {companyStore}
     {editingTask}
     {initialStartTime}
     onSuccess={async () => {
@@ -323,6 +326,7 @@
     {weeklyTarget}
     {exportTemplate}
     {exportExclusions}
+    {companyStore}
     onSave={handleSaveSettings}
     onSaveExportConfig={handleSaveExportConfig}
   />

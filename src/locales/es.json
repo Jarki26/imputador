@@ -37,7 +37,12 @@
     "column_name_placeholder": "Nombre Columna",
     "add_column": "Añadir Columna",
     "export_exclusions_title": "Excluir Tipos de Tarea",
-    "save_export_config": "Guardar Configuración"
+    "save_export_config": "Guardar Configuración",
+    "manage_companies_title": "Gestionar Empresas",
+    "company_name_placeholder": "Nombre de la empresa",
+    "edit_company": "Editar Empresa",
+    "delete_company_confirm": "¿Estás seguro de que deseas eliminar esta empresa?",
+    "no_companies": "No hay empresas guardadas"
   },
   "task": {
     "form_title_add": "Añadir Tarea",

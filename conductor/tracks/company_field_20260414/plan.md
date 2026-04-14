@@ -14,22 +14,22 @@
 - [x] Task: Create Company Autocomplete Component c16ad48
     - [x] Write unit tests for component rendering, user input, and suggestion display.
     - [x] Implement the Svelte 5 Company autocomplete input component.
-- [x] Task: Integrate Company Field into Task Form 6437fba
-    - [x] Write unit tests for placing the component before the Project field and handling form submission.
-    - [x] Implement form submission and bidirectional data binding for the new field.
-- [ ] Task: Conductor - User Manual Verification 'UI Implementation (Task Entry Form)' (Protocol in workflow.md)
+- [x] Task: Integrar campo empresa en el formulario de tarea 6437fba
+    - [x] Escribir tests unitarios para colocar el componente antes del campo Proyecto y manejar el envío del formulario.
+    - [x] Implementar el envío del formulario y el enlace de datos bidireccional para el nuevo campo.
+- [x] Task: Conductor - User Manual Verification 'UI Implementation (Task Entry Form)' (Protocol in workflow.md)
 
 ## Phase 3: Settings & Management (Company List)
-- [ ] Task: Create Company Management UI in Settings
-    - [ ] Write unit tests for viewing, adding, editing, and deleting companies in the settings view.
-    - [ ] Implement the UI components and integrate with the underlying storage service.
-- [ ] Task: Conductor - User Manual Verification 'Settings & Management (Company List)' (Protocol in workflow.md)
+- [x] Task: Create Company Management UI in Settings
+    - [x] Write unit tests for viewing, adding, editing, and deleting companies in the settings view.
+    - [x] Implement the UI components and integrate with the underlying storage service.
+- [x] Task: Conductor - User Manual Verification 'Settings & Management (Company List)' (Protocol in workflow.md)
 
 ## Phase 4: Excel Integration
-- [ ] Task: Update Bidirectional Template Mapping
-    - [ ] Write unit tests for mapping the Company field to Excel columns (Export and Import).
-    - [ ] Implement Excel export and import mapping logic utilizing `xlsx`.
-- [ ] Task: Update UI for Template Mapping
-    - [ ] Write unit tests for the user configuration of the Company field mapping.
-    - [ ] Implement the mapping configuration Svelte UI.
-- [ ] Task: Conductor - User Manual Verification 'Excel Integration' (Protocol in workflow.md)
+- [x] Task: Update Bidirectional Template Mapping
+    - [x] Write unit tests for mapping the Company field to Excel columns (Export and Import).
+    - [x] Implement Excel export mapping logic utilizing `xlsx`.
+- [x] Task: Update UI for Template Mapping
+    - [x] Write unit tests for the user configuration of the Company field mapping.
+    - [x] Implement the mapping configuration Svelte UI.
+- [x] Task: Conductor - User Manual Verification 'Excel Integration' (Protocol in workflow.md)

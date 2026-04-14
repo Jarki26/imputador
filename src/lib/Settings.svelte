@@ -1,12 +1,15 @@
 <script lang="ts">
   import { i18n } from './i18n.svelte';
   import ExportSettings from './ExportSettings.svelte';
+  import CompanySettings from './CompanySettings.svelte';
   import type { ColumnMapping } from './exportConfigStore';
+  import type { CompanyStore } from './companyStore';
 
   interface Props {
     weeklyTarget: number;
     exportTemplate: ColumnMapping[];
     exportExclusions: string[];
+    companyStore?: CompanyStore;
     onSave: (target: number) => void;
     onSaveExportConfig: (data: {
       template: ColumnMapping[];
@@ -18,6 +21,7 @@
     weeklyTarget,
     exportTemplate,
     exportExclusions,
+    companyStore,
     onSave,
     onSaveExportConfig,
   }: Props = $props();
@@ -81,6 +85,10 @@
     exclusions={exportExclusions}
     onSave={onSaveExportConfig}
   />
+
+  <hr class="separator" />
+
+  <CompanySettings {companyStore} />
 
   <div class="actions">
     <button class="save-btn" onclick={handleSave}>{i18n.t('common.save')}</button>

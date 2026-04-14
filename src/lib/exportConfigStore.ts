@@ -10,7 +10,9 @@ export interface ColumnMapping {
     | 'startTime'
     | 'endDate'
     | 'endTime'
+    | 'title'
     | 'project'
+    | 'company'
     | 'type'
     | 'description'
     | 'duration';
@@ -40,7 +42,9 @@ export class ExportConfigStore {
       { columnName: 'Start Time', taskField: 'startTime' },
       { columnName: 'End Date', taskField: 'endDate' },
       { columnName: 'End Time', taskField: 'endTime' },
+      { columnName: 'Title', taskField: 'title' },
       { columnName: 'Project', taskField: 'project' },
+      { columnName: 'Company', taskField: 'company' },
       { columnName: 'Task Type', taskField: 'type' },
       { columnName: 'Description', taskField: 'description' },
       { columnName: 'Duration', taskField: 'duration' },

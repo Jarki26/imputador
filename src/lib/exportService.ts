@@ -64,6 +64,8 @@ export class ExportService {
         return task.title;
       case 'project':
         return task.project;
+      case 'company':
+        return task.company || '';
       case 'type':
         const i18nKey = `task.type_${task.type.toLowerCase().replace(/\s+/g, '_')}`;
         const translatedType = i18n.t(i18nKey);

@@ -24,6 +24,7 @@
     'endTime',
     'title',
     'project',
+    'company',
     'type',
     'description',
     'duration',
