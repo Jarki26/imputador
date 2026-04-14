@@ -65,9 +65,10 @@ Imputador is a specialized task registration and time-tracking application desig
 - **Undo/Redo System:** Granular, session-based history stack allowing users to revert any manual task manipulation (Ctrl+Z / Ctrl+Y).
 - **Interactive Tutorial:** A step-by-step guided overlay explaining core app features, view switching, and advanced manipulation logic.
 - **Multi-language Support:** Full internationalization (i18n) of the user interface. Users can switch between English, Spanish, Portuguese, German, French, and Chinese. The selected preference is persisted locally.
-- **Configurable Excel Export & Import Foundation:**
-    - **Bidirectional Template Mapping:** Users can define a custom template to map task fields to Excel columns, supporting both export and future import capabilities.
+- **Configurable Excel Export & Import:**
+    - **Bidirectional Template Mapping:** Users can define a custom template to map task fields to Excel columns, supporting both export and import capabilities.
     - **Flexible Export:** Generate `.xlsx` files based on a selected date range and parameterized task type exclusion filters.
+    - **Wipe & Import:** Ability to replace the entire local dataset with data from an Excel/CSV file, featuring a strict confirmation process and a summary of import results.
     - **Data Persistence:** Custom templates and exclusion settings are saved locally for consistency across sessions.
 
 ## User Experience Focus
