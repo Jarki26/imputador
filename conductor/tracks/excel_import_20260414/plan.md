@@ -1,13 +1,13 @@
 # Implementation Plan: Excel Data Import
 
 ## Phase 1: Core Parsing & Validation Logic
-- [ ] Task: Write Failing Tests for Excel/CSV parsing and data mapping using Export Template config.
-- [ ] Task: Implement to Pass Tests for parsing and mapping logic.
-- [ ] Task: Write Failing Tests for row validation (dates, times, types) and "Skip & Continue" error handling.
-- [ ] Task: Implement to Pass Tests for validation and error aggregation.
-- [ ] Task: Write Failing Tests for database wipe and bulk insertion.
-- [ ] Task: Implement to Pass Tests for database wipe and insertion.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Core Parsing & Validation Logic' (Protocol in workflow.md)
+- [x] Task: Write Failing Tests for Excel/CSV parsing and data mapping using Export Template config. 367a3dc
+- [x] Task: Implement to Pass Tests for parsing and mapping logic. 367a3dc
+- [x] Task: Write Failing Tests for row validation (dates, times, types) and "Skip & Continue" error handling. 367a3dc
+- [x] Task: Implement to Pass Tests for validation and error aggregation. 367a3dc
+- [x] Task: Write Failing Tests for database wipe and bulk insertion. 367a3dc
+- [x] Task: Implement to Pass Tests for database wipe and insertion. 367a3dc
+- [~] Task: Conductor - User Manual Verification 'Phase 1: Core Parsing & Validation Logic' (Protocol in workflow.md)
 
 ## Phase 2: User Interface Integration
 - [ ] Task: Write Failing Tests for the "Import File" button in the Settings/Export Menu.
