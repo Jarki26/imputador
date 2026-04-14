@@ -1,6 +1,6 @@
 ﻿# Implementation Plan: Company Field in Task Registry
 
-## Phase 1: Foundation (Data Model & Storage)
+## Phase 1: Foundation (Data Model & Storage) [checkpoint: a4d8049]
 - [x] Task: Update Task and Company Data Models f12e3f3
     - [x] Write unit tests for the new Company entity properties.
     - [x] Write unit tests for the Task entity ensuring the new Company property is handled.
@@ -8,7 +8,7 @@
 - [x] Task: Implement IndexedDB Storage for Companies 64773b0
     - [x] Write unit tests for Company data persistence (adding new companies, reading, listing top 10 used).
     - [x] Implement IndexedDB repository/service logic for handling Companies.
-- [ ] Task: Conductor - User Manual Verification 'Foundation (Data Model & Storage)' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Foundation (Data Model & Storage)' (Protocol in workflow.md) f12e3f3
 
 ## Phase 2: UI Implementation (Task Entry Form)
 - [ ] Task: Create Company Autocomplete Component
