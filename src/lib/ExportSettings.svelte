@@ -46,7 +46,7 @@
   async function confirmImport() {
     if (confirmText !== 'IMPORTAR') return;
     
-    const results = await importService.importTasks(parsedTasks);
+    const results = await importService.importTasks($state.snapshot(parsedTasks));
     importResults = results;
     showConfirmWipe = false;
     showResults = true;

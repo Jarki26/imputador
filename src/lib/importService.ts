@@ -11,7 +11,7 @@ export class ImportService {
    */
   async parseFile(file: File, template: ColumnMapping[]): Promise<{ tasks: any[]; errors: any[] }> {
     const data = await file.arrayBuffer();
-    const workbook = XLSX.read(data, { type: 'array' });
+    const workbook = XLSX.read(data, { type: 'array', cellDates: true });
     const firstSheetName = workbook.SheetNames[0];
     const worksheet = workbook.Sheets[firstSheetName];
     const rows = XLSX.utils.sheet_to_json(worksheet);
@@ -72,8 +72,23 @@ export class ImportService {
         let duration: number | null = null;
 
         template.forEach((mapping) => {
-          const val = row[mapping.columnName];
+          let val = row[mapping.columnName];
           if (val === undefined || val === null) return;
+
+          // Handle Excel Date objects
+          if (val instanceof Date) {
+            const year = val.getFullYear();
+            const month = (val.getMonth() + 1).toString().padStart(2, '0');
+            const day = val.getDate().toString().padStart(2, '0');
+            const hours = val.getHours().toString().padStart(2, '0');
+            const minutes = val.getMinutes().toString().padStart(2, '0');
+            
+            if (mapping.taskField === 'startDate' || mapping.taskField === 'endDate') {
+              val = `${year}-${month}-${day}`;
+            } else if (mapping.taskField === 'startTime' || mapping.taskField === 'endTime') {
+              val = `${hours}:${minutes}`;
+            }
+          }
 
           switch (mapping.taskField) {
             case 'title':
@@ -117,16 +132,29 @@ export class ImportService {
           throw new Error('Start date is required');
         }
 
-        task.startTime = new Date(`${dateStr}T${startTimeStr}`);
+        // Clean date strings (sometimes they come with extra spaces or different separators)
+        const cleanDate = (s: string) => s.replace(/\//g, '-').trim();
+        const finalDateStr = cleanDate(dateStr);
+        const finalStartTimeStr = startTimeStr.trim();
+
+        task.startTime = new Date(`${finalDateStr}T${finalStartTimeStr}`);
         if (isNaN(task.startTime.getTime())) {
-          throw new Error(`Invalid start date or time: ${dateStr} ${startTimeStr}`);
+          // Try parsing without T if it fails
+          task.startTime = new Date(`${finalDateStr} ${finalStartTimeStr}`);
+          if (isNaN(task.startTime.getTime())) {
+            throw new Error(`Invalid start date or time: ${dateStr} ${startTimeStr}`);
+          }
         }
 
         if (endTimeStr) {
-          const finalEndDateStr = endDateStr || dateStr;
-          task.endTime = new Date(`${finalEndDateStr}T${endTimeStr}`);
+          const cleanEndDateStr = endDateStr ? cleanDate(endDateStr) : finalDateStr;
+          const cleanEndTimeStr = endTimeStr.trim();
+          task.endTime = new Date(`${cleanEndDateStr}T${cleanEndTimeStr}`);
           if (isNaN(task.endTime.getTime())) {
-            throw new Error(`Invalid end date or time: ${finalEndDateStr} ${endTimeStr}`);
+            task.endTime = new Date(`${cleanEndDateStr} ${cleanEndTimeStr}`);
+            if (isNaN(task.endTime.getTime())) {
+              throw new Error(`Invalid end date or time: ${cleanEndDateStr} ${endTimeStr}`);
+            }
           }
         } else if (duration !== null && !isNaN(duration)) {
           task.endTime = new Date(task.startTime.getTime() + duration * 3600000);
