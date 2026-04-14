@@ -1,10 +1,10 @@
 ﻿# Implementation Plan: Company Field in Task Registry
 
 ## Phase 1: Foundation (Data Model & Storage)
-- [ ] Task: Update Task and Company Data Models
-    - [ ] Write unit tests for the new Company entity properties.
-    - [ ] Write unit tests for the Task entity ensuring the new Company property is handled.
-    - [ ] Implement the TypeScript interfaces and class modifications.
+- [x] Task: Update Task and Company Data Models f12e3f3
+    - [x] Write unit tests for the new Company entity properties.
+    - [x] Write unit tests for the Task entity ensuring the new Company property is handled.
+    - [x] Implement the TypeScript interfaces and class modifications.
 - [ ] Task: Implement IndexedDB Storage for Companies
     - [ ] Write unit tests for Company data persistence (adding new companies, reading, listing top 10 used).
     - [ ] Implement IndexedDB repository/service logic for handling Companies.
