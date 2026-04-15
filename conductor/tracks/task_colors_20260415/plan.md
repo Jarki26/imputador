@@ -22,10 +22,10 @@
 - [x] Task: Conductor - User Manual Verification 'Settings UI' (Protocol in workflow.md) [1141b29]
 
 ## Phase 3: Integration (Weekly & Daily Views)
-- [ ] Task: Apply colors in Weekly View.
-    - [ ] Update `WeeklyView.svelte` to dynamically style task block backgrounds based on the task type's custom color.
-    - [ ] Ensure fallback to the neutral default color.
-    - [ ] Ensure text contrast is accessible.
+- [x] Task: Apply colors in Weekly View. [1227dcb]
+    - [x] Update `WeeklyView.svelte` to dynamically style task block backgrounds based on the task type's custom color.
+    - [x] Ensure fallback to the neutral default color.
+    - [x] Ensure text contrast is accessible.
 - [ ] Task: Apply colors in Daily View.
     - [ ] Update `TaskList.svelte` or `TaskForm.svelte` (list items) to display the custom color indicator/background.
     - [ ] Ensure fallback to the neutral default color.
