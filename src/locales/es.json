@@ -136,7 +136,10 @@
     "create": "Crear",
     "toggle_lock_move": "Alternar Bloqueo de Movimiento",
     "toggle_lock_edit": "Alternar Bloqueo de Edición",
-    "toggle_lock_create": "Alternar Bloqueo de Creación"
+    "toggle_lock_create": "Alternar Bloqueo de Creación",
+    "zoom_in": "Aumentar Zoom",
+    "zoom_out": "Disminuir Zoom",
+    "reset_zoom": "Restablecer Zoom"
   },
   "daily": {
     "log": "Registro Diario",

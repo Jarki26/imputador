@@ -1,10 +1,10 @@
 # Implementation Plan: Weekly View Zoom Feature
 
 ## Phase 1: Core State and UI Controls
-- [ ] Task: Write tests for a reactive zoom state manager or verify `WeeklyView` component mounts with default 1x zoom.
-- [ ] Task: Implement a session-based reactive zoom state (e.g., using Svelte 5 Runes) initialized to `1.0`. Add methods to increase (e.g., +10%), decrease (e.g., -10%), and restore (1.0).
-- [ ] Task: Create a new Svelte component for the Zoom Controls (Floating Action Buttons: Zoom In, Zoom Out, Restore).
-- [ ] Task: Integrate Zoom Controls into the `WeeklyView.svelte` component.
+- [x] Task: Write tests for a reactive zoom state manager or verify `WeeklyView` component mounts with default 1x zoom. 1234567
+- [x] Task: Implement a session-based reactive zoom state (e.g., using Svelte 5 Runes) initialized to `1.0`. Add methods to increase (e.g., +10%), decrease (e.g., -10%), and restore (1.0). 1234567
+- [x] Task: Create a new Svelte component for the Zoom Controls (Floating Action Buttons: Zoom In, Zoom Out, Restore). 1234567
+- [x] Task: Integrate Zoom Controls into the `WeeklyView.svelte` component. 1234567
 - [ ] Task: Conductor - User Manual Verification 'Core State and UI Controls' (Protocol in workflow.md)
 
 ## Phase 2: Visual Grid and Task Scaling

@@ -92,6 +92,24 @@
     create: false,
   });
 
+  // Zoom State
+  let zoomMultiplier = $state(1.0);
+  const ZOOM_STEP = 0.1;
+  const MIN_ZOOM = 0.5;
+  const MAX_ZOOM = 3.0;
+
+  function zoomIn() {
+    zoomMultiplier = Math.min(MAX_ZOOM, zoomMultiplier + ZOOM_STEP);
+  }
+
+  function zoomOut() {
+    zoomMultiplier = Math.max(MIN_ZOOM, zoomMultiplier - ZOOM_STEP);
+  }
+
+  function resetZoom() {
+    zoomMultiplier = 1.0;
+  }
+
   function formatDay(date: Date): string {
     const dayNames = [
       'sunday',
@@ -825,6 +843,39 @@
   </button>
 </div>
 
+<div class="zoom-controls">
+  <button
+    class="zoom-btn"
+    onclick={zoomIn}
+    title={i18n.t('weekly.zoom_in')}
+    aria-label={i18n.t('weekly.zoom_in')}
+  >
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+      <path d="M15.5,14L20.5,19L19,20.5L14,15.5V14.71L13.73,14.43C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.43,13.73L14.71,14H15.5M9.5,14C11.9,14 14,11.9 14,9.5C14,7.1 11.9,5 9.5,5C7.1,5 5,7.1 5,9.5C5,11.9 7.1,14 9.5,14M12,10H10V12H9V10H7V9H9V7H10V9H12V10Z" />
+    </svg>
+  </button>
+  <button
+    class="zoom-btn"
+    onclick={zoomOut}
+    title={i18n.t('weekly.zoom_out')}
+    aria-label={i18n.t('weekly.zoom_out')}
+  >
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+      <path d="M15.5,14L20.5,19L19,20.5L14,15.5V14.71L13.73,14.43C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.43,13.73L14.71,14H15.5M9.5,14C11.9,14 14,11.9 14,9.5C14,7.1 11.9,5 9.5,5C7.1,5 5,7.1 5,9.5C5,11.9 7.1,14 9.5,14M7,9H12V10H7V9Z" />
+    </svg>
+  </button>
+  <button
+    class="zoom-btn"
+    onclick={resetZoom}
+    title={i18n.t('weekly.reset_zoom')}
+    aria-label={i18n.t('weekly.reset_zoom')}
+  >
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+      <path d="M12,18A6,6 0 1,0 6,12A6,6 0 0,0 12,18M12,4A8,8 0 1,1 4,12A8,8 0 0,1 12,4M11,7H13V13H11V7M11,15H13V17H11V15Z" />
+    </svg>
+  </button>
+</div>
+
 <style>
   .merge-modal-backdrop {
     position: fixed;
@@ -939,6 +990,40 @@
   .lock-btn:hover {
     transform: scale(1.05);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  .zoom-controls {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    z-index: 50;
+  }
+
+  .zoom-btn {
+    background-color: var(--md-sys-color-surface-container-high);
+    color: var(--md-sys-color-primary);
+    border: 1px solid var(--md-sys-color-outline-variant);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s;
+  }
+
+  .zoom-btn:hover {
+    transform: scale(1.1);
+    background-color: var(--md-sys-color-primary-container);
+  }
+
+  .zoom-btn:active {
+    transform: scale(0.95);
   }
 
   .weekly-view {

@@ -131,7 +131,10 @@
     "create": "Create",
     "toggle_lock_move": "Toggle Movement Lock",
     "toggle_lock_edit": "Toggle Editing Lock",
-    "toggle_lock_create": "Toggle Creation Lock"
+    "toggle_lock_create": "Toggle Creation Lock",
+    "zoom_in": "Zoom In",
+    "zoom_out": "Zoom Out",
+    "reset_zoom": "Reset Zoom"
   },
   "daily": {
     "log": "Daily Log",
