@@ -272,13 +272,26 @@
       />
     {:else}
       <section class="daily-section">
-        <div class="section-header">
-          <h2>{i18n.t('daily.log')} - {selectedDate.toLocaleDateString()}</h2>
-          <button class="add-btn" onclick={handleAddTask}>
-            {i18n.t('common.add')}
-          </button>
-        </div>
-        <TaskList tasks={dailyTasks} />
+        <TaskList
+          tasks={dailyTasks}
+          date={selectedDate}
+          onPreviousDay={async () => {
+            selectedDate = new Date(selectedDate);
+            selectedDate.setDate(selectedDate.getDate() - 1);
+            selectedDate.setHours(0, 0, 0, 0);
+            await loadTasks(true);
+          }}
+          onNextDay={async () => {
+            selectedDate = new Date(selectedDate);
+            selectedDate.setDate(selectedDate.getDate() + 1);
+            selectedDate.setHours(0, 0, 0, 0);
+            await loadTasks(true);
+          }}
+          onEditTask={handleTaskClick}
+        />
+        <button class="add-btn floating-add" onclick={handleAddTask}>
+          {i18n.t('common.add')}
+        </button>
       </section>
     {/if}
   </div>
@@ -462,6 +475,26 @@
 
   .add-btn:hover {
     opacity: 0.9;
+  }
+
+  .floating-add {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    padding: 12px 24px;
+    border-radius: 28px;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .floating-add::before {
+    content: '+';
+    font-size: 1.5rem;
+    line-height: 1;
   }
 
   .history-controls {

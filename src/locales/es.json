@@ -144,7 +144,9 @@
   "daily": {
     "log": "Registro Diario",
     "empty": "No hay tareas para este día",
-    "gap_detected": "Hueco detectado entre {start} y {end}"
+    "gap_detected": "Hueco detectado entre {start} y {end}",
+    "prev_day": "Día Anterior",
+    "next_day": "Día Siguiente"
   },
   "export": {
     "title": "Exportar a Excel",

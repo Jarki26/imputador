@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { render, screen, cleanup } from '@testing-library/svelte';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { render, screen, fireEvent, cleanup } from '@testing-library/svelte';
 import TaskList from './TaskList.svelte';
 import type { Task } from './db';
 import { i18n } from './i18n.svelte';
@@ -85,5 +85,70 @@ describe('TaskList.svelte', () => {
     const { container } = render(TaskList, { props: { tasks } });
     const taskItem = container.querySelector('.task-item');
     expect(taskItem?.classList.contains('is-billable-absence')).toBe(true);
+  });
+
+  it('should render navigation arrows and date', () => {
+    const date = new Date(2026, 3, 15); // 15 April 2026
+    render(TaskList, {
+      props: {
+        tasks: [],
+        date,
+        onPreviousDay: vi.fn(),
+        onNextDay: vi.fn(),
+      },
+    });
+
+    expect(screen.getByText(/15\/4\/2026/)).toBeDefined();
+    expect(screen.getByTitle(/Día Anterior/i)).toBeDefined();
+    expect(screen.getByTitle(/Día Siguiente/i)).toBeDefined();
+  });
+
+  it('should call navigation callbacks', async () => {
+    const onPreviousDay = vi.fn();
+    const onNextDay = vi.fn();
+    const date = new Date(2026, 3, 15);
+
+    render(TaskList, {
+      props: {
+        tasks: [],
+        date,
+        onPreviousDay,
+        onNextDay,
+      },
+    });
+
+    await fireEvent.click(screen.getByTitle(/Día Anterior/i));
+    expect(onPreviousDay).toHaveBeenCalled();
+
+    await fireEvent.click(screen.getByTitle(/Día Siguiente/i));
+    expect(onNextDay).toHaveBeenCalled();
+  });
+
+  it('should call onEditTask when a task is clicked', async () => {
+    const onEditTask = vi.fn();
+    const tasks: Task[] = [
+      {
+        id: 1,
+        title: 'Task to Edit',
+        project: 'Project A',
+        type: 'General',
+        startTime: new Date('2026-04-09T09:00:00Z'),
+        endTime: new Date('2026-04-09T10:00:00Z'),
+      },
+    ];
+
+    render(TaskList, {
+      props: {
+        tasks,
+        onEditTask,
+      },
+    });
+
+    const taskItem = screen.getByText('Task to Edit').closest('.task-item');
+    expect(taskItem).toBeDefined();
+    if (taskItem) {
+      await fireEvent.click(taskItem);
+      expect(onEditTask).toHaveBeenCalledWith(tasks[0]);
+    }
   });
 });
