@@ -12,7 +12,7 @@
 
 ## Phase 3: Integration (Export Logic)
 - [x] Task: Write failing tests for the Excel export service to utilize the configured `excelDateFormat` when serializing dates. 5eba35c
-- [ ] Task: Update the Excel export service logic to format output dates using the `dayjs` instance with the `excelDateFormat` string.
+- [x] Task: Update the Excel export service logic to format output dates using the `dayjs` instance with the `excelDateFormat` string. f941a45
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Integration (Export Logic)' (Protocol in workflow.md)
 
 ## Phase 4: Integration (Import Logic & Error Handling)
