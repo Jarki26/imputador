@@ -10,11 +10,13 @@
     exclusions = [],
     excelDateFormat = 'DD/MM/YYYY',
     onSave,
+    onImportComplete,
   }: {
     template: ColumnMapping[];
     exclusions: string[];
     excelDateFormat: string;
     onSave: (data: { template: ColumnMapping[]; exclusions: string[]; excelDateFormat: string }) => void;
+    onImportComplete?: () => void;
   } = $props();
 
   const importService = new ImportService();
@@ -52,6 +54,9 @@
     importResults = results;
     showConfirmWipe = false;
     showResults = true;
+    if (onImportComplete) {
+      onImportComplete();
+    }
   }
 
   let hasDateErrors = $derived(

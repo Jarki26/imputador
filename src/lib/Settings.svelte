@@ -17,6 +17,7 @@
       exclusions: string[];
       excelDateFormat: string;
     }) => void;
+    onImportComplete?: () => void;
   }
 
   let {
@@ -27,6 +28,7 @@
     companyStore,
     onSave,
     onSaveExportConfig,
+    onImportComplete,
   }: Props = $props();
 
   let target = $state(weeklyTarget);
@@ -88,6 +90,7 @@
     exclusions={exportExclusions}
     {excelDateFormat}
     onSave={onSaveExportConfig}
+    {onImportComplete}
   />
 
   <hr class="separator" />

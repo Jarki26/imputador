@@ -339,6 +339,9 @@
     {companyStore}
     onSave={handleSaveSettings}
     onSaveExportConfig={handleSaveExportConfig}
+    onImportComplete={async () => {
+      await loadTasks(true);
+    }}
   />
 </Modal>
 <style>
