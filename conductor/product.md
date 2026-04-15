@@ -33,6 +33,7 @@ Imputador is a specialized task registration and time-tracking application desig
     - **Direct Management:** Delete buttons on task blocks and long-press to copy existing tasks to favorites/recents.
     - **Smart Interaction:** Magnetic snapping to close small gaps and automatic merging of identical consecutive tasks.
     - **Action Locks:** Safety switches to prevent accidental movement, editing, or creation on touch devices.
+    - **Vertical Zoom:** Floating controls to adjust the grid scale (cell height), facilitating management of short-duration tasks.
 
 ### 3. Advanced Time Manipulation
 
