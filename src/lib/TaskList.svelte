@@ -1,16 +1,19 @@
 <script lang="ts">
   import type { Task } from './db';
   import { i18n } from './i18n.svelte';
+  import { getContrastColor } from './utils';
 
   let {
     tasks = [],
     date = new Date(),
+    taskTypeColors = {},
     onPreviousDay,
     onNextDay,
     onEditTask,
   }: {
     tasks: Task[];
     date?: Date;
+    taskTypeColors?: Record<string, string>;
     onPreviousDay?: () => void;
     onNextDay?: () => void;
     onEditTask?: (task: Task) => void;
@@ -77,6 +80,7 @@
           class="task-item"
           class:is-rest={task.type === 'REST'}
           class:is-billable-absence={task.type === 'AUSENCIA FACTURABLE'}
+          style={taskTypeColors[task.type] ? `background-color: ${taskTypeColors[task.type]}; color: ${getContrastColor(taskTypeColors[task.type])}; border-color: rgba(0,0,0,0.1);` : ''}
           onclick={() => onEditTask?.(task)}
           role="button"
           tabindex="0"

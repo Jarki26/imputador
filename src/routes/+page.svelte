@@ -282,6 +282,7 @@
         <TaskList
           tasks={dailyTasks}
           date={selectedDate}
+          {taskTypeColors}
           onPreviousDay={async () => {
             selectedDate = new Date(selectedDate);
             selectedDate.setDate(selectedDate.getDate() - 1);

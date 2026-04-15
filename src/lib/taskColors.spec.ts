@@ -1,14 +1,15 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { ConfigStore } from './configStore';
 import { TASK_TYPES } from './config';
-import { deleteDB } from 'idb';
+import { initDB } from './db';
 
 describe('Task Colors Configuration', () => {
   let configStore: ConfigStore;
   const TEST_DB_NAME = 'task-colors-test-db';
 
   beforeEach(async () => {
-    await deleteDB(TEST_DB_NAME);
+    const db = await initDB(TEST_DB_NAME);
+    await db.clear('config');
     configStore = new ConfigStore(TEST_DB_NAME);
   });
 
