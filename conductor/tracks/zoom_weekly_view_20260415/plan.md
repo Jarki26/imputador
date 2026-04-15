@@ -15,7 +15,7 @@
 - [x] Task: Conductor - User Manual Verification 'Visual Grid and Task Scaling' (Protocol in workflow.md) 035cf45
 
 ## Phase 3: Interaction Scaling
-- [~] Task: Write tests to ensure pointer event coordinate translation (Y-axis pixel to time) correctly accounts for the zoom multiplier.
-- [ ] Task: Update the drag-and-drop logic for moving tasks to correctly calculate the new start time based on the zoomed grid.
-- [ ] Task: Update the resize logic (dragging handles) to correctly calculate the new duration based on the zoomed grid.
+- [x] Task: Write tests to ensure pointer event coordinate translation (Y-axis pixel to time) correctly accounts for the zoom multiplier. 1760ba8
+- [x] Task: Update the drag-and-drop logic for moving tasks to correctly calculate the new start time based on the zoomed grid. 1760ba8
+- [x] Task: Update the resize logic (dragging handles) to correctly calculate the new duration based on the zoomed grid. 1760ba8
 - [ ] Task: Conductor - User Manual Verification 'Interaction Scaling' (Protocol in workflow.md)
