@@ -29,4 +29,4 @@
 - [x] Task: Apply colors in Daily View. [1b57b3f]
     - [x] Update `TaskList.svelte` or `TaskForm.svelte` (list items) to display the custom color indicator/background.
     - [x] Ensure fallback to the neutral default color.
-- [ ] Task: Conductor - User Manual Verification 'Integration' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Integration' (Protocol in workflow.md) [d85ebca]
