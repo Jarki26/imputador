@@ -21,7 +21,7 @@
     - [x] Write component tests for Settings integration.
 - [x] Task: Conductor - User Manual Verification 'Settings UI' (Protocol in workflow.md) [1141b29]
 
-## Phase 3: Integration (Weekly & Daily Views)
+## Phase 3: Integration (Weekly & Daily Views) [checkpoint: d85ebca]
 - [x] Task: Apply colors in Weekly View. [1227dcb]
     - [x] Update `WeeklyView.svelte` to dynamically style task block backgrounds based on the task type's custom color.
     - [x] Ensure fallback to the neutral default color.
