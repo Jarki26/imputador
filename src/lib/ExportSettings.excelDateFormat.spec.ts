@@ -14,7 +14,6 @@ describe('ExportSettings.svelte excelDateFormat', () => {
       props: {
         template: [],
         exclusions: [],
-        // @ts-expect-error - testing new prop before implementation
         excelDateFormat: 'DD/MM/YYYY',
         onSave: vi.fn(),
       },
@@ -32,7 +31,6 @@ describe('ExportSettings.svelte excelDateFormat', () => {
       props: {
         template: [],
         exclusions: [],
-        // @ts-expect-error - testing new prop before implementation
         excelDateFormat: 'DD/MM/YYYY',
         onSave,
       },

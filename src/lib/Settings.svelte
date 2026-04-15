@@ -9,11 +9,13 @@
     weeklyTarget: number;
     exportTemplate: ColumnMapping[];
     exportExclusions: string[];
+    excelDateFormat: string;
     companyStore?: CompanyStore;
     onSave: (target: number) => void;
     onSaveExportConfig: (data: {
       template: ColumnMapping[];
       exclusions: string[];
+      excelDateFormat: string;
     }) => void;
   }
 
@@ -21,6 +23,7 @@
     weeklyTarget,
     exportTemplate,
     exportExclusions,
+    excelDateFormat,
     companyStore,
     onSave,
     onSaveExportConfig,
@@ -83,6 +86,7 @@
   <ExportSettings
     template={exportTemplate}
     exclusions={exportExclusions}
+    {excelDateFormat}
     onSave={onSaveExportConfig}
   />
 

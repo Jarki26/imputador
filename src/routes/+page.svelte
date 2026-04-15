@@ -27,6 +27,7 @@
   let weeklyTarget = $state(41);
   let exportTemplate = $state<ColumnMapping[]>([]);
   let exportExclusions = $state<string[]>([]);
+  let excelDateFormat = $state('DD/MM/YYYY');
   let view = $state<'weekly' | 'daily'>('weekly');
   let selectedDate = $state(new Date());
   selectedDate.setHours(0, 0, 0, 0);
@@ -46,6 +47,7 @@
 
   async function loadConfig() {
     weeklyTarget = await configStore.getWeeklyHoursTarget();
+    excelDateFormat = await configStore.getExcelDateFormat();
     exportTemplate = await exportConfigStore.getTemplate();
     exportExclusions = await exportConfigStore.getExclusions();
   }
@@ -113,11 +115,14 @@
   async function handleSaveExportConfig(data: {
     template: ColumnMapping[];
     exclusions: string[];
+    excelDateFormat: string;
   }) {
     await exportConfigStore.setTemplate(data.template);
     await exportConfigStore.setExclusions(data.exclusions);
+    await configStore.setExcelDateFormat(data.excelDateFormat);
     exportTemplate = data.template;
     exportExclusions = data.exclusions;
+    excelDateFormat = data.excelDateFormat;
   }
 
   async function handleExport(range: { startDate: string; endDate: string }) {
@@ -326,6 +331,7 @@
     {weeklyTarget}
     {exportTemplate}
     {exportExclusions}
+    {excelDateFormat}
     {companyStore}
     onSave={handleSaveSettings}
     onSaveExportConfig={handleSaveExportConfig}

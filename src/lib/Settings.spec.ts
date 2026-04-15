@@ -9,6 +9,7 @@ describe('Settings.svelte', () => {
     weeklyTarget: 41,
     exportTemplate: [] as ColumnMapping[],
     exportExclusions: [] as string[],
+    excelDateFormat: 'DD/MM/YYYY',
     onSave: vi.fn(),
     onSaveExportConfig: vi.fn(),
   };

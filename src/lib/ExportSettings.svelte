@@ -8,11 +8,13 @@
   let {
     template = [],
     exclusions = [],
+    excelDateFormat = 'DD/MM/YYYY',
     onSave,
   }: {
     template: ColumnMapping[];
     exclusions: string[];
-    onSave: (data: { template: ColumnMapping[]; exclusions: string[] }) => void;
+    excelDateFormat: string;
+    onSave: (data: { template: ColumnMapping[]; exclusions: string[]; excelDateFormat: string }) => void;
   } = $props();
 
   const importService = new ImportService();
@@ -54,6 +56,7 @@
 
   let localTemplate = $state([...template]);
   let localExclusions = $state([...exclusions]);
+  let localExcelDateFormat = $state(excelDateFormat);
 
   // Standard task fields for mapping
   const taskFields: ColumnMapping['taskField'][] = [
@@ -92,6 +95,7 @@
     onSave({
       template: $state.snapshot(localTemplate),
       exclusions: $state.snapshot(localExclusions),
+      excelDateFormat: localExcelDateFormat,
     });
   }
 
@@ -101,6 +105,24 @@
 </script>
 
 <div class="export-settings">
+  <section class="date-format-section">
+    <h3>
+      {i18n.t('settings.excel_date_format_title') || 'Formato de Fecha (Excel)'}
+    </h3>
+    <div class="format-input-container">
+      <input
+        type="text"
+        bind:value={localExcelDateFormat}
+        placeholder="DD/MM/YYYY"
+        class="date-format-input"
+      />
+      <p class="hint">
+        {i18n.t('settings.excel_date_format_hint') ||
+          'Usa tokens como YYYY, MM, DD (ej: YYYY-MM-DD)'}
+      </p>
+    </div>
+  </section>
+
   <section class="template-section">
     <h3>
       {i18n.t('settings.export_template_title') || 'Plantilla de Exportación'}
@@ -331,6 +353,22 @@
     align-items: center;
     gap: 0.5rem;
     cursor: pointer;
+  }
+
+  .date-format-input {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--md-sys-color-outline);
+    background: var(--md-sys-color-surface);
+    color: var(--md-sys-color-on-surface);
+    width: 200px;
+    font-family: monospace;
+  }
+
+  .hint {
+    font-size: 0.85rem;
+    color: var(--md-sys-color-on-surface-variant);
+    margin: 0.5rem 0 0 0;
   }
 
   .actions {

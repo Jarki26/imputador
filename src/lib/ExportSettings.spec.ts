@@ -93,6 +93,7 @@ describe('ExportSettings.svelte', () => {
     expect(onSave).toHaveBeenCalledWith({
       template: expect.any(Array),
       exclusions: expect.any(Array),
+      excelDateFormat: expect.any(String),
     });
   });
 

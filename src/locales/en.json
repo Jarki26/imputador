@@ -37,7 +37,10 @@
     "column_name_placeholder": "Column Name",
     "add_column": "Add Column",
     "export_exclusions_title": "Exclude Task Types",
-    "save_export_config": "Save Export Config"
+    "save_export_config": "Save Export Config",
+    "excel_date_format_title": "Date Format (Excel)",
+    "excel_date_format_hint": "Use tokens like YYYY, MM, DD (e.g., YYYY-MM-DD)",
+    "import_file": "Import File"
   },
   "task": {
     "form_title_add": "Add Task",

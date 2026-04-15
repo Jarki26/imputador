@@ -38,6 +38,8 @@
     "add_column": "Añadir Columna",
     "export_exclusions_title": "Excluir Tipos de Tarea",
     "save_export_config": "Guardar Configuración",
+    "excel_date_format_title": "Formato de Fecha (Excel)",
+    "excel_date_format_hint": "Usa tokens como YYYY, MM, DD (ej: YYYY-MM-DD)",
     "import_file": "Importar Archivo",
     "import_confirm_title": "¿Vaciar datos e importar?",
     "import_confirm_msg": "Esta acción borrará TODOS los registros actuales de la aplicación. Escribe 'IMPORTAR' para confirmar:",
