@@ -258,6 +258,7 @@
         startDate={selectedDate}
         {tasks}
         {weeklyTarget}
+        {taskTypeColors}
         onSlotClick={handleSlotClick}
         onTaskClick={handleTaskClick}
         onTaskUpdate={handleTaskUpdate}
