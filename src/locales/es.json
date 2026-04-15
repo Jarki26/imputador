@@ -116,6 +116,7 @@
     "view_daily": "Ver detalles diarios para el {day}",
     "billable_hours": "Horas Facturables",
     "rest_hours": "Horas de Descanso/No facturables",
+    "remaining": "Restante",
     "add_task_at": "Añadir tarea a las {time} el {date}",
     "edit_task": "Editar tarea: {title}",
     "delete_task": "Eliminar tarea: {title}",

@@ -360,4 +360,36 @@ describe('WeeklyView.svelte', () => {
     // Task 2 should also not have it (using the dragged version)
     expect(task2?.classList.contains('has-overlap')).toBe(false);
   });
+
+  it('should display remaining weekly time', async () => {
+    const tasks = [
+      {
+        id: 1,
+        title: 'Work',
+        type: 'DESARROLLO',
+        startTime: new Date('2026-04-06T09:00:00Z'),
+        endTime: new Date('2026-04-06T14:00:00Z'), // 5 hours
+      },
+      {
+        id: 2,
+        title: 'Absence',
+        type: 'AUSENCIA FACTURABLE',
+        startTime: new Date('2026-04-07T09:00:00Z'),
+        endTime: new Date('2026-04-07T11:00:00Z'), // 2 hours
+      },
+    ];
+    // Goal: 41h. Absence: 2h. Effective goal: 39h. Logged work: 5h. Remaining: 34h.
+    render(WeeklyView, {
+      props: { startDate: new Date('2026-04-06'), tasks, weeklyTarget: 41 },
+    });
+
+    // Check for "Restante: 34.00h"
+    expect(screen.getByText(/Restante: 34\.00h/i)).toBeDefined();
+
+    // Check for progress bar
+    const progressBar = screen.getByRole('progressbar');
+    expect(progressBar).toBeDefined();
+    // 5 logged / 39 goal = ~12.82%
+    expect(progressBar.getAttribute('aria-valuenow')).toBe('12.82');
+  });
 });

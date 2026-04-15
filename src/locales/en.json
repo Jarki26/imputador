@@ -111,6 +111,7 @@
     "view_daily": "View daily details for {day}",
     "billable_hours": "Billable Hours",
     "rest_hours": "Rest/Non-billable Hours",
+    "remaining": "Remaining",
     "add_task_at": "Add task at {time} on {date}",
     "edit_task": "Edit task: {title}",
     "delete_task": "Delete task: {title}",

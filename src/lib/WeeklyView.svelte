@@ -105,6 +105,16 @@
   const MIN_ZOOM = 0.5;
   const MAX_ZOOM = 3.0;
 
+  const totalBillableHours = $derived(calculateWorkHours(tasks));
+  const goalAbsenceHours = $derived(calculateGoalAbsenceHours(tasks));
+  const effectiveGoal = $derived(weeklyTarget - goalAbsenceHours);
+  const remainingTime = $derived(Math.max(0, effectiveGoal - totalBillableHours));
+  const progressPercentage = $derived(
+    effectiveGoal > 0
+      ? Math.min(100, (totalBillableHours / effectiveGoal) * 100)
+      : 100,
+  );
+
   function zoomIn() {
     zoomMultiplier = Math.min(MAX_ZOOM, zoomMultiplier + ZOOM_STEP);
   }
@@ -588,10 +598,20 @@
         </svg>
       </button>
     </div>
-    <div class="weekly-summary">
-      {i18n.t('weekly.logged')}: {calculateWorkHours(tasks).toFixed(2)}h / {i18n.t('weekly.target')}: {(
-        weeklyTarget - calculateGoalAbsenceHours(tasks)
-      ).toFixed(2)}h
+    <div class="summary-container">
+      <div class="weekly-summary">
+        {i18n.t('weekly.logged')}: {totalBillableHours.toFixed(2)}h / {i18n.t('weekly.target')}: {effectiveGoal.toFixed(2)}h
+        | {i18n.t('weekly.remaining')}: {remainingTime.toFixed(2)}h
+      </div>
+      <div
+        class="progress-container"
+        role="progressbar"
+        aria-valuenow={progressPercentage.toFixed(2)}
+        aria-valuemin="0"
+        aria-valuemax="100"
+      >
+        <div class="progress-bar" style="width: {progressPercentage}%"></div>
+      </div>
     </div>
   </div>
   <div class="grid-scroll-container">
@@ -1075,12 +1095,35 @@
     background-color: rgba(0, 0, 0, 0.1);
   }
 
+  .summary-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 0.5rem 0;
+  }
+
   .weekly-summary {
     color: var(--md-sys-color-on-primary-container);
-    padding: 0.5rem 0.5rem;
     font-weight: 600;
-    flex: 1;
     text-align: center;
+    font-size: 0.9rem;
+  }
+
+  .progress-container {
+    width: 60%;
+    height: 8px;
+    background-color: var(--md-sys-color-surface-variant);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--md-sys-color-outline-variant);
+  }
+
+  .progress-bar {
+    height: 100%;
+    background-color: var(--md-sys-color-primary);
+    transition: width 0.3s ease;
   }
 
   /* Local border-box reset */
