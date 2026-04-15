@@ -1,13 +1,13 @@
 # Implementation Plan: Custom Task Colors
 
-## Phase 1: Setup & Data Model
+## Phase 1: Setup & Data Model [checkpoint: 5a23ba5]
 - [x] Task: Update data types to include color mapping for task types. [9c52ba9]
     - [x] Update types/interfaces for task configuration.
     - [x] Write tests to ensure color mapping logic handles default neutral colors.
 - [x] Task: Update local persistence (IndexedDB/Store). [9c52ba9]
     - [x] Add save/load logic for custom task colors in the relevant store (e.g., configStore).
     - [x] Write tests verifying persistence and retrieval of custom colors.
-- [ ] Task: Conductor - User Manual Verification 'Setup & Data Model' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Setup & Data Model' (Protocol in workflow.md) [5a23ba5]
 
 ## Phase 2: Settings UI (Color Selection)
 - [ ] Task: Create ColorPicker component.
