@@ -1,8 +1,0 @@
-{
-  "track_id": "ui_enhancements_20260415",
-  "type": "feature",
-  "status": "new",
-  "created_at": "2026-04-15T00:00:00Z",
-  "updated_at": "2026-04-15T00:00:00Z",
-  "description": "Flechas para moverse entre días en el modo diario. Permitir también la edición de tareas en el modo diario reutilizando el formulario existente. Recargar los datos de la página después de importar un excel, para no tener que hacer F5 manual. Añadir a la cabecera del modo semana el tiempo restante a imputar en la semana."
-}
