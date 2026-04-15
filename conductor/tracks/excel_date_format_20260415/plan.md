@@ -16,8 +16,8 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Integration (Export Logic)' (Protocol in workflow.md) f2c8b35
 
 ## Phase 4: Integration (Import Logic & Error Handling)
-- [ ] Task: Write failing tests for the Excel import service to parse incoming dates using the configured `excelDateFormat`.
-- [ ] Task: Update the Excel import service to strictly parse dates using `excelDateFormat`.
-- [ ] Task: Write failing tests for adding a warning message to the import result window when date parsing fails.
-- [ ] Task: Implement the warning message logic, displaying the configured format as a reminder ONLY when a date fails to parse.
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Integration (Import Logic & Error Handling)' (Protocol in workflow.md)
+- [x] Task: Write failing tests for the Excel import service to parse incoming dates using the configured `excelDateFormat`. 30cc614
+- [x] Task: Update the Excel import service to strictly parse dates using `excelDateFormat`. 30cc614
+- [x] Task: Write failing tests for adding a warning message to the import result window when date parsing fails. fbc33bc
+- [x] Task: Implement the warning message logic, displaying the configured format as a reminder ONLY when a date fails to parse. fbc33bc
+- [~] Task: Conductor - User Manual Verification 'Phase 4: Integration (Import Logic & Error Handling)' (Protocol in workflow.md)
