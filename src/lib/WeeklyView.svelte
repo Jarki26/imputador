@@ -1,6 +1,11 @@
 <script lang="ts">
   import type { Task } from './db';
-  import { calculateWorkHours, calculateGoalAbsenceHours } from './utils';
+  import {
+    calculateWorkHours,
+    calculateGoalAbsenceHours,
+    calculateVerticalPosition,
+    calculateHeight,
+  } from './utils';
   import { isBillable } from './config';
   import { i18n } from './i18n.svelte';
 
@@ -94,6 +99,8 @@
 
   // Zoom State
   let zoomMultiplier = $state(1.0);
+  const BASE_PIXELS_PER_MINUTE = 1;
+  const pixelsPerMinute = $derived(BASE_PIXELS_PER_MINUTE * zoomMultiplier);
   const ZOOM_STEP = 0.1;
   const MIN_ZOOM = 0.5;
   const MAX_ZOOM = 3.0;
@@ -244,11 +251,10 @@
     const start = task.startTime;
     const end = task.endTime;
 
-    const startMinutes = start.getHours() * 60 + start.getMinutes();
     const durationMinutes = (end.getTime() - start.getTime()) / (1000 * 60);
 
-    const top = startMinutes;
-    const height = durationMinutes;
+    const top = calculateVerticalPosition(start, pixelsPerMinute);
+    const height = calculateHeight(durationMinutes, pixelsPerMinute);
 
     let style = `top: ${top}px; height: ${height}px;`;
     if (dragInfo && dragInfo.taskId === task.id) {
@@ -550,7 +556,7 @@
   onpointercancel={handlePointerUp}
 />
 
-<div class="weekly-view">
+<div class="weekly-view" style="--pixels-per-minute: {pixelsPerMinute}">
   <div class="weekly-header">
     <div class="nav-controls">
       <button
@@ -629,6 +635,7 @@
             {#each hours as hour}
               <div
                 class="hour-cell"
+                style="height: {60 * pixelsPerMinute}px"
                 onclick={() => handleSlotClick(day, hour)}
                 onkeydown={(e) =>
                   e.key === 'Enter' && handleSlotClick(day, hour)}
@@ -1191,14 +1198,14 @@
     flex-direction: column;
     background-color: var(--md-sys-color-surface-variant);
     border-right: 1px solid var(--md-sys-color-outline-variant);
-    min-height: 1440px;
+    min-height: calc(1440 * var(--pixels-per-minute) * 1px);
     position: sticky;
     left: 0;
     z-index: 10;
   }
 
   .hour-label {
-    height: 60px;
+    height: calc(60 * var(--pixels-per-minute) * 1px);
     flex-shrink: 0;
     display: flex;
     justify-content: flex-end;
@@ -1213,7 +1220,7 @@
   .grid-content {
     display: flex;
     flex: 1;
-    min-height: 1440px; /* 24 * 60px */
+    min-height: calc(1440 * var(--pixels-per-minute) * 1px);
   }
 
   .day-column {
@@ -1230,7 +1237,7 @@
   }
 
   .hour-cell {
-    height: 60px;
+    height: calc(60 * var(--pixels-per-minute) * 1px);
     flex-shrink: 0;
     border-bottom: 1px solid var(--md-sys-color-outline-variant);
   }
