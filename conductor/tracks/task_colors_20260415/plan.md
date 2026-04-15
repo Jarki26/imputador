@@ -26,7 +26,7 @@
     - [x] Update `WeeklyView.svelte` to dynamically style task block backgrounds based on the task type's custom color.
     - [x] Ensure fallback to the neutral default color.
     - [x] Ensure text contrast is accessible.
-- [ ] Task: Apply colors in Daily View.
-    - [ ] Update `TaskList.svelte` or `TaskForm.svelte` (list items) to display the custom color indicator/background.
-    - [ ] Ensure fallback to the neutral default color.
+- [x] Task: Apply colors in Daily View. [1b57b3f]
+    - [x] Update `TaskList.svelte` or `TaskForm.svelte` (list items) to display the custom color indicator/background.
+    - [x] Ensure fallback to the neutral default color.
 - [ ] Task: Conductor - User Manual Verification 'Integration' (Protocol in workflow.md)
