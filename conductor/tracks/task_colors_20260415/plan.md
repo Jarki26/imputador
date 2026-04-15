@@ -4,9 +4,9 @@
 - [x] Task: Update data types to include color mapping for task types. [9c52ba9]
     - [x] Update types/interfaces for task configuration.
     - [x] Write tests to ensure color mapping logic handles default neutral colors.
-- [ ] Task: Update local persistence (IndexedDB/Store).
-    - [ ] Add save/load logic for custom task colors in the relevant store (e.g., configStore).
-    - [ ] Write tests verifying persistence and retrieval of custom colors.
+- [x] Task: Update local persistence (IndexedDB/Store). [9c52ba9]
+    - [x] Add save/load logic for custom task colors in the relevant store (e.g., configStore).
+    - [x] Write tests verifying persistence and retrieval of custom colors.
 - [ ] Task: Conductor - User Manual Verification 'Setup & Data Model' (Protocol in workflow.md)
 
 ## Phase 2: Settings UI (Color Selection)
