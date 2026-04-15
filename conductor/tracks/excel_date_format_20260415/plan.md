@@ -2,7 +2,7 @@
 
 ## Phase 1: State Management (Configuration Store)
 - [x] Task: Write failing tests for extending the configuration store with `excelDateFormat` property. 8b332c8
-- [ ] Task: Implement the `excelDateFormat` property in the configuration store, defaulting to `DD/MM/YYYY`.
+- [x] Task: Implement the `excelDateFormat` property in the configuration store, defaulting to `DD/MM/YYYY`. bca1175
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: State Management (Configuration Store)' (Protocol in workflow.md)
 
 ## Phase 2: UI Implementation (Settings Screen)
