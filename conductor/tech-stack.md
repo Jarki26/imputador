@@ -21,3 +21,4 @@
 - **Excel Manipulation:**
     - **Library:** `xlsx` (SheetJS) for client-side generation and parsing of `.xlsx` files.
     - **Capability:** Bidirectional mapping for data portability (Export/Import foundation).
+    - **Date Handling:** Bidirectional operations support custom token-based formatting (YYYY, MM, DD).
