@@ -5,10 +5,10 @@
 - [x] Task: Implement the `excelDateFormat` property in the configuration store, defaulting to `DD/MM/YYYY`. bca1175
 - [x] Task: Conductor - User Manual Verification 'Phase 1: State Management (Configuration Store)' (Protocol in workflow.md) a6c8a6c
 
-## Phase 2: UI Implementation (Settings Screen)
+## Phase 2: UI Implementation (Settings Screen) [checkpoint: 37dc5d9]
 - [x] Task: Write failing tests for adding a new text input for Date Format in the Excel Settings UI. 601373d
 - [x] Task: Implement the Date Format input field, binding it to the `excelDateFormat` state, and showing a hint/placeholder. e98acb5
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: UI Implementation (Settings Screen)' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: UI Implementation (Settings Screen)' (Protocol in workflow.md) 37dc5d9
 
 ## Phase 3: Integration (Export Logic)
 - [ ] Task: Write failing tests for the Excel export service to utilize the configured `excelDateFormat` when serializing dates.
