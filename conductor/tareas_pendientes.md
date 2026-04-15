@@ -72,7 +72,7 @@ Esta lista identifica las funcionalidades definidas en `docs/Descripción.md` qu
 - [x] Establece por defecto el idioma Español.
 ## 6. Características de Interoperabilidad (Futuro)
 
-- [ ] **Módulo de Excel:**
+- [x] **Módulo de Excel:** ✅ 2026-04-15
   - Exportación de registros diarios/semanales.
   - Importación de datos externos.
 - [ ] **Sincronización P2P:**

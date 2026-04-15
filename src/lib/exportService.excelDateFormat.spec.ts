@@ -24,7 +24,6 @@ describe('ExportService excelDateFormat', () => {
     const template: ColumnMapping[] = [
       { columnName: 'Fecha', taskField: 'startDate' },
     ];
-    // @ts-expect-error - testing with new parameter before implementation
     const rows = (service as any).mapTasksToRows([mockTask], template, 'DD/MM/YYYY');
     expect(rows[0].Fecha).toBe('13/04/2026');
   });
@@ -33,7 +32,6 @@ describe('ExportService excelDateFormat', () => {
     const template: ColumnMapping[] = [
       { columnName: 'Fecha', taskField: 'startDate' },
     ];
-    // @ts-expect-error - testing with new parameter before implementation
     const rows = (service as any).mapTasksToRows([mockTask], template, 'YYYY-MM-DD');
     expect(rows[0].Fecha).toBe('2026-04-13');
   });
@@ -42,7 +40,6 @@ describe('ExportService excelDateFormat', () => {
     const template: ColumnMapping[] = [
       { columnName: 'Fecha', taskField: 'startDate' },
     ];
-    // @ts-expect-error - testing with new parameter before implementation
     const rows = (service as any).mapTasksToRows([mockTask], template, 'MM/DD/YYYY');
     expect(rows[0].Fecha).toBe('04/13/2026');
   });

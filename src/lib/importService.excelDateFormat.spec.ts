@@ -70,4 +70,24 @@ describe('ImportService - Custom Excel Date Format', () => {
     expect(errors).toHaveLength(1);
     expect(errors[0].message).toContain('Invalid start date');
   });
+
+  it('should fail if separators do not match exactly', () => {
+    const template: ColumnMapping[] = [
+      { columnName: 'Fecha', taskField: 'startDate' },
+      { columnName: 'Tarea', taskField: 'title' },
+    ];
+
+    const mockExcelData = [
+      {
+        Fecha: '14-04-2026', // Use '-' instead of '/'
+        Tarea: 'Wrong Separator',
+      },
+    ];
+
+    const { tasks, errors } = (service as any).processRows(mockExcelData, template, 'DD/MM/YYYY');
+
+    expect(tasks).toHaveLength(0);
+    expect(errors).toHaveLength(1);
+    expect(errors[0].message).toContain('Invalid start date');
+  });
 });

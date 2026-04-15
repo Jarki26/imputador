@@ -137,12 +137,26 @@ export class ImportService {
         }
 
         const parseDateWithFormat = (s: string, fmt: string): Date => {
+          if (s.length !== fmt.length) {
+            throw new Error(`Invalid start date: ${s}`);
+          }
+
           const yearIdx = fmt.indexOf('YYYY');
           const monthIdx = fmt.indexOf('MM');
           const dayIdx = fmt.indexOf('DD');
 
           if (yearIdx === -1 || monthIdx === -1 || dayIdx === -1) {
             throw new Error(`Invalid format configuration: ${fmt}`);
+          }
+
+          // Check that non-token characters (separators) match exactly
+          for (let i = 0; i < fmt.length; i++) {
+            const charFmt = fmt[i];
+            if (charFmt !== 'Y' && charFmt !== 'M' && charFmt !== 'D') {
+              if (s[i] !== charFmt) {
+                throw new Error(`Invalid start date: ${s}`);
+              }
+            }
           }
 
           const year = parseInt(s.substring(yearIdx, yearIdx + 4));
