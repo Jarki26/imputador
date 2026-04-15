@@ -14,8 +14,8 @@
 - [x] Task: Update the rendering logic for tasks in the Weekly View so their height and vertical position accurately reflect the current zoom multiplier. 3534777
 - [x] Task: Conductor - User Manual Verification 'Visual Grid and Task Scaling' (Protocol in workflow.md) 035cf45
 
-## Phase 3: Interaction Scaling
+## Phase 3: Interaction Scaling [checkpoint: 3871e58]
 - [x] Task: Write tests to ensure pointer event coordinate translation (Y-axis pixel to time) correctly accounts for the zoom multiplier. 1760ba8
 - [x] Task: Update the drag-and-drop logic for moving tasks to correctly calculate the new start time based on the zoomed grid. 1760ba8
 - [x] Task: Update the resize logic (dragging handles) to correctly calculate the new duration based on the zoomed grid. 1760ba8
-- [ ] Task: Conductor - User Manual Verification 'Interaction Scaling' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Interaction Scaling' (Protocol in workflow.md) 3871e58
