@@ -23,4 +23,22 @@ export class ConfigStore {
     const db = await initDB(this.dbName);
     await db.put('config', { key: 'weeklyHoursTarget', value: target });
   }
+
+  /**
+   * Retrieves the Excel date format from the config store.
+   * Defaults to 'DD/MM/YYYY' if not found.
+   */
+  async getExcelDateFormat(): Promise<string> {
+    const db = await initDB(this.dbName);
+    const config = await db.get('config', 'excelDateFormat');
+    return config ? config.value : 'DD/MM/YYYY';
+  }
+
+  /**
+   * Saves the Excel date format to the config store.
+   */
+  async setExcelDateFormat(format: string): Promise<void> {
+    const db = await initDB(this.dbName);
+    await db.put('config', { key: 'excelDateFormat', value: format });
+  }
 }
