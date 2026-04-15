@@ -32,7 +32,7 @@ describe('ImportService operations', () => {
 
     const mockExcelData = [
       {
-        Fecha: '2026-04-14',
+        Fecha: '14/04/2026',
         'Hora Inicio': '09:00',
         Tarea: 'Import Task',
       },
@@ -52,7 +52,7 @@ describe('ImportService operations', () => {
       { columnName: 'Fijo', fixedValue: 'Constante' },
     ];
 
-    const mockExcelData = [{ Tarea: 'Task 1', Fecha: '2026-04-14' }];
+    const mockExcelData = [{ Tarea: 'Task 1', Fecha: '14/04/2026' }];
 
     const result = (service as any).mapRowsToTasks(mockExcelData, template);
     expect(result[0].title).toBe('Task 1');
@@ -65,9 +65,9 @@ describe('ImportService operations', () => {
     ];
 
     const mockExcelData = [
-      { Fecha: '2026-04-14', Tarea: 'Valid Task' },
+      { Fecha: '14/04/2026', Tarea: 'Valid Task' },
       { Fecha: 'invalid-date', Tarea: 'Invalid Date' },
-      { Fecha: '2026-04-14', Tarea: '' },
+      { Fecha: '14/04/2026', Tarea: '' },
     ];
 
     const { tasks, errors } = (service as any).processRows(mockExcelData, template);
@@ -137,7 +137,7 @@ describe('ImportService operations', () => {
     };
 
     (XLSX.read as any).mockReturnValue(mockWorkbook);
-    (XLSX.utils.sheet_to_json as any).mockReturnValue([{ T: 'Task from file', F: '2026-04-14' }]);
+    (XLSX.utils.sheet_to_json as any).mockReturnValue([{ T: 'Task from file', F: '14/04/2026' }]);
 
     const result = await service.parseFile(mockFile, template);
     expect(result.tasks).toHaveLength(1);
