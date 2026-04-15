@@ -47,6 +47,7 @@
     "import_results": "Éxito: {success}, Errores: {errors}",
     "import_date_warning_title": "Atención: No se pudieron procesar algunas fechas",
     "import_date_warning_msg": "El formato configurado actualmente es '{format}'",
+    "task_colors": "Colores por Tipo de Tarea",
     "manage_companies_title": "Gestionar Empresas",
     "company_name_placeholder": "Nombre de la empresa",
     "edit_company": "Editar Empresa",

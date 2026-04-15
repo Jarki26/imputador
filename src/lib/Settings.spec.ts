@@ -10,14 +10,21 @@ describe('Settings.svelte', () => {
     exportTemplate: [] as ColumnMapping[],
     exportExclusions: [] as string[],
     excelDateFormat: 'DD/MM/YYYY',
+    taskTypeColors: {} as Record<string, string>,
     onSave: vi.fn(),
     onSaveExportConfig: vi.fn(),
+    onSaveTaskTypeColor: vi.fn(),
   };
 
   beforeEach(async () => {
     cleanup();
     vi.clearAllMocks();
     await i18n.setLocale('es');
+  });
+
+  it('should render task colors section', () => {
+    render(Settings, { props: defaultProps });
+    expect(screen.getByText(/Colores por Tipo de Tarea/i)).toBeDefined();
   });
 
   it('should render language selector', () => {

@@ -2,6 +2,7 @@
   import { i18n } from './i18n.svelte';
   import ExportSettings from './ExportSettings.svelte';
   import CompanySettings from './CompanySettings.svelte';
+  import TaskColorSettings from './TaskColorSettings.svelte';
   import type { ColumnMapping } from './exportConfigStore';
   import type { CompanyStore } from './companyStore';
 
@@ -10,6 +11,7 @@
     exportTemplate: ColumnMapping[];
     exportExclusions: string[];
     excelDateFormat: string;
+    taskTypeColors: Record<string, string>;
     companyStore?: CompanyStore;
     onSave: (target: number) => void;
     onSaveExportConfig: (data: {
@@ -17,6 +19,7 @@
       exclusions: string[];
       excelDateFormat: string;
     }) => void;
+    onSaveTaskTypeColor: (taskType: string, color: string) => void;
     onImportComplete?: () => void;
   }
 
@@ -25,9 +28,11 @@
     exportTemplate,
     exportExclusions,
     excelDateFormat,
+    taskTypeColors,
     companyStore,
     onSave,
     onSaveExportConfig,
+    onSaveTaskTypeColor,
     onImportComplete,
   }: Props = $props();
 
@@ -96,6 +101,10 @@
   <hr class="separator" />
 
   <CompanySettings {companyStore} />
+
+  <hr class="separator" />
+
+  <TaskColorSettings colors={taskTypeColors} onSaveColor={onSaveTaskTypeColor} />
 
   <div class="actions">
     <button class="save-btn" onclick={handleSave}>{i18n.t('common.save')}</button>

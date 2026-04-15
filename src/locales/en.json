@@ -46,7 +46,8 @@
     "import_success_title": "Import Finished",
     "import_results": "Success: {success}, Errors: {errors}",
     "import_date_warning_title": "Warning: Some dates could not be parsed",
-    "import_date_warning_msg": "The currently configured format is '{format}'"
+    "import_date_warning_msg": "The currently configured format is '{format}'",
+    "task_colors": "Task Type Colors"
   },
   "task": {
     "form_title_add": "Add Task",

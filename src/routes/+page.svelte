@@ -28,6 +28,7 @@
   let exportTemplate = $state<ColumnMapping[]>([]);
   let exportExclusions = $state<string[]>([]);
   let excelDateFormat = $state('DD/MM/YYYY');
+  let taskTypeColors = $state<Record<string, string>>({});
   let view = $state<'weekly' | 'daily'>('weekly');
   let selectedDate = $state(new Date());
   selectedDate.setHours(0, 0, 0, 0);
@@ -48,6 +49,7 @@
   async function loadConfig() {
     weeklyTarget = await configStore.getWeeklyHoursTarget();
     excelDateFormat = await configStore.getExcelDateFormat();
+    taskTypeColors = await configStore.getAllTaskTypeColors();
     exportTemplate = await exportConfigStore.getTemplate();
     exportExclusions = await exportConfigStore.getExclusions();
   }
@@ -56,6 +58,11 @@
     await loadTasks(true); // Initial state for history
     await loadConfig();
   });
+
+  async function handleSaveTaskTypeColor(taskType: string, color: string) {
+    await configStore.setTaskTypeColor(taskType, color);
+    taskTypeColors[taskType] = color;
+  }
 
   async function handleTaskUpdate(
     task: Task,
@@ -349,9 +356,11 @@
     {exportTemplate}
     {exportExclusions}
     {excelDateFormat}
+    {taskTypeColors}
     {companyStore}
     onSave={handleSaveSettings}
     onSaveExportConfig={handleSaveExportConfig}
+    onSaveTaskTypeColor={handleSaveTaskTypeColor}
     onImportComplete={async () => {
       await loadTasks(true);
     }}
