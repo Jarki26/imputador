@@ -25,7 +25,7 @@ Imputador is a specialized task registration and time-tracking application desig
 ### 2. Outlook-style Weekly View
 
 - A visual representation of the week, similar to the Outlook calendar.
-- Completed tasks are color-coded (with muted styling for non-billable tasks), supports interactive manipulation via drag-and-drop to move and resize tasks, and empty time slots are clearly highlighted as gaps.
+- Completed tasks are color-coded using user-defined custom colors (with muted styling for non-billable tasks), supports interactive manipulation via drag-and-drop to move and resize tasks, and empty time slots are clearly highlighted as gaps.
 - Daily totals (billable and non-billable) are displayed at the top of each column.
 - Interactive controls for direct management:
     - **Week Navigation:** Quick arrows to switch between weeks.
@@ -52,7 +52,7 @@ Imputador is a specialized task registration and time-tracking application desig
 
 - Parametrizable task types from a closed list.
 - Special "Ausencia Facturable" (Billable Absence) type: Counts toward weekly goal but not daily productivity. Rendered with a patterned/striped background.
-- Task entities include: Title, Description, Project (Autocomplete with auto-save), Company (Autocomplete with auto-save and management), and Task Type.
+- Task entities include: Title, Description, Project (Autocomplete with auto-save), Company (Autocomplete with auto-save and management), and Task Type (with personalizable background colors).
 - **Direct Editing:** Ability to edit tasks directly from both Weekly and Daily Views.
 - Quick-access list of the 10 most recently used tasks and companies.
 - **Company Management:** A dedicated settings area to manually add, edit, or delete saved companies from the autocomplete suggestions.
