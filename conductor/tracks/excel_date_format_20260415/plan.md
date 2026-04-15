@@ -10,10 +10,10 @@
 - [x] Task: Implement the Date Format input field, binding it to the `excelDateFormat` state, and showing a hint/placeholder. e98acb5
 - [x] Task: Conductor - User Manual Verification 'Phase 2: UI Implementation (Settings Screen)' (Protocol in workflow.md) 37dc5d9
 
-## Phase 3: Integration (Export Logic)
+## Phase 3: Integration (Export Logic) [checkpoint: f2c8b35]
 - [x] Task: Write failing tests for the Excel export service to utilize the configured `excelDateFormat` when serializing dates. 5eba35c
 - [x] Task: Update the Excel export service logic to format output dates using the `dayjs` instance with the `excelDateFormat` string. f941a45
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Integration (Export Logic)' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Integration (Export Logic)' (Protocol in workflow.md) f2c8b35
 
 ## Phase 4: Integration (Import Logic & Error Handling)
 - [ ] Task: Write failing tests for the Excel import service to parse incoming dates using the configured `excelDateFormat`.
