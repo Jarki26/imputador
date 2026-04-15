@@ -133,7 +133,11 @@
     const tasksToExport = await taskStore.getTasksForRange(start, end);
     const filteredTasks = tasksToExport.filter((t) => !exportExclusions.includes(t.type));
 
-    const blob = await exportService.generateExcel(filteredTasks, exportTemplate);
+    const blob = await exportService.generateExcel(
+      filteredTasks,
+      exportTemplate,
+      excelDateFormat,
+    );
 
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
