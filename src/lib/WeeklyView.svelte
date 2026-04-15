@@ -5,6 +5,7 @@
     calculateGoalAbsenceHours,
     calculateVerticalPosition,
     calculateHeight,
+    getContrastColor,
   } from './utils';
   import { isBillable } from './config';
   import { i18n } from './i18n.svelte';
@@ -13,6 +14,7 @@
     startDate = new Date(),
     tasks = [],
     weeklyTarget = 41,
+    taskTypeColors = {},
     onSlotClick,
     onTaskClick,
     onTaskUpdate,
@@ -257,7 +259,7 @@
     return dailyTasks;
   }
 
-  function getTaskStyle(task: Task): string {
+  function getTaskStyle(task: TaskWithOverlap): string {
     const start = task.startTime;
     const end = task.endTime;
 
@@ -267,6 +269,12 @@
     const height = calculateHeight(durationMinutes, pixelsPerMinute);
 
     let style = `top: ${top}px; height: ${height}px;`;
+
+    const customColor = taskTypeColors[task.type];
+    if (customColor && !task.hasOverlap) {
+      style += `background-color: ${customColor}; color: ${getContrastColor(customColor)}; border-color: rgba(0,0,0,0.1);`;
+    }
+
     if (dragInfo && dragInfo.taskId === task.id) {
       style +=
         'z-index: 100; opacity: 0.8; box-shadow: 0 8px 16px rgba(0,0,0,0.2); cursor: grabbing !important;';

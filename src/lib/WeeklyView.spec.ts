@@ -392,4 +392,28 @@ describe('WeeklyView.svelte', () => {
     // 5 logged / 39 goal = ~12.82%
     expect(progressBar.getAttribute('aria-valuenow')).toBe('12.82');
   });
+
+  it('should apply custom task colors to task blocks', () => {
+    const tasks = [
+      {
+        id: 1,
+        title: 'Custom Color Task',
+        type: 'DESARROLLO',
+        startTime: new Date('2026-04-06T09:00:00Z'),
+        endTime: new Date('2026-04-06T10:00:00Z'),
+      },
+    ];
+    const taskTypeColors = {
+      'DESARROLLO': '#ff0000'
+    };
+
+    render(WeeklyView, {
+      props: { startDate: new Date('2026-04-06'), tasks, taskTypeColors },
+    });
+
+    const taskBlock = screen.getByText('Custom Color Task').closest('.task-block') as HTMLElement;
+    expect(taskBlock.style.backgroundColor).toBe('rgb(255, 0, 0)');
+    // Contrast color for red should be white
+    expect(taskBlock.style.color).toBe('white');
+  });
 });

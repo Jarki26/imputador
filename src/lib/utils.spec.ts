@@ -1,6 +1,23 @@
 import { describe, it, expect } from 'vitest';
-import { calculateTotalHours } from './utils';
+import { calculateTotalHours, getContrastColor } from './utils';
 import type { Task } from './db';
+
+describe('getContrastColor', () => {
+  it('should return black for light colors', () => {
+    expect(getContrastColor('#ffffff')).toBe('black');
+    expect(getContrastColor('#e5e7eb')).toBe('black');
+  });
+
+  it('should return white for dark colors', () => {
+    expect(getContrastColor('#000000')).toBe('white');
+    expect(getContrastColor('#111827')).toBe('white');
+  });
+
+  it('should return black for invalid colors', () => {
+    expect(getContrastColor('')).toBe('black');
+    expect(getContrastColor('#ff')).toBe('black');
+  });
+});
 
 describe('calculateTotalHours', () => {
   it('should return 0 for empty tasks', () => {
