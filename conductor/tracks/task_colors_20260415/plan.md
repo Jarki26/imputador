@@ -14,11 +14,11 @@
     - [x] Implement a curated predefined color palette.
     - [x] Implement a custom hex/rgb color input fallback.
     - [x] Write component tests.
-- [ ] Task: Integrate ColorPicker into Settings.
-    - [ ] Add a section in `Settings.svelte` to list task types.
-    - [ ] Bind the ColorPicker to each task type.
-    - [ ] Ensure changes trigger persistence.
-    - [ ] Write component tests for Settings integration.
+- [x] Task: Integrate ColorPicker into Settings. [f3512c5]
+    - [x] Add a section in `Settings.svelte` to list task types.
+    - [x] Bind the ColorPicker to each task type.
+    - [x] Ensure changes trigger persistence.
+    - [x] Write component tests for Settings integration.
 - [ ] Task: Conductor - User Manual Verification 'Settings UI' (Protocol in workflow.md)
 
 ## Phase 3: Integration (Weekly & Daily Views)
