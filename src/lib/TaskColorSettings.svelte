@@ -64,16 +64,13 @@
   .task-types-list {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    max-height: 400px;
-    overflow-y: auto;
-    padding-right: 0.5rem;
+    gap: 0.25rem;
   }
 
   .task-type-item {
     border: 1px solid var(--md-sys-color-outline-variant);
     border-radius: 0.5rem;
-    overflow: hidden;
+    background: var(--md-sys-color-surface-container-low);
   }
 
   .type-header {

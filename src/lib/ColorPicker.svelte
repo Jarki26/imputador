@@ -45,19 +45,21 @@
     ></div>
     <div class="custom-input">
       <label for="custom-color">Custom Color</label>
-      <input
-        id="custom-color"
-        type="color"
-        {value}
-        oninput={handleInput}
-      />
-      <input
-        type="text"
-        {value}
-        oninput={handleInput}
-        placeholder="#RRGGBB"
-        aria-label="Custom Color Text"
-      />
+      <div class="input-controls">
+        <input
+          id="custom-color"
+          type="color"
+          {value}
+          oninput={handleInput}
+        />
+        <input
+          type="text"
+          {value}
+          oninput={handleInput}
+          placeholder="#RRGGBB"
+          aria-label="Custom Color Text"
+        />
+      </div>
     </div>
   </div>
 
@@ -93,11 +95,12 @@
   }
 
   .color-preview {
-    width: 3rem;
-    height: 3rem;
+    width: 2rem;
+    height: 2rem;
     border-radius: 0.5rem;
     border: 1px solid var(--md-sys-color-outline-variant);
     box-shadow: var(--md-sys-elevation-level-1);
+    flex-shrink: 0;
   }
 
   .custom-input {
@@ -112,13 +115,20 @@
     color: var(--md-sys-color-on-surface-variant);
   }
 
+  .input-controls {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
   .custom-input input[type="color"] {
-    width: 100%;
+    width: 2rem;
     height: 2rem;
     padding: 0;
     border: none;
     background: none;
     cursor: pointer;
+    flex-shrink: 0;
   }
 
   .custom-input input[type="text"] {
@@ -132,18 +142,20 @@
   }
 
   .palette {
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
+    display: flex;
+    flex-wrap: wrap;
     gap: 0.5rem;
   }
 
   .palette-color {
-    aspect-ratio: 1;
+    width: 1.5rem;
+    height: 1.5rem;
     border-radius: 50%;
     border: 2px solid transparent;
     cursor: pointer;
     transition: transform 0.1s;
     padding: 0;
+    flex-shrink: 0;
   }
 
   .palette-color:hover {
