@@ -10,10 +10,10 @@
 - [x] Task: Conductor - User Manual Verification 'Setup & Data Model' (Protocol in workflow.md) [5a23ba5]
 
 ## Phase 2: Settings UI (Color Selection)
-- [ ] Task: Create ColorPicker component.
-    - [ ] Implement a curated predefined color palette.
-    - [ ] Implement a custom hex/rgb color input fallback.
-    - [ ] Write component tests.
+- [x] Task: Create ColorPicker component. [51015e0]
+    - [x] Implement a curated predefined color palette.
+    - [x] Implement a custom hex/rgb color input fallback.
+    - [x] Write component tests.
 - [ ] Task: Integrate ColorPicker into Settings.
     - [ ] Add a section in `Settings.svelte` to list task types.
     - [ ] Bind the ColorPicker to each task type.
