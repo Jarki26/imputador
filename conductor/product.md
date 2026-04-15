@@ -33,6 +33,7 @@ Imputador is a specialized task registration and time-tracking application desig
     - **Direct Management:** Delete buttons on task blocks and long-press to copy existing tasks to favorites/recents.
     - **Smart Interaction:** Magnetic snapping to close small gaps and automatic merging of identical consecutive tasks.
     - **Action Locks:** Safety switches to prevent accidental movement, editing, or creation on touch devices.
+    - **Goal Progress:** Visual progress bar and remaining time calculation in the header.
     - **Vertical Zoom:** Floating controls to adjust the grid scale (cell height), facilitating management of short-duration tasks.
 
 ### 3. Advanced Time Manipulation
@@ -41,6 +42,7 @@ Imputador is a specialized task registration and time-tracking application desig
 - **Insertion with Displacement:** Inserting a task pushes subsequent tasks forward while maintaining their original durations.
 - **Duration-based Editing:** Adjusting the end time by providing a duration (e.g., `01h 30m 00s`) from a given start time. Includes a **Duration Lock** feature that, when active, automatically shifts the end time when the start time is modified to maintain a constant duration.
 - **Single-Day Enforcement:** Tasks are strictly restricted to a single calendar day to simplify logic and user mental model. The interface prevents tasks from crossing the midnight boundary.
+- **Daily Navigation:** Arrows in the Daily View to quickly navigate between consecutive days.
 
 ### 4. Smart Gap Filling
 
@@ -51,6 +53,7 @@ Imputador is a specialized task registration and time-tracking application desig
 - Parametrizable task types from a closed list.
 - Special "Ausencia Facturable" (Billable Absence) type: Counts toward weekly goal but not daily productivity. Rendered with a patterned/striped background.
 - Task entities include: Title, Description, Project (Autocomplete with auto-save), Company (Autocomplete with auto-save and management), and Task Type.
+- **Direct Editing:** Ability to edit tasks directly from both Weekly and Daily Views.
 - Quick-access list of the 10 most recently used tasks and companies.
 - **Company Management:** A dedicated settings area to manually add, edit, or delete saved companies from the autocomplete suggestions.
 
@@ -71,6 +74,7 @@ Imputador is a specialized task registration and time-tracking application desig
     - **Flexible Export:** Generate `.xlsx` files based on a selected date range and parameterized task type exclusion filters.
     - **Wipe & Import:** Ability to replace the entire local dataset with data from an Excel/CSV file, featuring a strict confirmation process and a summary of import results.
     - **Custom Date Formatting:** Users can define a custom date format (e.g., `DD/MM/YYYY`, `YYYY-MM-DD`) for bidirectional Excel operations. Includes strict parsing and proactive format warnings during import.
+    - **Automatic Refresh:** The application automatically reloads all views after a successful import to reflect the new data immediately.
     - **Data Persistence:** Custom templates and exclusion settings are saved locally for consistency across sessions.
 
 ## User Experience Focus
