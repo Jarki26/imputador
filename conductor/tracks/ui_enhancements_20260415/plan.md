@@ -1,9 +1,9 @@
 # Implementation Plan: Daily Enhancements & Weekly Goal UI
 
 ## Phase 1: Excel Import Auto-Reload
-- [ ] Task: Update `Settings.svelte` (or relevant import component) to emit an `importComplete` event upon successful Excel import.
-- [ ] Task: Update `+page.svelte` to listen for the `importComplete` event and trigger a data reload (e.g., calling `loadTasks()`) to refresh the active view immediately.
-- [ ] Task: Write/update tests (e.g., `page.integration.spec.ts` or component tests) to verify the auto-reload behavior.
+- [x] Task: Update `Settings.svelte` (or relevant import component) to emit an `importComplete` event upon successful Excel import. cbe7f13
+- [x] Task: Update `+page.svelte` to listen for the `importComplete` event and trigger a data reload (e.g., calling `loadTasks()`) to refresh the active view immediately. cbe7f13
+- [x] Task: Write/update tests (e.g., `page.integration.spec.ts` or component tests) to verify the auto-reload behavior. cbe7f13
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Excel Import Auto-Reload' (Protocol in workflow.md)
 
 ## Phase 2: Daily View Enhancements
