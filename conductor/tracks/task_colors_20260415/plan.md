@@ -1,9 +1,9 @@
 # Implementation Plan: Custom Task Colors
 
 ## Phase 1: Setup & Data Model
-- [ ] Task: Update data types to include color mapping for task types.
-    - [ ] Update types/interfaces for task configuration.
-    - [ ] Write tests to ensure color mapping logic handles default neutral colors.
+- [x] Task: Update data types to include color mapping for task types. [9c52ba9]
+    - [x] Update types/interfaces for task configuration.
+    - [x] Write tests to ensure color mapping logic handles default neutral colors.
 - [ ] Task: Update local persistence (IndexedDB/Store).
     - [ ] Add save/load logic for custom task colors in the relevant store (e.g., configStore).
     - [ ] Write tests verifying persistence and retrieval of custom colors.
