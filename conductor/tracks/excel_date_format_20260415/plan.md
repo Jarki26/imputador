@@ -6,7 +6,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: State Management (Configuration Store)' (Protocol in workflow.md) a6c8a6c
 
 ## Phase 2: UI Implementation (Settings Screen)
-- [ ] Task: Write failing tests for adding a new text input for Date Format in the Excel Settings UI.
+- [x] Task: Write failing tests for adding a new text input for Date Format in the Excel Settings UI. 601373d
 - [ ] Task: Implement the Date Format input field, binding it to the `excelDateFormat` state, and showing a hint/placeholder.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: UI Implementation (Settings Screen)' (Protocol in workflow.md)
 
