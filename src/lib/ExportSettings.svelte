@@ -58,6 +58,10 @@
   let localExclusions = $state([...exclusions]);
   let localExcelDateFormat = $state(excelDateFormat);
 
+  $effect(() => {
+    localExcelDateFormat = excelDateFormat;
+  });
+
   // Standard task fields for mapping
   const taskFields: ColumnMapping['taskField'][] = [
     'startDate',
