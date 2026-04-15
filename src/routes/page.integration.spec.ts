@@ -31,6 +31,9 @@ vi.mock('$lib/taskStore', () => {
 vi.mock('$lib/configStore', () => {
   return { ConfigStore: class {
     getWeeklyHoursTarget = vi.fn().mockResolvedValue(41);
+    getExcelDateFormat = vi.fn().mockResolvedValue('DD/MM/YYYY');
+    setExcelDateFormat = vi.fn().mockResolvedValue(undefined);
+    setWeeklyHoursTarget = vi.fn().mockResolvedValue(undefined);
   } };
 });
 
