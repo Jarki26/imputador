@@ -64,3 +64,23 @@ export function calculateGoalAbsenceHours(tasks: Task[]): number {
     return total;
   }, 0);
 }
+
+/**
+ * Calculates the vertical position (top) in pixels for a given time.
+ * Assumes time is within the day being rendered.
+ * @param date The date/time to calculate position for.
+ * @param pixelsPerMinute The current (zoomed) pixels per minute.
+ */
+export function calculateVerticalPosition(date: Date, pixelsPerMinute: number): number {
+  const minutesSinceStartOfDay = date.getHours() * 60 + date.getMinutes();
+  return minutesSinceStartOfDay * pixelsPerMinute;
+}
+
+/**
+ * Calculates the height in pixels for a given duration in minutes.
+ * @param durationInMinutes Duration of the task in minutes.
+ * @param pixelsPerMinute The current (zoomed) pixels per minute.
+ */
+export function calculateHeight(durationInMinutes: number, pixelsPerMinute: number): number {
+  return durationInMinutes * pixelsPerMinute;
+}
