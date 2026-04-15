@@ -469,7 +469,7 @@
       longPressTimer = null;
     }
 
-    const minutesDelta = Math.round(deltaY / 15) * 15;
+    const minutesDelta = Math.round(deltaY / (15 * pixelsPerMinute)) * 15;
 
     const updatedTask = { ...dragInfo.currentTask };
 
