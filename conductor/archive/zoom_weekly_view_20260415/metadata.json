@@ -1,0 +1,8 @@
+{
+  "track_id": "zoom_weekly_view_20260415",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-04-15T00:00:00Z",
+  "updated_at": "2026-04-15T00:00:00Z",
+  "description": "Zoom option in weekly mode (cell height only), expanding the column size to make manipulation of short-duration tasks more manageable. Add zoom in, zoom out, and restore to normal size buttons. Interactions with cells must continue to work normally when zoom varies."
+}
