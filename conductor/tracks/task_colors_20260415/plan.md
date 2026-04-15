@@ -9,7 +9,7 @@
     - [x] Write tests verifying persistence and retrieval of custom colors.
 - [x] Task: Conductor - User Manual Verification 'Setup & Data Model' (Protocol in workflow.md) [5a23ba5]
 
-## Phase 2: Settings UI (Color Selection)
+## Phase 2: Settings UI (Color Selection) [checkpoint: 1141b29]
 - [x] Task: Create ColorPicker component. [51015e0]
     - [x] Implement a curated predefined color palette.
     - [x] Implement a custom hex/rgb color input fallback.
@@ -19,7 +19,7 @@
     - [x] Bind the ColorPicker to each task type.
     - [x] Ensure changes trigger persistence.
     - [x] Write component tests for Settings integration.
-- [ ] Task: Conductor - User Manual Verification 'Settings UI' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Settings UI' (Protocol in workflow.md) [1141b29]
 
 ## Phase 3: Integration (Weekly & Daily Views)
 - [ ] Task: Apply colors in Weekly View.
