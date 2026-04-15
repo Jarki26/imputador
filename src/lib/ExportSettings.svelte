@@ -35,7 +35,7 @@
     const file = (e.target as HTMLInputElement).files?.[0];
     if (!file) return;
 
-    const result = await importService.parseFile(file, template);
+    const result = await importService.parseFile(file, template, localExcelDateFormat);
     parsedTasks = result.tasks;
     importErrors = result.errors;
     
@@ -53,6 +53,14 @@
     showConfirmWipe = false;
     showResults = true;
   }
+
+  let hasDateErrors = $derived(
+    importErrors.some(
+      (e) =>
+        e.message.toLowerCase().includes('invalid start date') ||
+        e.message.toLowerCase().includes('invalid end date'),
+    ),
+  );
 
   let localTemplate = $state([...template]);
   let localExclusions = $state([...exclusions]);
@@ -252,6 +260,19 @@
           .replace('{success}', String(importResults?.successCount || 0))
           .replace('{errors}', String(importResults?.errorCount || 0))}
       </p>
+
+      {#if hasDateErrors}
+        <div class="date-warning">
+          <strong>{i18n.t('settings.import_date_warning_title')}</strong>
+          <p>
+            {i18n.t('settings.import_date_warning_msg').replace(
+              '{format}',
+              localExcelDateFormat,
+            )}
+          </p>
+        </div>
+      {/if}
+
       {#if importErrors.length > 0}
         <div class="error-list">
           <h4>Errores detallados:</h4>
@@ -481,5 +502,23 @@
   .error-list ul {
     margin: 0;
     padding-left: 1.5rem;
+  }
+
+  .date-warning {
+    background: var(--md-sys-color-warning-container, #fff4e5);
+    color: var(--md-sys-color-on-warning-container, #663c00);
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 4px solid var(--md-sys-color-warning, #ed6c02);
+  }
+
+  .date-warning strong {
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .date-warning p {
+    margin: 0;
+    font-size: 0.9rem;
   }
 </style>

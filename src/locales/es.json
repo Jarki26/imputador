@@ -45,6 +45,8 @@
     "import_confirm_msg": "Esta acción borrará TODOS los registros actuales de la aplicación. Escribe 'IMPORTAR' para confirmar:",
     "import_success_title": "Importación Finalizada",
     "import_results": "Éxito: {success}, Errores: {errors}",
+    "import_date_warning_title": "Atención: No se pudieron procesar algunas fechas",
+    "import_date_warning_msg": "El formato configurado actualmente es '{format}'",
     "manage_companies_title": "Gestionar Empresas",
     "company_name_placeholder": "Nombre de la empresa",
     "edit_company": "Editar Empresa",

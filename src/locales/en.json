@@ -40,7 +40,13 @@
     "save_export_config": "Save Export Config",
     "excel_date_format_title": "Date Format (Excel)",
     "excel_date_format_hint": "Use tokens like YYYY, MM, DD (e.g., YYYY-MM-DD)",
-    "import_file": "Import File"
+    "import_file": "Import File",
+    "import_confirm_title": "Clear data and import?",
+    "import_confirm_msg": "This action will clear ALL current app records. Type 'IMPORTAR' to confirm:",
+    "import_success_title": "Import Finished",
+    "import_results": "Success: {success}, Errors: {errors}",
+    "import_date_warning_title": "Warning: Some dates could not be parsed",
+    "import_date_warning_msg": "The currently configured format is '{format}'"
   },
   "task": {
     "form_title_add": "Add Task",
