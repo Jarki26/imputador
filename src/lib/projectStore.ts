@@ -24,6 +24,27 @@ export class ProjectStore {
   }
 
   /**
+   * Renames a project in the store, preserving its lastUsedAt timestamp.
+   * @param oldName - Current name of the project.
+   * @param newName - New name for the project.
+   */
+  async renameProject(oldName: string, newName: string): Promise<void> {
+    const db = await initDB(this.dbName);
+    const tx = db.transaction('projects', 'readwrite');
+    const store = tx.objectStore('projects');
+
+    const project = await store.get(oldName);
+    if (!project) return;
+
+    await store.delete(oldName);
+    await store.put({
+      ...project,
+      name: newName,
+    });
+    await tx.done;
+  }
+
+  /**
    * Searches for projects by name (case-insensitive prefix match).
    * @param query - The search query.
    * @returns A promise that resolves to an array of matching projects.
