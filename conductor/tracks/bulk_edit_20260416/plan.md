@@ -15,7 +15,7 @@
 - [x] Task: Create `BulkEdit` base component. (e8a4600)
     - [ ] Create `src/lib/BulkEdit.svelte` and `src/lib/BulkEdit.spec.ts`.
     - [ ] Implement the layout with tabs or sections for "Rename Project" and "Mass Update".
-- [ ] Task: Implement Calendar-based Date Range Selector.
+- [x] Task: Implement Calendar-based Date Range Selector. (4305c23)
     - [ ] Add start and end date pickers to `BulkEdit`.
     - [ ] Ensure dates are formatted correctly for store queries.
 - [ ] Task: Implement "Rename Project" UI.
