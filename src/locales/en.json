@@ -183,6 +183,25 @@
     "step14_title": "Action Locks",
     "step14_content": "Use these buttons to lock moving, editing, or creating tasks. Useful on touch devices.",
     "step15_title": "All set!",
-    "step15_content": "You are ready to log your workday efficiently."
-  }
-}
+    "step15_content": "You are now ready to log your workday efficiently."
+    },
+    "bulk_edit": {
+    "title": "Maintenance / Bulk Editing",
+    "rename_project_tab": "Rename Project",
+    "mass_update_tab": "Mass Update",
+    "start_date": "Start Date",
+    "end_date": "End Date",
+    "source_project": "Source Project",
+    "target_project": "New Name",
+    "calculate": "Calculate Changes",
+    "affected_tasks": "Tasks to be affected: {count}",
+    "apply": "Apply Changes",
+    "confirm_title": "Confirm bulk editing?",
+    "confirm_msg": "{count} tasks will be modified. This action can be undone.",
+    "template_title": "Source Template",
+    "target_values": "New Values",
+    "success": "Successfully updated {count} tasks",
+    "no_changes": "No tasks matching the criteria were found"
+    }
+    }
+

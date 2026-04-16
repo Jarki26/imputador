@@ -199,5 +199,23 @@
     "step14_content": "Usa estos botones para bloquear el movimiento, edición o creación de tareas. Útil en dispositivos táctiles.",
     "step15_title": "¡Todo listo!",
     "step15_content": "Ya estás preparado para registrar tu jornada laboral de forma eficiente."
+  },
+  "bulk_edit": {
+    "title": "Mantenimiento / Edición Masiva",
+    "rename_project_tab": "Renombrar Proyecto",
+    "mass_update_tab": "Actualización Masiva",
+    "start_date": "Fecha Inicio",
+    "end_date": "Fecha Fin",
+    "source_project": "Proyecto Origen",
+    "target_project": "Nuevo Nombre",
+    "calculate": "Calcular Cambios",
+    "affected_tasks": "Tareas que serán afectadas: {count}",
+    "apply": "Aplicar Cambios",
+    "confirm_title": "¿Confirmar edición masiva?",
+    "confirm_msg": "Se van a modificar {count} tareas. Esta acción se puede deshacer.",
+    "template_title": "Plantilla de Origen",
+    "target_values": "Nuevos Valores",
+    "success": "Se han actualizado {count} tareas con éxito",
+    "no_changes": "No se han encontrado tareas que coincidan con los criterios"
   }
 }
