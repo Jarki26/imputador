@@ -1,15 +1,15 @@
 # Implementation Plan: Bulk Task & Project Editor
 
-## Phase 1: Foundation & Data Layer
+## Phase 1: Foundation & Data Layer [checkpoint: 7363392]
 - [x] Task: Extend `taskStore` with `bulkUpdate` logic. (9527fd0)
-    - [ ] Create `src/lib/taskStore.bulk.spec.ts` for TDD.
-    - [ ] Implement `taskStore.bulkUpdate(filter, updates)` to modify multiple tasks in a single transaction.
-    - [ ] Ensure it supports the Undo/Redo system.
+    - [x] Create `src/lib/taskStore.bulk.spec.ts` for TDD.
+    - [x] Implement `taskStore.bulkUpdate(filter, updates)` to modify multiple tasks in a single transaction.
+    - [x] Ensure it supports the Undo/Redo system.
 - [x] Task: Extend `projectStore` with `renameProject` logic. (cc41abc)
-    - [ ] Create `src/lib/projectStore.rename.spec.ts` for TDD.
-    - [ ] Implement `projectStore.renameProject(oldName, newName)` to update the projects list.
-    - [ ] Coordinate with `taskStore` to update tasks when a project is renamed.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Foundation & Data Layer' (Protocol in workflow.md)
+    - [x] Create `src/lib/projectStore.rename.spec.ts` for TDD.
+    - [x] Implement `projectStore.renameProject(oldName, newName)` to update the projects list.
+    - [x] Coordinate with `taskStore` to update tasks when a project is renamed.
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Foundation & Data Layer' (7363392)
 
 ## Phase 2: UI Components
 - [ ] Task: Create `BulkEdit` base component.
