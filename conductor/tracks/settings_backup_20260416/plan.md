@@ -3,7 +3,7 @@
 ## Phase 1: Core Logic & Service
 Implement the underlying service to handle JSON generation and parsing, and integrate it with the existing stores.
 
-- [ ] **Task: Create `settingsService.ts` and Basic Tests**
+- [x] **Task: Create `settingsService.ts` and Basic Tests** (d3051e9)
     - [ ] Write unit tests for `settingsService.exportData()` to ensure it collects data from all stores.
     - [ ] Write unit tests for `settingsService.importData(json)` to ensure it validates the schema.
     - [ ] Implement `settingsService.ts` with `exportData` and `importData` functions.
