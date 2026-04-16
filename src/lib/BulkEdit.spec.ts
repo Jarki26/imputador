@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/svelte';
 import BulkEdit from './BulkEdit.svelte';
 import { i18n } from './i18n.svelte';
+import { formatDateOnlyForInput } from './utils';
 
 describe('BulkEdit.svelte', () => {
   beforeEach(async () => {
@@ -21,9 +22,12 @@ describe('BulkEdit.svelte', () => {
     expect(screen.getByText(/Actualización Masiva/i)).toBeDefined();
   });
 
-  it('should render date range selectors', () => {
+  it('should render date range selectors with today as default', () => {
     render(BulkEdit);
-    expect(screen.getByLabelText(/Fecha Inicio/i)).toBeDefined();
-    expect(screen.getByLabelText(/Fecha Fin/i)).toBeDefined();
+    const today = formatDateOnlyForInput(new Date());
+    const startInput = screen.getByLabelText(/Fecha Inicio/i) as HTMLInputElement;
+    const endInput = screen.getByLabelText(/Fecha Fin/i) as HTMLInputElement;
+    expect(startInput.value).toBe(today);
+    expect(endInput.value).toBe(today);
   });
 });

@@ -27,6 +27,22 @@ export function formatTimeOnlyForInput(d: Date): string {
 }
 
 /**
+ * Parses a date string (YYYY-MM-DD) into a Date object at the start of that day (00:00:00).
+ */
+export function parseStartDate(dateStr: string): Date {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  return new Date(y, m - 1, d, 0, 0, 0, 0);
+}
+
+/**
+ * Parses a date string (YYYY-MM-DD) into a Date object at the end of that day (23:59:59).
+ */
+export function parseEndDate(dateStr: string): Date {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  return new Date(y, m - 1, d, 23, 59, 59, 999);
+}
+
+/**
  * Calculates the total hours from a list of tasks that count towards the goal.
  */
 export function calculateTotalHours(tasks: Task[]): number {

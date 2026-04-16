@@ -1,9 +1,10 @@
 <script lang="ts">
   import { i18n } from './i18n.svelte';
+  import { formatDateOnlyForInput } from './utils';
 
   let activeTab = $state('rename');
-  let startDate = $state('');
-  let endDate = $state('');
+  let startDate = $state(formatDateOnlyForInput(new Date()));
+  let endDate = $state(formatDateOnlyForInput(new Date()));
 </script>
 
 <div class="bulk-edit">
