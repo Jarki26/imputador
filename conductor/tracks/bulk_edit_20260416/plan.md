@@ -32,7 +32,7 @@
 - [x] Task: Integrate into Settings View. (3dc9d99)
     - [ ] Add a new navigation item or section in `Settings.svelte`.
     - [ ] Ensure `BulkEdit` is accessible and properly styled.
-- [ ] Task: Implement Preview & Confirmation.
+- [x] Task: Implement Preview & Confirmation. (d822490)
     - [ ] Show a modal or inline summary with the count of tasks to be modified.
     - [ ] Implement the final "Apply" action with a confirmation prompt.
 - [ ] Task: Final Validation & UX Polish.
