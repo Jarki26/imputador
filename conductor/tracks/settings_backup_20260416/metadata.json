@@ -1,8 +1,0 @@
-{
-  "track_id": "settings_backup_20260416",
-  "type": "feature",
-  "status": "new",
-  "created_at": "2026-04-16T19:02:00Z",
-  "updated_at": "2026-04-16T19:02:00Z",
-  "description": "Preparar las bases para poder exportar e importar los ajustes configurados. Esta primera versión se limita a guardar los ajustes en formato JSON para poder volver a cargarlos en otro dispositivo. Más adelante se usará esta funcionalidad para automatizar el traspaso de datos entre dispositivos."
-}
