@@ -4,5 +4,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Renombrar proyectos por rango de fechas. Actualizar tareas que son iguales de forma masiva también con rango de fechas.**
+- [x] **Track: Renombrar proyectos por rango de fechas. Actualizar tareas que son iguales de forma masiva también con rango de fechas.**
 *Link: [./tracks/bulk_edit_20260416/](./tracks/bulk_edit_20260416/)*
