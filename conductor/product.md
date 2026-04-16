@@ -77,6 +77,13 @@ Imputador is a specialized task registration and time-tracking application desig
     - **Automatic Refresh:** The application automatically reloads all views after a successful import to reflect the new data immediately.
     - **Data Persistence:** Custom templates and exclusion settings are saved locally for consistency across sessions.
 
+### 8. Settings Backup & Restore
+
+- **JSON-based Backup:** Users can export all application configuration, company lists, project history, and Excel templates into a single `.json` file.
+- **Full Environment Restore:** Ability to import the backup file into another device or browser to recreate the user's environment.
+- **Overwrite Protection:** The import process uses a "Full Overwrite" approach with a confirmation prompt to ensure data integrity.
+- **Automatic Reload:** The application automatically reloads after a successful import to apply the new settings immediately.
+
 ## User Experience Focus
 
 - **Information Density:** A design that maximizes the visibility of the week's data, allowing for quick assessment of missing time and project distribution.
