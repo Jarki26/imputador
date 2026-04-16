@@ -3,9 +3,12 @@
   import ExportSettings from './ExportSettings.svelte';
   import CompanySettings from './CompanySettings.svelte';
   import TaskColorSettings from './TaskColorSettings.svelte';
+  import BulkEdit from './BulkEdit.svelte';
   import BackupSettings from './BackupSettings.svelte';
   import type { ColumnMapping } from './exportConfigStore';
   import type { CompanyStore } from './companyStore';
+  import type { TaskStore } from './taskStore';
+  import type { ProjectStore } from './projectStore';
 
   interface Props {
     weeklyTarget: number;
@@ -14,6 +17,8 @@
     excelDateFormat: string;
     taskTypeColors: Record<string, string>;
     companyStore?: CompanyStore;
+    taskStore?: TaskStore;
+    projectStore?: ProjectStore;
     onSave: (target: number) => void;
     onSaveExportConfig: (data: {
       template: ColumnMapping[];
@@ -31,6 +36,8 @@
     excelDateFormat,
     taskTypeColors,
     companyStore,
+    taskStore,
+    projectStore,
     onSave,
     onSaveExportConfig,
     onSaveTaskTypeColor,
@@ -106,6 +113,10 @@
   <hr class="separator" />
 
   <TaskColorSettings colors={taskTypeColors} onSaveColor={onSaveTaskTypeColor} />
+
+  <hr class="separator" />
+
+  <BulkEdit {taskStore} {projectStore} {companyStore} />
 
   <hr class="separator" />
 

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { TaskStore } from '$lib/taskStore';
+  import { ProjectStore } from '$lib/projectStore';
   import { ConfigStore } from '$lib/configStore';
   import { CompanyStore } from '$lib/companyStore';
   import { HistoryStore } from '$lib/historyStore.svelte';
@@ -17,6 +18,7 @@
   import ExportTrigger from '$lib/ExportTrigger.svelte';
 
   const taskStore = new TaskStore();
+  const projectStore = new ProjectStore();
   const configStore = new ConfigStore();
   const companyStore = new CompanyStore();
   const historyStore = new HistoryStore();
@@ -360,7 +362,10 @@
     {excelDateFormat}
     {taskTypeColors}
     {companyStore}
+    {taskStore}
+    {projectStore}
     onSave={handleSaveSettings}
+
     onSaveExportConfig={handleSaveExportConfig}
     onSaveTaskTypeColor={handleSaveTaskTypeColor}
     onImportComplete={async () => {
