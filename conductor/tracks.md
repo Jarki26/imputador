@@ -4,5 +4,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Settings Backup & Restore (JSON)**
+- [x] **Track: Settings Backup & Restore (JSON)**
 *Link: [./tracks/settings_backup_20260416/](./tracks/settings_backup_20260416/)*
