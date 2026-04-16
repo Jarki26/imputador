@@ -83,4 +83,39 @@ describe('BulkEdit.svelte', () => {
 
     expect(await screen.findByText(/Tareas que serán afectadas: 2/i)).toBeDefined();
   });
+
+  it('should call bulkUpdate and renameProject on apply', async () => {
+    const taskStore = {
+      getTasksForRange: vi.fn().mockResolvedValue([{ project: 'Old' }]),
+      bulkUpdate: vi.fn().mockResolvedValue([])
+    };
+    const projectStore = {
+      getRecentProjects: vi.fn().mockResolvedValue([]),
+      renameProject: vi.fn().mockResolvedValue(undefined)
+    };
+    
+    // Mock window.confirm
+    const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(true);
+    // Mock window.alert
+    const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
+
+    render(BulkEdit, { props: { taskStore: taskStore as any, projectStore: projectStore as any } });
+
+    const sourceInput = screen.getByLabelText(/Proyecto Origen/i) as HTMLInputElement;
+    const targetInput = screen.getByLabelText(/Nuevo Nombre/i) as HTMLInputElement;
+    
+    await fireEvent.input(sourceInput, { target: { value: 'Old' } });
+    await fireEvent.input(targetInput, { target: { value: 'New' } });
+
+    await fireEvent.click(screen.getByText(/Calcular Cambios/i));
+    await fireEvent.click(await screen.findByText(/Aplicar Cambios/i));
+
+    expect(confirmSpy).toHaveBeenCalled();
+    expect(taskStore.bulkUpdate).toHaveBeenCalled();
+    expect(projectStore.renameProject).toHaveBeenCalledWith('Old', 'New');
+    expect(alertSpy).toHaveBeenCalled();
+
+    confirmSpy.mockRestore();
+    alertSpy.mockRestore();
+  });
 });
