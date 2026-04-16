@@ -1,7 +1,7 @@
 # Implementation Plan: Bulk Task & Project Editor
 
 ## Phase 1: Foundation & Data Layer
-- [ ] Task: Extend `taskStore` with `bulkUpdate` logic.
+- [x] Task: Extend `taskStore` with `bulkUpdate` logic. (9527fd0)
     - [ ] Create `src/lib/taskStore.bulk.spec.ts` for TDD.
     - [ ] Implement `taskStore.bulkUpdate(filter, updates)` to modify multiple tasks in a single transaction.
     - [ ] Ensure it supports the Undo/Redo system.
