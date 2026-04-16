@@ -84,8 +84,14 @@ Imputador is a specialized task registration and time-tracking application desig
 - **Overwrite Protection:** The import process uses a "Full Overwrite" approach with a confirmation prompt to ensure data integrity.
 - **Automatic Reload:** The application automatically reloads after a successful import to apply the new settings immediately.
 
-## User Experience Focus
+### 9. Maintenance / Bulk Editing
 
+- **Broad Date-Range Editing:** A specialized tool in Settings to modify tasks and projects masively within a user-defined date range.
+- **Rename Project (Global):** Capability to rename a project across all tasks in a range and update the global project history simultaneously.
+- **Template-based Mass Update:** Find and replace identical tasks by matching a multi-field template (Title, Project, Company, Type).
+- **Safety Preview:** Inline summary of affected tasks and mandatory confirmation before applying broad changes.
+
+## User Experience Focus
 - **Information Density:** A design that maximizes the visibility of the week's data, allowing for quick assessment of missing time and project distribution.
 - **Smart Components:** Using autocomplete for projects, intuitive dropdowns for task types, and **split date/time selectors** with context-aware defaults (today's date or selected day) to minimize input overhead.
 - **Smart Defaults:** Task creation automatically suggests a start time based on the preceding task's end time (in Weekly View) or the day's latest task (in Daily View) to maintain log continuity with zero effort.
