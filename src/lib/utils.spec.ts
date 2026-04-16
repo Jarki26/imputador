@@ -1,6 +1,27 @@
 import { describe, it, expect } from 'vitest';
-import { calculateTotalHours, getContrastColor } from './utils';
+import { calculateTotalHours, getContrastColor, parseStartDate, parseEndDate } from './utils';
 import type { Task } from './db';
+
+describe('Date Helpers', () => {
+  it('should parse start date as 00:00:00', () => {
+    const result = parseStartDate('2026-04-16');
+    expect(result.getFullYear()).toBe(2026);
+    expect(result.getMonth()).toBe(3); // April is 3
+    expect(result.getDate()).toBe(16);
+    expect(result.getHours()).toBe(0);
+    expect(result.getMinutes()).toBe(0);
+  });
+
+  it('should parse end date as 23:59:59.999', () => {
+    const result = parseEndDate('2026-04-16');
+    expect(result.getFullYear()).toBe(2026);
+    expect(result.getMonth()).toBe(3);
+    expect(result.getDate()).toBe(16);
+    expect(result.getHours()).toBe(23);
+    expect(result.getMinutes()).toBe(59);
+    expect(result.getMilliseconds()).toBe(999);
+  });
+});
 
 describe('getContrastColor', () => {
   it('should return black for light colors', () => {
