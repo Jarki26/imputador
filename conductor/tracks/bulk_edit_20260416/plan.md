@@ -12,7 +12,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Foundation & Data Layer' (7363392)
 
 ## Phase 2: UI Components
-- [ ] Task: Create `BulkEdit` base component.
+- [x] Task: Create `BulkEdit` base component. (e8a4600)
     - [ ] Create `src/lib/BulkEdit.svelte` and `src/lib/BulkEdit.spec.ts`.
     - [ ] Implement the layout with tabs or sections for "Rename Project" and "Mass Update".
 - [ ] Task: Implement Calendar-based Date Range Selector.
