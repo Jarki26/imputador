@@ -59,4 +59,28 @@ describe('BulkEdit.svelte', () => {
     expect(await screen.findByText(/Tareas que serán afectadas: 2/i)).toBeDefined();
     expect(taskStore.getTasksForRange).toHaveBeenCalled();
   });
+
+  it('should calculate affected tasks count for mass update', async () => {
+    const mockTasks = [
+      { title: 'T1', project: 'P1' },
+      { title: 'T2', project: 'P1' },
+      { title: 'T1', project: 'P2' }
+    ];
+    const taskStore = {
+      getTasksForRange: vi.fn().mockResolvedValue(mockTasks)
+    };
+    
+    render(BulkEdit, { props: { taskStore: taskStore as any } });
+
+    // Switch to mass update tab
+    await fireEvent.click(screen.getByText(/Actualización Masiva/i));
+
+    const titleInput = screen.getAllByLabelText(/^Título$/i)[0] as HTMLInputElement;
+    await fireEvent.input(titleInput, { target: { value: 'T1' } });
+
+    const calcBtn = screen.getAllByText(/Calcular Cambios/i)[0];
+    await fireEvent.click(calcBtn);
+
+    expect(await screen.findByText(/Tareas que serán afectadas: 2/i)).toBeDefined();
+  });
 });
