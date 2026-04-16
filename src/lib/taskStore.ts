@@ -88,6 +88,83 @@ export class TaskStore {
   }
 
   /**
+   * Updates multiple tasks matching a filter within a date range.
+   * @param start - Start of date range.
+   * @param end - End of date range.
+   * @param filter - Partial task object to match against.
+   * @param updates - Partial task object with new values.
+   * @returns A promise that resolves to the array of original tasks before updates (for undo).
+   */
+  async bulkUpdate(
+    start: Date,
+    end: Date,
+    filter: Partial<Task>,
+    updates: Partial<Task>,
+  ): Promise<Task[]> {
+    const db = await this.getDB();
+    const range = IDBKeyRange.bound(start, end);
+    const tx = db.transaction('tasks', 'readwrite');
+    const store = tx.objectStore('tasks');
+    const index = store.index('date');
+
+    const matchingTasks: Task[] = [];
+    const originalTasks: Task[] = [];
+
+    let cursor = await index.openCursor(range);
+    while (cursor) {
+      const task = cursor.value;
+      let matches = true;
+
+      for (const [key, value] of Object.entries(filter)) {
+        if (task[key as keyof Task] !== value) {
+          matches = false;
+          break;
+        }
+      }
+
+      if (matches) {
+        originalTasks.push({ ...task });
+        const updatedTask = { ...task, ...updates };
+        await cursor.update(updatedTask);
+        matchingTasks.push(updatedTask);
+      }
+      cursor = await cursor.continue();
+    }
+
+    await tx.done;
+
+    // Update history for all matching tasks if project/company/title changed
+    if (updates.project || updates.company || updates.title) {
+      for (const task of matchingTasks) {
+        await this.upsertRecentTask(task);
+      }
+    }
+
+    return originalTasks;
+  }
+
+  /**
+   * Reverts a bulk update using the original task states.
+   * @param originalTasks - Array of tasks to restore.
+   */
+  async revertBulkUpdate(originalTasks: Task[]): Promise<void> {
+    const db = await this.getDB();
+    const tx = db.transaction('tasks', 'readwrite');
+    const store = tx.objectStore('tasks');
+
+    for (const task of originalTasks) {
+      await store.put(task);
+    }
+
+    await tx.done;
+
+    // Update history for all reverted tasks
+    for (const task of originalTasks) {
+      await this.upsertRecentTask(task);
+    }
+  }
+
+  /**
    * Finds the chronologically latest task for a given day.
    */
   async getLatestTaskOfDay(date: Date): Promise<Task | null> {
