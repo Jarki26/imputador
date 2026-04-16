@@ -11,22 +11,22 @@
     - [x] Coordinate with `taskStore` to update tasks when a project is renamed.
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Foundation & Data Layer' (7363392)
 
-## Phase 2: UI Components
+## Phase 2: UI Components [checkpoint: 7ad33ee]
 - [x] Task: Create `BulkEdit` base component. (e8a4600)
-    - [ ] Create `src/lib/BulkEdit.svelte` and `src/lib/BulkEdit.spec.ts`.
-    - [ ] Implement the layout with tabs or sections for "Rename Project" and "Mass Update".
+    - [x] Create `src/lib/BulkEdit.svelte` and `src/lib/BulkEdit.spec.ts`.
+    - [x] Implement the layout with tabs or sections for "Rename Project" and "Mass Update".
 - [x] Task: Implement Calendar-based Date Range Selector. (4305c23)
-    - [ ] Add start and end date pickers to `BulkEdit`.
-    - [ ] Ensure dates are formatted correctly for store queries.
+    - [x] Add start and end date pickers to `BulkEdit`.
+    - [x] Ensure dates are formatted correctly for store queries.
 - [x] Task: Implement "Rename Project" UI. (af08040)
-    - [ ] Source project dropdown (from history).
-    - [ ] Target project text input.
-    - [ ] "Calculate" button to preview changes.
+    - [x] Source project dropdown (from history).
+    - [x] Target project text input.
+    - [x] "Calculate" button to preview changes.
 - [x] Task: Implement "Mass Update Identical Tasks" UI. (f17075c)
-    - [ ] Multi-field source template (Title, Project, Company, Type).
-    - [ ] Multi-field target inputs.
-    - [ ] "Calculate" button to preview changes.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: UI Components' (Protocol in workflow.md)
+    - [x] Multi-field source template (Title, Project, Company, Type).
+    - [x] Multi-field target inputs.
+    - [x] "Calculate" button to preview changes.
+- [x] Task: Conductor - User Manual Verification 'Phase 2: UI Components' (7ad33ee)
 
 ## Phase 3: Integration & Safety
 - [ ] Task: Integrate into Settings View.
