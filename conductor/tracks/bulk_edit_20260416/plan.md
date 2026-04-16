@@ -18,7 +18,7 @@
 - [x] Task: Implement Calendar-based Date Range Selector. (4305c23)
     - [ ] Add start and end date pickers to `BulkEdit`.
     - [ ] Ensure dates are formatted correctly for store queries.
-- [ ] Task: Implement "Rename Project" UI.
+- [x] Task: Implement "Rename Project" UI. (af08040)
     - [ ] Source project dropdown (from history).
     - [ ] Target project text input.
     - [ ] "Calculate" button to preview changes.
