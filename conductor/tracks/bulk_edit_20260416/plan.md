@@ -5,7 +5,7 @@
     - [ ] Create `src/lib/taskStore.bulk.spec.ts` for TDD.
     - [ ] Implement `taskStore.bulkUpdate(filter, updates)` to modify multiple tasks in a single transaction.
     - [ ] Ensure it supports the Undo/Redo system.
-- [ ] Task: Extend `projectStore` with `renameProject` logic.
+- [x] Task: Extend `projectStore` with `renameProject` logic. (cc41abc)
     - [ ] Create `src/lib/projectStore.rename.spec.ts` for TDD.
     - [ ] Implement `projectStore.renameProject(oldName, newName)` to update the projects list.
     - [ ] Coordinate with `taskStore` to update tasks when a project is renamed.
