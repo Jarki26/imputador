@@ -22,7 +22,7 @@
     - [ ] Source project dropdown (from history).
     - [ ] Target project text input.
     - [ ] "Calculate" button to preview changes.
-- [ ] Task: Implement "Mass Update Identical Tasks" UI.
+- [x] Task: Implement "Mass Update Identical Tasks" UI. (f17075c)
     - [ ] Multi-field source template (Title, Project, Company, Type).
     - [ ] Multi-field target inputs.
     - [ ] "Calculate" button to preview changes.
