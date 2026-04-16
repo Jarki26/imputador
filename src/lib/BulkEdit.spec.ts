@@ -3,6 +3,7 @@ import { render, screen, cleanup, fireEvent } from '@testing-library/svelte';
 import BulkEdit from './BulkEdit.svelte';
 import { i18n } from './i18n.svelte';
 import { formatDateOnlyForInput } from './utils';
+import * as utils from './utils';
 
 describe('BulkEdit.svelte', () => {
   beforeEach(async () => {
@@ -98,8 +99,10 @@ describe('BulkEdit.svelte', () => {
     const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(true);
     // Mock window.alert
     const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
+    // Mock reload
+    const reloadSpy = vi.fn();
 
-    render(BulkEdit, { props: { taskStore: taskStore as any, projectStore: projectStore as any } });
+    render(BulkEdit, { props: { taskStore: taskStore as any, projectStore: projectStore as any, reload: reloadSpy } });
 
     const sourceInput = screen.getByLabelText(/Proyecto Origen/i) as HTMLInputElement;
     const targetInput = screen.getByLabelText(/Nuevo Nombre/i) as HTMLInputElement;
@@ -114,6 +117,7 @@ describe('BulkEdit.svelte', () => {
     expect(taskStore.bulkUpdate).toHaveBeenCalled();
     expect(projectStore.renameProject).toHaveBeenCalledWith('Old', 'New');
     expect(alertSpy).toHaveBeenCalled();
+    expect(reloadSpy).toHaveBeenCalled();
 
     confirmSpy.mockRestore();
     alertSpy.mockRestore();

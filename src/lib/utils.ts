@@ -43,8 +43,11 @@ export function parseEndDate(dateStr: string): Date {
 }
 
 /**
- * Calculates the total hours from a list of tasks that count towards the goal.
+ * Reloads the current page.
  */
+export function reloadPage(): void {
+  window.location.reload();
+}
 export function calculateTotalHours(tasks: Task[]): number {
   return tasks.reduce((total, task) => {
     if (countsTowardGoal(task.type)) {

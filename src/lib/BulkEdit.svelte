@@ -1,6 +1,6 @@
 <script lang="ts">
   import { i18n } from './i18n.svelte';
-  import { formatDateOnlyForInput, parseStartDate, parseEndDate } from './utils';
+  import { formatDateOnlyForInput, parseStartDate, parseEndDate, reloadPage } from './utils';
   import Autocomplete from './Autocomplete.svelte';
   import { TaskStore } from './taskStore';
   import { ProjectStore } from './projectStore';
@@ -13,6 +13,7 @@
     projectStore?: ProjectStore;
     companyStore?: CompanyStore;
     onSuccess?: () => void | Promise<void>;
+    reload?: () => void;
   }
 
   let {
@@ -20,6 +21,7 @@
     projectStore = new ProjectStore(),
     companyStore = new CompanyStore(),
     onSuccess,
+    reload = reloadPage,
   }: Props = $props();
 
   let activeTab = $state('rename');
@@ -99,6 +101,7 @@
     
     alert(i18n.t('bulk_edit.success', { count: affectedCount.toString() }));
     resetState();
+    reload();
   }
 
   async function applyMassUpdate() {
@@ -128,6 +131,7 @@
 
     alert(i18n.t('bulk_edit.success', { count: affectedCount.toString() }));
     resetState();
+    reload();
   }
 </script>
 
