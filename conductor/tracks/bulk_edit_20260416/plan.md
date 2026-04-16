@@ -35,7 +35,7 @@
 - [x] Task: Implement Preview & Confirmation. (d822490)
     - [ ] Show a modal or inline summary with the count of tasks to be modified.
     - [ ] Implement the final "Apply" action with a confirmation prompt.
-- [x] Task: Final Validation & UX Polish. (ef441d0)
-    - [ ] Verify Undo/Redo works for the entire bulk operation.
-    - [ ] Ensure mobile responsiveness.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Integration & Safety' (Protocol in workflow.md)
+- [x] Task: Final Validation & UX Polish. (410f805)
+    - [x] Verify Undo/Redo works for the entire bulk operation.
+    - [x] Ensure mobile responsiveness.
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Integration & Safety' (410f805)
