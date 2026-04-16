@@ -29,7 +29,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: UI Components' (7ad33ee)
 
 ## Phase 3: Integration & Safety
-- [ ] Task: Integrate into Settings View.
+- [x] Task: Integrate into Settings View. (3dc9d99)
     - [ ] Add a new navigation item or section in `Settings.svelte`.
     - [ ] Ensure `BulkEdit` is accessible and properly styled.
 - [ ] Task: Implement Preview & Confirmation.
