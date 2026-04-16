@@ -27,6 +27,7 @@
     }) => void;
     onSaveTaskTypeColor: (taskType: string, color: string) => void;
     onImportComplete?: () => void;
+    onBulkUpdate?: () => void;
   }
 
   let {
@@ -42,6 +43,7 @@
     onSaveExportConfig,
     onSaveTaskTypeColor,
     onImportComplete,
+    onBulkUpdate,
   }: Props = $props();
 
   let target = $state(weeklyTarget);
@@ -116,7 +118,7 @@
 
   <hr class="separator" />
 
-  <BulkEdit {taskStore} {projectStore} {companyStore} />
+  <BulkEdit {taskStore} {projectStore} {companyStore} onSuccess={onBulkUpdate} />
 
   <hr class="separator" />
 

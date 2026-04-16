@@ -12,12 +12,14 @@
     taskStore?: TaskStore;
     projectStore?: ProjectStore;
     companyStore?: CompanyStore;
+    onSuccess?: () => void | Promise<void>;
   }
 
   let {
     taskStore = new TaskStore(),
     projectStore = new ProjectStore(),
     companyStore = new CompanyStore(),
+    onSuccess,
   }: Props = $props();
 
   let activeTab = $state('rename');
@@ -355,6 +357,12 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
+  }
+
+  @media (max-width: 600px) {
+    .date-range, .grid {
+      grid-template-columns: 1fr;
+    }
   }
 
   h4 {

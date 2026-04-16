@@ -371,7 +371,11 @@
     onImportComplete={async () => {
       await loadTasks(true);
     }}
-  />
+    onBulkUpdate={async () => {
+      await loadTasks(true);
+    }}
+    />
+
 </Modal>
 <style>
   .app-container {
