@@ -47,7 +47,13 @@
     "import_results": "Success: {success}, Errors: {errors}",
     "import_date_warning_title": "Warning: Some dates could not be parsed",
     "import_date_warning_msg": "The currently configured format is '{format}'",
-    "task_colors": "Task Type Colors"
+    "task_colors": "Task Type Colors",
+    "backup_restore": "Backup & Restore",
+    "export_settings": "Export Settings",
+    "import_settings": "Import Settings",
+    "backup_confirm": "Are you sure you want to overwrite ALL settings? This cannot be undone.",
+    "backup_success": "Settings imported successfully. The page will now reload.",
+    "backup_error": "Failed to import settings: {error}"
   },
   "task": {
     "form_title_add": "Add Task",

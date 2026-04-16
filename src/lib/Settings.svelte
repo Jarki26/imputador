@@ -3,6 +3,7 @@
   import ExportSettings from './ExportSettings.svelte';
   import CompanySettings from './CompanySettings.svelte';
   import TaskColorSettings from './TaskColorSettings.svelte';
+  import BackupSettings from './BackupSettings.svelte';
   import type { ColumnMapping } from './exportConfigStore';
   import type { CompanyStore } from './companyStore';
 
@@ -105,6 +106,10 @@
   <hr class="separator" />
 
   <TaskColorSettings colors={taskTypeColors} onSaveColor={onSaveTaskTypeColor} />
+
+  <hr class="separator" />
+
+  <BackupSettings />
 
   <div class="actions">
     <button class="save-btn" onclick={handleSave}>{i18n.t('common.save')}</button>

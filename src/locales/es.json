@@ -52,7 +52,13 @@
     "company_name_placeholder": "Nombre de la empresa",
     "edit_company": "Editar Empresa",
     "delete_company_confirm": "¿Estás seguro de que deseas eliminar esta empresa?",
-    "no_companies": "No hay empresas guardadas"
+    "no_companies": "No hay empresas guardadas",
+    "backup_restore": "Copia de Seguridad y Restauración",
+    "export_settings": "Exportar Ajustes",
+    "import_settings": "Importar Ajustes",
+    "backup_confirm": "¿Estás seguro de que deseas sobrescribir TODOS los ajustes? Esta acción no se puede deshacer.",
+    "backup_success": "Ajustes importados con éxito. La página se recargará ahora.",
+    "backup_error": "Error al importar ajustes: {error}"
   },
   "task": {
     "form_title_add": "Añadir Tarea",
