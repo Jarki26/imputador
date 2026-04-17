@@ -1,75 +1,71 @@
 import { type Task } from './db';
+import { HistoryManager, type HistoryState } from './historyManager';
 
-export interface HistoryState {
-  tasks: Task[];
-  date: Date;
-}
+export type { HistoryState };
 
 export class HistoryStore {
-  private past = $state<HistoryState[]>([]);
-  private present = $state<HistoryState | null>(null);
-  private future = $state<HistoryState[]>([]);
-  private maxHistory: number;
+  private manager: HistoryManager<HistoryState>;
+  // We keep reactive wrappers for UI consumption
+  private past_trigger = $state({ count: 0 });
+  private future_trigger = $state({ count: 0 });
+  private present_trigger = $state({ count: 0 });
 
   constructor(initialState?: HistoryState, maxHistory = 50) {
-    if (initialState) {
-      this.present = $state.snapshot(initialState);
-    }
-    this.maxHistory = maxHistory;
+    this.manager = new HistoryManager(
+      initialState ? $state.snapshot(initialState) : undefined,
+      maxHistory,
+    );
   }
 
   push(newState: HistoryState) {
-    if (this.present) {
-      this.past.push(this.present); // Already snapshotted on entry
-      if (this.past.length > this.maxHistory) {
-        this.past.shift();
-      }
-    }
-    this.present = $state.snapshot(newState);
-    this.future = []; // Clear future on new action
+    this.manager.push($state.snapshot(newState));
+    this.past_trigger.count++;
+    this.future_trigger.count++;
+    this.present_trigger.count++;
   }
 
   undo(): HistoryState | null {
-    if (this.past.length === 0) return null;
-
-    if (this.present) {
-      this.future.unshift(this.present);
-    }
-    const next = this.past.pop();
-    this.present = next || null;
-    return this.present;
+    const res = this.manager.undo();
+    this.past_trigger.count++;
+    this.future_trigger.count++;
+    this.present_trigger.count++;
+    return res;
   }
 
   redo(): HistoryState | null {
-    if (this.future.length === 0) return null;
-
-    if (this.present) {
-      this.past.push(this.present);
-    }
-    const next = this.future.shift();
-    this.present = next || null;
-    return this.present;
+    const res = this.manager.redo();
+    this.past_trigger.count++;
+    this.future_trigger.count++;
+    this.present_trigger.count++;
+    return res;
   }
 
   get canUndo(): boolean {
-    return this.past.length > 0;
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    this.past_trigger.count; // dependency
+    return this.manager.canUndo;
   }
 
   get canRedo(): boolean {
-    return this.future.length > 0;
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    this.future_trigger.count; // dependency
+    return this.manager.canRedo;
   }
 
-  // For compatibility with the bug in +page.svelte and to make it easier for templates
   get undoStack() {
-    return this.past;
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    this.past_trigger.count; // dependency
+    return this.manager.pastStack;
   }
 
   get redoStack() {
-    return this.future;
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    this.future_trigger.count; // dependency
+    return this.manager.futureStack;
   }
 
-  // For testing
   getPastCount(): number {
-    return this.past.length;
+    return this.manager.pastStack.length;
   }
 }
+
