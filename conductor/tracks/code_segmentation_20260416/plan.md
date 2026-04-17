@@ -25,11 +25,11 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Modularize Store Logic' (Protocol in workflow.md) (4edbdad)
 
 ## Phase 3: Services and Database Layer Refactoring
-- [ ] Task: Organize Utility Functions
-    - [ ] Sub-task: Review `src/lib/utils.ts` and categorize functions (date manipulation, DOM helpers, etc.).
-    - [ ] Sub-task: Split into specific utility files (e.g., `src/lib/dateUtils.ts`) and update imports project-wide.
-    - [ ] Sub-task: Ensure existing utility tests pass.
-- [ ] Task: Refactor Database Interactivity
+- [x] Task: Organize Utility Functions (6175b7a)
+    - [x] Sub-task: Review `src/lib/utils.ts` and categorize functions (date manipulation, DOM helpers, etc.).
+    - [x] Sub-task: Split into specific utility files (e.g., `src/lib/dateUtils.ts`) and update imports project-wide.
+    - [x] Sub-task: Ensure existing utility tests pass.
+- [~] Task: Refactor Database Interactivity
     - [ ] Sub-task: Abstract IndexedDB interactions in `src/lib/db.ts` to separate query construction from execution.
     - [ ] Sub-task: Ensure database tests in `db.spec.ts` remain robust and passing.
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Services and Database Layer Refactoring' (Protocol in workflow.md)
