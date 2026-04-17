@@ -1,16 +1,16 @@
 # Implementation Plan: Code Segmentation and Complexity Reduction
 
 ## Phase 1: Sub-component Extraction for WeeklyView
-- [ ] Task: Extract Weekly Header Component
-    - [ ] Sub-task: Identify and isolate the header section (navigation, goal progress, totals) in `src/lib/WeeklyView.svelte`.
-    - [ ] Sub-task: Create a new test file `src/lib/WeeklyHeader.spec.ts` with failing tests for the extracted component's properties and events (Red Phase).
-    - [ ] Sub-task: Create `src/lib/WeeklyHeader.svelte` and implement the logic to pass tests (Green Phase).
-    - [ ] Sub-task: Refactor `src/lib/WeeklyView.svelte` to use the new component.
-- [ ] Task: Extract Weekly Grid and Columns
-    - [ ] Sub-task: Isolate the main grid and daily column logic from `src/lib/WeeklyView.svelte`.
-    - [ ] Sub-task: Write tests for a new `WeeklyColumn` component in `src/lib/WeeklyColumn.spec.ts` (Red Phase).
-    - [ ] Sub-task: Create `src/lib/WeeklyColumn.svelte` handling task rendering within a day (Green Phase).
-    - [ ] Sub-task: Update `src/lib/WeeklyView.svelte` to integrate the column component.
+- [x] Task: Extract Weekly Header Component (213c7ea)
+    - [x] Sub-task: Identify and isolate the header section (navigation, goal progress, totals) in `src/lib/WeeklyView.svelte`.
+    - [x] Sub-task: Create a new test file `src/lib/WeeklyHeader.spec.ts` with failing tests for the extracted component's properties and events (Red Phase).
+    - [x] Sub-task: Create `src/lib/WeeklyHeader.svelte` and implement the logic to pass tests (Green Phase).
+    - [x] Sub-task: Refactor `src/lib/WeeklyView.svelte` to use the new component.
+- [x] Task: Extract Weekly Grid and Columns (5e9230f)
+    - [x] Sub-task: Isolate the main grid and daily column logic from `src/lib/WeeklyView.svelte`.
+    - [x] Sub-task: Write tests for a new `WeeklyColumn` component in `src/lib/WeeklyColumn.spec.ts` (Red Phase).
+    - [x] Sub-task: Create `src/lib/WeeklyColumn.svelte` handling task rendering within a day (Green Phase).
+    - [x] Sub-task: Update `src/lib/WeeklyView.svelte` to integrate the column component.
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Sub-component Extraction for WeeklyView' (Protocol in workflow.md)
 
 ## Phase 2: Modularize Store Logic
