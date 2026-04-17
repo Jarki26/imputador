@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Task } from './db';
   import { i18n } from './i18n.svelte';
-  import { getContrastColor } from './utils';
+  import { getContrastColor } from './uiUtils';
 
   let {
     tasks = [],

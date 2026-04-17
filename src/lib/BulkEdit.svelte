@@ -1,6 +1,7 @@
 <script lang="ts">
   import { i18n } from './i18n.svelte';
-  import { formatDateOnlyForInput, parseStartDate, parseEndDate, reloadPage } from './utils';
+  import { formatDateOnlyForInput, parseStartDate, parseEndDate } from './dateUtils';
+  import { reloadPage } from './utils';
   import Autocomplete from './Autocomplete.svelte';
   import { TaskStore } from './taskStore';
   import { ProjectStore } from './projectStore';

@@ -4,7 +4,7 @@
     calculateVerticalPosition,
     calculateHeight,
     getContrastColor,
-  } from './utils';
+  } from './uiUtils';
   import { isBillable } from './config';
   import { i18n } from './i18n.svelte';
 

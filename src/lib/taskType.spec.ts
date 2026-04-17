@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { TASK_TYPES, getTaskType, countsTowardGoal, isBillable } from './config';
-import { calculateTotalHours, calculateWorkHours, calculateGoalAbsenceHours } from './utils';
+import { calculateTotalHours, calculateWorkHours, calculateGoalAbsenceHours } from './taskUtils';
 import type { Task } from './db';
 
 describe('Ausencia Facturable Task Type', () => {

@@ -1,5 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { calculateTotalHours, getContrastColor, parseStartDate, parseEndDate } from './utils';
+import { calculateTotalHours } from './taskUtils';
+import { getContrastColor } from './uiUtils';
+import { parseStartDate, parseEndDate } from './dateUtils';
 import type { Task } from './db';
 
 describe('Date Helpers', () => {

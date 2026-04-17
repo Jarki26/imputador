@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { calculateVerticalPosition, calculateHeight } from './utils';
+import { calculateVerticalPosition, calculateHeight } from './uiUtils';
 
 describe('Zoom calculation utilities', () => {
   const BASE_PIXELS_PER_MINUTE = 1;

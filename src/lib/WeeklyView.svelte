@@ -3,10 +3,7 @@
   import {
     calculateWorkHours,
     calculateGoalAbsenceHours,
-    calculateVerticalPosition,
-    calculateHeight,
-    getContrastColor,
-  } from './utils';
+  } from './taskUtils';
   import { isBillable } from './config';
   import { i18n } from './i18n.svelte';
   import WeeklyHeader from './WeeklyHeader.svelte';

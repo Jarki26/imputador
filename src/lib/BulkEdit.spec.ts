@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, cleanup, fireEvent } from '@testing-library/svelte';
 import BulkEdit from './BulkEdit.svelte';
 import { i18n } from './i18n.svelte';
-import { formatDateOnlyForInput } from './utils';
+import { formatDateOnlyForInput } from './dateUtils';
 import * as utils from './utils';
 
 describe('BulkEdit.svelte', () => {
