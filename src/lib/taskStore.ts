@@ -1,6 +1,10 @@
 import { initDB, type Task, type RecentTask } from './db';
 import { isBillable } from './config';
 import { CompanyStore } from './companyStore';
+import { applyOverwriteLogic, pushConflict } from './taskStore.collision';
+import { addWithSmartFill } from './taskStore.smartFill';
+import { bulkUpdate, revertBulkUpdate, setTasksForWeek } from './taskStore.bulk';
+import { getRecentTasks, upsertRecentTask, purgeHistory } from './taskStore.recent';
 
 /**
  * Service for managing tasks in IndexedDB.
@@ -102,45 +106,9 @@ export class TaskStore {
     updates: Partial<Task>,
   ): Promise<Task[]> {
     const db = await this.getDB();
-    const range = IDBKeyRange.bound(start, end);
-    const tx = db.transaction('tasks', 'readwrite');
-    const store = tx.objectStore('tasks');
-    const index = store.index('date');
-
-    const matchingTasks: Task[] = [];
-    const originalTasks: Task[] = [];
-
-    let cursor = await index.openCursor(range);
-    while (cursor) {
-      const task = cursor.value;
-      let matches = true;
-
-      for (const [key, value] of Object.entries(filter)) {
-        if (task[key as keyof Task] !== value) {
-          matches = false;
-          break;
-        }
-      }
-
-      if (matches) {
-        originalTasks.push({ ...task });
-        const updatedTask = { ...task, ...updates };
-        await cursor.update(updatedTask);
-        matchingTasks.push(updatedTask);
-      }
-      cursor = await cursor.continue();
-    }
-
-    await tx.done;
-
-    // Update history for all matching tasks if project/company/title changed
-    if (updates.project || updates.company || updates.title) {
-      for (const task of matchingTasks) {
-        await this.upsertRecentTask(task);
-      }
-    }
-
-    return originalTasks;
+    return bulkUpdate(start, end, filter, updates, db, (task) =>
+      this.upsertRecentTask(task),
+    );
   }
 
   /**
@@ -149,19 +117,9 @@ export class TaskStore {
    */
   async revertBulkUpdate(originalTasks: Task[]): Promise<void> {
     const db = await this.getDB();
-    const tx = db.transaction('tasks', 'readwrite');
-    const store = tx.objectStore('tasks');
-
-    for (const task of originalTasks) {
-      await store.put(task);
-    }
-
-    await tx.done;
-
-    // Update history for all reverted tasks
-    for (const task of originalTasks) {
-      await this.upsertRecentTask(task);
-    }
+    return revertBulkUpdate(originalTasks, db, (task) =>
+      this.upsertRecentTask(task),
+    );
   }
 
   /**
@@ -232,7 +190,7 @@ export class TaskStore {
     const tx = db.transaction('tasks', 'readwrite');
     const store = tx.objectStore('tasks');
 
-    await this.applyOverwriteLogic(newTask, store);
+    await applyOverwriteLogic(newTask, store);
 
     const id = await store.add(newTask);
     await tx.done;
@@ -254,65 +212,13 @@ export class TaskStore {
     if (!existing) throw new Error(`Task ${id} not found`);
 
     const updatedTask = { ...existing, ...updates };
-    await this.applyOverwriteLogic(updatedTask, store, id);
+    await applyOverwriteLogic(updatedTask, store, id);
 
     await store.put(updatedTask);
     await tx.done;
 
     if (updates.title || updates.project || updates.company) {
       await this.upsertRecentTask(updatedTask);
-    }
-  }
-
-  private async applyOverwriteLogic(
-    newTask: Task,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    store: any,
-    excludeId?: number,
-  ): Promise<void> {
-    const index = store.index('date');
-
-    // Get all tasks for the day
-    const startOfDay = new Date(newTask.startTime);
-    startOfDay.setHours(0, 0, 0, 0);
-    const endOfDay = new Date(newTask.startTime);
-    endOfDay.setHours(23, 59, 59, 999);
-    const range = IDBKeyRange.bound(startOfDay, endOfDay);
-    const tasks: Task[] = await index.getAll(range);
-
-    const newStart = newTask.startTime.getTime();
-    const newEnd = newTask.endTime.getTime();
-
-    for (const task of tasks) {
-      if (!task.id || task.id === excludeId) continue;
-
-      const oldStart = task.startTime.getTime();
-      const oldEnd = task.endTime.getTime();
-
-      // Check for overlap
-      if (oldStart < newEnd && oldEnd > newStart) {
-        if (oldStart >= newStart && oldEnd <= newEnd) {
-          // Complete overlap: Delete existing task
-          await store.delete(task.id);
-        } else if (oldStart < newStart && oldEnd > newEnd) {
-          // Middle overlap: Split existing task
-          const taskBefore = { ...task, endTime: new Date(newStart) };
-          const taskAfterData = { ...task };
-          delete taskAfterData.id;
-          const taskAfter = {
-            ...taskAfterData,
-            startTime: new Date(newEnd),
-          };
-          await store.put(taskBefore);
-          await store.add(taskAfter);
-        } else if (oldStart < newStart && oldEnd > newStart) {
-          // Truncate end of existing task
-          await store.put({ ...task, endTime: new Date(newStart) });
-        } else if (oldStart < newEnd && oldEnd > newEnd) {
-          // Truncate start of existing task
-          await store.put({ ...task, startTime: new Date(newEnd) });
-        }
-      }
     }
   }
 
@@ -325,7 +231,7 @@ export class TaskStore {
     const tx = db.transaction('tasks', 'readwrite');
     const store = tx.objectStore('tasks');
 
-    await this.pushConflict(
+    await pushConflict(
       newTask.startTime.getTime(),
       newTask.endTime.getTime(),
       store,
@@ -352,7 +258,7 @@ export class TaskStore {
 
     const updatedTask = { ...existing, ...updates };
 
-    await this.pushConflict(
+    await pushConflict(
       updatedTask.startTime.getTime(),
       updatedTask.endTime.getTime(),
       store,
@@ -372,9 +278,7 @@ export class TaskStore {
    */
   async getRecentTasks(): Promise<RecentTask[]> {
     const db = await this.getDB();
-    const recents = await db.getAllFromIndex('recent_tasks', 'lastUsedAt');
-    // Index gives ascending order, we want most recent first
-    return recents.reverse().slice(0, 10);
+    return getRecentTasks(db);
   }
 
   /**
@@ -382,20 +286,7 @@ export class TaskStore {
    */
   async upsertRecentTask(task: Task): Promise<void> {
     const db = await this.getDB();
-    const recent: RecentTask = {
-      title: task.title,
-      description: task.description,
-      project: task.project,
-      company: task.company,
-      type: task.type,
-      lastUsedAt: new Date(),
-      isBillable: isBillable(task.type),
-    };
-    await db.put('recent_tasks', recent);
-
-    if (task.company) {
-      await this.companyStore.upsertCompany(task.company);
-    }
+    return upsertRecentTask(task, db, this.companyStore);
   }
 
   /**
@@ -403,128 +294,17 @@ export class TaskStore {
    */
   async purgeHistory(): Promise<void> {
     const db = await this.getDB();
-    const twoWeeksAgo = new Date();
-    twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
-
-    const tx = db.transaction('recent_tasks', 'readwrite');
-    const index = tx.store.index('lastUsedAt');
-    const range = IDBKeyRange.upperBound(twoWeeksAgo);
-
-    let cursor = await index.openCursor(range);
-    while (cursor) {
-      await cursor.delete();
-      cursor = await cursor.continue();
-    }
-    await tx.done;
+    return purgeHistory(db);
   }
-  /**
-   * Recursively shifts tasks that overlap with the given range.
-   */
-  private async pushConflict(
-    start: number,
-    end: number,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    store: any,
-    excludeId?: number,
-  ): Promise<void> {
-    const index = store.index('date');
-    // Get all tasks for the day (to be safe, though we could optimize with range)
-    const startOfDay = new Date(start);
-    startOfDay.setHours(0, 0, 0, 0);
-    const endOfDay = new Date(start);
-    endOfDay.setHours(23, 59, 59, 999);
-    const range = IDBKeyRange.bound(startOfDay, endOfDay);
-    const tasks: Task[] = await index.getAll(range);
 
-    for (const oldTask of tasks) {
-      if (!oldTask.id || oldTask.id === excludeId) continue;
 
-      // Fetch the latest version of the task as it might have been shifted by a recursive call
-      const task = await store.get(oldTask.id);
-      if (!task) continue;
-
-      const oldStart = task.startTime.getTime();
-      const oldEnd = task.endTime.getTime();
-
-      // Check for overlap with the pushing range [start, end]
-      if (oldStart < end && oldEnd > start) {
-        if (oldStart < start) {
-          // Split task
-          const taskBefore = { ...task, endTime: new Date(start) };
-          const shiftDuration = oldEnd - start;
-          const newStart = end;
-          const newEnd = end + shiftDuration;
-
-          await store.put(taskBefore);
-
-          const taskAfterData = { ...task };
-          delete taskAfterData.id;
-          const taskAfter = {
-            ...taskAfterData,
-            startTime: new Date(newStart),
-            endTime: new Date(newEnd),
-          };
-
-          // Recursively push what this new part might collide with
-          await this.pushConflict(newStart, newEnd, store);
-          await store.add(taskAfter);
-        } else {
-          // Shift whole task
-          const duration = oldEnd - oldStart;
-          const newStart = end;
-          const newEnd = end + duration;
-
-          const updatedTask = {
-            ...task,
-            startTime: new Date(newStart),
-            endTime: new Date(newEnd),
-          };
-          await store.put(updatedTask);
-
-          // Recursively push what this shifted task might collide with
-          // excludeId is important here to not push 'updatedTask' again
-          await this.pushConflict(newStart, newEnd, store, updatedTask.id);
-        }
-      }
-    }
-  }
   /**
    * Replaces all tasks for a specific week with a new set of tasks.
    * Useful for Undo/Redo restoration.
    */
   async setTasksForWeek(date: Date, newTasks: Task[]): Promise<void> {
     const db = await this.getDB();
-    const tx = db.transaction('tasks', 'readwrite');
-    const store = tx.objectStore('tasks');
-    const index = store.index('date');
-
-    // Find Monday of the current week
-    const current = new Date(date);
-    current.setHours(0, 0, 0, 0);
-    const day = current.getDay();
-    const diff = current.getDate() - day + (day === 0 ? -6 : 1);
-    const startOfWeek = new Date(current.setDate(diff));
-
-    const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(startOfWeek.getDate() + 6);
-    endOfWeek.setHours(23, 59, 59, 999);
-
-    const range = IDBKeyRange.bound(startOfWeek, endOfWeek);
-    const existingTasks: Task[] = await index.getAll(range);
-
-    // Delete existing
-    for (const task of existingTasks) {
-      if (task.id) await store.delete(task.id);
-    }
-
-    // Add new (without IDs to avoid collisions, or with IDs if we want to preserve them)
-    for (const task of newTasks) {
-      const taskToSave = { ...task };
-      delete taskToSave.id; // Let DB generate new IDs or we can keep them if we use put
-      await store.add(taskToSave);
-    }
-
-    await tx.done;
+    return setTasksForWeek(date, newTasks, db);
   }
 
   /**
@@ -538,71 +318,12 @@ export class TaskStore {
     startDate: Date,
     totalDurationMs: number,
   ): Promise<void> {
-    let remaining = totalDurationMs;
-    const current = new Date(startDate);
-    // Keep the time if it's the first day, but for subsequent days we'll start at 00:00
-    let isFirstDay = true;
-
-    while (remaining > 0) {
-      const dayTasks = (await this.getTasksForDay(current)).sort(
-        (a, b) => a.startTime.getTime() - b.startTime.getTime(),
-      );
-
-      const gaps: { start: Date; end: Date }[] = [];
-      let lastEnd = new Date(current);
-      if (isFirstDay) {
-        // lastEnd is already startDate (including time)
-      } else {
-        lastEnd.setHours(0, 0, 0, 0);
-      }
-
-      for (const task of dayTasks) {
-        // Skip tasks that end before our starting point
-        if (task.endTime <= lastEnd) continue;
-
-        const effectiveStart =
-          task.startTime < lastEnd ? lastEnd : task.startTime;
-
-        if (effectiveStart > lastEnd) {
-          gaps.push({
-            start: new Date(lastEnd),
-            end: new Date(effectiveStart),
-          });
-        }
-        if (task.endTime > lastEnd) {
-          lastEnd = new Date(task.endTime);
-        }
-      }
-
-      const dayEnd = new Date(current);
-      dayEnd.setHours(24, 0, 0, 0);
-      if (lastEnd < dayEnd) {
-        gaps.push({ start: new Date(lastEnd), end: dayEnd });
-      }
-
-      for (const gap of gaps) {
-        const gapDuration = gap.end.getTime() - gap.start.getTime();
-        const fillDuration = Math.min(gapDuration, remaining);
-
-        if (fillDuration > 0) {
-          await this.addTask({
-            ...taskData,
-            startTime: new Date(gap.start),
-            endTime: new Date(gap.start.getTime() + fillDuration),
-          } as Task);
-          remaining -= fillDuration;
-        }
-
-        if (remaining <= 0) break;
-      }
-
-      if (remaining > 0) {
-        current.setDate(current.getDate() + 1);
-        current.setHours(0, 0, 0, 0);
-        isFirstDay = false;
-        // Safety break to prevent infinite loops (e.g., if we go too far in the future)
-        if (current.getFullYear() > startDate.getFullYear() + 1) break;
-      }
-    }
+    await addWithSmartFill(
+      taskData,
+      startDate,
+      totalDurationMs,
+      (date) => this.getTasksForDay(date),
+      (task) => this.addTask(task),
+    );
   }
 }
