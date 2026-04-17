@@ -1,8 +1,0 @@
-{
-  "track_id": "code_segmentation_20260416",
-  "type": "chore",
-  "status": "new",
-  "created_at": "2026-04-16T12:00:00Z",
-  "updated_at": "2026-04-16T12:00:00Z",
-  "description": "Plan de análisis para segmentar más el código y así reducir la complejidad cognitiva y de análisis para el agente."
-}
