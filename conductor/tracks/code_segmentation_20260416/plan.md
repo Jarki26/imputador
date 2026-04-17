@@ -24,12 +24,12 @@
     - [x] Sub-task: Ensure tests in `historyStore.spec.ts` pass with the new segmented structure.
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Modularize Store Logic' (Protocol in workflow.md) (4edbdad)
 
-## Phase 3: Services and Database Layer Refactoring
+## Phase 3: Services and Database Layer Refactoring [checkpoint: 68ff6ad]
 - [x] Task: Organize Utility Functions (6175b7a)
     - [x] Sub-task: Review `src/lib/utils.ts` and categorize functions (date manipulation, DOM helpers, etc.).
     - [x] Sub-task: Split into specific utility files (e.g., `src/lib/dateUtils.ts`) and update imports project-wide.
     - [x] Sub-task: Ensure existing utility tests pass.
-- [~] Task: Refactor Database Interactivity
-    - [ ] Sub-task: Abstract IndexedDB interactions in `src/lib/db.ts` to separate query construction from execution.
-    - [ ] Sub-task: Ensure database tests in `db.spec.ts` remain robust and passing.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Services and Database Layer Refactoring' (Protocol in workflow.md)
+- [x] Task: Refactor Database Interactivity (96e7507)
+    - [x] Sub-task: Abstract IndexedDB interactions in `src/lib/db.ts` to separate query construction from execution.
+    - [x] Sub-task: Ensure database tests in `db.spec.ts` remain robust and passing.
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Services and Database Layer Refactoring' (Protocol in workflow.md) (68ff6ad)
