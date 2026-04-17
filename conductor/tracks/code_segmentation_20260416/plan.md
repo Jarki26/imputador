@@ -13,16 +13,16 @@
     - [x] Sub-task: Update `src/lib/WeeklyView.svelte` to integrate the column component.
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Sub-component Extraction for WeeklyView' (Protocol in workflow.md) (62c042f)
 
-## Phase 2: Modularize Store Logic
-- [ ] Task: Segment Task Store
-    - [ ] Sub-task: Analyze `src/lib/taskStore.ts` to identify distinct domains (e.g., core state, collision logic, smart fill).
-    - [ ] Sub-task: Create new test files for extracted helper modules (e.g., `taskStore.collision.spec.ts`) (Red Phase).
-    - [ ] Sub-task: Extract logic into pure functions or sub-stores (e.g., `src/lib/taskStore.collision.ts`) (Green Phase).
-    - [ ] Sub-task: Refactor `src/lib/taskStore.ts` to compose these new modules.
-- [ ] Task: Segment History Store
-    - [ ] Sub-task: Extract pure undo/redo state management from Svelte-specific logic in `src/lib/historyStore.svelte.ts`.
-    - [ ] Sub-task: Ensure tests in `historyStore.spec.ts` pass with the new segmented structure.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Modularize Store Logic' (Protocol in workflow.md)
+## Phase 2: Modularize Store Logic [checkpoint: 4edbdad]
+- [x] Task: Segment Task Store (7f2bcc0)
+    - [x] Sub-task: Analyze `src/lib/taskStore.ts` to identify distinct domains (e.g., core state, collision logic, smart fill).
+    - [x] Sub-task: Create new test files for extracted helper modules (e.g., `taskStore.collision.spec.ts`) (Red Phase).
+    - [x] Sub-task: Extract logic into pure functions or sub-stores (e.g., `src/lib/taskStore.collision.ts`) (Green Phase).
+    - [x] Sub-task: Refactor `src/lib/taskStore.ts` to compose these new modules.
+- [x] Task: Segment History Store (2910e1d)
+    - [x] Sub-task: Extract pure undo/redo state management from Svelte-specific logic in `src/lib/historyStore.svelte.ts`.
+    - [x] Sub-task: Ensure tests in `historyStore.spec.ts` pass with the new segmented structure.
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Modularize Store Logic' (Protocol in workflow.md) (4edbdad)
 
 ## Phase 3: Services and Database Layer Refactoring
 - [ ] Task: Organize Utility Functions
