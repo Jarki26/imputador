@@ -1,6 +1,6 @@
 # Implementation Plan: Code Segmentation and Complexity Reduction
 
-## Phase 1: Sub-component Extraction for WeeklyView
+## Phase 1: Sub-component Extraction for WeeklyView [checkpoint: 2ea4921]
 - [x] Task: Extract Weekly Header Component (213c7ea)
     - [x] Sub-task: Identify and isolate the header section (navigation, goal progress, totals) in `src/lib/WeeklyView.svelte`.
     - [x] Sub-task: Create a new test file `src/lib/WeeklyHeader.spec.ts` with failing tests for the extracted component's properties and events (Red Phase).
@@ -11,7 +11,7 @@
     - [x] Sub-task: Write tests for a new `WeeklyColumn` component in `src/lib/WeeklyColumn.spec.ts` (Red Phase).
     - [x] Sub-task: Create `src/lib/WeeklyColumn.svelte` handling task rendering within a day (Green Phase).
     - [x] Sub-task: Update `src/lib/WeeklyView.svelte` to integrate the column component.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Sub-component Extraction for WeeklyView' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Sub-component Extraction for WeeklyView' (Protocol in workflow.md) (62c042f)
 
 ## Phase 2: Modularize Store Logic
 - [ ] Task: Segment Task Store
