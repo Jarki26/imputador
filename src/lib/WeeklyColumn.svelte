@@ -75,7 +75,7 @@
   }
 </script>
 
-<div class="day-column">
+<div class="day-column" style="--pixels-per-minute: {pixelsPerMinute}">
   {#each hours as hour}
     <div
       class="hour-cell"
@@ -165,6 +165,12 @@
 </div>
 
 <style>
+  /* Local border-box reset */
+  .day-column,
+  .day-column * {
+    box-sizing: border-box;
+  }
+
   .day-column {
     flex: 1;
     display: flex;
@@ -179,7 +185,6 @@
   }
 
   .hour-cell {
-    height: calc(60 * var(--pixels-per-minute, 1) * 1px);
     flex-shrink: 0;
     border-bottom: 1px solid var(--md-sys-color-outline-variant);
   }
