@@ -1,4 +1,4 @@
-import { initDB, type Company } from './db';
+import { initDB, type Company, putItem, deleteItem, getMany } from './db';
 
 /**
  * Service for managing companies in IndexedDB.
@@ -26,7 +26,7 @@ export class CompanyStore {
       useCount: (existing?.useCount || 0) + 1,
     };
     
-    await db.put('companies', company);
+    await putItem(db, 'companies', company);
   }
 
   /**
@@ -36,20 +36,11 @@ export class CompanyStore {
    */
   async getRecentCompanies(limit: number = 10): Promise<Company[]> {
     const db = await initDB(this.dbName);
-    const tx = db.transaction('companies', 'readonly');
-    const store = tx.objectStore('companies');
-    const index = store.index('useCount');
-
-    // Get companies sorted by useCount descending
-    const companies: Company[] = [];
-    let cursor = await index.openCursor(null, 'prev');
-
-    while (cursor && companies.length < limit) {
-      companies.push(cursor.value);
-      cursor = await cursor.continue();
-    }
-
-    return companies;
+    return getMany<Company>(db, 'companies', {
+        indexName: 'useCount',
+        direction: 'prev',
+        limit
+    });
   }
 
   /**
@@ -58,7 +49,7 @@ export class CompanyStore {
    */
   async deleteCompany(name: string): Promise<void> {
     const db = await initDB(this.dbName);
-    await db.delete('companies', name);
+    await deleteItem(db, 'companies', name);
   }
 
   /**
@@ -73,10 +64,10 @@ export class CompanyStore {
 
     // If the name is changing, we need to delete the old entry and put a new one
     if (updates.name && updates.name !== name) {
-        await db.delete('companies', name);
-        await db.put('companies', { ...existing, ...updates } as Company);
+        await deleteItem(db, 'companies', name);
+        await putItem(db, 'companies', { ...existing, ...updates } as Company);
     } else {
-        await db.put('companies', { ...existing, ...updates } as Company);
+        await putItem(db, 'companies', { ...existing, ...updates } as Company);
     }
   }
 
@@ -87,10 +78,7 @@ export class CompanyStore {
    */
   async searchCompanies(query: string): Promise<Company[]> {
     const db = await initDB(this.dbName);
-    const tx = db.transaction('companies', 'readonly');
-    const store = tx.objectStore('companies');
-
-    const companies = await store.getAll();
+    const companies = await getMany<Company>(db, 'companies');
     const lowerQuery = query.toLowerCase();
 
     return companies
@@ -98,3 +86,4 @@ export class CompanyStore {
       .sort((a, b) => b.useCount - a.useCount || b.lastUsedAt.getTime() - a.lastUsedAt.getTime());
   }
 }
+

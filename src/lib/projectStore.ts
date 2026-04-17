@@ -1,4 +1,4 @@
-import { initDB, type Project } from './db';
+import { initDB, type Project, putItem, deleteItem, getMany } from './db';
 
 /**
  * Service for managing projects in IndexedDB.
@@ -20,7 +20,7 @@ export class ProjectStore {
       name,
       lastUsedAt: new Date(),
     };
-    await db.put('projects', project);
+    await putItem(db, 'projects', project);
   }
 
   /**
@@ -30,18 +30,14 @@ export class ProjectStore {
    */
   async renameProject(oldName: string, newName: string): Promise<void> {
     const db = await initDB(this.dbName);
-    const tx = db.transaction('projects', 'readwrite');
-    const store = tx.objectStore('projects');
+    const existing = await db.get('projects', oldName);
+    if (!existing) return;
 
-    const project = await store.get(oldName);
-    if (!project) return;
-
-    await store.delete(oldName);
-    await store.put({
-      ...project,
+    await deleteItem(db, 'projects', oldName);
+    await putItem(db, 'projects', {
+      ...existing,
       name: newName,
     });
-    await tx.done;
   }
 
   /**
@@ -51,12 +47,7 @@ export class ProjectStore {
    */
   async searchProjects(query: string): Promise<Project[]> {
     const db = await initDB(this.dbName);
-    const tx = db.transaction('projects', 'readonly');
-    const store = tx.objectStore('projects');
-
-    // We can't do case-insensitive search efficiently in IDB without a specialized index
-    // or scanning. For now, we'll get all and filter, assuming project count is small (<1000).
-    const projects = await store.getAll();
+    const projects = await getMany<Project>(db, 'projects');
     const lowerQuery = query.toLowerCase();
 
     return projects
@@ -71,19 +62,11 @@ export class ProjectStore {
    */
   async getRecentProjects(limit: number = 10): Promise<Project[]> {
     const db = await initDB(this.dbName);
-    const tx = db.transaction('projects', 'readonly');
-    const store = tx.objectStore('projects');
-    const index = store.index('lastUsedAt');
-
-    // Get projects sorted by lastUsedAt descending
-    const projects: Project[] = [];
-    let cursor = await index.openCursor(null, 'prev');
-
-    while (cursor && projects.length < limit) {
-      projects.push(cursor.value);
-      cursor = await cursor.continue();
-    }
-
-    return projects;
+    return getMany<Project>(db, 'projects', {
+        indexName: 'lastUsedAt',
+        direction: 'prev',
+        limit
+    });
   }
 }
+
