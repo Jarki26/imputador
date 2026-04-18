@@ -1,7 +1,7 @@
 # Implementation Plan: Integración Sesame
 
 ## Phase 1: Sesame Configuration & Core API Service
-- [ ] Task: Implement Sesame API client service
+- [x] Task: Implement Sesame API client service (6b2c499)
     - [ ] Create `sesameService.ts` for API interactions (login, me, checks).
     - [ ] Implement error handling and formatting for Sesame API responses.
     - [ ] Write unit tests for API endpoints and error mappings.
