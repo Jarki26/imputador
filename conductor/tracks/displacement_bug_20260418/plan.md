@@ -1,0 +1,18 @@
+# Implementation Plan: Fix Extra Task Generation on Displacement Drag
+
+## Phase 1: Setup and Reproduction Tests
+- [ ] Task: Create a failing test in `src/lib/taskStore.editCollision.spec.ts` or `src/lib/taskStore.displacement.spec.ts` that explicitly reproduces the scenario: updating a task with displacement where the new bounds overlap with an earlier task, causing its "old self" to be incorrectly split and duplicated by recursive `pushConflict` calls.
+- [ ] Task: Run the test suite to ensure the new test fails as expected (Red Phase).
+- [ ] Task: Conductor - User Manual Verification 'Phase 1: Setup and Reproduction Tests' (Protocol in workflow.md)
+
+## Phase 2: Fix Displacement Logic
+- [ ] Task: Modify `pushConflict` in `src/lib/taskStore.collision.ts` to accept an array or Set of `excludeIds` instead of a single `excludeId`.
+- [ ] Task: Update the recursive calls within `pushConflict` to pass down the accumulated `excludeIds` (including the originally dragged task and any newly shifted tasks).
+- [ ] Task: Run the test suite and verify that the previously failing test now passes without generating the extra replica (Green Phase).
+- [ ] Task: Ensure all other tests related to displacement continue to pass (regression check).
+- [ ] Task: Conductor - User Manual Verification 'Phase 2: Fix Displacement Logic' (Protocol in workflow.md)
+
+## Phase 3: Final Verification
+- [ ] Task: Run the full test suite with coverage to verify >80% coverage for modified files.
+- [ ] Task: Check code for linting/formatting errors.
+- [ ] Task: Conductor - User Manual Verification 'Phase 3: Final Verification' (Protocol in workflow.md)
