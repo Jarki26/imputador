@@ -1,6 +1,6 @@
 # Implementation Plan: Integración Sesame
 
-## Phase 1: Sesame Configuration & Core API Service
+## Phase 1: Sesame Configuration & Core API Service [checkpoint: 069842a]
 - [x] Task: Implement Sesame API client service (6b2c499)
     - [ ] Create `sesameService.ts` for API interactions (login, me, checks).
     - [ ] Implement error handling and formatting for Sesame API responses.
@@ -10,7 +10,7 @@
     - [ ] Implement login form and securely save credentials/token in IndexedDB config.
     - [ ] Implement logout functionality.
     - [ ] Write unit tests for Settings UI and config storage.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Sesame Configuration & Core API Service' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Sesame Configuration & Core API Service' (Protocol in workflow.md) (069842a)
 
 ## Phase 2: Synchronization Logic & Weekly View Integration
 - [ ] Task: Implement gap calculation logic
