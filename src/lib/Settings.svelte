@@ -5,6 +5,7 @@
   import TaskColorSettings from './TaskColorSettings.svelte';
   import BulkEdit from './BulkEdit.svelte';
   import BackupSettings from './BackupSettings.svelte';
+  import SesameSettings from './SesameSettings.svelte';
   import type { ColumnMapping } from './exportConfigStore';
   import type { CompanyStore } from './companyStore';
   import type { TaskStore } from './taskStore';
@@ -19,6 +20,7 @@
     companyStore?: CompanyStore;
     taskStore?: TaskStore;
     projectStore?: ProjectStore;
+    configStore?: ConfigStore;
     onSave: (target: number) => void;
     onSaveExportConfig: (data: {
       template: ColumnMapping[];
@@ -39,6 +41,7 @@
     companyStore,
     taskStore,
     projectStore,
+    configStore,
     onSave,
     onSaveExportConfig,
     onSaveTaskTypeColor,
@@ -131,6 +134,11 @@
   <hr class="separator" />
 
   <BackupSettings />
+
+  {#if configStore}
+    <hr class="separator" />
+    <SesameSettings {configStore} />
+  {/if}
 
   <div class="actions">
     <button class="save-btn" onclick={handleSave}

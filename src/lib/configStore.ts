@@ -75,4 +75,53 @@ export class ConfigStore {
     }
     return colors;
   }
+
+  /**
+   * Sesame HR Integration Methods
+   */
+
+  async getSesameToken(): Promise<string | null> {
+    const db = await initDB(this.dbName);
+    const config = await db.get('config', 'sesameToken');
+    return config ? config.value : null;
+  }
+
+  async setSesameToken(token: string | null): Promise<void> {
+    const db = await initDB(this.dbName);
+    if (token === null) {
+      await db.delete('config', 'sesameToken');
+    } else {
+      await db.put('config', { key: 'sesameToken', value: token });
+    }
+  }
+
+  async getSesameUserId(): Promise<string | null> {
+    const db = await initDB(this.dbName);
+    const config = await db.get('config', 'sesameUserId');
+    return config ? config.value : null;
+  }
+
+  async setSesameUserId(id: string | null): Promise<void> {
+    const db = await initDB(this.dbName);
+    if (id === null) {
+      await db.delete('config', 'sesameUserId');
+    } else {
+      await db.put('config', { key: 'sesameUserId', value: id });
+    }
+  }
+
+  async getSesameEmail(): Promise<string | null> {
+    const db = await initDB(this.dbName);
+    const config = await db.get('config', 'sesameEmail');
+    return config ? config.value : null;
+  }
+
+  async setSesameEmail(email: string | null): Promise<void> {
+    const db = await initDB(this.dbName);
+    if (email === null) {
+      await db.delete('config', 'sesameEmail');
+    } else {
+      await db.put('config', { key: 'sesameEmail', value: email });
+    }
+  }
 }

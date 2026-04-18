@@ -384,6 +384,7 @@
     {companyStore}
     {taskStore}
     {projectStore}
+    {configStore}
     onSave={handleSaveSettings}
     onSaveExportConfig={handleSaveExportConfig}
     onSaveTaskTypeColor={handleSaveTaskTypeColor}

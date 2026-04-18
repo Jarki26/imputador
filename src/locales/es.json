@@ -58,7 +58,16 @@
     "import_settings": "Importar Ajustes",
     "backup_confirm": "¿Estás seguro de que deseas sobrescribir TODOS los ajustes? Esta acción no se puede deshacer.",
     "backup_success": "Ajustes importados con éxito. La página se recargará ahora.",
-    "backup_error": "Error al importar ajustes: {error}"
+    "backup_error": "Error al importar ajustes: {error}",
+    "sesame_title": "Integración Sesame HR",
+    "sesame_email": "Email de Sesame",
+    "sesame_password": "Contraseña de Sesame",
+    "sesame_login": "Iniciar sesión en Sesame",
+    "sesame_logout": "Cerrar sesión en Sesame",
+    "sesame_logged_in_as": "Sesión iniciada como: {email}",
+    "sesame_login_success": "Sesión iniciada en Sesame con éxito",
+    "sesame_login_error": "Error al iniciar sesión: {error}",
+    "sesame_sync_button": "Sincronizar Sesame"
   },
   "task": {
     "form_title_add": "Añadir Tarea",
