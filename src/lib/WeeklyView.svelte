@@ -18,6 +18,7 @@
     onTaskCopyToRecents,
     onNavigate,
     onDayClick,
+    onSyncSesame,
   }: {
     startDate: Date;
     tasks: Task[];
@@ -32,7 +33,20 @@
     onTaskDelete?: (taskId: number) => void;
     onTaskCopyToRecents?: (task: Task) => void;
     onNavigate?: (date: Date) => void;
+    onSyncSesame?: () => Promise<void>;
   } = $props();
+
+  let syncLoading = $state(false);
+
+  async function handleSync() {
+    if (!onSyncSesame || syncLoading) return;
+    syncLoading = true;
+    try {
+      await onSyncSesame();
+    } finally {
+      syncLoading = false;
+    }
+  }
 
   const daysOfWeek = $derived.by(() => {
     const days = [];
@@ -570,6 +584,8 @@
     {effectiveGoal}
     {remainingTime}
     {progressPercentage}
+    onSyncSesame={handleSync}
+    {syncLoading}
   />
   <div class="grid-scroll-container">
     <div class="grid-header">

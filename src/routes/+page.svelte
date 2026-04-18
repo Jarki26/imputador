@@ -19,6 +19,9 @@
   } from '$lib/exportConfigStore';
   import { ExportService } from '$lib/exportService';
   import ExportTrigger from '$lib/ExportTrigger.svelte';
+  import { sesameService } from '$lib/sesameService';
+  import { calculateGapsFromChecks, syncSesameTasks } from '$lib/sesameSync';
+  import { formatDateOnlyForInput } from '$lib/dateUtils';
 
   const taskStore = new TaskStore();
   const projectStore = new ProjectStore();
@@ -210,6 +213,40 @@
       handleRedo();
     }
   }
+
+  async function handleSyncSesame() {
+    const token = await configStore.getSesameToken();
+    const userId = await configStore.getSesameUserId();
+
+    if (!token || !userId) {
+      alert(i18n.t('settings.sesame_login_error', { error: 'Not logged in' }));
+      return;
+    }
+
+    try {
+      // Find Monday of the current week
+      const current = new Date(selectedDate);
+      current.setHours(0, 0, 0, 0);
+      const day = current.getDay();
+      const diff = current.getDate() - day + (day === 0 ? -6 : 1);
+      const monday = new Date(current.setDate(diff));
+
+      const sunday = new Date(monday);
+      sunday.setDate(monday.getDate() + 6);
+
+      const from = formatDateOnlyForInput(monday);
+      const to = formatDateOnlyForInput(sunday);
+
+      const checks = await sesameService.getChecks(userId, token, from, to);
+      const restTasks = calculateGapsFromChecks(checks);
+
+      await syncSesameTasks(restTasks, taskStore);
+      await loadTasks(true);
+    } catch (e: any) {
+      console.error('Sesame sync failed:', e);
+      alert(i18n.t('settings.sesame_login_error', { error: e.message }));
+    }
+  }
 </script>
 
 <svelte:window onkeydown={handleKeydown} />
@@ -289,6 +326,7 @@
         onTaskCopyToRecents={async (task) => {
           await taskStore.upsertRecentTask(task);
         }}
+        onSyncSesame={handleSyncSesame}
       />
     {:else}
       <section class="daily-section">

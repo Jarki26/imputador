@@ -8,6 +8,8 @@
     effectiveGoal,
     remainingTime,
     progressPercentage,
+    onSyncSesame,
+    syncLoading = false,
   }: {
     startDate: Date;
     onNavigate?: (date: Date) => void;
@@ -15,41 +17,60 @@
     effectiveGoal: number;
     remainingTime: number;
     progressPercentage: number;
+    onSyncSesame?: () => void;
+    syncLoading?: boolean;
   } = $props();
 </script>
 
 <div class="weekly-header">
-  <div class="nav-controls">
-    <button
-      class="nav-btn"
-      onclick={() => {
-        const prev = new Date(startDate);
-        prev.setDate(prev.getDate() - 7);
-        if (onNavigate) onNavigate(prev);
-      }}
-      title={i18n.t('weekly.prev_week')}
-      aria-label={i18n.t('weekly.prev_week')}
-    >
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-        <path
-          d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z"
-        />
-      </svg>
-    </button>
-    <button
-      class="nav-btn"
-      onclick={() => {
-        const next = new Date(startDate);
-        next.setDate(next.getDate() + 7);
-        if (onNavigate) onNavigate(next);
-      }}
-      title={i18n.t('weekly.next_week')}
-      aria-label={i18n.t('weekly.next_week')}
-    >
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-        <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
-      </svg>
-    </button>
+  <div class="header-left">
+    <div class="nav-controls">
+      <button
+        class="nav-btn"
+        onclick={() => {
+          const prev = new Date(startDate);
+          prev.setDate(prev.getDate() - 7);
+          if (onNavigate) onNavigate(prev);
+        }}
+        title={i18n.t('weekly.prev_week')}
+        aria-label={i18n.t('weekly.prev_week')}
+      >
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+          <path
+            d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z"
+          />
+        </svg>
+      </button>
+      <button
+        class="nav-btn"
+        onclick={() => {
+          const next = new Date(startDate);
+          next.setDate(next.getDate() + 7);
+          if (onNavigate) onNavigate(next);
+        }}
+        title={i18n.t('weekly.next_week')}
+        aria-label={i18n.t('weekly.next_week')}
+      >
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+          <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
+        </svg>
+      </button>
+    </div>
+
+    {#if onSyncSesame}
+      <button 
+        class="sync-btn" 
+        class:loading={syncLoading}
+        onclick={onSyncSesame}
+        disabled={syncLoading}
+        title={i18n.t('settings.sesame_sync_button')}
+      >
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+          <path d="M12,18A6,6 0 0,1 6,12C6,11,6.25,10.03 6.7,9.2L5.24,7.74C4.46,8.97 4,10.43 4,12A8,8 0 0,0 12,20V23L16,19L12,15V18M12,4V1L8,5L12,9V6A6,6 0 0,1 18,12C18,13 17.75,13.97 17.3,14.8L18.76,16.26C19.54,15.03 20,13.57 20,12A8,8 0 0,0 12,4Z" />
+        </svg>
+        <span>{i18n.t('settings.sesame_sync_button')}</span>
+      </button>
+    {/if}
   </div>
   <div class="summary-container">
     <div class="weekly-summary">
@@ -81,6 +102,12 @@
     padding: 0 0.5rem;
   }
 
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
   .nav-controls {
     display: flex;
     gap: 4px;
@@ -101,6 +128,44 @@
 
   .nav-btn:hover {
     background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .sync-btn {
+    background: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+    border: none;
+    border-radius: 20px;
+    padding: 4px 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+
+  .sync-btn:hover:not(:disabled) {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+
+  .sync-btn:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  .sync-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .sync-btn.loading svg {
+    animation: rotate 1s linear infinite;
+  }
+
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
   }
 
   .summary-container {
