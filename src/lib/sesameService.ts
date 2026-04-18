@@ -30,13 +30,13 @@ export const sesameService = {
     }
 
     const result = await response.json();
-    return result.data.token;
+    return result.data;
   },
 
   async getMe(token: string): Promise<SesameUser> {
     const response = await fetch('https://back-eu4.sesametime.com/api/v3/security/me', {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: token,
       },
     });
 
@@ -45,14 +45,15 @@ export const sesameService = {
     }
 
     const result = await response.json();
-    return result.data;
+    // The documentation shows 'data' is an array
+    return Array.isArray(result.data) ? result.data[0] : result.data;
   },
 
   async getChecks(userId: string, token: string, from: string, to: string): Promise<SesameCheck[]> {
     const url = `https://back-eu4.sesametime.com/api/v3/employees/${userId}/checks?from=${from}&to=${to}&includeOut=true`;
     const response = await fetch(url, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: token,
       },
     });
 

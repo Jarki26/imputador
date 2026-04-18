@@ -11,7 +11,7 @@ describe('sesameService', () => {
       const mockToken = 'mock-token';
       (fetch as any).mockResolvedValue({
         ok: true,
-        json: async () => ({ data: { token: mockToken } }),
+        json: async () => ({ data: mockToken }),
       });
 
       const token = await sesameService.login('user@example.com', 'password123');
@@ -43,7 +43,7 @@ describe('sesameService', () => {
       const mockUser = { id: 'user-id-123' };
       (fetch as any).mockResolvedValue({
         ok: true,
-        json: async () => ({ data: mockUser }),
+        json: async () => ({ data: [mockUser] }),
       });
 
       const user = await sesameService.getMe('some-token');
@@ -52,7 +52,7 @@ describe('sesameService', () => {
         'https://back-eu4.sesametime.com/api/v3/security/me',
         expect.objectContaining({
           headers: expect.objectContaining({
-            Authorization: 'Bearer some-token',
+            Authorization: 'some-token',
           }),
         })
       );
@@ -85,7 +85,7 @@ describe('sesameService', () => {
         'https://back-eu4.sesametime.com/api/v3/employees/user-id/checks?from=2026-04-19&to=2026-04-25&includeOut=true',
         expect.objectContaining({
           headers: expect.objectContaining({
-            Authorization: 'Bearer token',
+            Authorization: 'token',
           }),
         })
       );
