@@ -13,7 +13,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Sesame Configuration & Core API Service' (Protocol in workflow.md) (069842a)
 
 ## Phase 2: Synchronization Logic & Weekly View Integration
-- [ ] Task: Implement gap calculation logic
+- [x] Task: Implement gap calculation logic (0e6f813)
     - [ ] Create utility function to process `checkIn` and `checkOut` arrays and generate "Rest" tasks.
     - [ ] Ensure gaps are strictly bounded by the first and last check of each day.
     - [ ] Write unit tests for the gap calculation logic covering multiple scenarios (single gap, multiple gaps, no gaps).
