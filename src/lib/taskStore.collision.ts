@@ -63,7 +63,7 @@ export async function pushConflict(
   end: number,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   store: any,
-  excludeId?: number,
+  excludeIds: number[] = [],
 ): Promise<void> {
   const index = store.index('date');
   // Get all tasks for the day (to be safe, though we could optimize with range)
@@ -75,7 +75,7 @@ export async function pushConflict(
   const tasks: Task[] = await index.getAll(range);
 
   for (const oldTask of tasks) {
-    if (!oldTask.id || oldTask.id === excludeId) continue;
+    if (!oldTask.id || excludeIds.includes(oldTask.id)) continue;
 
     // Fetch the latest version of the task as it might have been shifted by a recursive call
     const task = await store.get(oldTask.id);
@@ -104,7 +104,9 @@ export async function pushConflict(
         };
 
         // Recursively push what this new part might collide with
-        await pushConflict(newStart, newEnd, store);
+        // Note: taskAfter doesn't have an ID yet, so we can't exclude it here,
+        // but pushConflict will check the DB, and taskAfter isn't in the DB yet.
+        await pushConflict(newStart, newEnd, store, excludeIds);
         await store.add(taskAfter);
       } else {
         // Shift whole task
@@ -120,8 +122,8 @@ export async function pushConflict(
         await store.put(updatedTask);
 
         // Recursively push what this shifted task might collide with
-        // excludeId is important here to not push 'updatedTask' again
-        await pushConflict(newStart, newEnd, store, updatedTask.id);
+        // excludeIds is important here to not push 'updatedTask' again
+        await pushConflict(newStart, newEnd, store, [...excludeIds, updatedTask.id]);
       }
     }
   }

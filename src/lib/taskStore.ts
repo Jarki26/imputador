@@ -262,7 +262,7 @@ export class TaskStore {
       updatedTask.startTime.getTime(),
       updatedTask.endTime.getTime(),
       store,
-      id, // Exclude the task being updated
+      [id], // Exclude the task being updated
     );
 
     await store.put(updatedTask);
