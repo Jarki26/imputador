@@ -2,3 +2,7 @@
 
 This file tracks all major tracks for the project. Each track has its own detailed plan in its respective folder.
 
+---
+
+- [ ] **Track: Integración Sesame**
+*Link: [./tracks/integracion_sesame_20260419/](./tracks/integracion_sesame_20260419/)*
