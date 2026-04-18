@@ -21,7 +21,7 @@
     - [ ] Integrate with existing `taskStore` or create a specific function for Sesame tasks insertion.
     - [ ] Apply the 3 rules for format matching, conflict resolution, and preservation of user tasks.
     - [ ] Write unit tests for the insertion and collision logic.
-- [ ] Task: Add "Sync Sesame" to Weekly View
+- [x] Task: Add "Sync Sesame" to Weekly View (f7899e5)
     - [ ] Add the sync button to the Weekly View UI.
     - [ ] Connect the button to fetch checks for the current week.
     - [ ] Provide user feedback (loading state, success, error toasts/alerts).
