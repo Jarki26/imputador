@@ -5,7 +5,7 @@
     - [ ] Create `sesameService.ts` for API interactions (login, me, checks).
     - [ ] Implement error handling and formatting for Sesame API responses.
     - [ ] Write unit tests for API endpoints and error mappings.
-- [ ] Task: Integrate Sesame settings and authentication in UI
+- [x] Task: Integrate Sesame settings and authentication in UI (577525c)
     - [ ] Add Sesame section to the Settings modal/page.
     - [ ] Implement login form and securely save credentials/token in IndexedDB config.
     - [ ] Implement logout functionality.
