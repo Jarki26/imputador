@@ -14,8 +14,7 @@
 - [x] Task: Ensure all other tests related to displacement continue to pass (regression check).
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Fix Displacement Logic' (Protocol in workflow.md) 277e85d
 
-## Phase 3: Final Verification
-
-- [~] Task: Run the full test suite with coverage to verify >80% coverage for modified files.
-- [ ] Task: Check code for linting/formatting errors.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Final Verification' (Protocol in workflow.md)
+## Phase 3: Final Verification [checkpoint: 0c83049]
+- [x] Task: Run the full test suite with coverage to verify >80% coverage for modified files.
+- [x] Task: Check code for linting/formatting errors.
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Final Verification' (Protocol in workflow.md) 0c83049
