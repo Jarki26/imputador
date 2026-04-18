@@ -148,4 +148,64 @@ describe('TaskStore Displacement Logic', () => {
     expect(tasks[3].startTime.toISOString()).toBe('2026-04-11T11:15:00.000Z');
     expect(tasks[3].endTime.toISOString()).toBe('2026-04-11T12:15:00.000Z');
   });
+
+  it('should not create extra replicas when moving a task upwards with displacement (Reproduction of Bug)', async () => {
+    // 1. Create Task A from 09:00 to 10:00
+    const idA = await store.addTask({
+      title: 'Task A',
+      startTime: new Date('2026-04-18T09:00:00Z'),
+      endTime: new Date('2026-04-18T10:00:00Z'),
+      description: '',
+      project: '',
+      type: '',
+      date: new Date('2026-04-18T00:00:00Z'),
+    });
+
+    // 2. Create Task B from 10:00 to 11:00
+    const idB = await store.addTask({
+      title: 'Task B',
+      startTime: new Date('2026-04-18T10:00:00Z'),
+      endTime: new Date('2026-04-18T11:00:00Z'),
+      description: '',
+      project: '',
+      type: '',
+      date: new Date('2026-04-18T00:00:00Z'),
+    });
+
+    // 3. Update Task B to 09:45 - 10:45 with displacement
+    // This should shift Task A's end to 09:45 and Task A's tail (15m) to after Task B
+    await store.updateWithDisplacement(idB!, {
+      startTime: new Date('2026-04-18T09:45:00Z'),
+      endTime: new Date('2026-04-18T10:45:00Z'),
+    });
+
+    const tasks = (await store.getTasksForDay(new Date('2026-04-18'))).sort(
+      (a, b) => a.startTime.getTime() - b.startTime.getTime(),
+    );
+
+    // Expected:
+    // 1. Task A (09:00 - 09:45)
+    // 2. Task B (09:45 - 10:45)
+    // 3. Task A (10:45 - 11:00)
+    
+    // Bug Actual:
+    // 1. Task A (09:00 - 09:45)
+    // 2. Task B (09:45 - 10:45)
+    // 3. Task A (10:45 - 11:00)
+    // 4. Task B replica (11:00 - 11:15) <--- THIS IS THE BUG
+
+    expect(tasks).toHaveLength(3);
+    
+    expect(tasks[0].title).toBe('Task A');
+    expect(tasks[0].startTime.toISOString()).toBe('2026-04-18T09:00:00.000Z');
+    expect(tasks[0].endTime.toISOString()).toBe('2026-04-18T09:45:00.000Z');
+
+    expect(tasks[1].title).toBe('Task B');
+    expect(tasks[1].startTime.toISOString()).toBe('2026-04-18T09:45:00.000Z');
+    expect(tasks[1].endTime.toISOString()).toBe('2026-04-18T10:45:00.000Z');
+
+    expect(tasks[2].title).toBe('Task A');
+    expect(tasks[2].startTime.toISOString()).toBe('2026-04-18T10:45:00.000Z');
+    expect(tasks[2].endTime.toISOString()).toBe('2026-04-18T11:00:00.000Z');
+  });
 });
