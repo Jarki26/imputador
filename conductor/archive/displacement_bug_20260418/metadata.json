@@ -1,0 +1,8 @@
+{
+  "track_id": "displacement_bug_20260418",
+  "type": "bug",
+  "status": "new",
+  "created_at": "2026-04-18T10:00:00Z",
+  "updated_at": "2026-04-18T10:00:00Z",
+  "description": "Bug al coger una tarea posterior a otra y realizar un desplazamiento, ya que genera una replica extra de la tarea arrastrada con un tiempo añadido según la diferencia de tiempo presente entre la hora fin inicial y la nueva tras el desplazamiento."
+}
