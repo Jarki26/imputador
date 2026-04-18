@@ -41,22 +41,32 @@ describe('ExportSettings - Excel Date Format Warning', () => {
     });
 
     const file = new File([''], 'test.xlsx');
-    const input = container.querySelector('input[type="file"]') as HTMLInputElement;
+    const input = container.querySelector(
+      'input[type="file"]',
+    ) as HTMLInputElement;
     await fireEvent.change(input, { target: { files: [file] } });
 
     // Confirm import
     await screen.findByText(/Vaciar datos e importar/i);
     const confirmInput = screen.getByPlaceholderText('IMPORTAR');
     await fireEvent.input(confirmInput, { target: { value: 'IMPORTAR' } });
-    const confirmBtn = screen.getByText(/Importar Archivo/i, { selector: 'button.confirm-btn' });
+    const confirmBtn = screen.getByText(/Importar Archivo/i, {
+      selector: 'button.confirm-btn',
+    });
     await fireEvent.click(confirmBtn);
 
     // Check for results modal and warning
     await screen.findByText(/Importación Finalizada/i);
-    
+
     // The warning message should contain the current format
     // In Spanish as per i18n.setLocale('es')
-    expect(await screen.findByText(/Atención: No se pudieron procesar algunas fechas/i)).toBeDefined();
-    expect(screen.getByText(/El formato configurado actualmente es 'DD\/MM\/YYYY'/i)).toBeDefined();
+    expect(
+      await screen.findByText(
+        /Atención: No se pudieron procesar algunas fechas/i,
+      ),
+    ).toBeDefined();
+    expect(
+      screen.getByText(/El formato configurado actualmente es 'DD\/MM\/YYYY'/i),
+    ).toBeDefined();
   });
 });

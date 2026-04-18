@@ -1,9 +1,11 @@
 # Specification: TaskForm UX Improvements (Section 4.2)
 
 ## Overview
+
 This track implements essential User Experience enhancements to the `TaskForm.svelte` component as outlined in section 4.2 of the pending tasks. The primary goal is to simplify data entry, reduce cognitive load when inputting durations, and ensure data consistency by preventing cross-day tasks.
 
 ## Functional Requirements
+
 1. **Duration Lock (Botón para bloquear duración):**
    - The form MUST include a "padlock icon" situated between the start and end time inputs.
    - When the lock is ACTIVE, modifying the start time MUST automatically adjust the end time to maintain the currently specified duration.
@@ -20,9 +22,11 @@ This track implements essential User Experience enhancements to the `TaskForm.sv
    - If a user inputs a start time and a duration that pushes the end time past 23:59 of the selected date, the form MUST display a validation error and prevent saving.
 
 ## Non-Functional Requirements
+
 - **Usability:** The padlock icon should clearly indicate its state (locked/unlocked) visually.
 
 ## Acceptance Criteria
+
 - [ ] A padlock icon is present between start and end time inputs.
 - [ ] Toggling the padlock updates its visual state.
 - [ ] Changing the start time with the padlock active correctly shifts the end time, keeping the duration constant.
@@ -31,5 +35,6 @@ This track implements essential User Experience enhancements to the `TaskForm.sv
 - [ ] Attempting to save a task whose duration extends into the next calendar day triggers a visible validation error and fails to save.
 
 ## Out of Scope
+
 - Major redesign of the TaskForm UI outside of adding the lock icon.
 - Automated splitting of cross-day tasks (handled via validation error instead).

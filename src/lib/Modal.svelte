@@ -31,7 +31,10 @@
     >
       <div class="modal-header">
         <h2 id="modal-title">{title}</h2>
-        <button class="close-btn" onclick={onClose} aria-label={i18n.t('common.close')}>×</button
+        <button
+          class="close-btn"
+          onclick={onClose}
+          aria-label={i18n.t('common.close')}>×</button
         >
       </div>
       <div class="modal-body">

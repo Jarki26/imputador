@@ -22,8 +22,12 @@ describe('WeeklyView.svelte - Visual Scale', () => {
 
     render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks } });
 
-    const task1 = screen.getByText('1 Hour Task').closest('.task-block') as HTMLElement;
-    const task2 = screen.getByText('30 Min Task').closest('.task-block') as HTMLElement;
+    const task1 = screen
+      .getByText('1 Hour Task')
+      .closest('.task-block') as HTMLElement;
+    const task2 = screen
+      .getByText('30 Min Task')
+      .closest('.task-block') as HTMLElement;
 
     // 1 hour = 60px
     expect(task1.style.height).toBe('60px');

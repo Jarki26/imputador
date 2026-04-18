@@ -7,7 +7,9 @@
   async function handleExport() {
     const service = new SettingsService();
     const data = await service.exportData();
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const blob = new Blob([JSON.stringify(data, null, 2)], {
+      type: 'application/json',
+    });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     const date = new Date().toISOString().split('T')[0].replace(/-/g, '');
@@ -41,7 +43,9 @@
         }
       } catch (err) {
         console.error(err);
-        alert(i18n.t('settings.backup_error', { error: (err as Error).message }));
+        alert(
+          i18n.t('settings.backup_error', { error: (err as Error).message }),
+        );
       } finally {
         input.value = ''; // Reset input
       }
@@ -53,13 +57,13 @@
 
 <div class="backup-settings">
   <h3>{i18n.t('settings.backup_restore')}</h3>
-  
+
   <div class="backup-actions">
     <button class="btn secondary" onclick={handleExport}>
       <span class="icon">📥</span>
       {i18n.t('settings.export_settings')}
     </button>
-    
+
     <button class="btn secondary" onclick={triggerImport}>
       <span class="icon">📤</span>
       {i18n.t('settings.import_settings')}

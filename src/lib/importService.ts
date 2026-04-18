@@ -26,7 +26,9 @@ export class ImportService {
   /**
    * Imports a list of tasks into the database after wiping it.
    */
-  async importTasks(tasks: Task[]): Promise<{ successCount: number; errorCount: number }> {
+  async importTasks(
+    tasks: Task[],
+  ): Promise<{ successCount: number; errorCount: number }> {
     const db = await initDB();
     const tx = db.transaction('tasks', 'readwrite');
     const store = tx.objectStore('tasks');
@@ -85,9 +87,15 @@ export class ImportService {
 
           // Handle Excel Date objects
           if (val instanceof Date) {
-            if (mapping.taskField === 'startDate' || mapping.taskField === 'endDate') {
+            if (
+              mapping.taskField === 'startDate' ||
+              mapping.taskField === 'endDate'
+            ) {
               val = this.formatDate(val, excelDateFormat);
-            } else if (mapping.taskField === 'startTime' || mapping.taskField === 'endTime') {
+            } else if (
+              mapping.taskField === 'startTime' ||
+              mapping.taskField === 'endTime'
+            ) {
               const hours = val.getHours().toString().padStart(2, '0');
               const minutes = val.getMinutes().toString().padStart(2, '0');
               val = `${hours}:${minutes}`;
@@ -179,27 +187,37 @@ export class ImportService {
         };
 
         const startDateBase = parseDateWithFormat(dateStr, excelDateFormat);
-        const [hours, minutes] = startTimeStr.split(':').map((v) => parseInt(v));
+        const [hours, minutes] = startTimeStr
+          .split(':')
+          .map((v) => parseInt(v));
         task.startTime = new Date(startDateBase);
         task.startTime.setHours(hours || 0, minutes || 0, 0, 0);
 
         if (isNaN(task.startTime.getTime())) {
-          throw new Error(`Invalid start date or time: ${dateStr} ${startTimeStr}`);
+          throw new Error(
+            `Invalid start date or time: ${dateStr} ${startTimeStr}`,
+          );
         }
 
         if (endTimeStr) {
           const endDateBase = endDateStr
             ? parseDateWithFormat(endDateStr, excelDateFormat)
             : startDateBase;
-          const [eHours, eMinutes] = endTimeStr.split(':').map((v) => parseInt(v));
+          const [eHours, eMinutes] = endTimeStr
+            .split(':')
+            .map((v) => parseInt(v));
           task.endTime = new Date(endDateBase);
           task.endTime.setHours(eHours || 0, eMinutes || 0, 0, 0);
 
           if (isNaN(task.endTime.getTime())) {
-            throw new Error(`Invalid end date or time: ${endDateStr || dateStr} ${endTimeStr}`);
+            throw new Error(
+              `Invalid end date or time: ${endDateStr || dateStr} ${endTimeStr}`,
+            );
           }
         } else if (duration !== null && !isNaN(duration)) {
-          task.endTime = new Date(task.startTime.getTime() + duration * 3600000);
+          task.endTime = new Date(
+            task.startTime.getTime() + duration * 3600000,
+          );
         } else {
           // Default to 1 hour if nothing else
           task.endTime = new Date(task.startTime.getTime() + 3600000);
@@ -226,12 +244,8 @@ export class ImportService {
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const day = date.getDate().toString().padStart(2, '0');
 
-    return format
-      .replace('YYYY', year)
-      .replace('MM', month)
-      .replace('DD', day);
+    return format.replace('YYYY', year).replace('MM', month).replace('DD', day);
   }
-
 
   /**
    * Maps rows to tasks based on the provided template.
@@ -244,5 +258,4 @@ export class ImportService {
   ): any[] {
     return this.processRows(rows, template, excelDateFormat).tasks;
   }
-
 }

@@ -38,12 +38,12 @@ describe('TaskStore - Edit Collision Logic', () => {
     });
 
     const tasks = await store.getTasksForDay(new Date('2026-04-06'));
-    const t1 = tasks.find(t => t.id === id1);
-    const t2 = tasks.find(t => t.id === id2);
+    const t1 = tasks.find((t) => t.id === id1);
+    const t2 = tasks.find((t) => t.id === id2);
 
     expect(t1?.startTime.getUTCHours()).toBe(10);
     expect(t1?.startTime.getUTCMinutes()).toBe(30);
-    
+
     expect(t2?.startTime.getUTCHours()).toBe(11);
     expect(t2?.startTime.getUTCMinutes()).toBe(30); // Truncated start
   });
@@ -77,8 +77,8 @@ describe('TaskStore - Edit Collision Logic', () => {
     });
 
     const tasks = await store.getTasksForDay(new Date('2026-04-06'));
-    const t1 = tasks.find(t => t.id === id1);
-    const t2 = tasks.find(t => t.id === id2);
+    const t1 = tasks.find((t) => t.id === id1);
+    const t2 = tasks.find((t) => t.id === id2);
 
     expect(t1?.startTime.getUTCHours()).toBe(10);
     expect(t2?.startTime.getUTCHours()).toBe(11); // Pushed

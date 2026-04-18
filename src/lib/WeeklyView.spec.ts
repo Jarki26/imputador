@@ -47,7 +47,9 @@ describe('WeeklyView.svelte', () => {
     ];
     render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks } });
 
-    expect(screen.getAllByTitle('Horas Facturables')[0]).toHaveTextContent('1.00h');
+    expect(screen.getAllByTitle('Horas Facturables')[0]).toHaveTextContent(
+      '1.00h',
+    );
   });
 
   it('should display weekly total vs target', () => {
@@ -74,7 +76,9 @@ describe('WeeklyView.svelte', () => {
     });
 
     // Registrado: 2.00h / Objetivo: 41.00h
-    expect(screen.getByText(/Registrado: 2\.00h \/ Objetivo: 41\.00h/i)).toBeDefined();
+    expect(
+      screen.getByText(/Registrado: 2\.00h \/ Objetivo: 41\.00h/i),
+    ).toBeDefined();
   });
 
   it('should exclude REST tasks from daily total', () => {
@@ -96,8 +100,12 @@ describe('WeeklyView.svelte', () => {
     ];
     render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks } });
 
-    expect(screen.getAllByTitle('Horas Facturables')[0]).toHaveTextContent('2.00h');
-    expect(screen.getAllByTitle('Horas de Descanso/No facturables')[0]).toHaveTextContent('1.00h');
+    expect(screen.getAllByTitle('Horas Facturables')[0]).toHaveTextContent(
+      '2.00h',
+    );
+    expect(
+      screen.getAllByTitle('Horas de Descanso/No facturables')[0],
+    ).toHaveTextContent('1.00h');
   });
 
   it('should calculate daily total excluding overlapping time', () => {
@@ -120,7 +128,9 @@ describe('WeeklyView.svelte', () => {
     // Total should be from 09:00 to 11:00 = 2.00h, NOT 1h + 1.5h = 2.5h
     render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks } });
 
-    expect(screen.getAllByTitle('Horas Facturables')[0]).toHaveTextContent('2.00h');
+    expect(screen.getAllByTitle('Horas Facturables')[0]).toHaveTextContent(
+      '2.00h',
+    );
   });
 
   it('should render task blocks on the grid', () => {
@@ -202,7 +212,9 @@ describe('WeeklyView.svelte', () => {
         endTime: new Date('2026-04-06T11:00:00Z'),
       },
     ];
-    render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks, onTaskClick } });
+    render(WeeklyView, {
+      props: { startDate: new Date('2026-04-06'), tasks, onTaskClick },
+    });
 
     const taskBlock = screen.getByText('Clickable Task').closest('.task-block');
     await fireEvent.click(taskBlock!);
@@ -221,7 +233,9 @@ describe('WeeklyView.svelte', () => {
         endTime: new Date('2026-04-06T10:00:00Z'),
       },
     ];
-    render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks, onTaskUpdate } });
+    render(WeeklyView, {
+      props: { startDate: new Date('2026-04-06'), tasks, onTaskUpdate },
+    });
 
     const taskBlock = screen.getByText('Draggable Task').closest('.task-block');
 
@@ -250,7 +264,9 @@ describe('WeeklyView.svelte', () => {
         endTime: new Date('2026-04-06T10:00:00Z'),
       },
     ];
-    render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks, onTaskUpdate } });
+    render(WeeklyView, {
+      props: { startDate: new Date('2026-04-06'), tasks, onTaskUpdate },
+    });
 
     const taskBlock = screen.getByText('Resizable Task').closest('.task-block');
     const resizeHandle = taskBlock?.querySelector('.resize-handle');
@@ -404,14 +420,16 @@ describe('WeeklyView.svelte', () => {
       },
     ];
     const taskTypeColors = {
-      'DESARROLLO': '#ff0000'
+      DESARROLLO: '#ff0000',
     };
 
     render(WeeklyView, {
       props: { startDate: new Date('2026-04-06'), tasks, taskTypeColors },
     });
 
-    const taskBlock = screen.getByText('Custom Color Task').closest('.task-block') as HTMLElement;
+    const taskBlock = screen
+      .getByText('Custom Color Task')
+      .closest('.task-block') as HTMLElement;
     expect(taskBlock.style.backgroundColor).toBe('rgb(255, 0, 0)');
     // Contrast color for red should be white
     expect(taskBlock.style.color).toBe('white');

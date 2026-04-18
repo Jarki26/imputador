@@ -24,26 +24,30 @@ vi.mock('$lib/taskStore', () => {
       updateWithDisplacement = vi.fn().mockResolvedValue(undefined);
       deleteTask = vi.fn().mockResolvedValue(undefined);
       upsertRecentTask = vi.fn().mockResolvedValue(undefined);
-    }
+    },
   };
 });
 
 vi.mock('$lib/configStore', () => {
-  return { ConfigStore: class {
-    getWeeklyHoursTarget = vi.fn().mockResolvedValue(41);
-    getExcelDateFormat = vi.fn().mockResolvedValue('DD/MM/YYYY');
-    setExcelDateFormat = vi.fn().mockResolvedValue(undefined);
-    setWeeklyHoursTarget = vi.fn().mockResolvedValue(undefined);
-    getAllTaskTypeColors = vi.fn().mockResolvedValue({});
-    setTaskTypeColor = vi.fn().mockResolvedValue(undefined);
-  } };
+  return {
+    ConfigStore: class {
+      getWeeklyHoursTarget = vi.fn().mockResolvedValue(41);
+      getExcelDateFormat = vi.fn().mockResolvedValue('DD/MM/YYYY');
+      setExcelDateFormat = vi.fn().mockResolvedValue(undefined);
+      setWeeklyHoursTarget = vi.fn().mockResolvedValue(undefined);
+      getAllTaskTypeColors = vi.fn().mockResolvedValue({});
+      setTaskTypeColor = vi.fn().mockResolvedValue(undefined);
+    },
+  };
 });
 
 vi.mock('$lib/exportConfigStore', () => {
-  return { ExportConfigStore: class {
-    getTemplate = vi.fn().mockResolvedValue([]);
-    getExclusions = vi.fn().mockResolvedValue([]);
-  } };
+  return {
+    ExportConfigStore: class {
+      getTemplate = vi.fn().mockResolvedValue([]);
+      getExclusions = vi.fn().mockResolvedValue([]);
+    },
+  };
 });
 
 describe('Page Integration - Smart Default Start Time', () => {
@@ -51,7 +55,7 @@ describe('Page Integration - Smart Default Start Time', () => {
     cleanup();
     await i18n.setLocale('es');
     vi.clearAllMocks();
-    
+
     // Reset defaults
     mockGetTasksForWeek.mockResolvedValue([]);
     mockGetTasksForDay.mockResolvedValue([]);
@@ -80,8 +84,10 @@ describe('Page Integration - Smart Default Start Time', () => {
     // Check TaskForm initialStartTime
     // Use getAllByText and pick the one in the header (usually first)
     expect(screen.getAllByText(/Añadir Tarea/i).length).toBeGreaterThan(0);
-    
-    const startTimeInput = screen.getByLabelText(/Hora de Inicio/i) as HTMLInputElement;
+
+    const startTimeInput = screen.getByLabelText(
+      /Hora de Inicio/i,
+    ) as HTMLInputElement;
     expect(startTimeInput.value).toBe('10:30');
   });
 
@@ -98,11 +104,13 @@ describe('Page Integration - Smart Default Start Time', () => {
     const dayColumns = document.querySelectorAll('.day-column');
     const mondayColumn = dayColumns[0];
     const hourCells = mondayColumn.querySelectorAll('.hour-cell');
-    
+
     // Click 10:00 slot
     await fireEvent.click(hourCells[10]);
 
-    const startTimeInput = screen.getByLabelText(/Hora de Inicio/i) as HTMLInputElement;
+    const startTimeInput = screen.getByLabelText(
+      /Hora de Inicio/i,
+    ) as HTMLInputElement;
     expect(startTimeInput.value).toBe('09:15');
   });
 });

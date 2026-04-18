@@ -14,14 +14,14 @@ describe('ExportConfigStore operations', () => {
     expect(template).toBeDefined();
     expect(template.length).toBeGreaterThan(0);
     // Standard default mapping: Start Date, Start Time, End Date, End Time, Project, Task Type, Description
-    expect(template.some(m => m.taskField === 'startDate')).toBe(true);
+    expect(template.some((m) => m.taskField === 'startDate')).toBe(true);
   });
 
   it('should save and retrieve a custom template', async () => {
     const customTemplate: ColumnMapping[] = [
       { columnName: 'Fecha', taskField: 'startDate' },
       { columnName: 'Proyecto', taskField: 'project' },
-      { columnName: 'Empresa', fixedValue: 'Mi Empresa' }
+      { columnName: 'Empresa', fixedValue: 'Mi Empresa' },
     ];
     await store.setTemplate(customTemplate);
     const retrieved = await store.getTemplate();

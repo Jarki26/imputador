@@ -10,21 +10,21 @@ describe('CompanySettings Component', () => {
   beforeEach(async () => {
     cleanup();
     await i18n.setLocale('es');
-    
+
     mockCompanyStore = {
       searchCompanies: vi.fn().mockResolvedValue([
         { name: 'Apple', useCount: 10, lastUsedAt: new Date() },
-        { name: 'Google', useCount: 5, lastUsedAt: new Date() }
+        { name: 'Google', useCount: 5, lastUsedAt: new Date() },
       ]),
       upsertCompany: vi.fn().mockResolvedValue(undefined),
       deleteCompany: vi.fn().mockResolvedValue(undefined),
-      updateCompany: vi.fn().mockResolvedValue(undefined)
+      updateCompany: vi.fn().mockResolvedValue(undefined),
     };
   });
 
   it('should render the list of companies', async () => {
     render(CompanySettings, { props: { companyStore: mockCompanyStore } });
-    
+
     await tick();
     await tick();
 
@@ -35,10 +35,10 @@ describe('CompanySettings Component', () => {
 
   it('should add a new company', async () => {
     render(CompanySettings, { props: { companyStore: mockCompanyStore } });
-    
+
     const input = screen.getByPlaceholderText(/Nombre de la empresa/i);
     await fireEvent.input(input, { target: { value: 'New Co' } });
-    
+
     const addBtn = screen.getByText(/Añadir/i);
     await fireEvent.click(addBtn);
 
@@ -47,7 +47,7 @@ describe('CompanySettings Component', () => {
 
   it('should delete a company after confirmation', async () => {
     vi.stubGlobal('confirm', vi.fn().mockReturnValue(true));
-    
+
     render(CompanySettings, { props: { companyStore: mockCompanyStore } });
     await tick();
     await tick();
@@ -85,6 +85,8 @@ describe('CompanySettings Component', () => {
     const saveBtn = screen.getByTitle(/Guardar/i);
     await fireEvent.click(saveBtn);
 
-    expect(mockCompanyStore.updateCompany).toHaveBeenCalledWith('Apple', { name: 'Apple Inc' });
+    expect(mockCompanyStore.updateCompany).toHaveBeenCalledWith('Apple', {
+      name: 'Apple Inc',
+    });
   });
 });

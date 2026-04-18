@@ -18,26 +18,30 @@ vi.mock('$lib/taskStore', () => {
       updateWithDisplacement = vi.fn().mockResolvedValue(undefined);
       deleteTask = vi.fn().mockResolvedValue(undefined);
       upsertRecentTask = vi.fn().mockResolvedValue(undefined);
-    }
+    },
   };
 });
 
 vi.mock('$lib/configStore', () => {
-  return { ConfigStore: class {
-    getWeeklyHoursTarget = vi.fn().mockResolvedValue(41);
-    getExcelDateFormat = vi.fn().mockResolvedValue('DD/MM/YYYY');
-    setExcelDateFormat = vi.fn().mockResolvedValue(undefined);
-    setWeeklyHoursTarget = vi.fn().mockResolvedValue(undefined);
-    getAllTaskTypeColors = vi.fn().mockResolvedValue({});
-    setTaskTypeColor = vi.fn().mockResolvedValue(undefined);
-  } };
+  return {
+    ConfigStore: class {
+      getWeeklyHoursTarget = vi.fn().mockResolvedValue(41);
+      getExcelDateFormat = vi.fn().mockResolvedValue('DD/MM/YYYY');
+      setExcelDateFormat = vi.fn().mockResolvedValue(undefined);
+      setWeeklyHoursTarget = vi.fn().mockResolvedValue(undefined);
+      getAllTaskTypeColors = vi.fn().mockResolvedValue({});
+      setTaskTypeColor = vi.fn().mockResolvedValue(undefined);
+    },
+  };
 });
 
 vi.mock('$lib/exportConfigStore', () => {
-  return { ExportConfigStore: class {
-    getTemplate = vi.fn().mockResolvedValue([]);
-    getExclusions = vi.fn().mockResolvedValue([]);
-  } };
+  return {
+    ExportConfigStore: class {
+      getTemplate = vi.fn().mockResolvedValue([]);
+      getExclusions = vi.fn().mockResolvedValue([]);
+    },
+  };
 });
 
 describe('Page Integration - Daily Navigation & Edit', () => {
@@ -89,7 +93,11 @@ describe('Page Integration - Daily Navigation & Edit', () => {
     await fireEvent.click(taskItem);
 
     // Modal should be open
-    expect(screen.getByRole('heading', { name: /Actualizar Tarea/i })).toBeDefined();
-    expect((screen.getByLabelText(/Título/i) as HTMLInputElement).value).toBe('Task to Edit');
+    expect(
+      screen.getByRole('heading', { name: /Actualizar Tarea/i }),
+    ).toBeDefined();
+    expect((screen.getByLabelText(/Título/i) as HTMLInputElement).value).toBe(
+      'Task to Edit',
+    );
   });
 });

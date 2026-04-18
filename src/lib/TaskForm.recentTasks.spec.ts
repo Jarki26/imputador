@@ -1,4 +1,10 @@
-import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/svelte';
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  cleanup,
+} from '@testing-library/svelte';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import TaskForm from './TaskForm.svelte';
 import { i18n } from './i18n.svelte';
@@ -58,9 +64,15 @@ describe('TaskForm Recent Tasks UI', () => {
 
     await waitFor(() => {
       const titleInput = screen.getByLabelText(/Título/i) as HTMLInputElement;
-      const descInput = screen.getByLabelText(/Descripción/i) as HTMLTextAreaElement;
-      const projectInput = screen.getByLabelText(/Proyecto/i) as HTMLInputElement;
-      const typeSelect = screen.getByLabelText(/Tipo de Tarea/i) as HTMLSelectElement;
+      const descInput = screen.getByLabelText(
+        /Descripción/i,
+      ) as HTMLTextAreaElement;
+      const projectInput = screen.getByLabelText(
+        /Proyecto/i,
+      ) as HTMLInputElement;
+      const typeSelect = screen.getByLabelText(
+        /Tipo de Tarea/i,
+      ) as HTMLSelectElement;
 
       expect(titleInput.value).toBe('Recent Task 1');
       expect(descInput.value).toBe('Desc 1');

@@ -2,7 +2,10 @@
   import Modal from './Modal.svelte';
   import { i18n } from './i18n.svelte';
 
-  let { onExport }: { onExport: (range: { startDate: string; endDate: string }) => void } = $props();
+  let {
+    onExport,
+  }: { onExport: (range: { startDate: string; endDate: string }) => void } =
+    $props();
 
   let showModal = $state(false);
   let startDate = $state(new Date().toISOString().split('T')[0]);

@@ -45,7 +45,9 @@ describe('TaskForm.svelte Duration Editing', () => {
 
     const hoursInput = screen.getByLabelText(/Horas/i) as HTMLInputElement;
     const minutesInput = screen.getByLabelText(/Minutos/i) as HTMLInputElement;
-    const endTimeInput = screen.getByLabelText(/Hora de Fin/i) as HTMLInputElement;
+    const endTimeInput = screen.getByLabelText(
+      /Hora de Fin/i,
+    ) as HTMLInputElement;
 
     await fireEvent.input(hoursInput, { target: { value: '1' } });
     await fireEvent.input(minutesInput, { target: { value: '30' } });
@@ -66,7 +68,9 @@ describe('TaskForm.svelte Duration Editing', () => {
 
     const hoursInput = screen.getByLabelText(/Horas/i) as HTMLInputElement;
     const minutesInput = screen.getByLabelText(/Minutos/i) as HTMLInputElement;
-    const endTimeInput = screen.getByLabelText(/Hora de Fin/i) as HTMLInputElement;
+    const endTimeInput = screen.getByLabelText(
+      /Hora de Fin/i,
+    ) as HTMLInputElement;
 
     // Start 09:00, End 10:00 (default for initialStartTime)
     expect(hoursInput.value).toBe('1');
@@ -95,7 +99,7 @@ describe('TaskForm.svelte Duration Editing', () => {
         props: { taskStore: mockTaskStore, projectStore: mockProjectStore },
       });
       const lockBtn = screen.getByTitle(/Alternar Bloqueo de Duración/i);
-      
+
       // Default should be unlocked (assuming based on standard UX, but we can verify class/aria-pressed)
       expect(lockBtn.getAttribute('aria-pressed')).toBe('false');
 
@@ -117,8 +121,12 @@ describe('TaskForm.svelte Duration Editing', () => {
       });
 
       const lockBtn = screen.getByTitle(/Alternar Bloqueo de Duración/i);
-      const startTimeInput = screen.getByLabelText(/Hora de Inicio/i) as HTMLInputElement;
-      const endTimeInput = screen.getByLabelText(/Hora de Fin/i) as HTMLInputElement;
+      const startTimeInput = screen.getByLabelText(
+        /Hora de Inicio/i,
+      ) as HTMLInputElement;
+      const endTimeInput = screen.getByLabelText(
+        /Hora de Fin/i,
+      ) as HTMLInputElement;
 
       // Activate lock
       await fireEvent.click(lockBtn);
@@ -140,8 +148,12 @@ describe('TaskForm.svelte Duration Editing', () => {
         },
       });
 
-      const startTimeInput = screen.getByLabelText(/Hora de Inicio/i) as HTMLInputElement;
-      const endTimeInput = screen.getByLabelText(/Hora de Fin/i) as HTMLInputElement;
+      const startTimeInput = screen.getByLabelText(
+        /Hora de Inicio/i,
+      ) as HTMLInputElement;
+      const endTimeInput = screen.getByLabelText(
+        /Hora de Fin/i,
+      ) as HTMLInputElement;
 
       // Lock is INACTIVE by default
 
@@ -150,7 +162,7 @@ describe('TaskForm.svelte Duration Editing', () => {
 
       // End Time should stay at 10:00
       expect(endTimeInput.value).toBe('10:00');
-      
+
       const hoursInput = screen.getByLabelText(/Horas/i) as HTMLInputElement;
       // 08:00 to 10:00 = 2h
       expect(hoursInput.value).toBe('2');

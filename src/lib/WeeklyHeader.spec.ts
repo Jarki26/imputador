@@ -84,7 +84,9 @@ describe('WeeklyHeader.svelte', () => {
     });
 
     // Registrado: 10.50h / Objetivo: 39.00h | Restante: 28.50h
-    expect(screen.getByText(/Registrado: 10\.50h \/ Objetivo: 39\.00h/i)).toBeDefined();
+    expect(
+      screen.getByText(/Registrado: 10\.50h \/ Objetivo: 39\.00h/i),
+    ).toBeDefined();
     expect(screen.getByText(/Restante: 28\.50h/i)).toBeDefined();
   });
 

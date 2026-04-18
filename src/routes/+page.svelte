@@ -13,7 +13,10 @@
   import Tutorial from '$lib/Tutorial.svelte';
   import type { Task } from '$lib/db';
   import { i18n } from '$lib/i18n.svelte';
-  import { ExportConfigStore, type ColumnMapping } from '$lib/exportConfigStore';
+  import {
+    ExportConfigStore,
+    type ColumnMapping,
+  } from '$lib/exportConfigStore';
   import { ExportService } from '$lib/exportService';
   import ExportTrigger from '$lib/ExportTrigger.svelte';
 
@@ -140,7 +143,9 @@
     end.setHours(23, 59, 59, 999);
 
     const tasksToExport = await taskStore.getTasksForRange(start, end);
-    const filteredTasks = tasksToExport.filter((t) => !exportExclusions.includes(t.type));
+    const filteredTasks = tasksToExport.filter(
+      (t) => !exportExclusions.includes(t.type),
+    );
 
     const blob = await exportService.generateExcel(
       filteredTasks,
@@ -222,7 +227,10 @@
         >
           {i18n.t('app.weekly_view')}
         </button>
-        <button class:active={view === 'daily'} onclick={() => (view = 'daily')}>
+        <button
+          class:active={view === 'daily'}
+          onclick={() => (view = 'daily')}
+        >
           {i18n.t('app.daily_view')}
         </button>
       </div>
@@ -235,7 +243,9 @@
           aria-label={i18n.t('app.help')}
         >
           <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-            <path d="M11,18H13V16H11V18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,6A4,4 0 0,0 8,10H10A2,2 0 0,1 12,8A2,2 0 0,1 14,10C14,12 11,11.75 11,15H13C13,12.75 16,12.5 16,10A4,4 0 0,0 12,6Z" />
+            <path
+              d="M11,18H13V16H11V18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,6A4,4 0 0,0 8,10H10A2,2 0 0,1 12,8A2,2 0 0,1 14,10C14,12 11,11.75 11,15H13C13,12.75 16,12.5 16,10A4,4 0 0,0 12,6Z"
+            />
           </svg>
         </button>
         <button
@@ -315,7 +325,9 @@
       aria-label={i18n.t('common.undo')}
     >
       <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-        <path d="M12.5,8C9.85,8 7.45,9 5.6,10.6L2,7V16H10.6L7.38,12.77C8.77,11.66 10.55,11 12.5,11C16.04,11 19.05,13.05 20.5,16L22.5,15.2C20.69,11.25 16.89,8.5 12.5,8Z" />
+        <path
+          d="M12.5,8C9.85,8 7.45,9 5.6,10.6L2,7V16H10.6L7.38,12.77C8.77,11.66 10.55,11 12.5,11C16.04,11 19.05,13.05 20.5,16L22.5,15.2C20.69,11.25 16.89,8.5 12.5,8Z"
+        />
       </svg>
     </button>
     <button
@@ -325,17 +337,25 @@
       aria-label={i18n.t('common.redo')}
     >
       <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-        <path d="M18.4,10.6C16.55,9 14.15,8 11.5,8C7.11,8 3.31,11.25 1.5,15.2L3.5,16C4.95,13.05 7.96,11 11.5,11C13.45,11 15.23,11.66 16.62,12.77L13.4,16H22V7L18.4,10.6Z" />
+        <path
+          d="M18.4,10.6C16.55,9 14.15,8 11.5,8C7.11,8 3.31,11.25 1.5,15.2L3.5,16C4.95,13.05 7.96,11 11.5,11C13.45,11 15.23,11.66 16.62,12.77L13.4,16H22V7L18.4,10.6Z"
+        />
       </svg>
     </button>
   </div>
 
-  <Tutorial show={showTutorial} onClose={() => (showTutorial = false)} setView={(v) => (view = v)} />
+  <Tutorial
+    show={showTutorial}
+    onClose={() => (showTutorial = false)}
+    setView={(v) => (view = v)}
+  />
 </main>
 
 <Modal
   show={showAddModal}
-  title={editingTask ? i18n.t('task.form_title_edit') : i18n.t('task.form_title_add')}
+  title={editingTask
+    ? i18n.t('task.form_title_edit')
+    : i18n.t('task.form_title_add')}
   onClose={() => (showAddModal = false)}
 >
   <TaskForm
@@ -365,7 +385,6 @@
     {taskStore}
     {projectStore}
     onSave={handleSaveSettings}
-
     onSaveExportConfig={handleSaveExportConfig}
     onSaveTaskTypeColor={handleSaveTaskTypeColor}
     onImportComplete={async () => {
@@ -374,9 +393,9 @@
     onBulkUpdate={async () => {
       await loadTasks(true);
     }}
-    />
-
+  />
 </Modal>
+
 <style>
   .app-container {
     height: 100dvh;

@@ -18,36 +18,44 @@ vi.mock('$lib/taskStore', () => {
       updateWithDisplacement = vi.fn().mockResolvedValue(undefined);
       deleteTask = vi.fn().mockResolvedValue(undefined);
       upsertRecentTask = vi.fn().mockResolvedValue(undefined);
-    }
+    },
   };
 });
 
 vi.mock('$lib/configStore', () => {
-  return { ConfigStore: class {
-    getWeeklyHoursTarget = vi.fn().mockResolvedValue(41);
-    getExcelDateFormat = vi.fn().mockResolvedValue('DD/MM/YYYY');
-    setExcelDateFormat = vi.fn().mockResolvedValue(undefined);
-    setWeeklyHoursTarget = vi.fn().mockResolvedValue(undefined);
-    getAllTaskTypeColors = vi.fn().mockResolvedValue({});
-    setTaskTypeColor = vi.fn().mockResolvedValue(undefined);
-  } };
+  return {
+    ConfigStore: class {
+      getWeeklyHoursTarget = vi.fn().mockResolvedValue(41);
+      getExcelDateFormat = vi.fn().mockResolvedValue('DD/MM/YYYY');
+      setExcelDateFormat = vi.fn().mockResolvedValue(undefined);
+      setWeeklyHoursTarget = vi.fn().mockResolvedValue(undefined);
+      getAllTaskTypeColors = vi.fn().mockResolvedValue({});
+      setTaskTypeColor = vi.fn().mockResolvedValue(undefined);
+    },
+  };
 });
 
 vi.mock('$lib/exportConfigStore', () => {
-  return { ExportConfigStore: class {
-    getTemplate = vi.fn().mockResolvedValue([]);
-    getExclusions = vi.fn().mockResolvedValue([]);
-    setTemplate = vi.fn().mockResolvedValue(undefined);
-    setExclusions = vi.fn().mockResolvedValue(undefined);
-  } };
+  return {
+    ExportConfigStore: class {
+      getTemplate = vi.fn().mockResolvedValue([]);
+      getExclusions = vi.fn().mockResolvedValue([]);
+      setTemplate = vi.fn().mockResolvedValue(undefined);
+      setExclusions = vi.fn().mockResolvedValue(undefined);
+    },
+  };
 });
 
 vi.mock('$lib/importService', () => {
   return {
     ImportService: class {
-      parseFile = vi.fn().mockResolvedValue({ tasks: [{ title: 'Imported' }], errors: [] });
-      importTasks = vi.fn().mockResolvedValue({ successCount: 1, errorCount: 0 });
-    }
+      parseFile = vi
+        .fn()
+        .mockResolvedValue({ tasks: [{ title: 'Imported' }], errors: [] });
+      importTasks = vi
+        .fn()
+        .mockResolvedValue({ successCount: 1, errorCount: 0 });
+    },
   };
 });
 
@@ -70,8 +78,12 @@ describe('Page Integration - Import Reload', () => {
     await fireEvent.click(settingsBtn);
 
     // Select file (triggers handleFileChange in ExportSettings)
-    const file = new File([''], 'test.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-    const input = container.querySelector('input[type="file"]') as HTMLInputElement;
+    const file = new File([''], 'test.xlsx', {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
+    const input = container.querySelector(
+      'input[type="file"]',
+    ) as HTMLInputElement;
     await fireEvent.change(input, { target: { files: [file] } });
 
     // Confirm dialog
@@ -79,7 +91,9 @@ describe('Page Integration - Import Reload', () => {
     const confirmInput = screen.getByPlaceholderText('IMPORTAR');
     await fireEvent.input(confirmInput, { target: { value: 'IMPORTAR' } });
 
-    const confirmBtn = screen.getByText(/Importar Archivo/i, { selector: 'button.confirm-btn' });
+    const confirmBtn = screen.getByText(/Importar Archivo/i, {
+      selector: 'button.confirm-btn',
+    });
     await fireEvent.click(confirmBtn);
 
     // Wait for results modal

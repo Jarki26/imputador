@@ -45,15 +45,15 @@ describe('+page.svelte', () => {
 
   it('should open settings modal and show export configuration', async () => {
     render(Page);
-    
+
     const settingsBtn = screen.getByTitle(/Ajustes/i);
     await fireEvent.click(settingsBtn);
-    
+
     // Check if Settings modal content is visible
     expect(screen.getByText(/Objetivo de Horas Semanales/i)).toBeDefined();
     expect(screen.getByText(/Plantilla de Exportación/i)).toBeDefined();
     expect(screen.getByText(/Excluir Tipos de Tarea/i)).toBeDefined();
-    
+
     // Check for the specific Save button
     expect(screen.getByRole('button', { name: /^Guardar$/i })).toBeDefined();
   });

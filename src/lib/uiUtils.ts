@@ -4,7 +4,10 @@
  * @param date The date/time to calculate position for.
  * @param pixelsPerMinute The current (zoomed) pixels per minute.
  */
-export function calculateVerticalPosition(date: Date, pixelsPerMinute: number): number {
+export function calculateVerticalPosition(
+  date: Date,
+  pixelsPerMinute: number,
+): number {
   const minutesSinceStartOfDay = date.getHours() * 60 + date.getMinutes();
   return minutesSinceStartOfDay * pixelsPerMinute;
 }
@@ -14,7 +17,10 @@ export function calculateVerticalPosition(date: Date, pixelsPerMinute: number): 
  * @param durationInMinutes Duration of the task in minutes.
  * @param pixelsPerMinute The current (zoomed) pixels per minute.
  */
-export function calculateHeight(durationInMinutes: number, pixelsPerMinute: number): number {
+export function calculateHeight(
+  durationInMinutes: number,
+  pixelsPerMinute: number,
+): number {
   return durationInMinutes * pixelsPerMinute;
 }
 

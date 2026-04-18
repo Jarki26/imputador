@@ -7,7 +7,7 @@ describe('Autocomplete Component', () => {
   const suggestions = [
     { name: 'Apple', useCount: 10 },
     { name: 'Amazon', useCount: 5 },
-    { name: 'Alphabet', useCount: 2 }
+    { name: 'Alphabet', useCount: 2 },
   ];
 
   beforeEach(() => {
@@ -20,8 +20,8 @@ describe('Autocomplete Component', () => {
         id: 'test-auto',
         label: 'Test Label',
         value: 'Initial',
-        suggestions: []
-      }
+        suggestions: [],
+      },
     });
 
     const input = screen.getByLabelText('Test Label') as HTMLInputElement;
@@ -34,8 +34,8 @@ describe('Autocomplete Component', () => {
         id: 'test-auto',
         label: 'Test Label',
         value: '',
-        suggestions
-      }
+        suggestions,
+      },
     });
 
     const input = screen.getByLabelText('Test Label');
@@ -52,8 +52,8 @@ describe('Autocomplete Component', () => {
         id: 'test-auto',
         label: 'Test Label',
         value: '',
-        suggestions
-      }
+        suggestions,
+      },
     });
 
     const input = screen.getByLabelText('Test Label');
@@ -71,14 +71,14 @@ describe('Autocomplete Component', () => {
         id: 'test-auto',
         label: 'Test Label',
         value: '',
-        suggestions
-      }
+        suggestions,
+      },
     });
 
     const input = screen.getByLabelText('Test Label') as HTMLInputElement;
     await fireEvent.focus(input);
     await tick();
-    
+
     const option = screen.getByText('Apple');
     // use mousedown because onblur has a timeout and selectSuggestion uses onmousedown
     await fireEvent.mouseDown(option);
@@ -94,8 +94,8 @@ describe('Autocomplete Component', () => {
         id: 'test-auto',
         label: 'Test Label',
         value: '',
-        suggestions
-      }
+        suggestions,
+      },
     });
 
     const input = screen.getByLabelText('Test Label');
@@ -119,8 +119,8 @@ describe('Autocomplete Component', () => {
         id: 'test-auto',
         label: 'Test Label',
         value: '',
-        suggestions: []
-      }
+        suggestions: [],
+      },
     });
 
     const input = screen.getByLabelText('Test Label');
@@ -138,8 +138,8 @@ describe('Autocomplete Component', () => {
         id: 'test-auto',
         label: 'Test Label',
         value: '',
-        suggestions
-      }
+        suggestions,
+      },
     });
 
     const input = screen.getByLabelText('Test Label');
@@ -155,7 +155,7 @@ describe('Autocomplete Component', () => {
     const mixedSuggestions = [
       { name: 'C', useCount: 1 },
       { name: 'A' }, // should be treated as 0
-      { name: 'B', useCount: 10 }
+      { name: 'B', useCount: 10 },
     ];
 
     render(Autocomplete, {
@@ -163,8 +163,8 @@ describe('Autocomplete Component', () => {
         id: 'test-auto',
         label: 'Test Label',
         value: '',
-        suggestions: mixedSuggestions
-      }
+        suggestions: mixedSuggestions,
+      },
     });
 
     const input = screen.getByLabelText('Test Label');

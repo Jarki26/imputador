@@ -12,17 +12,21 @@ describe('ExportSettings - Auto Reload', () => {
   it('should call onImportComplete callback after successful import', async () => {
     const onImportComplete = vi.fn();
     const { container } = render(ExportSettings, {
-      props: { 
-        template: [], 
-        exclusions: [], 
+      props: {
+        template: [],
+        exclusions: [],
         onSave: vi.fn(),
-        onImportComplete 
+        onImportComplete,
       },
     });
 
     // Mock file selection
-    const file = new File([''], 'test.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-    const input = container.querySelector('input[type="file"]') as HTMLInputElement;
+    const file = new File([''], 'test.xlsx', {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
+    const input = container.querySelector(
+      'input[type="file"]',
+    ) as HTMLInputElement;
     await fireEvent.change(input, { target: { files: [file] } });
 
     // Confirm dialog
@@ -30,7 +34,9 @@ describe('ExportSettings - Auto Reload', () => {
     const confirmInput = screen.getByPlaceholderText('IMPORTAR');
     await fireEvent.input(confirmInput, { target: { value: 'IMPORTAR' } });
 
-    const confirmBtn = screen.getByText(/Importar Archivo/i, { selector: 'button.confirm-btn' });
+    const confirmBtn = screen.getByText(/Importar Archivo/i, {
+      selector: 'button.confirm-btn',
+    });
     await fireEvent.click(confirmBtn);
 
     // Wait for results modal to appear, ensuring confirmImport finished

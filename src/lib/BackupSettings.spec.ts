@@ -19,11 +19,13 @@ describe('BackupSettings.svelte', () => {
   it('should trigger file input on Import Settings click', async () => {
     const { container } = render(BackupSettings);
     const importBtn = screen.getByText(/Import Settings/i);
-    const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
-    
+    const fileInput = container.querySelector(
+      'input[type="file"]',
+    ) as HTMLInputElement;
+
     // Mock click method of the hidden file input
     const clickSpy = vi.spyOn(fileInput, 'click');
-    
+
     await fireEvent.click(importBtn);
     expect(clickSpy).toHaveBeenCalled();
   });

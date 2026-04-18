@@ -23,20 +23,20 @@ describe('Tutorial.svelte', () => {
 
   it('should advance to next step when Next is clicked', async () => {
     render(Tutorial, { props: { show: true, onClose: vi.fn(), setView } });
-    
+
     const nextBtn = screen.getByRole('button', { name: /Siguiente/i });
     await fireEvent.click(nextBtn);
-    
+
     expect(screen.getByText(/Vista Semanal/i)).toBeDefined();
   });
 
   it('should call onClose when Skip is clicked', async () => {
     const onClose = vi.fn();
     render(Tutorial, { props: { show: true, onClose, setView } });
-    
+
     const skipBtn = screen.getByRole('button', { name: /Saltar/i });
     await fireEvent.click(skipBtn);
-    
+
     expect(onClose).toHaveBeenCalled();
   });
 });

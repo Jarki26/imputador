@@ -59,7 +59,11 @@ export class ExportService {
   /**
    * Extracts and formats a specific field from a task.
    */
-  private getFieldValue(task: Task, field: string, excelDateFormat: string): string {
+  private getFieldValue(
+    task: Task,
+    field: string,
+    excelDateFormat: string,
+  ): string {
     const start = new Date(task.startTime);
     const end = new Date(task.endTime);
 
@@ -97,10 +101,7 @@ export class ExportService {
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const day = date.getDate().toString().padStart(2, '0');
 
-    return format
-      .replace('YYYY', year)
-      .replace('MM', month)
-      .replace('DD', day);
+    return format.replace('YYYY', year).replace('MM', month).replace('DD', day);
   }
 
   private formatTime(date: Date): string {

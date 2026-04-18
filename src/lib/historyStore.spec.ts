@@ -4,8 +4,22 @@ import { type Task } from './db';
 
 describe('HistoryStore', () => {
   let store: HistoryStore;
-  const initialTask: Task = { id: 1, title: 'T1', project: 'P', type: 'General', startTime: new Date(), endTime: new Date() };
-  const nextTask: Task = { id: 2, title: 'T2', project: 'P', type: 'General', startTime: new Date(), endTime: new Date() };
+  const initialTask: Task = {
+    id: 1,
+    title: 'T1',
+    project: 'P',
+    type: 'General',
+    startTime: new Date(),
+    endTime: new Date(),
+  };
+  const nextTask: Task = {
+    id: 2,
+    title: 'T2',
+    project: 'P',
+    type: 'General',
+    startTime: new Date(),
+    endTime: new Date(),
+  };
   const testDate = new Date('2026-04-12');
 
   beforeEach(() => {

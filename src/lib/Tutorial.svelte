@@ -9,12 +9,12 @@
     action?: () => void;
   }
 
-  let { 
-    show = false, 
+  let {
+    show = false,
     onClose,
-    setView 
-  }: { 
-    show: boolean; 
+    setView,
+  }: {
+    show: boolean;
     onClose: () => void;
     setView: (view: 'daily' | 'weekly') => void;
   } = $props();
@@ -23,7 +23,7 @@
     {
       title: i18n.t('tutorial.step1_title'),
       content: i18n.t('tutorial.step1_content'),
-      action: () => setView('weekly')
+      action: () => setView('weekly'),
     },
     {
       title: i18n.t('tutorial.step2_title'),
@@ -44,7 +44,7 @@
       title: i18n.t('tutorial.step5_title'),
       content: i18n.t('tutorial.step5_content'),
       targetSelector: '.view-toggle',
-      action: () => setView('daily')
+      action: () => setView('daily'),
     },
     {
       title: i18n.t('tutorial.step6_title'),
@@ -60,7 +60,7 @@
       title: i18n.t('tutorial.step8_title'),
       content: i18n.t('tutorial.step8_content'),
       targetSelector: '.view-toggle',
-      action: () => setView('weekly')
+      action: () => setView('weekly'),
     },
     {
       title: i18n.t('tutorial.step9_title'),
@@ -159,19 +159,26 @@
     <div class="tutorial-card" class:has-highlight={!!highlightStyles}>
       <header>
         <h3>{currentStep.title}</h3>
-        <span class="step-counter">{currentStepIndex + 1} / {steps.length}</span>
+        <span class="step-counter">{currentStepIndex + 1} / {steps.length}</span
+        >
       </header>
       <div class="content">
         <p>{currentStep.content}</p>
       </div>
       <footer>
-        <button class="btn secondary" onclick={onClose}>{i18n.t('tutorial.skip')}</button>
+        <button class="btn secondary" onclick={onClose}
+          >{i18n.t('tutorial.skip')}</button
+        >
         <div class="nav-btns">
           {#if currentStepIndex > 0}
-            <button class="btn secondary" onclick={prevStep}>{i18n.t('tutorial.back')}</button>
+            <button class="btn secondary" onclick={prevStep}
+              >{i18n.t('tutorial.back')}</button
+            >
           {/if}
           <button class="btn primary" onclick={nextStep}>
-            {currentStepIndex === steps.length - 1 ? i18n.t('tutorial.finish') : i18n.t('tutorial.next')}
+            {currentStepIndex === steps.length - 1
+              ? i18n.t('tutorial.finish')
+              : i18n.t('tutorial.next')}
           </button>
         </div>
       </footer>

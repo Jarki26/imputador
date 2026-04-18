@@ -68,4 +68,3 @@ export class HistoryStore {
     return this.manager.pastStack.length;
   }
 }
-

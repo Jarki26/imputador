@@ -1,9 +1,6 @@
 <script lang="ts">
   import type { Task } from './db';
-  import {
-    calculateWorkHours,
-    calculateGoalAbsenceHours,
-  } from './taskUtils';
+  import { calculateWorkHours, calculateGoalAbsenceHours } from './taskUtils';
   import { isBillable } from './config';
   import { i18n } from './i18n.svelte';
   import WeeklyHeader from './WeeklyHeader.svelte';
@@ -109,7 +106,9 @@
   const totalBillableHours = $derived(calculateWorkHours(tasks));
   const goalAbsenceHours = $derived(calculateGoalAbsenceHours(tasks));
   const effectiveGoal = $derived(weeklyTarget - goalAbsenceHours);
-  const remainingTime = $derived(Math.max(0, effectiveGoal - totalBillableHours));
+  const remainingTime = $derived(
+    Math.max(0, effectiveGoal - totalBillableHours),
+  );
   const progressPercentage = $derived(
     effectiveGoal > 0
       ? Math.min(100, (totalBillableHours / effectiveGoal) * 100)
@@ -149,7 +148,9 @@
     if (onTaskCopyToRecents) {
       onTaskCopyToRecents(task);
       // Feedback visual
-      const taskEl = document.querySelector(`[aria-label="${i18n.t('weekly.edit_task', { title: task.title })}"]`);
+      const taskEl = document.querySelector(
+        `[aria-label="${i18n.t('weekly.edit_task', { title: task.title })}"]`,
+      );
       if (taskEl) {
         taskEl.classList.add('copied-feedback');
         setTimeout(() => taskEl.classList.remove('copied-feedback'), 1000);
@@ -281,7 +282,11 @@
         Math.abs(t.startTime.getTime() - updatedTask.endTime.getTime()) < 60000,
     );
     if (taskAfter) {
-      mergeProposal = { task1: updatedTask, task2: taskAfter, movedTask: updatedTask };
+      mergeProposal = {
+        task1: updatedTask,
+        task2: taskAfter,
+        movedTask: updatedTask,
+      };
       return true;
     }
 
@@ -291,7 +296,11 @@
         Math.abs(updatedTask.startTime.getTime() - t.endTime.getTime()) < 60000,
     );
     if (taskBefore) {
-      mergeProposal = { task1: taskBefore, task2: updatedTask, movedTask: updatedTask };
+      mergeProposal = {
+        task1: taskBefore,
+        task2: updatedTask,
+        movedTask: updatedTask,
+      };
       return true;
     }
 
@@ -314,7 +323,8 @@
       .reverse()
       .find((t) => t.endTime <= updatedTask.startTime);
     if (taskBefore) {
-      const gapMs = updatedTask.startTime.getTime() - taskBefore.endTime.getTime();
+      const gapMs =
+        updatedTask.startTime.getTime() - taskBefore.endTime.getTime();
       if (gapMs > 0 && gapMs <= 15 * 60000) {
         snapProposal = {
           task: updatedTask,
@@ -326,9 +336,12 @@
     }
 
     // Check for gap with task after
-    const taskAfter = dailyTasks.find((t) => t.startTime >= updatedTask.endTime);
+    const taskAfter = dailyTasks.find(
+      (t) => t.startTime >= updatedTask.endTime,
+    );
     if (taskAfter) {
-      const gapMs = taskAfter.startTime.getTime() - updatedTask.endTime.getTime();
+      const gapMs =
+        taskAfter.startTime.getTime() - updatedTask.endTime.getTime();
       if (gapMs > 0 && gapMs <= 15 * 60000) {
         snapProposal = {
           task: updatedTask,
@@ -384,8 +397,12 @@
     // Combine into task1
     const mergedTask = {
       ...task1,
-      startTime: new Date(Math.min(task1.startTime.getTime(), task2.startTime.getTime())),
-      endTime: new Date(Math.max(task1.endTime.getTime(), task2.endTime.getTime())),
+      startTime: new Date(
+        Math.min(task1.startTime.getTime(), task2.startTime.getTime()),
+      ),
+      endTime: new Date(
+        Math.max(task1.endTime.getTime(), task2.endTime.getTime()),
+      ),
     };
 
     // Update task1 and delete task2
@@ -604,7 +621,7 @@
               if (locks.edit) return;
               if (onTaskClick) onTaskClick(task);
             }}
-            onTaskDelete={onTaskDelete}
+            {onTaskDelete}
             onPointerDown={handlePointerDown}
           />
         {/each}
@@ -614,34 +631,56 @@
 </div>
 
 {#if mergeProposal}
-  <div class="merge-modal-backdrop" onclick={() => (mergeProposal = null)} role="presentation">
-    <div class="merge-modal" onclick={(e) => e.stopPropagation()} role="presentation">
+  <div
+    class="merge-modal-backdrop"
+    onclick={() => (mergeProposal = null)}
+    role="presentation"
+  >
+    <div
+      class="merge-modal"
+      onclick={(e) => e.stopPropagation()}
+      role="presentation"
+    >
       <h3>{i18n.t('weekly.merge_title')}</h3>
       <p>{i18n.t('weekly.merge_msg')}</p>
       <div class="merge-details">
         <div>
-          <strong>{mergeProposal.task1.title}</strong> ({mergeProposal.task1.project})
+          <strong>{mergeProposal.task1.title}</strong> ({mergeProposal.task1
+            .project})
         </div>
         <div>
           {mergeProposal.task1.startTime.toLocaleTimeString()} - {mergeProposal.task2.endTime.toLocaleTimeString()}
         </div>
       </div>
       <div class="merge-actions">
-        <button class="btn-cancel" onclick={() => {
-          if (mergeProposal && onTaskUpdate) {
-            onTaskUpdate(mergeProposal.movedTask);
-          }
-          mergeProposal = null;
-        }}>{i18n.t('common.no')}</button>
-        <button class="btn-confirm" onclick={handleMerge}>{i18n.t('common.yes')}</button>
+        <button
+          class="btn-cancel"
+          onclick={() => {
+            if (mergeProposal && onTaskUpdate) {
+              onTaskUpdate(mergeProposal.movedTask);
+            }
+            mergeProposal = null;
+          }}>{i18n.t('common.no')}</button
+        >
+        <button class="btn-confirm" onclick={handleMerge}
+          >{i18n.t('common.yes')}</button
+        >
       </div>
     </div>
   </div>
 {/if}
 
 {#if snapProposal}
-  <div class="merge-modal-backdrop" onclick={() => (snapProposal = null)} role="presentation">
-    <div class="merge-modal" onclick={(e) => e.stopPropagation()} role="presentation">
+  <div
+    class="merge-modal-backdrop"
+    onclick={() => (snapProposal = null)}
+    role="presentation"
+  >
+    <div
+      class="merge-modal"
+      onclick={(e) => e.stopPropagation()}
+      role="presentation"
+    >
       <h3>{i18n.t('weekly.snap_title')}</h3>
       <p>
         {i18n.t('weekly.snap_msg', {
@@ -649,39 +688,61 @@
         })}
       </p>
       <div class="merge-actions">
-        <button class="btn-cancel" onclick={() => {
-          if (snapProposal && onTaskUpdate) {
-            onTaskUpdate(snapProposal.task);
-          }
-          snapProposal = null;
-        }}>{i18n.t('common.no')}</button>
-        <button class="btn-confirm" onclick={handleSnap}>{i18n.t('common.yes')}</button>
+        <button
+          class="btn-cancel"
+          onclick={() => {
+            if (snapProposal && onTaskUpdate) {
+              onTaskUpdate(snapProposal.task);
+            }
+            snapProposal = null;
+          }}>{i18n.t('common.no')}</button
+        >
+        <button class="btn-confirm" onclick={handleSnap}
+          >{i18n.t('common.yes')}</button
+        >
       </div>
     </div>
   </div>
 {/if}
 
 {#if collisionProposal}
-  <div class="merge-modal-backdrop" onclick={() => (collisionProposal = null)} role="presentation">
-    <div class="merge-modal" onclick={(e) => e.stopPropagation()} role="presentation">
+  <div
+    class="merge-modal-backdrop"
+    onclick={() => (collisionProposal = null)}
+    role="presentation"
+  >
+    <div
+      class="merge-modal"
+      onclick={(e) => e.stopPropagation()}
+      role="presentation"
+    >
       <h3>{i18n.t('weekly.collision_move_title')}</h3>
       <p>{i18n.t('weekly.collision_move_msg')}</p>
       <div class="merge-actions">
-        <button class="btn-cancel" onclick={() => {
-          collisionProposal = null;
-        }}>{i18n.t('common.cancel')}</button>
-        <button class="btn-confirm" onclick={() => {
-          if (collisionProposal && onTaskUpdate) {
-            onTaskUpdate(collisionProposal, 'overwrite');
-          }
-          collisionProposal = null;
-        }}>{i18n.t('task.overwrite')}</button>
-        <button class="btn-confirm" onclick={() => {
-          if (collisionProposal && onTaskUpdate) {
-            onTaskUpdate(collisionProposal, 'displacement');
-          }
-          collisionProposal = null;
-        }}>{i18n.t('weekly.displace')}</button>
+        <button
+          class="btn-cancel"
+          onclick={() => {
+            collisionProposal = null;
+          }}>{i18n.t('common.cancel')}</button
+        >
+        <button
+          class="btn-confirm"
+          onclick={() => {
+            if (collisionProposal && onTaskUpdate) {
+              onTaskUpdate(collisionProposal, 'overwrite');
+            }
+            collisionProposal = null;
+          }}>{i18n.t('task.overwrite')}</button
+        >
+        <button
+          class="btn-confirm"
+          onclick={() => {
+            if (collisionProposal && onTaskUpdate) {
+              onTaskUpdate(collisionProposal, 'displacement');
+            }
+            collisionProposal = null;
+          }}>{i18n.t('weekly.displace')}</button
+        >
       </div>
     </div>
   </div>
@@ -746,7 +807,9 @@
     aria-label={i18n.t('weekly.zoom_in')}
   >
     <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-      <path d="M15.5,14L20.5,19L19,20.5L14,15.5V14.71L13.73,14.43C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.43,13.73L14.71,14H15.5M9.5,14C11.9,14 14,11.9 14,9.5C14,7.1 11.9,5 9.5,5C7.1,5 5,7.1 5,9.5C5,11.9 7.1,14 9.5,14M12,10H10V12H9V10H7V9H9V7H10V9H12V10Z" />
+      <path
+        d="M15.5,14L20.5,19L19,20.5L14,15.5V14.71L13.73,14.43C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.43,13.73L14.71,14H15.5M9.5,14C11.9,14 14,11.9 14,9.5C14,7.1 11.9,5 9.5,5C7.1,5 5,7.1 5,9.5C5,11.9 7.1,14 9.5,14M12,10H10V12H9V10H7V9H9V7H10V9H12V10Z"
+      />
     </svg>
   </button>
   <button
@@ -756,7 +819,9 @@
     aria-label={i18n.t('weekly.zoom_out')}
   >
     <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-      <path d="M15.5,14L20.5,19L19,20.5L14,15.5V14.71L13.73,14.43C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.43,13.73L14.71,14H15.5M9.5,14C11.9,14 14,11.9 14,9.5C14,7.1 11.9,5 9.5,5C7.1,5 5,7.1 5,9.5C5,11.9 7.1,14 9.5,14M7,9H12V10H7V9Z" />
+      <path
+        d="M15.5,14L20.5,19L19,20.5L14,15.5V14.71L13.73,14.43C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.43,13.73L14.71,14H15.5M9.5,14C11.9,14 14,11.9 14,9.5C14,7.1 11.9,5 9.5,5C7.1,5 5,7.1 5,9.5C5,11.9 7.1,14 9.5,14M7,9H12V10H7V9Z"
+      />
     </svg>
   </button>
   <button
@@ -766,7 +831,9 @@
     aria-label={i18n.t('weekly.reset_zoom')}
   >
     <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-      <path d="M12,18A6,6 0 1,0 6,12A6,6 0 0,0 12,18M12,4A8,8 0 1,1 4,12A8,8 0 0,1 12,4M11,7H13V13H11V7M11,15H13V17H11V15Z" />
+      <path
+        d="M12,18A6,6 0 1,0 6,12A6,6 0 0,0 12,18M12,4A8,8 0 1,1 4,12A8,8 0 0,1 12,4M11,7H13V13H11V7M11,15H13V17H11V15Z"
+      />
     </svg>
   </button>
 </div>

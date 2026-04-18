@@ -46,12 +46,7 @@
     <div class="custom-input">
       <label for="custom-color">Custom Color</label>
       <div class="input-controls">
-        <input
-          id="custom-color"
-          type="color"
-          {value}
-          oninput={handleInput}
-        />
+        <input id="custom-color" type="color" {value} oninput={handleInput} />
         <input
           type="text"
           {value}
@@ -121,7 +116,7 @@
     align-items: center;
   }
 
-  .custom-input input[type="color"] {
+  .custom-input input[type='color'] {
     width: 2rem;
     height: 2rem;
     padding: 0;
@@ -131,7 +126,7 @@
     flex-shrink: 0;
   }
 
-  .custom-input input[type="text"] {
+  .custom-input input[type='text'] {
     width: 100%;
     padding: 0.25rem 0.5rem;
     font-size: 0.875rem;

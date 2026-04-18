@@ -52,17 +52,31 @@ describe('TaskStore Bulk Operations', () => {
     await store.addTask(task3);
     await store.addTask(task4);
 
-    await (store as any).bulkUpdate(startDate, endDate, { project: 'Old Project' }, { project: 'New Project' });
+    await (store as any).bulkUpdate(
+      startDate,
+      endDate,
+      { project: 'Old Project' },
+      { project: 'New Project' },
+    );
 
     const tasksInRange = await store.getTasksForRange(startDate, endDate);
-    const updatedTasks = tasksInRange.filter(t => t.project === 'New Project');
-    const unchangedTasks = tasksInRange.filter(t => t.project === 'Old Project');
-    
+    const updatedTasks = tasksInRange.filter(
+      (t) => t.project === 'New Project',
+    );
+    const unchangedTasks = tasksInRange.filter(
+      (t) => t.project === 'Old Project',
+    );
+
     expect(updatedTasks).toHaveLength(2);
     expect(unchangedTasks).toHaveLength(0);
-    expect(tasksInRange.find(t => t.title === 'Task 3')?.project).toBe('Other Project');
+    expect(tasksInRange.find((t) => t.title === 'Task 3')?.project).toBe(
+      'Other Project',
+    );
 
-    const taskOutside = await store.getTasksForRange(new Date('2026-05-01T00:00:00Z'), new Date('2026-05-01T23:59:59Z'));
+    const taskOutside = await store.getTasksForRange(
+      new Date('2026-05-01T00:00:00Z'),
+      new Date('2026-05-01T23:59:59Z'),
+    );
     expect(taskOutside[0].project).toBe('Old Project');
   });
 
@@ -74,24 +88,45 @@ describe('TaskStore Bulk Operations', () => {
       title: 'Meetings',
       project: 'Internal',
       company: 'MyCorp',
-      type: 'Meeting'
+      type: 'Meeting',
     };
 
-    const task1: Task = { ...template, startTime: new Date('2026-04-05T10:00:00Z'), endTime: new Date('2026-04-05T11:00:00Z'), description: '' };
-    const task2: Task = { ...template, startTime: new Date('2026-04-10T10:00:00Z'), endTime: new Date('2026-04-10T11:00:00Z'), description: '' };
-    const task3: Task = { ...template, title: 'Other', startTime: new Date('2026-04-10T12:00:00Z'), endTime: new Date('2026-04-10T13:00:00Z'), description: '' };
+    const task1: Task = {
+      ...template,
+      startTime: new Date('2026-04-05T10:00:00Z'),
+      endTime: new Date('2026-04-05T11:00:00Z'),
+      description: '',
+    };
+    const task2: Task = {
+      ...template,
+      startTime: new Date('2026-04-10T10:00:00Z'),
+      endTime: new Date('2026-04-10T11:00:00Z'),
+      description: '',
+    };
+    const task3: Task = {
+      ...template,
+      title: 'Other',
+      startTime: new Date('2026-04-10T12:00:00Z'),
+      endTime: new Date('2026-04-10T13:00:00Z'),
+      description: '',
+    };
 
     await store.addTask(task1);
     await store.addTask(task2);
     await store.addTask(task3);
 
-    await (store as any).bulkUpdate(startDate, endDate, template, { title: 'Sync', type: 'Call' });
+    await (store as any).bulkUpdate(startDate, endDate, template, {
+      title: 'Sync',
+      type: 'Call',
+    });
 
     const tasksInRange = await store.getTasksForRange(startDate, endDate);
-    const updatedTasks = tasksInRange.filter(t => t.title === 'Sync' && t.type === 'Call');
-    
+    const updatedTasks = tasksInRange.filter(
+      (t) => t.title === 'Sync' && t.type === 'Call',
+    );
+
     expect(updatedTasks).toHaveLength(2);
-    expect(tasksInRange.find(t => t.title === 'Other')?.type).toBe('Meeting');
+    expect(tasksInRange.find((t) => t.title === 'Other')?.type).toBe('Meeting');
   });
 
   it('should return original tasks for undo support', async () => {
@@ -109,8 +144,13 @@ describe('TaskStore Bulk Operations', () => {
 
     await store.addTask(task1);
 
-    const result = await (store as any).bulkUpdate(startDate, endDate, { project: 'A' }, { project: 'B' });
-    
+    const result = await (store as any).bulkUpdate(
+      startDate,
+      endDate,
+      { project: 'A' },
+      { project: 'B' },
+    );
+
     expect(result).toHaveLength(1);
     expect(result[0].project).toBe('A');
     expect(result[0].id).toBeDefined();
@@ -131,8 +171,13 @@ describe('TaskStore Bulk Operations', () => {
 
     await store.addTask(task1);
 
-    const originals = await (store as any).bulkUpdate(startDate, endDate, { project: 'Original Project' }, { project: 'Updated Project' });
-    
+    const originals = await (store as any).bulkUpdate(
+      startDate,
+      endDate,
+      { project: 'Original Project' },
+      { project: 'Updated Project' },
+    );
+
     const updatedTasks = await store.getTasksForRange(startDate, endDate);
     expect(updatedTasks[0].project).toBe('Updated Project');
 

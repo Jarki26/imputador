@@ -64,7 +64,10 @@
       <ul class="suggestions-list">
         {#each filteredSuggestions as suggestion}
           <li>
-            <button type="button" onmousedown={() => selectSuggestion(suggestion.name)}>
+            <button
+              type="button"
+              onmousedown={() => selectSuggestion(suggestion.name)}
+            >
               {suggestion.name}
             </button>
           </li>
@@ -118,7 +121,7 @@
     background: var(--md-sys-color-surface, #ffffff);
     border: 1px solid var(--md-sys-color-outline-variant);
     border-radius: 0 0 0.5rem 0.5rem;
-    box-shadow: var(--md-sys-elevation-level-2, 0 4px 6px rgba(0,0,0,0.1));
+    box-shadow: var(--md-sys-elevation-level-2, 0 4px 6px rgba(0, 0, 0, 0.1));
     margin: 0;
     padding: 0.5rem 0;
     list-style: none;

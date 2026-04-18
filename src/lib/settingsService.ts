@@ -33,7 +33,14 @@ export class SettingsService {
    * @param data The backup data to import.
    */
   async importData(data: SettingsBackup): Promise<void> {
-    if (!data || typeof data !== 'object' || !data.config || !data.projects || !data.companies || data.version === undefined) {
+    if (
+      !data ||
+      typeof data !== 'object' ||
+      !data.config ||
+      !data.projects ||
+      !data.companies ||
+      data.version === undefined
+    ) {
       throw new Error('Invalid backup file');
     }
 

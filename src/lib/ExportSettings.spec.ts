@@ -115,13 +115,19 @@ describe('ExportSettings.svelte', () => {
       props: { template: mockTemplate, exclusions: [], onSave: vi.fn() },
     });
 
-    const file = new File([''], 'test.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-    const input = container.querySelector('input[type="file"]') as HTMLInputElement;
+    const file = new File([''], 'test.xlsx', {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
+    const input = container.querySelector(
+      'input[type="file"]',
+    ) as HTMLInputElement;
 
     await fireEvent.change(input, { target: { files: [file] } });
 
     expect(await screen.findByText(/Vaciar datos e importar/i)).toBeDefined();
-    expect(screen.getByText(/Escribe 'IMPORTAR' para confirmar/i)).toBeDefined();
+    expect(
+      screen.getByText(/Escribe 'IMPORTAR' para confirmar/i),
+    ).toBeDefined();
   });
 
   it('should show results modal after successful import', async () => {
@@ -129,8 +135,12 @@ describe('ExportSettings.svelte', () => {
       props: { template: mockTemplate, exclusions: [], onSave: vi.fn() },
     });
 
-    const file = new File([''], 'test.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-    const input = container.querySelector('input[type="file"]') as HTMLInputElement;
+    const file = new File([''], 'test.xlsx', {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
+    const input = container.querySelector(
+      'input[type="file"]',
+    ) as HTMLInputElement;
 
     await fireEvent.change(input, { target: { files: [file] } });
 
@@ -140,7 +150,9 @@ describe('ExportSettings.svelte', () => {
     const confirmInput = screen.getByPlaceholderText('IMPORTAR');
     await fireEvent.input(confirmInput, { target: { value: 'IMPORTAR' } });
 
-    const confirmBtn = screen.getByText(/Importar Archivo/i, { selector: 'button.confirm-btn' });
+    const confirmBtn = screen.getByText(/Importar Archivo/i, {
+      selector: 'button.confirm-btn',
+    });
     await fireEvent.click(confirmBtn);
 
     // Results modal should appear

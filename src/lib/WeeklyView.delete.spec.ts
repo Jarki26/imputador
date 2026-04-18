@@ -21,7 +21,9 @@ describe('WeeklyView.svelte - Delete Task', () => {
         type: 'General',
       },
     ];
-    render(WeeklyView, { props: { tasks, onTaskDelete, startDate: new Date('2026-04-06') } });
+    render(WeeklyView, {
+      props: { tasks, onTaskDelete, startDate: new Date('2026-04-06') },
+    });
 
     // Find the task block
     const taskBlock = screen.getByText('Task to Delete').closest('.task-block');

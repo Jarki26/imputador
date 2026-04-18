@@ -1,6 +1,10 @@
 <script lang="ts">
   import { i18n } from './i18n.svelte';
-  import { formatDateOnlyForInput, parseStartDate, parseEndDate } from './dateUtils';
+  import {
+    formatDateOnlyForInput,
+    parseStartDate,
+    parseEndDate,
+  } from './dateUtils';
   import { reloadPage } from './utils';
   import Autocomplete from './Autocomplete.svelte';
   import { TaskStore } from './taskStore';
@@ -51,13 +55,13 @@
     title: '',
     project: '',
     company: '',
-    type: ''
+    type: '',
   });
   let targetUpdates = $state<Partial<Task>>({
     title: '',
     project: '',
     company: '',
-    type: ''
+    type: '',
   });
 
   function resetState() {
@@ -79,7 +83,7 @@
     const start = parseStartDate(startDate);
     const end = parseEndDate(endDate);
     const tasks = await taskStore.getTasksForRange(start, end);
-    
+
     affectedCount = tasks.filter((t) => {
       return (
         (!sourceTemplate.title || t.title === sourceTemplate.title) &&
@@ -92,14 +96,24 @@
 
   async function applyRename() {
     if (affectedCount === null || affectedCount === 0) return;
-    if (!confirm(i18n.t('bulk_edit.confirm_msg', { count: affectedCount.toString() }))) return;
+    if (
+      !confirm(
+        i18n.t('bulk_edit.confirm_msg', { count: affectedCount.toString() }),
+      )
+    )
+      return;
 
     const start = parseStartDate(startDate);
     const end = parseEndDate(endDate);
-    
-    await taskStore.bulkUpdate(start, end, { project: sourceProject }, { project: targetProject });
+
+    await taskStore.bulkUpdate(
+      start,
+      end,
+      { project: sourceProject },
+      { project: targetProject },
+    );
     await projectStore.renameProject(sourceProject, targetProject);
-    
+
     alert(i18n.t('bulk_edit.success', { count: affectedCount.toString() }));
     resetState();
     reload();
@@ -107,7 +121,12 @@
 
   async function applyMassUpdate() {
     if (affectedCount === null || affectedCount === 0) return;
-    if (!confirm(i18n.t('bulk_edit.confirm_msg', { count: affectedCount.toString() }))) return;
+    if (
+      !confirm(
+        i18n.t('bulk_edit.confirm_msg', { count: affectedCount.toString() }),
+      )
+    )
+      return;
 
     const start = parseStartDate(startDate);
     const end = parseEndDate(endDate);
@@ -125,9 +144,9 @@
     if (targetUpdates.type) updates.type = targetUpdates.type;
 
     await taskStore.bulkUpdate(start, end, filter, updates);
-    
+
     if (updates.project && filter.project) {
-        await projectStore.renameProject(filter.project, updates.project);
+      await projectStore.renameProject(filter.project, updates.project);
     }
 
     alert(i18n.t('bulk_edit.success', { count: affectedCount.toString() }));
@@ -142,24 +161,40 @@
   <div class="date-range">
     <div class="form-group">
       <label for="startDate">{i18n.t('bulk_edit.start_date')}</label>
-      <input type="date" id="startDate" bind:value={startDate} onchange={() => affectedCount = null} />
+      <input
+        type="date"
+        id="startDate"
+        bind:value={startDate}
+        onchange={() => (affectedCount = null)}
+      />
     </div>
     <div class="form-group">
       <label for="endDate">{i18n.t('bulk_edit.end_date')}</label>
-      <input type="date" id="endDate" bind:value={endDate} onchange={() => affectedCount = null} />
+      <input
+        type="date"
+        id="endDate"
+        bind:value={endDate}
+        onchange={() => (affectedCount = null)}
+      />
     </div>
   </div>
 
   <div class="tabs">
     <button
       class:active={activeTab === 'rename'}
-      onclick={() => { activeTab = 'rename'; resetState(); }}
+      onclick={() => {
+        activeTab = 'rename';
+        resetState();
+      }}
     >
       {i18n.t('bulk_edit.rename_project_tab')}
     </button>
     <button
       class:active={activeTab === 'mass'}
-      onclick={() => { activeTab = 'mass'; resetState(); }}
+      onclick={() => {
+        activeTab = 'mass';
+        resetState();
+      }}
     >
       {i18n.t('bulk_edit.mass_update_tab')}
     </button>
@@ -182,16 +217,24 @@
           suggestions={projectSuggestions}
           placeholder={i18n.t('task.project')}
         />
-        
+
         <div class="actions">
-          <button class="calc-btn" onclick={calculateRename} disabled={!sourceProject || !targetProject}>
+          <button
+            class="calc-btn"
+            onclick={calculateRename}
+            disabled={!sourceProject || !targetProject}
+          >
             {i18n.t('bulk_edit.calculate')}
           </button>
         </div>
 
         {#if affectedCount !== null}
           <div class="preview">
-            <p>{i18n.t('bulk_edit.affected_tasks', { count: affectedCount.toString() })}</p>
+            <p>
+              {i18n.t('bulk_edit.affected_tasks', {
+                count: affectedCount.toString(),
+              })}
+            </p>
             {#if affectedCount > 0}
               <button class="apply-btn" onclick={applyRename}>
                 {i18n.t('bulk_edit.apply')}
@@ -207,7 +250,11 @@
           <div class="grid">
             <div class="field">
               <label for="srcTitle">{i18n.t('task.title')}</label>
-              <input id="srcTitle" type="text" bind:value={sourceTemplate.title} />
+              <input
+                id="srcTitle"
+                type="text"
+                bind:value={sourceTemplate.title}
+              />
             </div>
             <Autocomplete
               id="srcProject"
@@ -226,7 +273,11 @@
               <select id="srcType" bind:value={sourceTemplate.type}>
                 <option value="">-- {i18n.t('task.type_general')} --</option>
                 {#each TASK_TYPES as type}
-                  <option value={type.name}>{i18n.t(`task.type_${type.name.toLowerCase().replace(/\s+/g, '_')}`)}</option>
+                  <option value={type.name}
+                    >{i18n.t(
+                      `task.type_${type.name.toLowerCase().replace(/\s+/g, '_')}`,
+                    )}</option
+                  >
                 {/each}
               </select>
             </div>
@@ -238,7 +289,11 @@
           <div class="grid">
             <div class="field">
               <label for="targetTitle">{i18n.t('task.title')}</label>
-              <input id="targetTitle" type="text" bind:value={targetUpdates.title} />
+              <input
+                id="targetTitle"
+                type="text"
+                bind:value={targetUpdates.title}
+              />
             </div>
             <Autocomplete
               id="targetProject"
@@ -257,7 +312,11 @@
               <select id="targetType" bind:value={targetUpdates.type}>
                 <option value="">-- No cambiar --</option>
                 {#each TASK_TYPES as type}
-                  <option value={type.name}>{i18n.t(`task.type_${type.name.toLowerCase().replace(/\s+/g, '_')}`)}</option>
+                  <option value={type.name}
+                    >{i18n.t(
+                      `task.type_${type.name.toLowerCase().replace(/\s+/g, '_')}`,
+                    )}</option
+                  >
                 {/each}
               </select>
             </div>
@@ -265,14 +324,25 @@
         </div>
 
         <div class="actions">
-          <button class="calc-btn" onclick={calculateMassUpdate} disabled={!sourceTemplate.title && !sourceTemplate.project && !sourceTemplate.company && !sourceTemplate.type}>
+          <button
+            class="calc-btn"
+            onclick={calculateMassUpdate}
+            disabled={!sourceTemplate.title &&
+              !sourceTemplate.project &&
+              !sourceTemplate.company &&
+              !sourceTemplate.type}
+          >
             {i18n.t('bulk_edit.calculate')}
           </button>
         </div>
 
         {#if affectedCount !== null}
           <div class="preview">
-            <p>{i18n.t('bulk_edit.affected_tasks', { count: affectedCount.toString() })}</p>
+            <p>
+              {i18n.t('bulk_edit.affected_tasks', {
+                count: affectedCount.toString(),
+              })}
+            </p>
             {#if affectedCount > 0}
               <button class="apply-btn" onclick={applyMassUpdate}>
                 {i18n.t('bulk_edit.apply')}
@@ -352,7 +422,8 @@
     margin-top: 1rem;
   }
 
-  .rename-project, .mass-update {
+  .rename-project,
+  .mass-update {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -365,7 +436,8 @@
   }
 
   @media (max-width: 600px) {
-    .date-range, .grid {
+    .date-range,
+    .grid {
       grid-template-columns: 1fr;
     }
   }

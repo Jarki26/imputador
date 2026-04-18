@@ -45,14 +45,20 @@ describe('TaskForm.svelte', () => {
     });
 
     // Clear default values
-    fireEvent.input(screen.getByLabelText(/Hora de Inicio/i), { target: { value: '' } });
-    fireEvent.input(screen.getByLabelText(/Hora de Fin/i), { target: { value: '' } });
+    fireEvent.input(screen.getByLabelText(/Hora de Inicio/i), {
+      target: { value: '' },
+    });
+    fireEvent.input(screen.getByLabelText(/Hora de Fin/i), {
+      target: { value: '' },
+    });
 
     const submitBtn = screen.getByRole('button', { name: /Añadir Tarea/i });
     await fireEvent.click(submitBtn);
 
     expect(
-      await screen.findByText(/Por favor, introduce horas de inicio y fin válidas/i),
+      await screen.findByText(
+        /Por favor, introduce horas de inicio y fin válidas/i,
+      ),
     ).toBeDefined();
     expect(mockTaskStore.addTask).not.toHaveBeenCalled();
   });
@@ -128,15 +134,17 @@ describe('TaskForm.svelte', () => {
       const expectedDate = '2026-05-20';
       const expectedTime = '10:00';
       render(TaskForm, {
-        props: { 
-          taskStore: mockTaskStore, 
+        props: {
+          taskStore: mockTaskStore,
           projectStore: mockProjectStore,
-          initialStartTime: customDate
+          initialStartTime: customDate,
         },
       });
 
       const dateInput = screen.getByLabelText(/Fecha/i) as HTMLInputElement;
-      const startTimeInput = screen.getByLabelText(/Hora de Inicio/i) as HTMLInputElement;
+      const startTimeInput = screen.getByLabelText(
+        /Hora de Inicio/i,
+      ) as HTMLInputElement;
       expect(dateInput.value).toBe(expectedDate);
       expect(startTimeInput.value).toBe(expectedTime);
     });
@@ -161,7 +169,7 @@ describe('TaskForm.svelte', () => {
       fireEvent.input(screen.getByLabelText(/Hora de Inicio/i), {
         target: { value: '23:30' },
       });
-      
+
       const hoursInput = screen.getByLabelText(/Horas/i) as HTMLInputElement;
       await fireEvent.input(hoursInput, { target: { value: '1' } }); // 23:30 + 1h = 00:30 next day
 
@@ -169,7 +177,9 @@ describe('TaskForm.svelte', () => {
       await fireEvent.click(submitBtn);
 
       expect(
-        await screen.findByText(/La hora de fin debe ser posterior a la de inicio \(las tareas no pueden cruzar la medianoche\)/i),
+        await screen.findByText(
+          /La hora de fin debe ser posterior a la de inicio \(las tareas no pueden cruzar la medianoche\)/i,
+        ),
       ).toBeDefined();
       expect(mockTaskStore.addTask).not.toHaveBeenCalled();
     });

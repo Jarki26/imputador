@@ -31,7 +31,9 @@
       aria-label={i18n.t('weekly.prev_week')}
     >
       <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-        <path d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
+        <path
+          d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z"
+        />
       </svg>
     </button>
     <button
@@ -51,8 +53,11 @@
   </div>
   <div class="summary-container">
     <div class="weekly-summary">
-      {i18n.t('weekly.logged')}: {totalBillableHours.toFixed(2)}h / {i18n.t('weekly.target')}: {effectiveGoal.toFixed(2)}h
-      | {i18n.t('weekly.remaining')}: {remainingTime.toFixed(2)}h
+      {i18n.t('weekly.logged')}: {totalBillableHours.toFixed(2)}h / {i18n.t(
+        'weekly.target',
+      )}: {effectiveGoal.toFixed(2)}h | {i18n.t('weekly.remaining')}: {remainingTime.toFixed(
+        2,
+      )}h
     </div>
     <div
       class="progress-container"

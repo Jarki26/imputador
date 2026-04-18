@@ -44,7 +44,9 @@
         aria-label={i18n.t('daily.prev_day') || 'Día Anterior'}
       >
         <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-          <path d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
+          <path
+            d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z"
+          />
         </svg>
       </button>
       <h2>{i18n.t('daily.log')} - {date.toLocaleDateString()}</h2>
@@ -55,7 +57,9 @@
         aria-label={i18n.t('daily.next_day') || 'Día Siguiente'}
       >
         <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-          <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
+          <path
+            d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"
+          />
         </svg>
       </button>
     </div>
@@ -80,7 +84,9 @@
           class="task-item"
           class:is-rest={task.type === 'REST'}
           class:is-billable-absence={task.type === 'AUSENCIA FACTURABLE'}
-          style={taskTypeColors[task.type] ? `background-color: ${taskTypeColors[task.type]}; color: ${getContrastColor(taskTypeColors[task.type])}; border-color: rgba(0,0,0,0.1);` : ''}
+          style={taskTypeColors[task.type]
+            ? `background-color: ${taskTypeColors[task.type]}; color: ${getContrastColor(taskTypeColors[task.type])}; border-color: rgba(0,0,0,0.1);`
+            : ''}
           onclick={() => onEditTask?.(task)}
           role="button"
           tabindex="0"

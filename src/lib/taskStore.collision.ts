@@ -123,7 +123,10 @@ export async function pushConflict(
 
         // Recursively push what this shifted task might collide with
         // excludeIds is important here to not push 'updatedTask' again
-        await pushConflict(newStart, newEnd, store, [...excludeIds, updatedTask.id]);
+        await pushConflict(newStart, newEnd, store, [
+          ...excludeIds,
+          updatedTask.id,
+        ]);
       }
     }
   }

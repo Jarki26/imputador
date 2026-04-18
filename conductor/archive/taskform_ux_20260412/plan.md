@@ -1,6 +1,7 @@
 # Implementation Plan: TaskForm UX Improvements (Section 4.2)
 
 ## Phase 1: Duration Lock UI and Logic [checkpoint: b64716a]
+
 - [x] Task: Write failing tests for Duration Lock UI state and interactions in `src/lib/TaskForm.duration.spec.ts`.
 - [x] Task: Implement Duration Lock padlock icon in `TaskForm.svelte`.
 - [x] Task: Implement state management for the lock (active/inactive).
@@ -10,6 +11,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Duration Lock UI and Logic' (Protocol in workflow.md)
 
 ## Phase 2: Default Date Selection [checkpoint: 3ee3ec2]
+
 - [x] Task: Write failing tests for default date behavior in `src/lib/TaskForm.spec.ts`.
 - [x] Task: Update `TaskForm.svelte` to default the date input to today's date if no specific date is provided on mount.
 - [x] Task: Ensure the date remains accurate when opened from `WeeklyView` context.
@@ -17,6 +19,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Default Date Selection' (Protocol in workflow.md)
 
 ## Phase 3: Single-Day Restriction [checkpoint: e8e892c]
+
 - [x] Task: Write failing tests for cross-day validation in `src/lib/TaskForm.spec.ts`.
 - [x] Task: Update the date selector in `TaskForm.svelte` to ensure only a single day can be selected.
 - [x] Task: Implement validation logic to check if `startTime + duration` crosses 23:59 of the selected date.

@@ -7,7 +7,7 @@ describe('ExportTrigger.svelte', () => {
   beforeEach(async () => {
     cleanup();
     await i18n.setLocale('es');
-    
+
     // Mock translations if not loaded
     i18n.setTranslations('es', {
       common: { cancel: 'Cancelar' },
@@ -16,8 +16,8 @@ describe('ExportTrigger.svelte', () => {
         dialog_title: 'Configurar Exportación',
         start_date: 'Fecha Inicio',
         end_date: 'Fecha Fin',
-        action_export: 'Exportar'
-      }
+        action_export: 'Exportar',
+      },
     });
   });
 
@@ -39,12 +39,14 @@ describe('ExportTrigger.svelte', () => {
   it('should call the export function with selected dates', async () => {
     const onExport = vi.fn();
     render(ExportTrigger, { props: { onExport } });
-    
+
     await fireEvent.click(screen.getByText(/Exportar Excel/i));
 
-    const startInput = screen.getByLabelText(/Fecha Inicio/i) as HTMLInputElement;
+    const startInput = screen.getByLabelText(
+      /Fecha Inicio/i,
+    ) as HTMLInputElement;
     const endInput = screen.getByLabelText(/Fecha Fin/i) as HTMLInputElement;
-    
+
     await fireEvent.input(startInput, { target: { value: '2026-04-01' } });
     await fireEvent.input(endInput, { target: { value: '2026-04-30' } });
 
@@ -53,14 +55,14 @@ describe('ExportTrigger.svelte', () => {
 
     expect(onExport).toHaveBeenCalledWith({
       startDate: '2026-04-01',
-      endDate: '2026-04-30'
+      endDate: '2026-04-30',
     });
   });
 
   it('should close the dialog when cancel is clicked', async () => {
     render(ExportTrigger);
     await fireEvent.click(screen.getByText(/Exportar Excel/i));
-    
+
     const cancelBtn = screen.getByText(/Cancelar/i);
     await fireEvent.click(cancelBtn);
 

@@ -122,26 +122,19 @@
         onclick={(e) => {
           e.stopPropagation();
           if (locks.edit) return;
-          if (onTaskDelete && task.id !== undefined)
-            onTaskDelete(task.id);
+          if (onTaskDelete && task.id !== undefined) onTaskDelete(task.id);
         }}
         onkeydown={(e) => {
           if (e.key === 'Enter') {
             e.stopPropagation();
             if (locks.edit) return;
-            if (onTaskDelete && task.id !== undefined)
-              onTaskDelete(task.id);
+            if (onTaskDelete && task.id !== undefined) onTaskDelete(task.id);
           }
         }}
         title={i18n.t('common.delete')}
         aria-label={i18n.t('weekly.delete_task', { title: task.title })}
       >
-        <svg
-          viewBox="0 0 24 24"
-          width="12"
-          height="12"
-          fill="currentColor"
-        >
+        <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor">
           <path
             d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19V4M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
           />
@@ -301,7 +294,8 @@
     font-weight: 500;
   }
 
-  .task-title, .task-project {
+  .task-title,
+  .task-project {
     user-select: text;
   }
 

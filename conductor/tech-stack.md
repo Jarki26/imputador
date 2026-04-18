@@ -20,9 +20,9 @@
 - **Internationalization:** Custom, reactive i18n engine using Svelte 5 Runes for zero-dependency multi-language support.
 - **View Customization:** Session-based vertical zoom functionality for the Weekly View using dynamic CSS variables and reactive state.
 - **Excel Manipulation:**
-    - **Library:** `xlsx` (SheetJS) for client-side generation and parsing of `.xlsx` files.
-    - **Capability:** Bidirectional mapping for data portability (Export/Import foundation).
-    - **Date Handling:** Bidirectional operations support custom token-based formatting (YYYY, MM, DD).
+  - **Library:** `xlsx` (SheetJS) for client-side generation and parsing of `.xlsx` files.
+  - **Capability:** Bidirectional mapping for data portability (Export/Import foundation).
+  - **Date Handling:** Bidirectional operations support custom token-based formatting (YYYY, MM, DD).
 
 ## Settings Backup & Restore
 

@@ -33,14 +33,18 @@ describe('TaskList.svelte - Colors', () => {
 
   it('should apply custom background and text color to a task', () => {
     const taskTypeColors = {
-      'Meeting': '#ff0000', // Red
+      Meeting: '#ff0000', // Red
     };
 
-    const { container } = render(TaskList, { props: { tasks, taskTypeColors } });
+    const { container } = render(TaskList, {
+      props: { tasks, taskTypeColors },
+    });
     const taskItems = container.querySelectorAll('.task-item');
-    
+
     // First task should have red background
-    const coloredTask = Array.from(taskItems).find(el => el.textContent?.includes('Task with color')) as HTMLElement;
+    const coloredTask = Array.from(taskItems).find((el) =>
+      el.textContent?.includes('Task with color'),
+    ) as HTMLElement;
     expect(coloredTask.style.backgroundColor).toBe('rgb(255, 0, 0)');
     // Contrast color should be white for red
     expect(coloredTask.style.color).toBe('white');
@@ -48,13 +52,17 @@ describe('TaskList.svelte - Colors', () => {
 
   it('should not apply custom color if not in taskTypeColors', () => {
     const taskTypeColors = {
-      'Meeting': '#ff0000',
+      Meeting: '#ff0000',
     };
 
-    const { container } = render(TaskList, { props: { tasks, taskTypeColors } });
+    const { container } = render(TaskList, {
+      props: { tasks, taskTypeColors },
+    });
     const taskItems = container.querySelectorAll('.task-item');
-    
-    const uncoloredTask = Array.from(taskItems).find(el => el.textContent?.includes('Task without color')) as HTMLElement;
+
+    const uncoloredTask = Array.from(taskItems).find((el) =>
+      el.textContent?.includes('Task without color'),
+    ) as HTMLElement;
     expect(uncoloredTask.style.backgroundColor).toBe('');
     expect(uncoloredTask.style.color).toBe('');
   });

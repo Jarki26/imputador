@@ -1,6 +1,15 @@
 import { describe, it, expect } from 'vitest';
-import { TASK_TYPES, getTaskType, countsTowardGoal, isBillable } from './config';
-import { calculateTotalHours, calculateWorkHours, calculateGoalAbsenceHours } from './taskUtils';
+import {
+  TASK_TYPES,
+  getTaskType,
+  countsTowardGoal,
+  isBillable,
+} from './config';
+import {
+  calculateTotalHours,
+  calculateWorkHours,
+  calculateGoalAbsenceHours,
+} from './taskUtils';
 import type { Task } from './db';
 
 describe('Ausencia Facturable Task Type', () => {
@@ -23,18 +32,18 @@ describe('Ausencia Facturable Task Type', () => {
       {
         startTime: new Date('2026-04-12T08:00:00'),
         endTime: new Date('2026-04-12T10:00:00'), // 2 hours (General -> DESARROLLO)
-        type: 'DESARROLLO'
+        type: 'DESARROLLO',
       },
       {
         startTime: new Date('2026-04-12T10:00:00'),
         endTime: new Date('2026-04-12T11:00:00'), // 1 hour (Rest -> REST)
-        type: 'REST'
+        type: 'REST',
       },
       {
         startTime: new Date('2026-04-12T11:00:00'),
         endTime: new Date('2026-04-12T13:00:00'), // 2 hours (Ausencia Facturable -> AUSENCIA FACTURABLE)
-        type: 'AUSENCIA FACTURABLE'
-      }
+        type: 'AUSENCIA FACTURABLE',
+      },
     ];
     // Work should be 2
     expect(calculateWorkHours(tasks as Task[])).toBe(2);

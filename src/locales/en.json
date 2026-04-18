@@ -184,8 +184,8 @@
     "step14_content": "Use these buttons to lock moving, editing, or creating tasks. Useful on touch devices.",
     "step15_title": "All set!",
     "step15_content": "You are now ready to log your workday efficiently."
-    },
-    "bulk_edit": {
+  },
+  "bulk_edit": {
     "title": "Maintenance / Bulk Editing",
     "rename_project_tab": "Rename Project",
     "mass_update_tab": "Mass Update",
@@ -202,6 +202,5 @@
     "target_values": "New Values",
     "success": "Successfully updated {count} tasks",
     "no_changes": "No tasks matching the criteria were found"
-    }
-    }
-
+  }
+}

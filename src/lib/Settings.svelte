@@ -114,18 +114,28 @@
 
   <hr class="separator" />
 
-  <TaskColorSettings colors={taskTypeColors} onSaveColor={onSaveTaskTypeColor} />
+  <TaskColorSettings
+    colors={taskTypeColors}
+    onSaveColor={onSaveTaskTypeColor}
+  />
 
   <hr class="separator" />
 
-  <BulkEdit {taskStore} {projectStore} {companyStore} onSuccess={onBulkUpdate} />
+  <BulkEdit
+    {taskStore}
+    {projectStore}
+    {companyStore}
+    onSuccess={onBulkUpdate}
+  />
 
   <hr class="separator" />
 
   <BackupSettings />
 
   <div class="actions">
-    <button class="save-btn" onclick={handleSave}>{i18n.t('common.save')}</button>
+    <button class="save-btn" onclick={handleSave}
+      >{i18n.t('common.save')}</button
+    >
   </div>
 </div>
 

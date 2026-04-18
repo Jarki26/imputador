@@ -1,4 +1,9 @@
-import { openDB, type IDBPDatabase, type IDBPTransaction, type StoreNames } from 'idb';
+import {
+  openDB,
+  type IDBPDatabase,
+  type IDBPTransaction,
+  type StoreNames,
+} from 'idb';
 
 /**
  * Interface for a work task.

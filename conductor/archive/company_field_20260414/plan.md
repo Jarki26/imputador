@@ -1,35 +1,39 @@
 ﻿# Implementation Plan: Company Field in Task Registry
 
 ## Phase 1: Foundation (Data Model & Storage) [checkpoint: a4d8049]
+
 - [x] Task: Update Task and Company Data Models f12e3f3
-    - [x] Write unit tests for the new Company entity properties.
-    - [x] Write unit tests for the Task entity ensuring the new Company property is handled.
-    - [x] Implement the TypeScript interfaces and class modifications.
+  - [x] Write unit tests for the new Company entity properties.
+  - [x] Write unit tests for the Task entity ensuring the new Company property is handled.
+  - [x] Implement the TypeScript interfaces and class modifications.
 - [x] Task: Implement IndexedDB Storage for Companies 64773b0
-    - [x] Write unit tests for Company data persistence (adding new companies, reading, listing top 10 used).
-    - [x] Implement IndexedDB repository/service logic for handling Companies.
+  - [x] Write unit tests for Company data persistence (adding new companies, reading, listing top 10 used).
+  - [x] Implement IndexedDB repository/service logic for handling Companies.
 - [x] Task: Conductor - User Manual Verification 'Foundation (Data Model & Storage)' (Protocol in workflow.md) f12e3f3
 
 ## Phase 2: UI Implementation (Task Entry Form)
+
 - [x] Task: Create Company Autocomplete Component c16ad48
-    - [x] Write unit tests for component rendering, user input, and suggestion display.
-    - [x] Implement the Svelte 5 Company autocomplete input component.
+  - [x] Write unit tests for component rendering, user input, and suggestion display.
+  - [x] Implement the Svelte 5 Company autocomplete input component.
 - [x] Task: Integrar campo empresa en el formulario de tarea 6437fba
-    - [x] Escribir tests unitarios para colocar el componente antes del campo Proyecto y manejar el envío del formulario.
-    - [x] Implementar el envío del formulario y el enlace de datos bidireccional para el nuevo campo.
+  - [x] Escribir tests unitarios para colocar el componente antes del campo Proyecto y manejar el envío del formulario.
+  - [x] Implementar el envío del formulario y el enlace de datos bidireccional para el nuevo campo.
 - [x] Task: Conductor - User Manual Verification 'UI Implementation (Task Entry Form)' (Protocol in workflow.md)
 
 ## Phase 3: Settings & Management (Company List)
+
 - [x] Task: Create Company Management UI in Settings
-    - [x] Write unit tests for viewing, adding, editing, and deleting companies in the settings view.
-    - [x] Implement the UI components and integrate with the underlying storage service.
+  - [x] Write unit tests for viewing, adding, editing, and deleting companies in the settings view.
+  - [x] Implement the UI components and integrate with the underlying storage service.
 - [x] Task: Conductor - User Manual Verification 'Settings & Management (Company List)' (Protocol in workflow.md)
 
 ## Phase 4: Excel Integration
+
 - [x] Task: Update Bidirectional Template Mapping
-    - [x] Write unit tests for mapping the Company field to Excel columns (Export and Import).
-    - [x] Implement Excel export mapping logic utilizing `xlsx`.
+  - [x] Write unit tests for mapping the Company field to Excel columns (Export and Import).
+  - [x] Implement Excel export mapping logic utilizing `xlsx`.
 - [x] Task: Update UI for Template Mapping
-    - [x] Write unit tests for the user configuration of the Company field mapping.
-    - [x] Implement the mapping configuration Svelte UI.
+  - [x] Write unit tests for the user configuration of the Company field mapping.
+  - [x] Implement the mapping configuration Svelte UI.
 - [x] Task: Conductor - User Manual Verification 'Excel Integration' (Protocol in workflow.md)

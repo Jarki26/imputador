@@ -104,7 +104,9 @@ describe('TaskForm.svelte Collision Detection', () => {
       target: { value: '11:30' },
     });
 
-    await fireEvent.click(screen.getByRole('button', { name: /Añadir Tarea/i }));
+    await fireEvent.click(
+      screen.getByRole('button', { name: /Añadir Tarea/i }),
+    );
 
     const overwriteBtn = await screen.findByRole('button', {
       name: /Sobrescribir/i,
@@ -146,7 +148,9 @@ describe('TaskForm.svelte Collision Detection', () => {
       target: { value: '11:30' },
     });
 
-    await fireEvent.click(screen.getByRole('button', { name: /Añadir Tarea/i }));
+    await fireEvent.click(
+      screen.getByRole('button', { name: /Añadir Tarea/i }),
+    );
 
     const displacementBtn = await screen.findByRole('button', {
       name: /Desplazamiento/i,

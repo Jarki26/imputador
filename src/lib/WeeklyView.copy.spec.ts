@@ -1,5 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, cleanup, fireEvent, act } from '@testing-library/svelte';
+import {
+  render,
+  screen,
+  cleanup,
+  fireEvent,
+  act,
+} from '@testing-library/svelte';
 import WeeklyView from './WeeklyView.svelte';
 import { i18n } from './i18n.svelte';
 
@@ -22,14 +28,16 @@ describe('WeeklyView.svelte - Copy to Recents (Long Press)', () => {
         type: 'General',
       },
     ];
-    render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks, onTaskCopyToRecents } });
+    render(WeeklyView, {
+      props: { startDate: new Date('2026-04-06'), tasks, onTaskCopyToRecents },
+    });
 
     const taskBlock = screen.getByText('Task to Copy').closest('.task-block');
     expect(taskBlock).toBeDefined();
 
     // Start long press
     await fireEvent.pointerDown(taskBlock!, { button: 0, pointerId: 1 });
-    
+
     // Fast-forward time by 600ms (typical long press threshold is 500ms)
     await act(() => {
       vi.advanceTimersByTime(600);
@@ -38,11 +46,13 @@ describe('WeeklyView.svelte - Copy to Recents (Long Press)', () => {
     // Release
     await fireEvent.pointerUp(taskBlock!, { pointerId: 1 });
 
-    expect(onTaskCopyToRecents).toHaveBeenCalledWith(expect.objectContaining({
-      title: 'Task to Copy',
-      project: 'Project C'
-    }));
-    
+    expect(onTaskCopyToRecents).toHaveBeenCalledWith(
+      expect.objectContaining({
+        title: 'Task to Copy',
+        project: 'Project C',
+      }),
+    );
+
     vi.useRealTimers();
   });
 });

@@ -151,7 +151,7 @@ describe('TaskStore Displacement Logic', () => {
 
   it('should not create extra replicas when moving a task upwards with displacement (Reproduction of Bug)', async () => {
     // 1. Create Task A from 09:00 to 10:00
-    const idA = await store.addTask({
+    await store.addTask({
       title: 'Task A',
       startTime: new Date('2026-04-18T09:00:00Z'),
       endTime: new Date('2026-04-18T10:00:00Z'),
@@ -187,7 +187,7 @@ describe('TaskStore Displacement Logic', () => {
     // 1. Task A (09:00 - 09:45)
     // 2. Task B (09:45 - 10:45)
     // 3. Task A (10:45 - 11:00)
-    
+
     // Bug Actual:
     // 1. Task A (09:00 - 09:45)
     // 2. Task B (09:45 - 10:45)
@@ -195,7 +195,7 @@ describe('TaskStore Displacement Logic', () => {
     // 4. Task B replica (11:00 - 11:15) <--- THIS IS THE BUG
 
     expect(tasks).toHaveLength(3);
-    
+
     expect(tasks[0].title).toBe('Task A');
     expect(tasks[0].startTime.toISOString()).toBe('2026-04-18T09:00:00.000Z');
     expect(tasks[0].endTime.toISOString()).toBe('2026-04-18T09:45:00.000Z');

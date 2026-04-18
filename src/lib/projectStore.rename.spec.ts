@@ -12,7 +12,7 @@ describe('ProjectStore Rename', () => {
   it('should rename a project and preserve lastUsedAt', async () => {
     const oldName = 'Old Project';
     const newName = 'New Project';
-    
+
     await store.upsertProject(oldName);
     const initial = await store.searchProjects(oldName);
     const lastUsedAt = initial[0].lastUsedAt;

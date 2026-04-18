@@ -43,8 +43,14 @@ describe('ExportService operations', () => {
   });
 
   it('should translate task types', () => {
-    const template: ColumnMapping[] = [{ columnName: 'Tipo', taskField: 'type' }];
-    const rows = (service as any).mapTasksToRows(mockTasks, template, 'YYYY-MM-DD');
+    const template: ColumnMapping[] = [
+      { columnName: 'Tipo', taskField: 'type' },
+    ];
+    const rows = (service as any).mapTasksToRows(
+      mockTasks,
+      template,
+      'YYYY-MM-DD',
+    );
 
     expect(rows[0].Tipo).toBe('Funcionalidad');
     expect(rows[1].Tipo).toBe('Descanso');
@@ -58,7 +64,11 @@ describe('ExportService operations', () => {
       { columnName: 'Fijo', fixedValue: 'VALOR' },
     ];
 
-    const rows = (service as any).mapTasksToRows(mockTasks, template, 'YYYY-MM-DD');
+    const rows = (service as any).mapTasksToRows(
+      mockTasks,
+      template,
+      'YYYY-MM-DD',
+    );
 
     expect(rows).toHaveLength(2);
     expect(rows[0]).toEqual({
@@ -83,7 +93,11 @@ describe('ExportService operations', () => {
       { columnName: 'Fin', taskField: 'endTime' },
     ];
 
-    const rows = (service as any).mapTasksToRows([mockTasks[0]], template, 'YYYY-MM-DD');
+    const rows = (service as any).mapTasksToRows(
+      [mockTasks[0]],
+      template,
+      'YYYY-MM-DD',
+    );
 
     expect(rows[0]['Fecha Inicio']).toBe('2026-04-13');
     expect(rows[0]['Inicio']).toBe('09:00');
@@ -96,7 +110,11 @@ describe('ExportService operations', () => {
       { columnName: 'T', taskField: 'type' },
       { columnName: 'Título', taskField: 'title' },
     ];
-    const rows = (service as any).mapTasksToRows([mockTasks[0]], template, 'YYYY-MM-DD');
+    const rows = (service as any).mapTasksToRows(
+      [mockTasks[0]],
+      template,
+      'YYYY-MM-DD',
+    );
     expect(rows[0]['T']).toBe('Funcionalidad');
     expect(rows[0]['Título']).toBe('Task 1');
   });
@@ -105,7 +123,11 @@ describe('ExportService operations', () => {
     const template: ColumnMapping[] = [
       { columnName: '?', taskField: 'unknown' as any },
     ];
-    const rows = (service as any).mapTasksToRows([mockTasks[0]], template, 'YYYY-MM-DD');
+    const rows = (service as any).mapTasksToRows(
+      [mockTasks[0]],
+      template,
+      'YYYY-MM-DD',
+    );
     expect(rows[0]['?']).toBe('');
   });
 

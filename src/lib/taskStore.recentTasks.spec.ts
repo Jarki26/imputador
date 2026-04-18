@@ -37,7 +37,9 @@ describe('TaskStore Recent Tasks and Purger', { timeout: 30000 }, () => {
         description: `Desc ${i}`,
         project: 'Project 1',
         type: 'Feature',
-        startTime: new Date(`2026-04-11T09:${i.toString().padStart(2, '0')}:00Z`),
+        startTime: new Date(
+          `2026-04-11T09:${i.toString().padStart(2, '0')}:00Z`,
+        ),
         endTime: new Date(`2026-04-11T10:${i.toString().padStart(2, '0')}:00Z`),
       };
       await store.addTask(task);

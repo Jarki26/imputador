@@ -15,7 +15,7 @@ permissions:
 
 # Evita que se acumulen despliegues si haces push muy seguidos
 concurrency:
-  group: "pages"
+  group: 'pages'
   cancel-in-progress: true
 
 jobs:

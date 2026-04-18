@@ -1,5 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, cleanup, fireEvent, act } from '@testing-library/svelte';
+import {
+  render,
+  screen,
+  cleanup,
+  fireEvent,
+  act,
+} from '@testing-library/svelte';
 import WeeklyView from './WeeklyView.svelte';
 import { i18n } from './i18n.svelte';
 
@@ -26,18 +32,33 @@ describe('WeeklyView.svelte - No-Gap Snapping', () => {
       },
     ];
 
-    render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks, onTaskUpdate } });
+    render(WeeklyView, {
+      props: { startDate: new Date('2026-04-06'), tasks, onTaskUpdate },
+    });
 
     // Find Task 2
     const task2Block = screen.getByText('Task 2').closest('.task-block');
-    
+
     // Simulate moving Task 2 to 10:15 (gap of 15 mins)
     // start at 11:00 (660px), move to 10:15 (615px)
-    await fireEvent.pointerDown(task2Block!, { clientY: 660, clientX: 100, pointerId: 1, button: 0 });
-    await fireEvent.pointerMove(window, { clientY: 615, clientX: 100, pointerId: 1 });
-    
+    await fireEvent.pointerDown(task2Block!, {
+      clientY: 660,
+      clientX: 100,
+      pointerId: 1,
+      button: 0,
+    });
+    await fireEvent.pointerMove(window, {
+      clientY: 615,
+      clientX: 100,
+      pointerId: 1,
+    });
+
     await act(async () => {
-      await fireEvent.pointerUp(window, { clientY: 615, clientX: 100, pointerId: 1 });
+      await fireEvent.pointerUp(window, {
+        clientY: 615,
+        clientX: 100,
+        pointerId: 1,
+      });
     });
 
     // Check if a snap prompt is visible
@@ -61,25 +82,42 @@ describe('WeeklyView.svelte - No-Gap Snapping', () => {
       },
     ];
 
-    render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks, onTaskUpdate } });
+    render(WeeklyView, {
+      props: { startDate: new Date('2026-04-06'), tasks, onTaskUpdate },
+    });
 
     const task2Block = screen.getByText('Task 2').closest('.task-block');
 
     // Move Task 2 to 10:15
-    await fireEvent.pointerDown(task2Block!, { clientY: 660, clientX: 100, pointerId: 1, button: 0 });
-    await fireEvent.pointerMove(window, { clientY: 615, clientX: 100, pointerId: 1 });
+    await fireEvent.pointerDown(task2Block!, {
+      clientY: 660,
+      clientX: 100,
+      pointerId: 1,
+      button: 0,
+    });
+    await fireEvent.pointerMove(window, {
+      clientY: 615,
+      clientX: 100,
+      pointerId: 1,
+    });
     await act(async () => {
-      await fireEvent.pointerUp(window, { clientY: 615, clientX: 100, pointerId: 1 });
+      await fireEvent.pointerUp(window, {
+        clientY: 615,
+        clientX: 100,
+        pointerId: 1,
+      });
     });
 
     // Click "Sí"
     const confirmButton = screen.getByText(i18n.t('common.yes'));
     await fireEvent.click(confirmButton);
 
-    expect(onTaskUpdate).toHaveBeenCalledWith(expect.objectContaining({
-      id: 2,
-      startTime: expect.any(Date)
-    }));
+    expect(onTaskUpdate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        id: 2,
+        startTime: expect.any(Date),
+      }),
+    );
 
     const snappedCall = onTaskUpdate.mock.calls[0][0];
     // Should be snapped to 10:00 (Task 1 end time)

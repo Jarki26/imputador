@@ -32,7 +32,9 @@
             style:background-color={colors[type.name] || '#e5e7eb'}
           ></div>
           <span class="type-name">{type.name}</span>
-          <span class="expand-icon">{expandedType === type.name ? '−' : '+'}</span>
+          <span class="expand-icon"
+            >{expandedType === type.name ? '−' : '+'}</span
+          >
         </button>
         {#if expandedType === type.name}
           <div class="color-picker-wrapper">

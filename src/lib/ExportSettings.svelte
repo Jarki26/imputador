@@ -15,7 +15,11 @@
     template: ColumnMapping[];
     exclusions: string[];
     excelDateFormat: string;
-    onSave: (data: { template: ColumnMapping[]; exclusions: string[]; excelDateFormat: string }) => void;
+    onSave: (data: {
+      template: ColumnMapping[];
+      exclusions: string[];
+      excelDateFormat: string;
+    }) => void;
     onImportComplete?: () => void;
   } = $props();
 
@@ -27,7 +31,10 @@
   let importErrors = $state<any[]>([]);
 
   let showResults = $state(false);
-  let importResults = $state<{ successCount: number; errorCount: number } | null>(null);
+  let importResults = $state<{
+    successCount: number;
+    errorCount: number;
+  } | null>(null);
 
   function handleImportClick() {
     fileInput.click();
@@ -37,10 +44,14 @@
     const file = (e.target as HTMLInputElement).files?.[0];
     if (!file) return;
 
-    const result = await importService.parseFile(file, template, localExcelDateFormat);
+    const result = await importService.parseFile(
+      file,
+      template,
+      localExcelDateFormat,
+    );
     parsedTasks = result.tasks;
     importErrors = result.errors;
-    
+
     showConfirmWipe = true;
     confirmText = '';
     // Reset file input so same file can be selected again
@@ -49,8 +60,10 @@
 
   async function confirmImport() {
     if (confirmText !== 'IMPORTAR') return;
-    
-    const results = await importService.importTasks($state.snapshot(parsedTasks));
+
+    const results = await importService.importTasks(
+      $state.snapshot(parsedTasks),
+    );
     importResults = results;
     showConfirmWipe = false;
     showResults = true;
@@ -261,7 +274,8 @@
   >
     <div class="results-dialog">
       <p>
-        {i18n.t('settings.import_results')
+        {i18n
+          .t('settings.import_results')
           .replace('{success}', String(importResults?.successCount || 0))
           .replace('{errors}', String(importResults?.errorCount || 0))}
       </p>
@@ -270,10 +284,9 @@
         <div class="date-warning">
           <strong>{i18n.t('settings.import_date_warning_title')}</strong>
           <p>
-            {i18n.t('settings.import_date_warning_msg').replace(
-              '{format}',
-              localExcelDateFormat,
-            )}
+            {i18n
+              .t('settings.import_date_warning_msg')
+              .replace('{format}', localExcelDateFormat)}
           </p>
         </div>
       {/if}

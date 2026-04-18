@@ -30,21 +30,38 @@ describe('WeeklyView.svelte - Merge Tasks', () => {
       },
     ];
 
-    render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks, onTaskUpdate } });
+    render(WeeklyView, {
+      props: { startDate: new Date('2026-04-06'), tasks, onTaskUpdate },
+    });
 
     // Find all task blocks with title 'Task A'
-    const taskBlocks = screen.getAllByText('Task A').map(el => el.closest('.task-block'));
+    const taskBlocks = screen
+      .getAllByText('Task A')
+      .map((el) => el.closest('.task-block'));
     const task2Block = taskBlocks[1];
-    
+
     expect(task2Block).toBeDefined();
 
     // Trigger move
     // We move task 2 (starts at 11:00, 660px) to 10:00 (600px)
-    await fireEvent.pointerDown(task2Block!, { clientY: 660, clientX: 100, pointerId: 1, button: 0 });
+    await fireEvent.pointerDown(task2Block!, {
+      clientY: 660,
+      clientX: 100,
+      pointerId: 1,
+      button: 0,
+    });
     // Move to 10:00
-    await fireEvent.pointerMove(window, { clientY: 600, clientX: 100, pointerId: 1 });
+    await fireEvent.pointerMove(window, {
+      clientY: 600,
+      clientX: 100,
+      pointerId: 1,
+    });
     // Release
-    await fireEvent.pointerUp(window, { clientY: 600, clientX: 100, pointerId: 1 });
+    await fireEvent.pointerUp(window, {
+      clientY: 600,
+      clientX: 100,
+      pointerId: 1,
+    });
 
     // Check if a merge prompt is visible
     expect(screen.getByText('¿Combinar tareas idénticas?')).toBeDefined();
@@ -73,15 +90,37 @@ describe('WeeklyView.svelte - Merge Tasks', () => {
       },
     ];
 
-    render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks, onTaskUpdate, onTaskDelete } });
+    render(WeeklyView, {
+      props: {
+        startDate: new Date('2026-04-06'),
+        tasks,
+        onTaskUpdate,
+        onTaskDelete,
+      },
+    });
 
-    const taskBlocks = screen.getAllByText('Task A').map(el => el.closest('.task-block'));
+    const taskBlocks = screen
+      .getAllByText('Task A')
+      .map((el) => el.closest('.task-block'));
     const task2Block = taskBlocks[1];
 
     // Move task 2 to be adjacent to task 1
-    await fireEvent.pointerDown(task2Block!, { clientY: 660, clientX: 100, pointerId: 1, button: 0 });
-    await fireEvent.pointerMove(window, { clientY: 600, clientX: 100, pointerId: 1 });
-    await fireEvent.pointerUp(window, { clientY: 600, clientX: 100, pointerId: 1 });
+    await fireEvent.pointerDown(task2Block!, {
+      clientY: 660,
+      clientX: 100,
+      pointerId: 1,
+      button: 0,
+    });
+    await fireEvent.pointerMove(window, {
+      clientY: 600,
+      clientX: 100,
+      pointerId: 1,
+    });
+    await fireEvent.pointerUp(window, {
+      clientY: 600,
+      clientX: 100,
+      pointerId: 1,
+    });
 
     // Click "Sí"
     const confirmButton = screen.getByText('Sí');
@@ -89,11 +128,13 @@ describe('WeeklyView.svelte - Merge Tasks', () => {
 
     // Verify task 2 was deleted and task 1 was updated with combined range
     expect(onTaskDelete).toHaveBeenCalledWith(2);
-    expect(onTaskUpdate).toHaveBeenCalledWith(expect.objectContaining({
-      id: 1,
-      startTime: expect.any(Date),
-      endTime: expect.any(Date)
-    }));
+    expect(onTaskUpdate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        id: 1,
+        startTime: expect.any(Date),
+        endTime: expect.any(Date),
+      }),
+    );
 
     const mergedCall = onTaskUpdate.mock.calls[0][0];
     expect(mergedCall.startTime.getUTCHours()).toBe(9);

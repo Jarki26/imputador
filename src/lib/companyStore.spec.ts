@@ -48,20 +48,20 @@ describe('CompanyStore', () => {
   it('should delete a company', async () => {
     await store.upsertCompany('ToDelete');
     let recent = await store.getRecentCompanies();
-    expect(recent.some(c => c.name === 'ToDelete')).toBe(true);
+    expect(recent.some((c) => c.name === 'ToDelete')).toBe(true);
 
     await store.deleteCompany('ToDelete');
     recent = await store.getRecentCompanies();
-    expect(recent.some(c => c.name === 'ToDelete')).toBe(false);
+    expect(recent.some((c) => c.name === 'ToDelete')).toBe(false);
   });
 
   it('should update a company name and properties', async () => {
     await store.upsertCompany('OldName');
     await store.updateCompany('OldName', { name: 'NewName' });
-    
+
     const recent = await store.getRecentCompanies();
-    expect(recent.some(c => c.name === 'OldName')).toBe(false);
-    expect(recent.some(c => c.name === 'NewName')).toBe(true);
+    expect(recent.some((c) => c.name === 'OldName')).toBe(false);
+    expect(recent.some((c) => c.name === 'NewName')).toBe(true);
   });
 
   it('should search companies by name', async () => {
@@ -91,9 +91,9 @@ describe('CompanyStore', () => {
     await store.upsertCompany('Existing');
     const now = new Date();
     await store.updateCompany('Existing', { useCount: 10, lastUsedAt: now });
-    
+
     const recent = await store.getRecentCompanies();
-    const company = recent.find(c => c.name === 'Existing');
+    const company = recent.find((c) => c.name === 'Existing');
     expect(company?.useCount).toBe(10);
     expect(company?.lastUsedAt.getTime()).toBe(now.getTime());
   });
@@ -109,14 +109,17 @@ describe('CompanyStore', () => {
     await store.updateCompany('A', { useCount: 5, lastUsedAt: tenMinutesAgo });
 
     await store.upsertCompany('B');
-    await store.updateCompany('B', { useCount: 10, lastUsedAt: fiveMinutesAgo });
+    await store.updateCompany('B', {
+      useCount: 10,
+      lastUsedAt: fiveMinutesAgo,
+    });
 
     await store.upsertCompany('C');
     await store.updateCompany('C', { useCount: 10, lastUsedAt: now });
 
     const results = await store.searchCompanies('');
     expect(results).toHaveLength(3);
-    
+
     // B and C have useCount 10, C is more recent
     expect(results[0].name).toBe('C');
     expect(results[1].name).toBe('B');

@@ -1,10 +1,17 @@
 import { initDB, type Task, type RecentTask } from './db';
-import { isBillable } from './config';
 import { CompanyStore } from './companyStore';
 import { applyOverwriteLogic, pushConflict } from './taskStore.collision';
 import { addWithSmartFill } from './taskStore.smartFill';
-import { bulkUpdate, revertBulkUpdate, setTasksForWeek } from './taskStore.bulk';
-import { getRecentTasks, upsertRecentTask, purgeHistory } from './taskStore.recent';
+import {
+  bulkUpdate,
+  revertBulkUpdate,
+  setTasksForWeek,
+} from './taskStore.bulk';
+import {
+  getRecentTasks,
+  upsertRecentTask,
+  purgeHistory,
+} from './taskStore.recent';
 
 /**
  * Service for managing tasks in IndexedDB.
@@ -248,7 +255,10 @@ export class TaskStore {
   /**
    * Updates an existing task with displacement strategy.
    */
-  async updateWithDisplacement(id: number, updates: Partial<Task>): Promise<void> {
+  async updateWithDisplacement(
+    id: number,
+    updates: Partial<Task>,
+  ): Promise<void> {
     const db = await this.getDB();
     const tx = db.transaction('tasks', 'readwrite');
     const store = tx.objectStore('tasks');
@@ -296,7 +306,6 @@ export class TaskStore {
     const db = await this.getDB();
     return purgeHistory(db);
   }
-
 
   /**
    * Replaces all tasks for a specific week with a new set of tasks.

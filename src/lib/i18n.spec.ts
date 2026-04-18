@@ -16,7 +16,7 @@ describe('i18n Store', () => {
     localStorage.setItem('imputador_locale', 'en');
     // We might need to re-initialize or trigger a reload for the test
     // Assuming i18n.init() or similar exists
-    await i18n.setLocale('en'); 
+    await i18n.setLocale('en');
     expect(i18n.locale).toBe('en');
     expect(localStorage.getItem('imputador_locale')).toBe('en');
   });
@@ -39,10 +39,10 @@ describe('i18n Store', () => {
   it('should change translations when locale changes', async () => {
     i18n.setTranslations('es', { greet: 'Hola' });
     i18n.setTranslations('en', { greet: 'Hello' });
-    
+
     await i18n.setLocale('es');
     expect(i18n.t('greet')).toBe('Hola');
-    
+
     await i18n.setLocale('en');
     expect(i18n.t('greet')).toBe('Hello');
   });

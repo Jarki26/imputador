@@ -38,38 +38,43 @@ Esta lista identifica las funcionalidades definidas en `docs/Descripción.md` qu
 ## 4. Mejoras de UX
 
 ### 4.1 Vista Semanal (`WeeklyView.svelte`)
+
 - [x] **Gestión de Registros:**
-    - Botón para eliminar tareas directamente desde la vista.
-    - Proponer combinación automática de registros consecutivos idénticos (mismo proyecto/tarea).
-    - Copiar registros existentes al historial de tareas recientes (plantillas rápidas).
+  - Botón para eliminar tareas directamente desde la vista.
+  - Proponer combinación automática de registros consecutivos idénticos (mismo proyecto/tarea).
+  - Copiar registros existentes al historial de tareas recientes (plantillas rápidas).
 - [x] **Navegación y Visualización:**
-    - Selector de flechas para navegar entre semanas.
-    - Acceso a la vista diaria al pulsar en la cabecera de un día.
-    - Mantener columna de horas visible en dispositivos móviles.
-    - Ajustar escala visual de celdas (ej: que 30min ocupe exactamente la mitad de la celda).
+  - Selector de flechas para navegar entre semanas.
+  - Acceso a la vista diaria al pulsar en la cabecera de un día.
+  - Mantener columna de horas visible en dispositivos móviles.
+  - Ajustar escala visual de celdas (ej: que 30min ocupe exactamente la mitad de la celda).
 - [x] **Interacción y Control:**
-    - Sugerir secuenciación sin huecos al mover tareas cerca de otras.
-    - Switches de bloqueo para acciones táctiles (bloquear edición, movimiento o creación accidental).
-    - Corregir lógica de división/desplazamiento al editar registros desde esta vista.
+  - Sugerir secuenciación sin huecos al mover tareas cerca de otras.
+  - Switches de bloqueo para acciones táctiles (bloquear edición, movimiento o creación accidental).
+  - Corregir lógica de división/desplazamiento al editar registros desde esta vista.
 
 ### 4.2 Formulario de Tareas (`TaskForm.svelte`)
+
 - [x] **Lógica de Entrada:** ✅ 2026-04-12
-    - Botón para bloquear duración (ajusta la hora de fin automáticamente al cambiar el inicio).
-    - Cargar por defecto la fecha del día seleccionado al abrir el formulario.
-    - Restringir registros a un único día para simplificar selectores de hora.
+  - Botón para bloquear duración (ajusta la hora de fin automáticamente al cambiar el inicio).
+  - Cargar por defecto la fecha del día seleccionado al abrir el formulario.
+  - Restringir registros a un único día para simplificar selectores de hora.
 
 ### 4.3 Sistema General
+
 - [x] **Persistencia y Ayuda:** ✅ 2026-04-12
-    - Sistema de historial (Deshacer/Rehacer) o puntos de restauración.
-    - Tutorial interactivo de funcionalidades.
+  - Sistema de historial (Deshacer/Rehacer) o puntos de restauración.
+  - Tutorial interactivo de funcionalidades.
 - [x] **Lógica de Negocio:** ✅ 2026-04-12
-    - Nuevo tipo "Ausencia Facturable" (no cuenta como trabajo pero descuenta del objetivo semanal).
+  - Nuevo tipo "Ausencia Facturable" (no cuenta como trabajo pero descuenta del objetivo semanal).
 
 # 5. Internacionalización
+
 - [x] Localizar todos los textos de elementos de UI: Botones, mensajes, popups, desplegables... y moverlos a un diccionario en JSON para preparar una estructura para alojar en este diccionario nuevos idiomas para la app. Los textos actuales están en Inglés por lo que la estructura debe por este idioma.
 - [x] Incorporar un selector en la pantalla de ajustes para seleccionar el idioma de la aplicación, cuyo valor será almacenado en los datos del navegador para recordar la elección del usuario.
 - [x] Rellena el diccionario traduciendo los textos a Español, Portugués, Alemán, Francés y Chino, manteniendo el Inglés que será el existente. Incorpora en el desplegable un emoticono de la bandera representativa de cada idioma.
 - [x] Establece por defecto el idioma Español.
+
 ## 6. Características de Interoperabilidad (Futuro)
 
 - [x] **Módulo de Excel:** ✅ 2026-04-15

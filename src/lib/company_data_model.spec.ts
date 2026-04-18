@@ -6,7 +6,7 @@ describe('Company Data Model', () => {
     const company: Company = {
       name: 'Test Company',
       lastUsedAt: new Date(),
-      useCount: 1
+      useCount: 1,
     };
     expect(company.name).toBe('Test Company');
   });
@@ -19,7 +19,7 @@ describe('Company Data Model', () => {
       type: 'Feature',
       startTime: new Date(),
       endTime: new Date(),
-      company: 'Test Company'
+      company: 'Test Company',
     };
     expect(task.company).toBe('Test Company');
   });

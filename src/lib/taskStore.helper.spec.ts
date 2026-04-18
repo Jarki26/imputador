@@ -18,26 +18,32 @@ describe('TaskStore Helper Functions', () => {
 
     it('should return the chronologically latest task of the day', async () => {
       const date = new Date('2026-04-13');
-      
+
       await store.addTask({
         title: 'Task 1',
         startTime: new Date('2026-04-13T09:00:00Z'),
         endTime: new Date('2026-04-13T10:00:00Z'),
-        description: '', project: '', type: ''
+        description: '',
+        project: '',
+        type: '',
       });
 
       await store.addTask({
         title: 'Task 2',
         startTime: new Date('2026-04-13T14:00:00Z'),
         endTime: new Date('2026-04-13T15:00:00Z'),
-        description: '', project: '', type: ''
+        description: '',
+        project: '',
+        type: '',
       });
 
       await store.addTask({
         title: 'Task 3',
         startTime: new Date('2026-04-13T11:00:00Z'),
         endTime: new Date('2026-04-13T12:00:00Z'),
-        description: '', project: '', type: ''
+        description: '',
+        project: '',
+        type: '',
       });
 
       const latest = await store.getLatestTaskOfDay(date);
@@ -58,21 +64,25 @@ describe('TaskStore Helper Functions', () => {
         title: 'Task 1',
         startTime: new Date('2026-04-13T08:00:00Z'),
         endTime: new Date('2026-04-13T09:00:00Z'),
-        description: '', project: '', type: ''
+        description: '',
+        project: '',
+        type: '',
       });
 
       await store.addTask({
         title: 'Task 2',
         startTime: new Date('2026-04-13T10:00:00Z'),
         endTime: new Date('2026-04-13T11:00:00Z'),
-        description: '', project: '', type: ''
+        description: '',
+        project: '',
+        type: '',
       });
 
-      // Target time: 10:30 (should get Task 2 if it's strictly before 10:30? 
+      // Target time: 10:30 (should get Task 2 if it's strictly before 10:30?
       // Wait, Task 2 ends at 11:00. 10:30 is DURING Task 2.
       // If I click 10:30, and Task 2 ends at 11:00, Task 2 is NOT preceding 10:30?
       // Actually, if I click 11:30, I should get Task 2.
-      
+
       const targetTime = new Date('2026-04-13T11:30:00Z');
       const closest = await store.getClosestPrecedingTask(targetTime);
       expect(closest).toBeDefined();
@@ -84,7 +94,9 @@ describe('TaskStore Helper Functions', () => {
         title: 'Future Task',
         startTime: new Date('2026-04-13T14:00:00Z'),
         endTime: new Date('2026-04-13T15:00:00Z'),
-        description: '', project: '', type: ''
+        description: '',
+        project: '',
+        type: '',
       });
 
       const targetTime = new Date('2026-04-13T10:00:00Z');

@@ -63,10 +63,9 @@ export class ProjectStore {
   async getRecentProjects(limit: number = 10): Promise<Project[]> {
     const db = await initDB(this.dbName);
     return getMany<Project>(db, 'projects', {
-        indexName: 'lastUsedAt',
-        direction: 'prev',
-        limit
+      indexName: 'lastUsedAt',
+      direction: 'prev',
+      limit,
     });
   }
 }
-

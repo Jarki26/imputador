@@ -26,7 +26,9 @@ describe('WeeklyView Zoom Functionality', () => {
   });
 
   it('should increase cell height when zooming in', async () => {
-    const { container } = render(WeeklyView, { props: { startDate: new Date('2026-04-06') } });
+    const { container } = render(WeeklyView, {
+      props: { startDate: new Date('2026-04-06') },
+    });
 
     const zoomInBtn = screen.getByTitle(/Zoom In/i);
     await fireEvent.click(zoomInBtn); // 1.1x
@@ -38,7 +40,9 @@ describe('WeeklyView Zoom Functionality', () => {
   });
 
   it('should decrease cell height when zooming out', async () => {
-    const { container } = render(WeeklyView, { props: { startDate: new Date('2026-04-06') } });
+    const { container } = render(WeeklyView, {
+      props: { startDate: new Date('2026-04-06') },
+    });
 
     const zoomOutBtn = screen.getByTitle(/Zoom Out/i);
     await fireEvent.click(zoomOutBtn); // 0.9x
@@ -49,7 +53,9 @@ describe('WeeklyView Zoom Functionality', () => {
   });
 
   it('should restore default height when resetting zoom', async () => {
-    const { container } = render(WeeklyView, { props: { startDate: new Date('2026-04-06') } });
+    const { container } = render(WeeklyView, {
+      props: { startDate: new Date('2026-04-06') },
+    });
 
     const zoomInBtn = screen.getByTitle(/Zoom In/i);
     const resetBtn = screen.getByTitle(/Reset Zoom/i);
@@ -92,7 +98,11 @@ describe('WeeklyView Zoom Functionality', () => {
       // At 1x zoom, 15 minutes = 15 pixels.
       // At 2x zoom, 15 minutes = 30 pixels.
       // 1 hour at 2x zoom = 120 pixels.
-      await fireEvent.pointerDown(taskElement, { clientY: 100, clientX: 100, button: 0 });
+      await fireEvent.pointerDown(taskElement, {
+        clientY: 100,
+        clientX: 100,
+        button: 0,
+      });
       // Moving 120 pixels down should result in 60 minutes move
       await fireEvent.pointerMove(taskElement, { clientY: 220, clientX: 100 });
       await fireEvent.pointerUp(taskElement);
@@ -132,7 +142,11 @@ describe('WeeklyView Zoom Functionality', () => {
       // Extend duration by 30 minutes.
       // At 0.5x zoom, 15 minutes = 7.5 pixels (rounded to 8 or something).
       // 30 minutes at 0.5x zoom = 15 pixels.
-      await fireEvent.pointerDown(resizeHandle, { clientY: 100, clientX: 100, button: 0 });
+      await fireEvent.pointerDown(resizeHandle, {
+        clientY: 100,
+        clientX: 100,
+        button: 0,
+      });
       await fireEvent.pointerMove(resizeHandle, { clientY: 115, clientX: 100 });
       await fireEvent.pointerUp(resizeHandle);
 

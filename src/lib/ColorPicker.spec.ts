@@ -10,7 +10,7 @@ describe('ColorPicker Component', () => {
 
   it('should render with current color', () => {
     render(ColorPicker, {
-        value: '#ff0000'
+      value: '#ff0000',
     });
     const preview = screen.getByTestId('color-preview');
     // Note: getByTestId might need us to add data-testid in the component
@@ -19,7 +19,7 @@ describe('ColorPicker Component', () => {
 
   it('should show predefined palette', () => {
     render(ColorPicker, {
-        value: '#e5e7eb'
+      value: '#e5e7eb',
     });
     const palette = screen.getAllByTestId('palette-color');
     expect(palette.length).toBeGreaterThan(0);
@@ -28,10 +28,10 @@ describe('ColorPicker Component', () => {
   it('should select color from palette', async () => {
     const onSelect = vi.fn();
     render(ColorPicker, {
-        value: '#e5e7eb',
-        onSelect
+      value: '#e5e7eb',
+      onSelect,
     });
-    
+
     const paletteColors = screen.getAllByTestId('palette-color');
     await fireEvent.click(paletteColors[1]);
     await tick();
@@ -44,7 +44,7 @@ describe('ColorPicker Component', () => {
 
   it('should allow custom hex input', async () => {
     render(ColorPicker, {
-        value: '#e5e7eb'
+      value: '#e5e7eb',
     });
 
     const input = screen.getByLabelText('Custom Color') as HTMLInputElement;

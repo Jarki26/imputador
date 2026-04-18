@@ -22,7 +22,11 @@ describe('ImportService - Custom Excel Date Format', () => {
       },
     ];
 
-    const { tasks } = (service as any).processRows(mockExcelData, template, 'DD/MM/YYYY');
+    const { tasks } = (service as any).processRows(
+      mockExcelData,
+      template,
+      'DD/MM/YYYY',
+    );
 
     expect(tasks).toHaveLength(1);
     expect(tasks[0].startTime.getFullYear()).toBe(2026);
@@ -43,7 +47,11 @@ describe('ImportService - Custom Excel Date Format', () => {
       },
     ];
 
-    const { tasks } = (service as any).processRows(mockExcelData, template, 'YYYY.MM.DD');
+    const { tasks } = (service as any).processRows(
+      mockExcelData,
+      template,
+      'YYYY.MM.DD',
+    );
 
     expect(tasks).toHaveLength(1);
     expect(tasks[0].startTime.getFullYear()).toBe(2026);
@@ -64,7 +72,11 @@ describe('ImportService - Custom Excel Date Format', () => {
       },
     ];
 
-    const { tasks, errors } = (service as any).processRows(mockExcelData, template, 'DD/MM/YYYY');
+    const { tasks, errors } = (service as any).processRows(
+      mockExcelData,
+      template,
+      'DD/MM/YYYY',
+    );
 
     expect(tasks).toHaveLength(0);
     expect(errors).toHaveLength(1);
@@ -84,7 +96,11 @@ describe('ImportService - Custom Excel Date Format', () => {
       },
     ];
 
-    const { tasks, errors } = (service as any).processRows(mockExcelData, template, 'DD/MM/YYYY');
+    const { tasks, errors } = (service as any).processRows(
+      mockExcelData,
+      template,
+      'DD/MM/YYYY',
+    );
 
     expect(tasks).toHaveLength(0);
     expect(errors).toHaveLength(1);

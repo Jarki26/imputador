@@ -28,13 +28,13 @@ Imputador is a specialized task registration and time-tracking application desig
 - Completed tasks are color-coded using user-defined custom colors (with muted styling for non-billable tasks), supports interactive manipulation via drag-and-drop to move and resize tasks, and empty time slots are clearly highlighted as gaps.
 - Daily totals (billable and non-billable) are displayed at the top of each column.
 - Interactive controls for direct management:
-    - **Week Navigation:** Quick arrows to switch between weeks.
-    - **Daily Drill-down:** Clickable day headers to jump to the detailed Daily View.
-    - **Direct Management:** Delete buttons on task blocks and long-press to copy existing tasks to favorites/recents.
-    - **Smart Interaction:** Magnetic snapping to close small gaps and automatic merging of identical consecutive tasks.
-    - **Action Locks:** Safety switches to prevent accidental movement, editing, or creation on touch devices.
-    - **Goal Progress:** Visual progress bar and remaining time calculation in the header.
-    - **Vertical Zoom:** Floating controls to adjust the grid scale (cell height), facilitating management of short-duration tasks.
+  - **Week Navigation:** Quick arrows to switch between weeks.
+  - **Daily Drill-down:** Clickable day headers to jump to the detailed Daily View.
+  - **Direct Management:** Delete buttons on task blocks and long-press to copy existing tasks to favorites/recents.
+  - **Smart Interaction:** Magnetic snapping to close small gaps and automatic merging of identical consecutive tasks.
+  - **Action Locks:** Safety switches to prevent accidental movement, editing, or creation on touch devices.
+  - **Goal Progress:** Visual progress bar and remaining time calculation in the header.
+  - **Vertical Zoom:** Floating controls to adjust the grid scale (cell height), facilitating management of short-duration tasks.
 
 ### 3. Advanced Time Manipulation
 
@@ -70,12 +70,12 @@ Imputador is a specialized task registration and time-tracking application desig
 - **Interactive Tutorial:** A step-by-step guided overlay explaining core app features, view switching, and advanced manipulation logic.
 - **Multi-language Support:** Full internationalization (i18n) of the user interface. Users can switch between English, Spanish, Portuguese, German, French, and Chinese. The selected preference is persisted locally.
 - **Configurable Excel Export & Import:**
-    - **Bidirectional Template Mapping:** Users can define a custom template to map task fields to Excel columns, supporting both export and import capabilities.
-    - **Flexible Export:** Generate `.xlsx` files based on a selected date range and parameterized task type exclusion filters.
-    - **Wipe & Import:** Ability to replace the entire local dataset with data from an Excel/CSV file, featuring a strict confirmation process and a summary of import results.
-    - **Custom Date Formatting:** Users can define a custom date format (e.g., `DD/MM/YYYY`, `YYYY-MM-DD`) for bidirectional Excel operations. Includes strict parsing and proactive format warnings during import.
-    - **Automatic Refresh:** The application automatically reloads all views after a successful import to reflect the new data immediately.
-    - **Data Persistence:** Custom templates and exclusion settings are saved locally for consistency across sessions.
+  - **Bidirectional Template Mapping:** Users can define a custom template to map task fields to Excel columns, supporting both export and import capabilities.
+  - **Flexible Export:** Generate `.xlsx` files based on a selected date range and parameterized task type exclusion filters.
+  - **Wipe & Import:** Ability to replace the entire local dataset with data from an Excel/CSV file, featuring a strict confirmation process and a summary of import results.
+  - **Custom Date Formatting:** Users can define a custom date format (e.g., `DD/MM/YYYY`, `YYYY-MM-DD`) for bidirectional Excel operations. Includes strict parsing and proactive format warnings during import.
+  - **Automatic Refresh:** The application automatically reloads all views after a successful import to reflect the new data immediately.
+  - **Data Persistence:** Custom templates and exclusion settings are saved locally for consistency across sessions.
 
 ### 8. Settings Backup & Restore
 
@@ -92,6 +92,7 @@ Imputador is a specialized task registration and time-tracking application desig
 - **Safety Preview:** Inline summary of affected tasks and mandatory confirmation before applying broad changes.
 
 ## User Experience Focus
+
 - **Information Density:** A design that maximizes the visibility of the week's data, allowing for quick assessment of missing time and project distribution.
 - **Smart Components:** Using autocomplete for projects, intuitive dropdowns for task types, and **split date/time selectors** with context-aware defaults (today's date or selected day) to minimize input overhead.
 - **Smart Defaults:** Task creation automatically suggests a start time based on the preceding task's end time (in Weekly View) or the day's latest task (in Daily View) to maintain log continuity with zero effort.

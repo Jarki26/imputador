@@ -9,11 +9,15 @@ describe('Modal Layout', () => {
   });
 
   it('should have max-height 90dvh and overflow-y auto on .modal-content', () => {
-    const { container } = render(Modal, { props: { show: true, title: 'Test Modal', onClose: () => {} } });
-    const modalContent = container.querySelector('.modal-content') as HTMLElement;
-    
+    const { container } = render(Modal, {
+      props: { show: true, title: 'Test Modal', onClose: () => {} },
+    });
+    const modalContent = container.querySelector(
+      '.modal-content',
+    ) as HTMLElement;
+
     expect(modalContent).toBeDefined();
-    
+
     let foundRule = false;
     for (let i = 0; i < document.styleSheets.length; i++) {
       const sheet = document.styleSheets[i];
@@ -21,7 +25,10 @@ describe('Modal Layout', () => {
         for (let j = 0; j < sheet.cssRules.length; j++) {
           const rule = sheet.cssRules[j] as CSSStyleRule;
           if (rule.selectorText?.includes('.modal-content')) {
-            if (rule.style.maxHeight === '90dvh' && rule.style.overflowY === 'auto') {
+            if (
+              rule.style.maxHeight === '90dvh' &&
+              rule.style.overflowY === 'auto'
+            ) {
               foundRule = true;
             }
           }
@@ -30,7 +37,7 @@ describe('Modal Layout', () => {
         // ignore
       }
     }
-    
+
     expect(foundRule).toBe(true);
   });
 });

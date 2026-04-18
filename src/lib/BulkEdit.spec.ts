@@ -26,7 +26,9 @@ describe('BulkEdit.svelte', () => {
   it('should render date range selectors with today as default', () => {
     render(BulkEdit);
     const today = formatDateOnlyForInput(new Date());
-    const startInput = screen.getByLabelText(/Fecha Inicio/i) as HTMLInputElement;
+    const startInput = screen.getByLabelText(
+      /Fecha Inicio/i,
+    ) as HTMLInputElement;
     const endInput = screen.getByLabelText(/Fecha Fin/i) as HTMLInputElement;
     expect(startInput.value).toBe(today);
     expect(endInput.value).toBe(today);
@@ -36,20 +38,26 @@ describe('BulkEdit.svelte', () => {
     const mockTasks = [
       { project: 'Old' },
       { project: 'Old' },
-      { project: 'Other' }
+      { project: 'Other' },
     ];
     const taskStore = {
-      getTasksForRange: vi.fn().mockResolvedValue(mockTasks)
+      getTasksForRange: vi.fn().mockResolvedValue(mockTasks),
     };
     const projectStore = {
-      getRecentProjects: vi.fn().mockResolvedValue([])
+      getRecentProjects: vi.fn().mockResolvedValue([]),
     };
 
-    render(BulkEdit, { props: { taskStore: taskStore as any, projectStore: projectStore as any } });
+    render(BulkEdit, {
+      props: { taskStore: taskStore as any, projectStore: projectStore as any },
+    });
 
-    const sourceInput = screen.getByLabelText(/Proyecto Origen/i) as HTMLInputElement;
-    const targetInput = screen.getByLabelText(/Nuevo Nombre/i) as HTMLInputElement;
-    
+    const sourceInput = screen.getByLabelText(
+      /Proyecto Origen/i,
+    ) as HTMLInputElement;
+    const targetInput = screen.getByLabelText(
+      /Nuevo Nombre/i,
+    ) as HTMLInputElement;
+
     // Autocomplete uses input internally
     await fireEvent.input(sourceInput, { target: { value: 'Old' } });
     await fireEvent.input(targetInput, { target: { value: 'New' } });
@@ -57,7 +65,9 @@ describe('BulkEdit.svelte', () => {
     const calcBtn = screen.getByText(/Calcular Cambios/i);
     await fireEvent.click(calcBtn);
 
-    expect(await screen.findByText(/Tareas que serán afectadas: 2/i)).toBeDefined();
+    expect(
+      await screen.findByText(/Tareas que serán afectadas: 2/i),
+    ).toBeDefined();
     expect(taskStore.getTasksForRange).toHaveBeenCalled();
   });
 
@@ -65,36 +75,40 @@ describe('BulkEdit.svelte', () => {
     const mockTasks = [
       { title: 'T1', project: 'P1' },
       { title: 'T2', project: 'P1' },
-      { title: 'T1', project: 'P2' }
+      { title: 'T1', project: 'P2' },
     ];
     const taskStore = {
-      getTasksForRange: vi.fn().mockResolvedValue(mockTasks)
+      getTasksForRange: vi.fn().mockResolvedValue(mockTasks),
     };
-    
+
     render(BulkEdit, { props: { taskStore: taskStore as any } });
 
     // Switch to mass update tab
     await fireEvent.click(screen.getByText(/Actualización Masiva/i));
 
-    const titleInput = screen.getAllByLabelText(/^Título$/i)[0] as HTMLInputElement;
+    const titleInput = screen.getAllByLabelText(
+      /^Título$/i,
+    )[0] as HTMLInputElement;
     await fireEvent.input(titleInput, { target: { value: 'T1' } });
 
     const calcBtn = screen.getAllByText(/Calcular Cambios/i)[0];
     await fireEvent.click(calcBtn);
 
-    expect(await screen.findByText(/Tareas que serán afectadas: 2/i)).toBeDefined();
+    expect(
+      await screen.findByText(/Tareas que serán afectadas: 2/i),
+    ).toBeDefined();
   });
 
   it('should call bulkUpdate and renameProject on apply', async () => {
     const taskStore = {
       getTasksForRange: vi.fn().mockResolvedValue([{ project: 'Old' }]),
-      bulkUpdate: vi.fn().mockResolvedValue([])
+      bulkUpdate: vi.fn().mockResolvedValue([]),
     };
     const projectStore = {
       getRecentProjects: vi.fn().mockResolvedValue([]),
-      renameProject: vi.fn().mockResolvedValue(undefined)
+      renameProject: vi.fn().mockResolvedValue(undefined),
     };
-    
+
     // Mock window.confirm
     const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(true);
     // Mock window.alert
@@ -102,11 +116,21 @@ describe('BulkEdit.svelte', () => {
     // Mock reload
     const reloadSpy = vi.fn();
 
-    render(BulkEdit, { props: { taskStore: taskStore as any, projectStore: projectStore as any, reload: reloadSpy } });
+    render(BulkEdit, {
+      props: {
+        taskStore: taskStore as any,
+        projectStore: projectStore as any,
+        reload: reloadSpy,
+      },
+    });
 
-    const sourceInput = screen.getByLabelText(/Proyecto Origen/i) as HTMLInputElement;
-    const targetInput = screen.getByLabelText(/Nuevo Nombre/i) as HTMLInputElement;
-    
+    const sourceInput = screen.getByLabelText(
+      /Proyecto Origen/i,
+    ) as HTMLInputElement;
+    const targetInput = screen.getByLabelText(
+      /Nuevo Nombre/i,
+    ) as HTMLInputElement;
+
     await fireEvent.input(sourceInput, { target: { value: 'Old' } });
     await fireEvent.input(targetInput, { target: { value: 'New' } });
 

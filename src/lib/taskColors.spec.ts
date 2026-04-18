@@ -26,15 +26,15 @@ describe('Task Colors Configuration', () => {
   });
 
   it('should return the same custom color for all task types if we set a default one? No, spec says per task type.', async () => {
-     await configStore.setTaskTypeColor('REUNIONES', '#00ff00');
-     expect(await configStore.getTaskTypeColor('REUNIONES')).toBe('#00ff00');
-     expect(await configStore.getTaskTypeColor('DESARROLLO')).toBe('#e5e7eb'); // Should remain default
+    await configStore.setTaskTypeColor('REUNIONES', '#00ff00');
+    expect(await configStore.getTaskTypeColor('REUNIONES')).toBe('#00ff00');
+    expect(await configStore.getTaskTypeColor('DESARROLLO')).toBe('#e5e7eb'); // Should remain default
   });
 
   it('should return all custom color mappings', async () => {
     await configStore.setTaskTypeColor('DESARROLLO', '#111');
     await configStore.setTaskTypeColor('REUNIONES', '#222');
-    
+
     const mappings = await configStore.getAllTaskTypeColors();
     expect(mappings['DESARROLLO']).toBe('#111');
     expect(mappings['REUNIONES']).toBe('#222');

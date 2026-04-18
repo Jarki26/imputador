@@ -33,7 +33,10 @@
     editingTask = null,
   }: Props = $props();
 
-  let errorMessage = $state<{ key: string; vars?: Record<string, string> } | null>(null);
+  let errorMessage = $state<{
+    key: string;
+    vars?: Record<string, string>;
+  } | null>(null);
   let title = $state('');
   let description = $state('');
   let project = $state('');
@@ -41,7 +44,9 @@
   let taskType = $state('General');
   let taskDate = $state(formatDateOnlyForInput(new Date()));
   let startTimeStr = $state(formatTimeOnlyForInput(new Date()));
-  let endTimeStr = $state(formatTimeOnlyForInput(new Date(Date.now() + 3600000)));
+  let endTimeStr = $state(
+    formatTimeOnlyForInput(new Date(Date.now() + 3600000)),
+  );
 
   // Synchronization with props
   $effect(() => {
@@ -67,7 +72,9 @@
         if (initialEndTime) {
           endTimeStr = formatTimeOnlyForInput(new Date(initialEndTime));
         } else {
-          endTimeStr = formatTimeOnlyForInput(new Date(start.getTime() + 3600000));
+          endTimeStr = formatTimeOnlyForInput(
+            new Date(start.getTime() + 3600000),
+          );
         }
       } else {
         taskDate = formatDateOnlyForInput(new Date());
@@ -190,7 +197,9 @@
       success = true;
     } catch (err) {
       errorMessage = {
-        key: editingTask ? 'task.error_update_failed' : 'task.error_save_failed',
+        key: editingTask
+          ? 'task.error_update_failed'
+          : 'task.error_save_failed',
       };
       console.error(err);
     }
@@ -496,11 +505,15 @@
   </div>
 
   {#if errorMessage}
-    <p class="error" role="alert">{i18n.t(errorMessage.key, errorMessage.vars)}</p>
+    <p class="error" role="alert">
+      {i18n.t(errorMessage.key, errorMessage.vars)}
+    </p>
   {/if}
 
   <button type="submit" class="submit-btn">
-    {editingTask ? i18n.t('task.form_title_edit') : i18n.t('task.form_title_add')}
+    {editingTask
+      ? i18n.t('task.form_title_edit')
+      : i18n.t('task.form_title_add')}
   </button>
 </form>
 

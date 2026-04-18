@@ -24,7 +24,7 @@ export const TASK_TYPES: TaskTypeConfig[] = [
   { name: 'TEST', isBillable: true, countsTowardGoal: true },
   { name: 'VIAJE', isBillable: true, countsTowardGoal: true },
   { name: 'REST', isBillable: false, countsTowardGoal: false },
-  { name: 'AUSENCIA FACTURABLE', isBillable: false, countsTowardGoal: true }
+  { name: 'AUSENCIA FACTURABLE', isBillable: false, countsTowardGoal: true },
 ];
 
 export function getTaskType(name: string): TaskTypeConfig | undefined {

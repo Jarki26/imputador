@@ -16,16 +16,16 @@ export class CompanyStore {
    */
   async upsertCompany(name: string): Promise<void> {
     if (!name) return;
-    
+
     const db = await initDB(this.dbName);
     const existing = await db.get('companies', name);
-    
+
     const company: Company = {
       name,
       lastUsedAt: new Date(),
       useCount: (existing?.useCount || 0) + 1,
     };
-    
+
     await putItem(db, 'companies', company);
   }
 
@@ -37,9 +37,9 @@ export class CompanyStore {
   async getRecentCompanies(limit: number = 10): Promise<Company[]> {
     const db = await initDB(this.dbName);
     return getMany<Company>(db, 'companies', {
-        indexName: 'useCount',
-        direction: 'prev',
-        limit
+      indexName: 'useCount',
+      direction: 'prev',
+      limit,
     });
   }
 
@@ -64,10 +64,10 @@ export class CompanyStore {
 
     // If the name is changing, we need to delete the old entry and put a new one
     if (updates.name && updates.name !== name) {
-        await deleteItem(db, 'companies', name);
-        await putItem(db, 'companies', { ...existing, ...updates } as Company);
+      await deleteItem(db, 'companies', name);
+      await putItem(db, 'companies', { ...existing, ...updates } as Company);
     } else {
-        await putItem(db, 'companies', { ...existing, ...updates } as Company);
+      await putItem(db, 'companies', { ...existing, ...updates } as Company);
     }
   }
 
@@ -83,7 +83,10 @@ export class CompanyStore {
 
     return companies
       .filter((c) => c.name.toLowerCase().includes(lowerQuery))
-      .sort((a, b) => b.useCount - a.useCount || b.lastUsedAt.getTime() - a.lastUsedAt.getTime());
+      .sort(
+        (a, b) =>
+          b.useCount - a.useCount ||
+          b.lastUsedAt.getTime() - a.lastUsedAt.getTime(),
+      );
   }
 }
-

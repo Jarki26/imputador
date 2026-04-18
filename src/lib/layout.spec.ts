@@ -24,7 +24,7 @@ describe('Global Layout Styles', () => {
 
   it('should have .app-container with height 100dvh', () => {
     render(Page);
-    
+
     // Find the style tag or use a more direct way to check the CSS rule
     // In Vitest Playwright, styles are injected.
     // We can iterate through document.styleSheets
@@ -34,7 +34,10 @@ describe('Global Layout Styles', () => {
       try {
         for (let j = 0; j < sheet.cssRules.length; j++) {
           const rule = sheet.cssRules[j] as CSSStyleRule;
-          if (rule.selectorText === '.app-container' || rule.selectorText?.includes('.app-container')) {
+          if (
+            rule.selectorText === '.app-container' ||
+            rule.selectorText?.includes('.app-container')
+          ) {
             if (rule.style.height === '100dvh') {
               foundDvh = true;
             }
@@ -44,7 +47,7 @@ describe('Global Layout Styles', () => {
         // External stylesheets might throw security error
       }
     }
-    
+
     expect(foundDvh).toBe(true);
   });
 });

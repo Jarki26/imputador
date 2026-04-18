@@ -40,8 +40,12 @@ describe('TaskForm.svelte Smart Fill UI', () => {
       props: { taskStore: mockTaskStore, projectStore: mockProjectStore },
     });
 
-    const toggle = screen.getByLabelText(/Relleno Inteligente/i) as HTMLInputElement;
-    const endTimeInput = screen.getByLabelText(/Hora de Fin/i) as HTMLInputElement;
+    const toggle = screen.getByLabelText(
+      /Relleno Inteligente/i,
+    ) as HTMLInputElement;
+    const endTimeInput = screen.getByLabelText(
+      /Hora de Fin/i,
+    ) as HTMLInputElement;
 
     expect(endTimeInput.disabled).toBe(false);
 
@@ -66,7 +70,9 @@ describe('TaskForm.svelte Smart Fill UI', () => {
     });
 
     await fireEvent.click(screen.getByLabelText(/Relleno Inteligente/i));
-    await fireEvent.click(screen.getByRole('button', { name: /Añadir Tarea/i }));
+    await fireEvent.click(
+      screen.getByRole('button', { name: /Añadir Tarea/i }),
+    );
 
     expect(mockTaskStore.addWithSmartFill).toHaveBeenCalled();
     expect(mockTaskStore.addTask).not.toHaveBeenCalled();

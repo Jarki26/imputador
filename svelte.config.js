@@ -12,16 +12,16 @@ const config = {
     // If your environment is not supported, or you settled on a specific environment, switch out the adapter.
     // See https://svelte.dev/docs/kit/adapters for more information about adapters.
     adapter: adapter({
-			pages: 'build',
-			assets: 'build',
-			fallback: '404.html', // Necesario para Single Page Applications (SPA)
-			precompress: false,
-			strict: true
-		}),
-		paths: {
-			// REEMPLAZA 'nombre-de-tu-repositorio' con el nombre real
-			base: process.env.NODE_ENV === 'production' ? '/imputador' : '',
-		}
+      pages: 'build',
+      assets: 'build',
+      fallback: '404.html', // Necesario para Single Page Applications (SPA)
+      precompress: false,
+      strict: true,
+    }),
+    paths: {
+      // REEMPLAZA 'nombre-de-tu-repositorio' con el nombre real
+      base: process.env.NODE_ENV === 'production' ? '/imputador' : '',
+    },
   },
 };
 
