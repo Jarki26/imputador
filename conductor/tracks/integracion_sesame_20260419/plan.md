@@ -17,7 +17,7 @@
     - [ ] Create utility function to process `checkIn` and `checkOut` arrays and generate "Rest" tasks.
     - [ ] Ensure gaps are strictly bounded by the first and last check of each day.
     - [ ] Write unit tests for the gap calculation logic covering multiple scenarios (single gap, multiple gaps, no gaps).
-- [ ] Task: Implement collision and overwrite logic for generated tasks
+- [x] Task: Implement collision and overwrite logic for generated tasks (674acc5)
     - [ ] Integrate with existing `taskStore` or create a specific function for Sesame tasks insertion.
     - [ ] Apply the 3 rules for format matching, conflict resolution, and preservation of user tasks.
     - [ ] Write unit tests for the insertion and collision logic.
