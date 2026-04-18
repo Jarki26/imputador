@@ -54,3 +54,59 @@ export function calculateGapsFromChecks(checks: SesameCheck[]): Task[] {
   // Sort all gaps by startTime
   return gaps.sort((a, b) => a.startTime.getTime() - b.startTime.getTime());
 }
+
+/**
+ * Syncs a list of rest tasks with the task store, applying collision rules.
+ * 1. Skip if identical rest task exists.
+ * 2. Overwrite if conflicting rest task exists.
+ * 3. Allow overlap if conflicting with other task types.
+ */
+export async function syncSesameTasks(newRestTasks: Task[], taskStore: any): Promise<void> {
+  for (const newRestTask of newRestTasks) {
+    // Get all tasks for the day to check for collisions accurately
+    const existingTasks = await taskStore.getTasksForDay(newRestTask.startTime);
+
+    let skipInsertion = false;
+    const tasksToOverwrite: number[] = [];
+
+    const newStart = newRestTask.startTime.getTime();
+    const newEnd = newRestTask.endTime.getTime();
+
+    for (const existingTask of existingTasks) {
+      const exStart = existingTask.startTime.getTime();
+      const exEnd = existingTask.endTime.getTime();
+
+      // Check for ANY overlap
+      const hasOverlap = (newStart < exEnd && newEnd > exStart);
+
+      if (!hasOverlap) continue;
+
+      const isSesameRest = 
+        existingTask.title === 'Descanso' && 
+        existingTask.project === 'sesame' && 
+        existingTask.type === 'Rest';
+
+      if (isSesameRest) {
+        const isIdentical = exStart === newStart && exEnd === newEnd;
+
+        if (isIdentical) {
+          skipInsertion = true;
+          break;
+        } else {
+          // Conflict with existing Sesame Rest task -> Overwrite it
+          if (existingTask.id) tasksToOverwrite.push(existingTask.id);
+        }
+      }
+      // If it's NOT a sesame rest task, we ignore it (rule 3: allow overlap)
+    }
+
+    if (!skipInsertion) {
+      // Delete conflicting Sesame Rest tasks
+      for (const id of tasksToOverwrite) {
+        await taskStore.deleteTask(id);
+      }
+      // Insert new Rest task
+      await taskStore.addTask(newRestTask);
+    }
+  }
+}
