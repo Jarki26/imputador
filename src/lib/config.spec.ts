@@ -18,6 +18,13 @@ describe('config', () => {
     expect(general?.isBillable).toBe(true);
   });
 
+  it('should identify OFFLINE as non-billable and not counting toward goal', () => {
+    const offline = getTaskType('OFFLINE');
+    expect(offline).toBeDefined();
+    expect(offline?.isBillable).toBe(false);
+    expect(offline?.countsTowardGoal).toBe(false);
+  });
+
   it('isBillable helper should work correctly', () => {
     expect(isBillable('REST')).toBe(false);
     expect(isBillable('DESARROLLO')).toBe(true);

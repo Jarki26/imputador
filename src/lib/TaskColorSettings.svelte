@@ -29,7 +29,9 @@
         <button class="type-header" onclick={() => toggleExpand(type.name)}>
           <div
             class="color-dot"
-            style:background-color={colors[type.name] || '#e5e7eb'}
+            style:background-color={colors[type.name] ||
+              type.defaultColor ||
+              '#e5e7eb'}
           ></div>
           <span class="type-name">{type.name}</span>
           <span class="expand-icon"
@@ -39,7 +41,7 @@
         {#if expandedType === type.name}
           <div class="color-picker-wrapper">
             <ColorPicker
-              value={colors[type.name] || '#e5e7eb'}
+              value={colors[type.name] || type.defaultColor || '#e5e7eb'}
               onSelect={(color) => onSaveColor(type.name, color)}
             />
           </div>

@@ -2,6 +2,7 @@ export interface TaskTypeConfig {
   name: string;
   isBillable: boolean;
   countsTowardGoal: boolean;
+  defaultColor?: string;
 }
 
 export const TASK_TYPES: TaskTypeConfig[] = [
@@ -25,6 +26,12 @@ export const TASK_TYPES: TaskTypeConfig[] = [
   { name: 'VIAJE', isBillable: true, countsTowardGoal: true },
   { name: 'REST', isBillable: false, countsTowardGoal: false },
   { name: 'AUSENCIA FACTURABLE', isBillable: false, countsTowardGoal: true },
+  {
+    name: 'OFFLINE',
+    isBillable: false,
+    countsTowardGoal: false,
+    defaultColor: '#f1f5f9',
+  },
 ];
 
 export function getTaskType(name: string): TaskTypeConfig | undefined {

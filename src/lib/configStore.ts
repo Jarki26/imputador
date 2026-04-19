@@ -1,4 +1,5 @@
 import { initDB } from './db';
+import { getTaskType, TASK_TYPES } from './config';
 
 /**
  * Service to manage application configuration persisted in IndexedDB.
@@ -44,12 +45,15 @@ export class ConfigStore {
 
   /**
    * Retrieves the color for a specific task type.
-   * Defaults to '#e5e7eb' if not found.
+   * Defaults to '#e5e7eb' or task type defaultColor if not found.
    */
   async getTaskTypeColor(taskType: string): Promise<string> {
     const db = await initDB(this.dbName);
     const config = await db.get('config', `taskTypeColor:${taskType}`);
-    return config ? config.value : '#e5e7eb';
+    if (config) return config.value;
+
+    const typeConfig = getTaskType(taskType);
+    return typeConfig?.defaultColor || '#e5e7eb';
   }
 
   /**
@@ -61,12 +65,20 @@ export class ConfigStore {
   }
 
   /**
-   * Retrieves all custom color mappings for task types.
+   * Retrieves all custom color mappings for task types, including defaults.
    */
   async getAllTaskTypeColors(): Promise<Record<string, string>> {
     const db = await initDB(this.dbName);
     const allConfig = await db.getAll('config');
     const colors: Record<string, string> = {};
+
+    // First populate with defaults from TASK_TYPES
+    for (const type of TASK_TYPES) {
+      if (type.defaultColor) {
+        colors[type.name] = type.defaultColor;
+      }
+    }
+
     for (const item of allConfig) {
       if (item.key.startsWith('taskTypeColor:')) {
         const type = item.key.replace('taskTypeColor:', '');
