@@ -174,6 +174,11 @@
         setTimeout(() => taskEl.classList.remove('copied-feedback'), 1000);
       }
     }
+
+    // Evaluate for merge/snap (same as move/resize)
+    if (!checkForMerge(task)) {
+      checkForSnap(task);
+    }
   }
 
   function getIntervalTotal(dailyTasks: Task[]): string {
@@ -431,6 +436,18 @@
     mergeProposal = null;
   }
 
+  function handleCancelProposal(proposalTask: Task) {
+    if (!onTaskUpdate) return;
+    const original = tasks.find((t) => t.id === proposalTask.id);
+    if (
+      original &&
+      (original.startTime.getTime() !== proposalTask.startTime.getTime() ||
+        original.endTime.getTime() !== proposalTask.endTime.getTime())
+    ) {
+      onTaskUpdate(proposalTask);
+    }
+  }
+
   function handleSlotClick(day: Date, hour: number) {
     if (locks.create) return;
     if (onSlotClick) {
@@ -675,10 +692,10 @@
         <button
           class="btn-cancel"
           onclick={() => {
-            if (mergeProposal && onTaskUpdate) {
-              onTaskUpdate(mergeProposal.movedTask);
+            if (mergeProposal) {
+              handleCancelProposal(mergeProposal.movedTask);
+              mergeProposal = null;
             }
-            mergeProposal = null;
           }}>{i18n.t('common.no')}</button
         >
         <button class="btn-confirm" onclick={handleMerge}
@@ -710,10 +727,10 @@
         <button
           class="btn-cancel"
           onclick={() => {
-            if (snapProposal && onTaskUpdate) {
-              onTaskUpdate(snapProposal.task);
+            if (snapProposal) {
+              handleCancelProposal(snapProposal.task);
+              snapProposal = null;
             }
-            snapProposal = null;
           }}>{i18n.t('common.no')}</button
         >
         <button class="btn-confirm" onclick={handleSnap}
