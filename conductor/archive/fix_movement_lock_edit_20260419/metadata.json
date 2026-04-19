@@ -1,0 +1,8 @@
+{
+  "track_id": "fix_movement_lock_edit_20260419",
+  "type": "bug",
+  "status": "new",
+  "created_at": "2026-04-19T00:00:00Z",
+  "updated_at": "2026-04-19T00:00:00Z",
+  "description": "Al activar el bloqueo de movimiento no funciona la edición de tareas."
+}
