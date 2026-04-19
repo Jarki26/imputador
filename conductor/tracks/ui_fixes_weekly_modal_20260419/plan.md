@@ -6,10 +6,10 @@
     - [ ] Apply `user-select: none;` to the relevant task block styles.
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Task Block Text Selection' (Protocol in workflow.md) (c8fc385)
 
-## Phase 2: Modal Closing Behavior
+## Phase 2: Modal Closing Behavior [checkpoint: 67062ab]
 - [x] Task: Update Modal component backdrop click logic (559737f)
     - [ ] Modify `Modal.svelte` to correctly handle `mousedown` and `mouseup` events.
     - [ ] Ensure the modal only closes when the user intentionally clicks the backdrop (starting and ending the click outside the modal content).
 - [x] Task: Update Modal tests (559737f)
     - [ ] Add/update unit tests in `Modal.spec.ts` to verify the new robust closing behavior.
-- [~] Task: Conductor - User Manual Verification 'Phase 2: Modal Closing Behavior' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Modal Closing Behavior' (Protocol in workflow.md) (67062ab)
