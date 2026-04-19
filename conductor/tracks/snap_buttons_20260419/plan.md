@@ -1,9 +1,9 @@
 # Implementation Plan: Task Form Snap Buttons
 
-## Phase 1: Core Logic and Store Updates
+## Phase 1: Core Logic and Store Updates [checkpoint: 045b09e]
 - [x] Task: Write tests for store helpers that find the previous/next task's end/start time on the same day. 0b10012
 - [x] Task: Implement `getPreviousTaskEndTime` and `getNextTaskStartTime` logic in `taskStore` or a related utility. cb2bfcf
-- [~] Task: Conductor - User Manual Verification 'Phase 1: Core Logic and Store Updates' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Core Logic and Store Updates' (Protocol in workflow.md) 045b09e
 
 ## Phase 2: UI Component Implementation (TaskForm)
 - [ ] Task: Write tests for `TaskForm.svelte` to ensure snap buttons are rendered and call the correct update functions.
