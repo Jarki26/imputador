@@ -514,4 +514,64 @@ describe('WeeklyView.svelte', () => {
     // Contrast color for red should be white
     expect(taskBlock.style.color).toBe('white');
   });
+
+  it('should allow clicking a task even if locks.move is active', async () => {
+    const onTaskClick = vi.fn();
+    const tasks = [
+      {
+        id: 1,
+        title: 'Move Locked Task',
+        project: 'Project L',
+        startTime: new Date('2026-04-06T10:00:00Z'),
+        endTime: new Date('2026-04-06T11:00:00Z'),
+      },
+    ];
+    render(WeeklyView, {
+      props: {
+        startDate: new Date('2026-04-06'),
+        tasks,
+        onTaskClick,
+        locks: { move: true, edit: false, create: false },
+      },
+    });
+
+    const taskBlock = screen.getByText('Move Locked Task').closest('.task-block');
+    // Simulate Quick Click
+    await fireEvent.pointerDown(taskBlock!, { clientX: 100, clientY: 100, pointerId: 1 });
+    vi.advanceTimersByTime(100);
+    await fireEvent.pointerUp(taskBlock!, { clientX: 100, clientY: 100, pointerId: 1 });
+
+    expect(onTaskClick).toHaveBeenCalledTimes(1);
+    expect(onTaskClick).toHaveBeenCalledWith(expect.objectContaining(tasks[0]));
+  });
+
+  it('should still block dragging when locks.move is active', async () => {
+    const onTaskUpdate = vi.fn();
+    const tasks = [
+      {
+        id: 1,
+        title: 'Move Locked Drag Task',
+        project: 'Project L',
+        startTime: new Date('2026-04-06T09:00:00Z'),
+        endTime: new Date('2026-04-06T10:00:00Z'),
+      },
+    ];
+    render(WeeklyView, {
+      props: {
+        startDate: new Date('2026-04-06'),
+        tasks,
+        onTaskUpdate,
+        locks: { move: true, edit: false, create: false },
+      },
+    });
+
+    const taskBlock = screen.getByText('Move Locked Drag Task').closest('.task-block');
+
+    // Simulate drag attempt
+    await fireEvent.pointerDown(taskBlock!, { clientY: 0, pointerId: 1 });
+    await fireEvent.pointerMove(taskBlock!, { clientY: 60, pointerId: 1 });
+    await fireEvent.pointerUp(taskBlock!, { clientY: 60, pointerId: 1 });
+
+    expect(onTaskUpdate).not.toHaveBeenCalled();
+  });
 });

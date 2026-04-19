@@ -23,10 +23,12 @@
     onNavigate,
     onDayClick,
     onSyncSesame,
+    locks: initialLocks,
   }: {
     startDate: Date;
     tasks: Task[];
     weeklyTarget?: number;
+    taskTypeColors?: Record<string, string>;
     onSlotClick?: (date: Date) => void;
     onDayClick?: (date: Date) => void;
     onTaskClick?: (task: Task) => void;
@@ -38,6 +40,7 @@
     onTaskCopyToRecents?: (task: Task) => void;
     onNavigate?: (date: Date) => void;
     onSyncSesame?: () => Promise<void>;
+    locks?: { move: boolean; edit: boolean; create: boolean };
   } = $props();
 
   let syncLoading = $state(false);
@@ -117,11 +120,13 @@
   let collisionProposal = $state<Task | null>(null);
 
   // Action Locks
-  let locks = $state({
-    move: false,
-    edit: false,
-    create: false,
-  });
+  let locks = $state(
+    initialLocks || {
+      move: false,
+      edit: false,
+      create: false,
+    },
+  );
 
   // Zoom State
   let zoomMultiplier = $state(1.0);
@@ -475,16 +480,17 @@
     mode: 'move' | 'resize',
   ) {
     if (e.button !== 0) return; // Left click only
-    if (locks.move) return;
     e.stopPropagation();
 
     if (mode === 'move') {
-      longPressTimer = window.setTimeout(() => {
-        handleLongPress(task);
-        longPressTimer = null;
-      }, LONG_PRESS_THRESHOLD);
+      if (!locks.move) {
+        longPressTimer = window.setTimeout(() => {
+          handleLongPress(task);
+          longPressTimer = null;
+        }, LONG_PRESS_THRESHOLD);
+      }
 
-      // Initialize Quick Click detection
+      // Initialize Quick Click detection even if move lock is active
       clickInfo = {
         startTime: Date.now(),
         startX: e.clientX,
@@ -492,6 +498,8 @@
         task,
       };
     }
+
+    if (locks.move) return;
 
     const startMinutes =
       task.startTime.getHours() * 60 + task.startTime.getMinutes();
