@@ -611,8 +611,11 @@
 >
   <p>{i18n.t('task.collision_msg')}</p>
   <div class="modal-actions">
-    <button class="btn secondary" onclick={() => (showCollisionModal = false)}>
-      {i18n.t('common.cancel')}
+    <button
+      class="btn primary"
+      onclick={() => pendingTaskData && saveTask(pendingTaskData, 'normal')}
+    >
+      {i18n.t('task.continue_anyway')}
     </button>
     <button
       class="btn primary"
@@ -804,10 +807,5 @@
   .btn.primary {
     background: var(--md-sys-color-primary);
     color: var(--md-sys-color-on-primary);
-  }
-
-  .btn.secondary {
-    background: var(--md-sys-color-surface-container-highest);
-    color: var(--md-sys-color-on-surface);
   }
 </style>

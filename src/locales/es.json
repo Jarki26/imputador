@@ -126,6 +126,7 @@
     "collision_msg": "Esta tarea se solapa con tareas existentes. ¿Cómo deseas proceder?",
     "overwrite": "Sobrescribir",
     "displacement": "Desplazamiento",
+    "continue_anyway": "Continuar de todas formas",
     "error_missing_times": "Por favor, introduce horas de inicio y fin válidas",
     "error_single_day": "Las tareas deben restringirse a un solo día (no pueden cruzar las 23:59)",
     "error_midnight": "La hora de fin debe ser posterior a la de inicio (las tareas no pueden cruzar la medianoche)",

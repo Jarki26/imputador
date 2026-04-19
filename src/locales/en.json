@@ -121,6 +121,7 @@
     "collision_msg": "This task overlaps with existing tasks. How would you like to proceed?",
     "overwrite": "Overwrite",
     "displacement": "Displacement",
+    "continue_anyway": "Continue anyway",
     "error_missing_times": "Please provide valid start and end times",
     "error_single_day": "Tasks must be restricted to a single day (cannot cross 23:59)",
     "error_midnight": "End time must be after start time (tasks cannot cross midnight)",

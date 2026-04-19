@@ -20,6 +20,14 @@ describe('TaskForm.svelte Collision Detection', () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       getRecentTasks: vi.fn().mockResolvedValue([]) as any,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      getPreviousTask: vi.fn().mockResolvedValue(null) as any,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      getNextTask: vi.fn().mockResolvedValue(null) as any,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      getPreviousTaskEndTime: vi.fn().mockResolvedValue(null) as any,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      getNextTaskStartTime: vi.fn().mockResolvedValue(null) as any,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       addWithOverwrite: vi.fn().mockResolvedValue(1) as any,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       addWithDisplacement: vi.fn().mockResolvedValue(1) as any,
@@ -159,5 +167,98 @@ describe('TaskForm.svelte Collision Detection', () => {
 
     expect(mockTaskStore.addWithDisplacement).toHaveBeenCalled();
     expect(mockTaskStore.addTask).not.toHaveBeenCalled();
+  });
+
+  it('should call addTask when Continue Anyway is clicked in modal', async () => {
+    const today = new Date().toISOString().split('T')[0];
+    const start = new Date(`${today}T10:00:00`);
+    const end = new Date(`${today}T11:00:00`);
+
+    mockTaskStore.getTasksForDay.mockResolvedValue([
+      {
+        id: 1,
+        title: 'Existing',
+        startTime: start,
+        endTime: end,
+      },
+    ]);
+
+    render(TaskForm, {
+      props: { taskStore: mockTaskStore, projectStore: mockProjectStore },
+    });
+
+    fireEvent.input(screen.getByLabelText(/Título/i), {
+      target: { value: 'New' },
+    });
+    fireEvent.input(screen.getByLabelText(/Fecha/i), {
+      target: { value: today },
+    });
+    fireEvent.input(screen.getByLabelText(/Hora de Inicio/i), {
+      target: { value: '10:30' },
+    });
+    fireEvent.input(screen.getByLabelText(/Hora de Fin/i), {
+      target: { value: '11:30' },
+    });
+
+    await fireEvent.click(
+      screen.getByRole('button', { name: /Añadir Tarea/i }),
+    );
+
+    const continueBtn = await screen.findByRole('button', {
+      name: /Continuar de todas formas/i,
+    });
+    await fireEvent.click(continueBtn);
+
+    // saveTask(..., 'normal') calls addTask or updateTask
+    expect(mockTaskStore.addTask).toHaveBeenCalled();
+  });
+
+  it('should call updateTask when Continue Anyway is clicked in modal while editing', async () => {
+    const today = new Date().toISOString().split('T')[0];
+    const editingTask = {
+      id: 99,
+      title: 'Original Task',
+      startTime: new Date(`${today}T08:00:00`),
+      endTime: new Date(`${today}T09:00:00`),
+    };
+
+    // Colliding task
+    mockTaskStore.getTasksForDay.mockResolvedValue([
+      {
+        id: 1,
+        title: 'Collision Target',
+        startTime: new Date(`${today}T10:00:00`),
+        endTime: new Date(`${today}T11:00:00`),
+      },
+    ]);
+
+    mockTaskStore.updateTask = vi.fn().mockResolvedValue(undefined) as any;
+
+    render(TaskForm, {
+      props: {
+        taskStore: mockTaskStore,
+        projectStore: mockProjectStore,
+        editingTask,
+      },
+    });
+
+    // Modify to collide
+    fireEvent.input(screen.getByLabelText(/Hora de Inicio/i), {
+      target: { value: '10:30' },
+    });
+    fireEvent.input(screen.getByLabelText(/Hora de Fin/i), {
+      target: { value: '11:30' },
+    });
+
+    await fireEvent.click(
+      screen.getByRole('button', { name: /Actualizar Tarea/i }),
+    );
+
+    const continueBtn = await screen.findByRole('button', {
+      name: /Continuar de todas formas/i,
+    });
+    await fireEvent.click(continueBtn);
+
+    expect(mockTaskStore.updateTask).toHaveBeenCalledWith(99, expect.anything());
   });
 });
