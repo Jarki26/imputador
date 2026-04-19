@@ -79,38 +79,6 @@ describe('WeeklyColumn.svelte', () => {
     expect(onSlotClick).toHaveBeenCalledWith(day, 9);
   });
 
-  it('should trigger onTaskClick when a task is clicked', async () => {
-    const onTaskClick = vi.fn();
-    const task = {
-      id: 1,
-      title: 'Clickable',
-      project: 'P',
-      type: 'DESARROLLO',
-      startTime: new Date('2026-04-06T09:00:00Z'),
-      endTime: new Date('2026-04-06T10:00:00Z'),
-    };
-
-    render(WeeklyColumn, {
-      props: {
-        day,
-        hours,
-        pixelsPerMinute,
-        tasks: [task],
-        taskTypeColors: {},
-        locks: { move: false, edit: false, create: false },
-        dragInfo: null,
-        onTaskClick,
-      },
-    });
-
-    const taskBlock = screen.getByText('Clickable').closest('.task-block');
-    await fireEvent.click(taskBlock!);
-
-    expect(onTaskClick).toHaveBeenCalled();
-    // We expect the original task or at least something with the same ID
-    expect(onTaskClick.mock.calls[0][0].id).toBe(1);
-  });
-
   it('should trigger onPointerDown when starting a drag', async () => {
     const onPointerDown = vi.fn();
     const task = {

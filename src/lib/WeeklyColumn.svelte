@@ -21,7 +21,6 @@
     locks,
     dragInfo,
     onSlotClick,
-    onTaskClick,
     onTaskDelete,
     onPointerDown,
   }: {
@@ -33,7 +32,6 @@
     locks: { move: boolean; edit: boolean; create: boolean };
     dragInfo: any | null;
     onSlotClick?: (day: Date, hour: number) => void;
-    onTaskClick?: (task: Task) => void;
     onTaskDelete?: (taskId: number) => void;
     onPointerDown?: (
       e: PointerEvent,

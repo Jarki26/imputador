@@ -19,6 +19,10 @@ describe('TaskForm.svelte', () => {
       getTasksForDay: vi.fn().mockResolvedValue([]) as any,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       getRecentTasks: vi.fn().mockResolvedValue([]) as any,
+      getPreviousTask: vi.fn().mockResolvedValue(null),
+      getNextTask: vi.fn().mockResolvedValue(null),
+      getPreviousTaskEndTime: vi.fn().mockResolvedValue(null),
+      getNextTaskStartTime: vi.fn().mockResolvedValue(null),
     };
     mockProjectStore = {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
