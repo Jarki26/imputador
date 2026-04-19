@@ -32,9 +32,9 @@ export function calculateGapsFromChecks(checks: SesameCheck[]): Task[] {
 
     // 1. Boundary: Start of day to first check-in
     const firstCheck = dayChecks[0];
-    const dayStart = new Date(firstCheck.checkIn.date);
-    dayStart.setUTCHours(0, 0, 0, 0);
     const firstCheckIn = new Date(firstCheck.checkIn.date);
+    const dayStart = new Date(firstCheckIn);
+    dayStart.setHours(0, 0, 0, 0);
 
     if (firstCheckIn.getTime() - dayStart.getTime() > 60000) {
       gaps.push({
@@ -74,8 +74,8 @@ export function calculateGapsFromChecks(checks: SesameCheck[]): Task[] {
     const lastCheck = dayChecks[dayChecks.length - 1];
     if (lastCheck.checkOut && lastCheck.checkOut.date) {
       const lastCheckOut = new Date(lastCheck.checkOut.date);
-      const dayEnd = new Date(lastCheck.checkOut.date);
-      dayEnd.setUTCHours(23, 59, 59, 0); // Using 23:59:59 as boundary
+      const dayEnd = new Date(lastCheckOut);
+      dayEnd.setHours(23, 59, 59, 0); // Using 23:59:59 as boundary
 
       if (dayEnd.getTime() - lastCheckOut.getTime() > 60000) {
         gaps.push({
