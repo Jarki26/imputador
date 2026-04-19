@@ -85,6 +85,16 @@
   let dragInfo = $state<DragInfo | null>(null);
   let gridContentRef = $state<HTMLElement | null>(null);
 
+  // Quick Click State
+  let clickInfo = $state<{
+    startTime: number;
+    startX: number;
+    startY: number;
+    task: Task;
+  } | null>(null);
+  const QUICK_CLICK_TIME_THRESHOLD = 250; // ms
+  const QUICK_CLICK_MOVE_THRESHOLD = 5; // pixels
+
   // Long Press State
   let longPressTimer = $state<number | null>(null);
   const LONG_PRESS_THRESHOLD = 500; // ms
@@ -473,6 +483,14 @@
         handleLongPress(task);
         longPressTimer = null;
       }, LONG_PRESS_THRESHOLD);
+
+      // Initialize Quick Click detection
+      clickInfo = {
+        startTime: Date.now(),
+        startX: e.clientX,
+        startY: e.clientY,
+        task,
+      };
     }
 
     const startMinutes =
@@ -505,10 +523,15 @@
     const deltaY = e.clientY - dragInfo.startY;
     const deltaX = e.clientX - dragInfo.startX;
 
-    // If moved more than 5px, cancel long press
-    if (longPressTimer && (Math.abs(deltaY) > 5 || Math.abs(deltaX) > 5)) {
-      clearTimeout(longPressTimer);
-      longPressTimer = null;
+    // If moved more than 5px, cancel long press and quick click
+    if (Math.abs(deltaY) > QUICK_CLICK_MOVE_THRESHOLD || Math.abs(deltaX) > QUICK_CLICK_MOVE_THRESHOLD) {
+      if (longPressTimer) {
+        clearTimeout(longPressTimer);
+        longPressTimer = null;
+      }
+      if (clickInfo) {
+        clickInfo = null;
+      }
     }
 
     const minutesDelta = Math.round(deltaY / (15 * pixelsPerMinute)) * 15;
@@ -561,11 +584,32 @@
     dragInfo.currentTask = updatedTask;
   }
 
-  function handlePointerUp() {
+  function handlePointerUp(e: PointerEvent) {
     if (longPressTimer) {
       clearTimeout(longPressTimer);
       longPressTimer = null;
     }
+
+    // Detect Quick Click
+    if (clickInfo) {
+      const timeDiff = Date.now() - clickInfo.startTime;
+      const distDiff = Math.sqrt(
+        Math.pow(e.clientX - clickInfo.startX, 2) +
+          Math.pow(e.clientY - clickInfo.startY, 2),
+      );
+
+      if (
+        timeDiff < QUICK_CLICK_TIME_THRESHOLD &&
+        distDiff < QUICK_CLICK_MOVE_THRESHOLD
+      ) {
+        if (!locks.edit && onTaskClick) {
+          onTaskClick(clickInfo.task);
+        }
+      }
+    }
+
+    // Reset Quick Click state
+    clickInfo = null;
 
     if (!dragInfo) return;
 

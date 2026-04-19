@@ -103,11 +103,6 @@
       class:is-dragging={dragInfo?.taskId === task.id}
       style={getTaskStyle(task)}
       onpointerdown={(e) => onPointerDown && onPointerDown(e, task, 'move')}
-      onclick={(e) => {
-        e.stopPropagation();
-        if (locks.edit) return;
-        if (onTaskClick) onTaskClick(task);
-      }}
       onkeydown={(e) => {
         if (e.key === 'Enter') {
           e.stopPropagation();

@@ -1,12 +1,17 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, cleanup, fireEvent } from '@testing-library/svelte';
 import WeeklyView from './WeeklyView.svelte';
 import { i18n } from './i18n.svelte';
 
 describe('WeeklyView.svelte', () => {
   beforeEach(async () => {
+    vi.useFakeTimers();
     cleanup();
     await i18n.setLocale('es');
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   it('should render a 7-day grid', () => {
@@ -201,6 +206,44 @@ describe('WeeklyView.svelte', () => {
     expect(calledDate.getHours()).toBe(9);
   });
 
+  it('should trigger onTaskClick only on Quick Click (short time, no movement)', async () => {
+    const onTaskClick = vi.fn();
+    const tasks = [
+      {
+        id: 1,
+        title: 'Quick Click Task',
+        project: 'Project X',
+        startTime: new Date('2026-04-06T10:00:00Z'),
+        endTime: new Date('2026-04-06T11:00:00Z'),
+      },
+    ];
+    render(WeeklyView, {
+      props: { startDate: new Date('2026-04-06'), tasks, onTaskClick },
+    });
+
+    const taskBlock = screen.getByText('Quick Click Task').closest('.task-block');
+
+    // 1. Valid Quick Click: 100ms, no movement
+    await fireEvent.pointerDown(taskBlock!, { clientX: 100, clientY: 100, pointerId: 1 });
+    vi.advanceTimersByTime(100);
+    await fireEvent.pointerUp(taskBlock!, { clientX: 100, clientY: 100, pointerId: 1 });
+    expect(onTaskClick).toHaveBeenCalledTimes(1);
+    onTaskClick.mockClear();
+
+    // 2. Too long: 400ms (Long press)
+    await fireEvent.pointerDown(taskBlock!, { clientX: 100, clientY: 100, pointerId: 1 });
+    vi.advanceTimersByTime(400);
+    await fireEvent.pointerUp(taskBlock!, { clientX: 100, clientY: 100, pointerId: 1 });
+    expect(onTaskClick).not.toHaveBeenCalled();
+
+    // 3. Moved too much: 100ms, 10px movement (Drag)
+    await fireEvent.pointerDown(taskBlock!, { clientX: 100, clientY: 100, pointerId: 1 });
+    vi.advanceTimersByTime(100);
+    await fireEvent.pointerMove(taskBlock!, { clientX: 110, clientY: 100, pointerId: 1 });
+    await fireEvent.pointerUp(taskBlock!, { clientX: 110, clientY: 100, pointerId: 1 });
+    expect(onTaskClick).not.toHaveBeenCalled();
+  });
+
   it('should trigger onTaskClick when a task block is clicked', async () => {
     const onTaskClick = vi.fn();
     const tasks = [
@@ -217,7 +260,9 @@ describe('WeeklyView.svelte', () => {
     });
 
     const taskBlock = screen.getByText('Clickable Task').closest('.task-block');
-    await fireEvent.click(taskBlock!);
+    // Simulate Quick Click using pointer events
+    await fireEvent.pointerDown(taskBlock!, { clientX: 0, clientY: 0, pointerId: 1 });
+    await fireEvent.pointerUp(taskBlock!, { clientX: 0, clientY: 0, pointerId: 1 });
 
     expect(onTaskClick).toHaveBeenCalledWith(expect.objectContaining(tasks[0]));
   });
