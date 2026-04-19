@@ -143,15 +143,59 @@ export class TaskStore {
    * Finds the task that ends closest to but before the given time on the same day.
    */
   async getClosestPrecedingTask(date: Date): Promise<Task | null> {
+    return this.getPreviousTask(date, date);
+  }
+
+  /**
+   * Finds the task that ends closest to but before the referenceTime on the same day.
+   * @param date - The day to search in.
+   * @param referenceTime - The time to look before.
+   * @param excludeId - Optional ID to exclude from search.
+   */
+  async getPreviousTask(
+    date: Date,
+    referenceTime: Date,
+    excludeId?: number,
+  ): Promise<Task | null> {
     const tasks = await this.getTasksForDay(date);
     if (tasks.length === 0) return null;
 
-    const targetTime = date.getTime();
+    const targetTime = referenceTime.getTime();
     const precedingTasks = tasks
-      .filter((t) => t.endTime.getTime() <= targetTime)
+      .filter(
+        (t) =>
+          t.endTime.getTime() <= targetTime &&
+          (excludeId === undefined || t.id !== excludeId),
+      )
       .sort((a, b) => b.endTime.getTime() - a.endTime.getTime());
 
     return precedingTasks.length > 0 ? precedingTasks[0] : null;
+  }
+
+  /**
+   * Finds the task that starts closest to but after the referenceTime on the same day.
+   * @param date - The day to search in.
+   * @param referenceTime - The time to look after.
+   * @param excludeId - Optional ID to exclude from search.
+   */
+  async getNextTask(
+    date: Date,
+    referenceTime: Date,
+    excludeId?: number,
+  ): Promise<Task | null> {
+    const tasks = await this.getTasksForDay(date);
+    if (tasks.length === 0) return null;
+
+    const targetTime = referenceTime.getTime();
+    const succeedingTasks = tasks
+      .filter(
+        (t) =>
+          t.startTime.getTime() >= targetTime &&
+          (excludeId === undefined || t.id !== excludeId),
+      )
+      .sort((a, b) => a.startTime.getTime() - b.startTime.getTime());
+
+    return succeedingTasks.length > 0 ? succeedingTasks[0] : null;
   }
 
   /**
