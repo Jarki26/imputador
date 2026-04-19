@@ -96,8 +96,10 @@
       class="task-block"
       class:has-overlap={task.hasOverlap}
       class:is-rest={!isBillable(task.type) &&
-        task.type !== 'AUSENCIA FACTURABLE'}
+        task.type !== 'AUSENCIA FACTURABLE' &&
+        task.type !== 'OFFLINE'}
       class:is-billable-absence={task.type === 'AUSENCIA FACTURABLE'}
+      class:is-offline={task.type === 'OFFLINE'}
       class:is-dragging={dragInfo?.taskId === task.id}
       style={getTaskStyle(task)}
       onpointerdown={(e) => onPointerDown && onPointerDown(e, task, 'move')}
@@ -227,6 +229,19 @@
     );
     color: var(--md-sys-color-on-tertiary-container);
     border-color: var(--md-sys-color-tertiary);
+  }
+
+  .task-block.is-offline {
+    background: repeating-linear-gradient(
+      45deg,
+      var(--md-sys-color-surface-variant),
+      var(--md-sys-color-surface-variant) 10px,
+      rgba(255, 255, 255, 0.2) 10px,
+      rgba(255, 255, 255, 0.2) 20px
+    );
+    color: var(--md-sys-color-on-surface-variant);
+    border-color: var(--md-sys-color-outline-variant);
+    opacity: 0.7;
   }
 
   .task-block.has-overlap {

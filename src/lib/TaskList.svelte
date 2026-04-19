@@ -84,6 +84,7 @@
           class="task-item"
           class:is-rest={task.type === 'REST'}
           class:is-billable-absence={task.type === 'AUSENCIA FACTURABLE'}
+          class:is-offline={task.type === 'OFFLINE'}
           style={taskTypeColors[task.type]
             ? `background-color: ${taskTypeColors[task.type]}; color: ${getContrastColor(taskTypeColors[task.type])}; border-color: rgba(0,0,0,0.1);`
             : ''}
@@ -202,6 +203,18 @@
       rgba(255, 255, 255, 0.3) 20px
     );
     border-color: var(--md-sys-color-tertiary);
+  }
+
+  .task-item.is-offline {
+    background: repeating-linear-gradient(
+      45deg,
+      var(--md-sys-color-surface-variant),
+      var(--md-sys-color-surface-variant) 10px,
+      rgba(255, 255, 255, 0.2) 10px,
+      rgba(255, 255, 255, 0.2) 20px
+    );
+    border-color: var(--md-sys-color-outline-variant);
+    opacity: 0.8;
   }
 
   .task-header {
