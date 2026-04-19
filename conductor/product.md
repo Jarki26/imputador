@@ -91,6 +91,14 @@ Imputador is a specialized task registration and time-tracking application desig
 - **Template-based Mass Update:** Find and replace identical tasks by matching a multi-field template (Title, Project, Company, Type).
 - **Safety Preview:** Inline summary of affected tasks and mandatory confirmation before applying broad changes.
 
+### 10. Sesame HR Integration
+
+- **Automated Break Logging:** Ability to synchronize with Sesame HR to automatically generate "Rest" (Descanso) tasks based on official clock-in/clock-out records.
+- **Smart Gap Calculation:** The system identifies gaps between work blocks within the bounds of the first and last check of the day.
+- **Authenticated Sync:** Secure, client-side authentication with Sesame HR credentials.
+- **Intelligent Conflict Resolution:** Automatically updates or replaces existing auto-generated rests while preserving user-defined work registries, allowing for manual overlap resolution.
+- **One-Click Synchronization:** A dedicated "Sync Sesame" button in the Weekly View for effortless data retrieval for the active week.
+
 ## User Experience Focus
 
 - **Information Density:** A design that maximizes the visibility of the week's data, allowing for quick assessment of missing time and project distribution.

@@ -24,6 +24,10 @@
   - **Capability:** Bidirectional mapping for data portability (Export/Import foundation).
   - **Date Handling:** Bidirectional operations support custom token-based formatting (YYYY, MM, DD).
 
+## External Integrations
+
+- **Sesame HR API:** Direct client-side integration via standard `fetch` API for retrieving time logs and employee information.
+
 ## Settings Backup & Restore
 
 - **JSON-based Backup:** JSON for structured configuration export/import.
