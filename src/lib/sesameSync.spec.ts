@@ -34,7 +34,7 @@ describe('sesameSync - calculateGapsFromChecks', () => {
     expect(gaps[0].endTime.toISOString()).toBe('2026-04-19T14:00:00.000Z');
     expect(gaps[0].title).toBe('Descanso');
     expect(gaps[0].project).toBe('sesame');
-    expect(gaps[0].type).toBe('Rest');
+    expect(gaps[0].type).toBe('REST');
   });
 
   it('should ignore checks without checkOut (except the last one which defines the end boundary)', () => {
