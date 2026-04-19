@@ -48,14 +48,18 @@ Imputador is a specialized task registration and time-tracking application desig
 
 - A specialized "filler" mode where the system automatically distributes a total duration across available empty slots in the day, with automatic carryover to subsequent days if needed.
 
-### 5. Task Management
+### 5. Task Management & Configuration
 
 - Parametrizable task types from a closed list.
 - Special "Ausencia Facturable" (Billable Absence) type: Counts toward weekly goal but not daily productivity. Rendered with a patterned/striped background.
 - Task entities include: Title, Description, Project (Autocomplete with auto-save), Company (Autocomplete with auto-save and management), and Task Type (with personalizable background colors).
 - **Direct Editing:** Ability to edit tasks directly from both Weekly and Daily Views.
 - Quick-access list of the 10 most recently used tasks and companies.
-- **Company Management:** A dedicated settings area to manually add, edit, or delete saved companies from the autocomplete suggestions.
+- **Tabbed Settings Menu:** A centralized, categorized configuration interface using a vertical sidebar for easy navigation between:
+  - **General:** Weekly goals, language preferences, and task color customization.
+  - **Task Options:** Company management and bulk editing tools.
+  - **Data Management:** Excel template configuration, import/export, and full settings backup/restore.
+  - **Integrations:** External service configurations (e.g., Sesame HR).
 
 ### 6. Weekly Hour Goals
 
