@@ -1,0 +1,8 @@
+{
+  "track_id": "quick_click_task_edit_20260419",
+  "type": "bug",
+  "status": "new",
+  "created_at": "2026-04-19T00:00:00Z",
+  "updated_at": "2026-04-19T00:00:00Z",
+  "description": "Detectar mejor el evento de actualizar una tarea. Hacer que no salga el modal de editar cuando se mantiene el click pulsado o cuando se arrastra la tarea."
+}
