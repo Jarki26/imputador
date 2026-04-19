@@ -1,0 +1,8 @@
+{
+  "track_id": "offline_task_sesame_20260419",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-04-19T12:00:00Z",
+  "updated_at": "2026-04-19T12:00:00Z",
+  "description": "- Crea un tipo de tarea que sea OFFLINE, que no sume horas de descanso ni facturables. - Usa el nuevo tipo OFFLINE para crear tareas con la descripción \"Fuera de la oficina\" y proyecto \"sesame\" para cubrir los huecos que quedan al leer los datos de la integración de sesame y crear este tipo de tareas entre las 00:00 y la hora del primer registro de trabajo y otra que vaya desde el final del último registro de trabajo hasta las 23:59. Cuando se produzcan conflictos con este nuevo tipo de tareas aplica la misma política que para las de \"Descanso\" de la integración de sesame."
+}
