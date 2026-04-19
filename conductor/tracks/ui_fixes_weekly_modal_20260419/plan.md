@@ -7,9 +7,9 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Task Block Text Selection' (Protocol in workflow.md) (c8fc385)
 
 ## Phase 2: Modal Closing Behavior
-- [ ] Task: Update Modal component backdrop click logic
+- [x] Task: Update Modal component backdrop click logic (559737f)
     - [ ] Modify `Modal.svelte` to correctly handle `mousedown` and `mouseup` events.
     - [ ] Ensure the modal only closes when the user intentionally clicks the backdrop (starting and ending the click outside the modal content).
-- [ ] Task: Update Modal tests
+- [x] Task: Update Modal tests (559737f)
     - [ ] Add/update unit tests in `Modal.spec.ts` to verify the new robust closing behavior.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Modal Closing Behavior' (Protocol in workflow.md)
+- [~] Task: Conductor - User Manual Verification 'Phase 2: Modal Closing Behavior' (Protocol in workflow.md)
