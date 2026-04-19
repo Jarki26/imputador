@@ -10,13 +10,13 @@
 - [x] Task: Conductor - User Manual Verification 'Collision "Continue Anyway" Functionality' (Protocol in workflow.md) a95c01d
 
 ## Phase 2: Long-Press Displacement Evaluation
-- [ ] Task: Integrate displacement validation checks into the long-press event handler.
-    - [ ] Sub-task: Update the long-press event handler in `WeeklyView.svelte` (and Daily View if applicable).
-    - [ ] Sub-task: Ensure the original "copy to recents" functionality is maintained.
-    - [ ] Sub-task: Invoke the existing `suggestFillGaps` and `mergeTasks` logic on the target task without physically moving it.
-    - [ ] Sub-task: Write tests to ensure long-press correctly triggers these evaluations.
-- [ ] Task: Implement the confirmation dialog for applying long-press evaluations.
-    - [ ] Sub-task: If gap-filling or merging is suggested, display a confirmation dialog to the user.
-    - [ ] Sub-task: Apply the changes to the store upon user confirmation.
-    - [ ] Sub-task: Write tests to verify the UI interaction and subsequent store updates.
+- [x] Task: Integrate displacement validation checks into the long-press event handler. 71e549a
+    - [x] Sub-task: Update the long-press event handler in `WeeklyView.svelte` (and Daily View if applicable).
+    - [x] Sub-task: Ensure the original "copy to recents" functionality is maintained.
+    - [x] Sub-task: Invoke the existing `suggestFillGaps` and `mergeTasks` logic on the target task without physically moving it.
+    - [x] Sub-task: Write tests to ensure long-press correctly triggers these evaluations.
+- [x] Task: Implement the confirmation dialog for applying long-press evaluations. 71e549a
+    - [x] Sub-task: If gap-filling or merging is suggested, display a confirmation dialog to the user.
+    - [x] Sub-task: Apply the changes to the store upon user confirmation.
+    - [x] Sub-task: Write tests to verify the UI interaction and subsequent store updates.
 - [ ] Task: Conductor - User Manual Verification 'Long-Press Displacement Evaluation' (Protocol in workflow.md)
