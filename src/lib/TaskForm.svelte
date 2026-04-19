@@ -98,11 +98,70 @@
   let selectedRecentIndex = $state('');
   let companySuggestions = $state<Company[]>([]);
 
+  let hasPreviousTask = $state(false);
+  let hasNextTask = $state(false);
+
+  let startSnapActive = $state(false);
+  let endSnapActive = $state(false);
+
   // Fetch recent tasks and companies on mount
   $effect(() => {
     refreshRecentTasks();
     refreshCompanySuggestions();
   });
+
+  // Check for adjacent tasks whenever time/date changes
+  $effect(() => {
+    checkAdjacentTasks();
+  });
+
+  async function checkAdjacentTasks() {
+    const date = new Date(taskDate);
+    const startRef = new Date(startTime);
+    const endRef = new Date(endTime);
+
+    const prev = await taskStore.getPreviousTask(
+      date,
+      startRef,
+      editingTask?.id,
+    );
+    const next = await taskStore.getNextTask(date, endRef, editingTask?.id);
+
+    hasPreviousTask = !!prev;
+    hasNextTask = !!next;
+  }
+
+  async function snapStartTime() {
+    const date = new Date(taskDate);
+    const ref = new Date(startTime);
+    const prevEnd = await taskStore.getPreviousTaskEndTime(
+      date,
+      ref,
+      editingTask?.id,
+    );
+    if (prevEnd) {
+      startTimeStr = formatTimeOnlyForInput(prevEnd);
+      handleStartTimeInput();
+      startSnapActive = true;
+      setTimeout(() => (startSnapActive = false), 500);
+    }
+  }
+
+  async function snapEndTime() {
+    const date = new Date(taskDate);
+    const ref = new Date(endTime);
+    const nextStart = await taskStore.getNextTaskStartTime(
+      date,
+      ref,
+      editingTask?.id,
+    );
+    if (nextStart) {
+      endTimeStr = formatTimeOnlyForInput(nextStart);
+      updateDurationFromTimes();
+      endSnapActive = true;
+      setTimeout(() => (endSnapActive = false), 500);
+    }
+  }
 
   async function refreshRecentTasks() {
     if (typeof taskStore.getRecentTasks === 'function') {
@@ -423,14 +482,28 @@
 
   <div class="field">
     <label for="startTime">{i18n.t('task.start_time')}</label>
-    <input
-      id="startTime"
-      name="startTime"
-      type="time"
-      required
-      bind:value={startTimeStr}
-      oninput={handleStartTimeInput}
-    />
+    <div class="input-with-action">
+      <input
+        id="startTime"
+        name="startTime"
+        type="time"
+        required
+        bind:value={startTimeStr}
+        oninput={handleStartTimeInput}
+        class:snap-highlight={startSnapActive}
+      />
+      <button
+        type="button"
+        class="snap-btn"
+        onclick={snapStartTime}
+        disabled={!hasPreviousTask}
+        title={i18n.t('task.snap_previous')}
+      >
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+          <path d="M11 18V6l-8.5 6 8.5 6zm.5-6 8.5 6V6l-8.5 6z" />
+        </svg>
+      </button>
+    </div>
   </div>
 
   <div class="lock-container">
@@ -462,15 +535,29 @@
 
   <div class="field">
     <label for="endTime">{i18n.t('task.end_time')}</label>
-    <input
-      id="endTime"
-      name="endTime"
-      type="time"
-      required={!isSmartFill}
-      disabled={isSmartFill}
-      bind:value={endTimeStr}
-      oninput={updateDurationFromTimes}
-    />
+    <div class="input-with-action">
+      <input
+        id="endTime"
+        name="endTime"
+        type="time"
+        required={!isSmartFill}
+        disabled={isSmartFill}
+        bind:value={endTimeStr}
+        oninput={updateDurationFromTimes}
+        class:snap-highlight={endSnapActive}
+      />
+      <button
+        type="button"
+        class="snap-btn"
+        onclick={snapEndTime}
+        disabled={!hasNextTask || isSmartFill}
+        title={i18n.t('task.snap_next')}
+      >
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+          <path d="M13 6v12l8.5-6L13 6zM12.5 12l-8.5 6V6l8.5 6z" />
+        </svg>
+      </button>
+    </div>
   </div>
 
   <div class="field checkbox-field">
@@ -601,6 +688,46 @@
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
+  }
+
+  .input-with-action {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .input-with-action input {
+    flex: 1;
+  }
+
+  .snap-btn {
+    background: var(--md-sys-color-surface-container-highest);
+    border: 1px solid var(--md-sys-color-outline);
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    color: var(--md-sys-color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+      background-color 0.2s,
+      opacity 0.2s;
+  }
+
+  .snap-btn:hover:not(:disabled) {
+    background-color: var(--md-sys-color-primary-container);
+  }
+
+  .snap-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    color: var(--md-sys-color-outline);
+  }
+
+  .snap-highlight {
+    background-color: var(--md-sys-color-primary-container) !important;
+    transition: background-color 0.5s;
   }
 
   .checkbox-field {

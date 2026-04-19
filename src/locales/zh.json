@@ -106,6 +106,8 @@
     "duration_locked": "时长已锁定",
     "duration_free": "时长未锁定",
     "toggle_lock": "切换时长锁定",
+    "snap_previous": "对齐到上一个任务的结束",
+    "snap_next": "对齐到下一个任务的开始",
     "smart_fill": "智能填充 (自动在间隙中分配时长)",
     "hours": "小时",
     "minutes": "分钟",

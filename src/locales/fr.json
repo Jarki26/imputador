@@ -106,6 +106,8 @@
     "duration_locked": "Durée verrouillée",
     "duration_free": "Durée libre",
     "toggle_lock": "Basculer le verrouillage de durée",
+    "snap_previous": "Ajuster à la fin de la tâche précédente",
+    "snap_next": "Ajuster au début de la tâche suivante",
     "smart_fill": "Remplissage intelligent (répartition automatique de la durée dans les creux)",
     "hours": "Heures",
     "minutes": "Minutes",

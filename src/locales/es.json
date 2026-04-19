@@ -115,6 +115,8 @@
     "duration_locked": "Duración bloqueada",
     "duration_free": "Duración libre",
     "toggle_lock": "Alternar Bloqueo de Duración",
+    "snap_previous": "Ajustar al final de la tarea anterior",
+    "snap_next": "Ajustar al inicio de la siguiente tarea",
     "smart_fill": "Relleno Inteligente (auto-distribuir duración en huecos)",
     "hours": "Horas",
     "minutes": "Minutos",

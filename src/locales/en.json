@@ -110,6 +110,8 @@
     "duration_locked": "Duration locked",
     "duration_free": "Duration free",
     "toggle_lock": "Toggle Duration Lock",
+    "snap_previous": "Snap to end of previous task",
+    "snap_next": "Snap to start of next task",
     "smart_fill": "Smart Fill (auto-distribute duration in gaps)",
     "hours": "Hours",
     "minutes": "Minutes",

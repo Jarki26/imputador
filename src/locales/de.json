@@ -106,7 +106,10 @@
     "duration_locked": "Dauer gesperrt",
     "duration_free": "Dauer frei",
     "toggle_lock": "Dauersperre umschalten",
-    "smart_fill": "Intelligentes Füllen (Dauer automatisch in Lücken verteilen)",
+    "snap_previous": "An Ende der vorherigen Aufgabe anpassen",
+    "snap_next": "An Beginn der nächsten Aufgabe anpassen",
+    "smart_fill": "Intelligentes Ausfüllen (Dauer automatisch in Lücken verteilen)",
+
     "hours": "Stunden",
     "minutes": "Minuten",
     "collision_title": "Kollision erkannt",
