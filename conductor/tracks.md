@@ -4,5 +4,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Integración Sesame**
+- [x] **Track: Integración Sesame**
 *Link: [./tracks/integracion_sesame_20260419/](./tracks/integracion_sesame_20260419/)*
