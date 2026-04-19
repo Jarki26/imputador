@@ -2,7 +2,7 @@
 
 ## Phase 1: Core Logic and Store Updates
 - [x] Task: Write tests for store helpers that find the previous/next task's end/start time on the same day. 0b10012
-- [ ] Task: Implement `getPreviousTaskEndTime` and `getNextTaskStartTime` logic in `taskStore` or a related utility.
+- [x] Task: Implement `getPreviousTaskEndTime` and `getNextTaskStartTime` logic in `taskStore` or a related utility. cb2bfcf
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Core Logic and Store Updates' (Protocol in workflow.md)
 
 ## Phase 2: UI Component Implementation (TaskForm)
