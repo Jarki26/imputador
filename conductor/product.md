@@ -30,7 +30,7 @@ Imputador is a specialized task registration and time-tracking application desig
 - Interactive controls for direct management:
   - **Week Navigation:** Quick arrows to switch between weeks.
   - **Daily Drill-down:** Clickable day headers to jump to the detailed Daily View.
-  - **Direct Management:** Delete buttons on task blocks and long-press to copy existing tasks to favorites/recents.
+  - **Direct Management:** Delete buttons on task blocks and long-press to copy existing tasks to favorites/recents while triggering merge/snap evaluations.
   - **Smart Interaction:** Magnetic snapping to close small gaps and automatic merging of identical consecutive tasks.
   - **Action Locks:** Safety switches to prevent accidental movement, editing, or creation on touch devices.
   - **Goal Progress:** Visual progress bar and remaining time calculation in the header.
@@ -38,7 +38,7 @@ Imputador is a specialized task registration and time-tracking application desig
 
 ### 3. Advanced Time Manipulation
 
-- **Insertion with Overwrite:** Inserting a task into a range splits existing tasks to avoid overlaps.
+- **Insertion with Overwrite:** Inserting a task into a range splits existing tasks to avoid overlaps. Users can also choose to bypass collision prevention and allow overlaps.
 - **Insertion with Displacement:** Inserting a task pushes subsequent tasks forward while maintaining their original durations.
 - **Duration-based Editing:** Adjusting the end time by providing a duration (e.g., `01h 30m 00s`) from a given start time. Includes a **Duration Lock** feature that, when active, automatically shifts the end time when the start time is modified to maintain a constant duration.
 - **Single-Day Enforcement:** Tasks are strictly restricted to a single calendar day to simplify logic and user mental model. The interface prevents tasks from crossing the midnight boundary.
