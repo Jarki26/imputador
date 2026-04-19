@@ -10,6 +10,7 @@
   import type { CompanyStore } from './companyStore';
   import type { TaskStore } from './taskStore';
   import type { ProjectStore } from './projectStore';
+  import type { ConfigStore } from './configStore';
 
   interface Props {
     weeklyTarget: number;
@@ -51,6 +52,7 @@
 
   let target = $state(weeklyTarget);
   let error = $state('');
+  let activeTab = $state('general');
 
   const languages = [
     { code: 'en', label: '🇬🇧 EN' },
@@ -76,82 +78,182 @@
   }
 </script>
 
-<div class="settings-form">
-  <div class="form-group">
-    <label for="weeklyTarget">{i18n.t('settings.weekly_target')}</label>
-    <input
-      type="number"
-      id="weeklyTarget"
-      bind:value={target}
-      min="1"
-      max="60"
-      class:error={!!error}
-    />
-    {#if error}
-      <p class="error-msg">{error}</p>
-    {/if}
-  </div>
-
-  <div class="form-group">
-    <label for="language">{i18n.t('settings.language')}</label>
-    <select id="language" value={i18n.locale} onchange={handleLanguageChange}>
-      {#each languages as lang}
-        <option value={lang.code}>{lang.label}</option>
-      {/each}
-    </select>
-  </div>
-
-  <hr class="separator" />
-
-  <ExportSettings
-    template={exportTemplate}
-    exclusions={exportExclusions}
-    {excelDateFormat}
-    onSave={onSaveExportConfig}
-    {onImportComplete}
-  />
-
-  <hr class="separator" />
-
-  <CompanySettings {companyStore} />
-
-  <hr class="separator" />
-
-  <TaskColorSettings
-    colors={taskTypeColors}
-    onSaveColor={onSaveTaskTypeColor}
-  />
-
-  <hr class="separator" />
-
-  <BulkEdit
-    {taskStore}
-    {projectStore}
-    {companyStore}
-    onSuccess={onBulkUpdate}
-  />
-
-  <hr class="separator" />
-
-  <BackupSettings />
-
-  {#if configStore}
-    <hr class="separator" />
-    <SesameSettings {configStore} />
-  {/if}
-
-  <div class="actions">
-    <button class="save-btn" onclick={handleSave}
-      >{i18n.t('common.save')}</button
+<div class="settings-container">
+  <nav class="settings-sidebar">
+    <button
+      class="tab-btn"
+      class:active={activeTab === 'general'}
+      onclick={() => (activeTab = 'general')}
     >
+      {i18n.t('settings.tabs.general')}
+    </button>
+    <button
+      class="tab-btn"
+      class:active={activeTab === 'task_options'}
+      onclick={() => (activeTab = 'task_options')}
+    >
+      {i18n.t('settings.tabs.task_options')}
+    </button>
+    <button
+      class="tab-btn"
+      class:active={activeTab === 'data_management'}
+      onclick={() => (activeTab = 'data_management')}
+    >
+      {i18n.t('settings.tabs.data_management')}
+    </button>
+    {#if configStore}
+      <button
+        class="tab-btn"
+        class:active={activeTab === 'integrations'}
+        onclick={() => (activeTab = 'integrations')}
+      >
+        {i18n.t('settings.tabs.integrations')}
+      </button>
+    {/if}
+  </nav>
+
+  <div class="settings-content">
+    {#if activeTab === 'general'}
+      <div class="tab-pane">
+        <section class="settings-section">
+          <h3>{i18n.t('settings.tabs.general')}</h3>
+          <div class="form-group">
+            <label for="weeklyTarget">{i18n.t('settings.weekly_target')}</label>
+            <input
+              type="number"
+              id="weeklyTarget"
+              bind:value={target}
+              min="1"
+              max="60"
+              class:error={!!error}
+            />
+            {#if error}
+              <p class="error-msg">{error}</p>
+            {/if}
+          </div>
+
+          <div class="form-group">
+            <label for="language">{i18n.t('settings.language')}</label>
+            <select
+              id="language"
+              value={i18n.locale}
+              onchange={handleLanguageChange}
+            >
+              {#each languages as lang}
+                <option value={lang.code}>{lang.label}</option>
+              {/each}
+            </select>
+          </div>
+        </section>
+
+        <hr class="separator" />
+
+        <TaskColorSettings
+          colors={taskTypeColors}
+          onSaveColor={onSaveTaskTypeColor}
+        />
+
+        <div class="actions">
+          <button class="save-btn" onclick={handleSave}
+            >{i18n.t('common.save')}</button
+          >
+        </div>
+      </div>
+    {:else if activeTab === 'task_options'}
+      <div class="tab-pane">
+        <CompanySettings {companyStore} />
+        <hr class="separator" />
+        <BulkEdit
+          {taskStore}
+          {projectStore}
+          {companyStore}
+          onSuccess={onBulkUpdate}
+        />
+      </div>
+    {:else if activeTab === 'data_management'}
+      <div class="tab-pane">
+        <ExportSettings
+          template={exportTemplate}
+          exclusions={exportExclusions}
+          {excelDateFormat}
+          onSave={onSaveExportConfig}
+          {onImportComplete}
+        />
+        <hr class="separator" />
+        <BackupSettings />
+      </div>
+    {:else if activeTab === 'integrations' && configStore}
+      <div class="tab-pane">
+        <SesameSettings {configStore} />
+      </div>
+    {/if}
   </div>
 </div>
 
 <style>
-  .settings-form {
+  .settings-container {
+    display: flex;
+    gap: 2rem;
+    min-height: 400px;
+    height: 60vh;
+  }
+
+  .settings-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 200px;
+    border-right: 1px solid var(--md-sys-color-outline-variant);
+    padding-right: 1rem;
+  }
+
+  .settings-content {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+  }
+
+  .tab-pane {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+  }
+
+  .settings-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--md-sys-color-surface-container-low);
+    border-radius: 12px;
+  }
+
+  h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    color: var(--md-sys-color-primary);
+  }
+
+  .tab-btn {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    color: var(--md-sys-color-on-surface-variant);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .tab-btn:hover {
+    background: var(--md-sys-color-surface-container-high);
+  }
+
+  .tab-btn.active {
+    background: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
   }
 
   .form-group {
@@ -188,6 +290,7 @@
   .actions {
     display: flex;
     justify-content: flex-end;
+    margin-top: 1rem;
   }
 
   .save-btn {
@@ -210,5 +313,33 @@
     border: none;
     border-top: 1px solid var(--md-sys-color-outline-variant);
     margin: 0.5rem 0;
+  }
+
+  @media (max-width: 600px) {
+    .settings-container {
+      flex-direction: column;
+      gap: 1rem;
+      height: auto;
+      min-height: auto;
+    }
+
+    .settings-sidebar {
+      width: 100%;
+      flex-direction: row;
+      border-right: none;
+      border-bottom: 1px solid var(--md-sys-color-outline-variant);
+      padding-right: 0;
+      padding-bottom: 1rem;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    .settings-sidebar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tab-btn {
+      padding: 0.5rem 1rem;
+    }
   }
 </style>

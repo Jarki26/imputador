@@ -104,6 +104,9 @@
 
 <style>
   .sesame-settings {
+    background: var(--md-sys-color-surface-container-low);
+    padding: 1rem;
+    border-radius: 12px;
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -111,9 +114,9 @@
 
   h3 {
     margin: 0;
+    margin-bottom: 0.5rem;
     font-size: 1.1rem;
-    font-weight: 500;
-    color: var(--md-sys-color-on-surface);
+    color: var(--md-sys-color-primary);
   }
 
   .login-form, .logged-in {
@@ -137,7 +140,7 @@
     padding: 0.75rem;
     border-radius: 8px;
     border: 1px solid var(--md-sys-color-outline);
-    background: var(--md-sys-color-surface-container);
+    background: var(--md-sys-color-surface);
     color: var(--md-sys-color-on-surface);
   }
 

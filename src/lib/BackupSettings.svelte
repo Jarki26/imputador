@@ -81,6 +81,9 @@
 
 <style>
   .backup-settings {
+    background: var(--md-sys-color-surface-container-low);
+    padding: 1rem;
+    border-radius: 12px;
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -88,9 +91,9 @@
 
   h3 {
     margin: 0;
+    margin-bottom: 0.5rem;
     font-size: 1.1rem;
-    font-weight: 500;
-    color: var(--md-sys-color-on-surface);
+    color: var(--md-sys-color-primary);
   }
 
   .backup-actions {
@@ -106,7 +109,7 @@
     padding: 0.75rem 1.25rem;
     border-radius: 12px;
     border: 1px solid var(--md-sys-color-outline);
-    background: var(--md-sys-color-surface-container-high);
+    background: var(--md-sys-color-surface);
     color: var(--md-sys-color-on-surface);
     font-weight: 500;
     cursor: pointer;

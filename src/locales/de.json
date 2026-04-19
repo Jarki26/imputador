@@ -25,6 +25,12 @@
     "sunday": "Sonntag"
   },
   "settings": {
+    "tabs": {
+      "general": "Allgemein",
+      "task_options": "Aufgabenoptionen",
+      "data_management": "Datenverwaltung",
+      "integrations": "Integrationen"
+    },
     "title": "Einstellungen",
     "weekly_target": "Wöchentliches Stundenziel",
     "language": "Sprache",

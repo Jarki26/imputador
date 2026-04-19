@@ -360,10 +360,16 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    padding: 1.5rem;
+    padding: 1rem;
     background: var(--md-sys-color-surface-container-low);
     border-radius: 12px;
-    border: 1px solid var(--md-sys-color-outline-variant);
+  }
+
+  h3 {
+    margin: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    color: var(--md-sys-color-primary);
   }
 
   .date-range {

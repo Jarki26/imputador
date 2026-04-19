@@ -29,6 +29,12 @@
     "sunday": "Sunday"
   },
   "settings": {
+    "tabs": {
+      "general": "General",
+      "task_options": "Task Options",
+      "data_management": "Data Management",
+      "integrations": "Integrations"
+    },
     "title": "Settings",
     "weekly_target": "Weekly Hours Target",
     "language": "Language",

@@ -51,6 +51,9 @@
 
 <style>
   .task-color-settings {
+    background: var(--md-sys-color-surface-container-low);
+    padding: 1rem;
+    border-radius: 12px;
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -58,9 +61,9 @@
 
   h3 {
     margin: 0;
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--md-sys-color-on-surface);
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    color: var(--md-sys-color-primary);
   }
 
   .task-types-list {

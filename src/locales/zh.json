@@ -25,6 +25,12 @@
     "sunday": "星期日"
   },
   "settings": {
+    "tabs": {
+      "general": "通用",
+      "task_options": "任务选项",
+      "data_management": "数据管理",
+      "integrations": "集成"
+    },
     "title": "设置",
     "weekly_target": "周工时目标",
     "language": "语言",

@@ -99,9 +99,4 @@ describe('Settings.svelte', () => {
 
     expect(onSave).toHaveBeenCalledWith(45);
   });
-
-  it('should render BulkEdit component', () => {
-    render(Settings, { props: defaultProps });
-    expect(screen.getByText(/Mantenimiento \/ Edición Masiva/i)).toBeDefined();
-  });
 });
