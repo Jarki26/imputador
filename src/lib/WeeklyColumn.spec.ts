@@ -140,4 +140,35 @@ describe('WeeklyColumn.svelte', () => {
 
     expect(onPointerDown).toHaveBeenCalled();
   });
+
+  it('should have non-selectable title and project text', () => {
+    const tasks = [
+      {
+        id: 1,
+        title: 'Non-selectable',
+        project: 'Project S',
+        type: 'DESARROLLO',
+        startTime: new Date('2026-04-06T09:00:00Z'),
+        endTime: new Date('2026-04-06T10:00:00Z'),
+      },
+    ];
+
+    render(WeeklyColumn, {
+      props: {
+        day,
+        hours,
+        pixelsPerMinute,
+        tasks,
+        taskTypeColors: {},
+        locks: { move: false, edit: false, create: false },
+        dragInfo: null,
+      },
+    });
+
+    const title = screen.getByText('Non-selectable');
+    const project = screen.getByText('Project S');
+
+    expect(window.getComputedStyle(title).userSelect).toBe('none');
+    expect(window.getComputedStyle(project).userSelect).toBe('none');
+  });
 });
