@@ -101,6 +101,26 @@ describe('sesameSync - calculateGapsFromChecks', () => {
     expect(gaps).toHaveLength(7);
   });
 
+  it('should zero out seconds and milliseconds in generated gaps', () => {
+    const checks: SesameCheck[] = [
+      {
+        id: '1',
+        checkIn: { date: '2026-04-19T09:00:15Z' }, // 15 seconds
+        checkOut: { date: '2026-04-19T18:00:45Z' }, // 45 seconds
+      },
+    ];
+    const gaps = calculateGapsFromChecks(checks);
+    expect(gaps).toHaveLength(2);
+    
+    // OFFLINE 00:00 - 09:00
+    expect(gaps[0].endTime.getSeconds()).toBe(0);
+    expect(gaps[0].endTime.getMilliseconds()).toBe(0);
+    
+    // OFFLINE 18:00 - 23:59:59.999
+    expect(gaps[1].startTime.getSeconds()).toBe(0);
+    expect(gaps[1].startTime.getMilliseconds()).toBe(0);
+  });
+
   it('should generate OFFLINE tasks for start and end of day gaps', () => {
     const checks: SesameCheck[] = [
       {

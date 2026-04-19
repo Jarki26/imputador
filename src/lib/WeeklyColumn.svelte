@@ -114,6 +114,7 @@
     >
       <button
         class="delete-btn"
+        onpointerdown={(e) => e.stopPropagation()}
         onclick={(e) => {
           e.stopPropagation();
           if (locks.edit) return;

@@ -388,12 +388,13 @@
     try {
       // Check for collisions
       const existingTasks = await taskStore.getTasksForDay(start);
-      const collision = existingTasks.some(
-        (t) =>
-          (!editingTask || t.id !== editingTask.id) &&
-          t.startTime < end &&
-          t.endTime > start,
-      );
+      const collision = existingTasks.some((t) => {
+        if (editingTask && t.id === editingTask.id) return false;
+        const overlapMs =
+          Math.min(t.endTime.getTime(), end.getTime()) -
+          Math.max(t.startTime.getTime(), start.getTime());
+        return overlapMs >= 60000;
+      });
 
       if (collision) {
         pendingTaskData = taskData;

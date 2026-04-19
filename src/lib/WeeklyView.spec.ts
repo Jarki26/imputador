@@ -185,6 +185,92 @@ describe('WeeklyView.svelte', () => {
     expect(task2?.classList.contains('has-overlap')).toBe(true);
   });
 
+  it('should NOT highlight sequential tasks sharing a boundary as overlapping', () => {
+    const tasks = [
+      {
+        id: 1,
+        title: 'Task 1',
+        project: 'P1',
+        startTime: new Date('2026-04-06T09:00:00Z'),
+        endTime: new Date('2026-04-06T10:00:00Z'),
+      },
+      {
+        id: 2,
+        title: 'Task 2',
+        project: 'P2',
+        startTime: new Date('2026-04-06T10:00:00Z'), // Exactly at Task 1 end
+        endTime: new Date('2026-04-06T11:00:00Z'),
+      },
+    ];
+
+    render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks } });
+
+    const task1 = screen.getByText('Task 1').closest('.task-block');
+    const task2 = screen.getByText('Task 2').closest('.task-block');
+
+    expect(task1?.classList.contains('has-overlap')).toBe(false);
+    expect(task2?.classList.contains('has-overlap')).toBe(false);
+  });
+
+  it('should NOT detect overlap when tasks differ only by seconds', () => {
+    const tasks = [
+      {
+        id: 1,
+        title: 'Task 1',
+        project: 'P1',
+        startTime: new Date('2026-04-06T09:00:00Z'),
+        endTime: new Date('2026-04-06T10:00:05Z'), // 5 seconds extra
+      },
+      {
+        id: 2,
+        title: 'Task 2',
+        project: 'P2',
+        startTime: new Date('2026-04-06T10:00:00Z'), // Looks sequential in UI
+        endTime: new Date('2026-04-06T11:00:00Z'),
+      },
+    ];
+
+    render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks } });
+
+    const task1 = screen.getByText('Task 1').closest('.task-block');
+    const task2 = screen.getByText('Task 2').closest('.task-block');
+
+    expect(task1?.classList.contains('has-overlap')).toBe(false);
+    expect(task2?.classList.contains('has-overlap')).toBe(false);
+  });
+
+  it('should NOT trigger onTaskClick when the delete button is clicked', async () => {
+    const onTaskClick = vi.fn();
+    const onTaskDelete = vi.fn();
+    const tasks = [
+      {
+        id: 1,
+        title: 'Deletable Task',
+        project: 'Project D',
+        startTime: new Date('2026-04-06T10:00:00Z'),
+        endTime: new Date('2026-04-06T11:00:00Z'),
+      },
+    ];
+    render(WeeklyView, {
+      props: {
+        startDate: new Date('2026-04-06'),
+        tasks,
+        onTaskClick,
+        onTaskDelete,
+      },
+    });
+
+    const deleteBtn = screen.getByTitle(/Eliminar/i);
+    
+    // Simulate pointerDown on delete button
+    await fireEvent.pointerDown(deleteBtn, { button: 0, pointerId: 1 });
+    // Simulate click on delete button
+    await fireEvent.click(deleteBtn);
+
+    expect(onTaskDelete).toHaveBeenCalledTimes(1);
+    expect(onTaskClick).not.toHaveBeenCalled();
+  });
+
   it('should trigger onSlotClick when an empty slot is clicked', async () => {
     const onSlotClick = vi.fn();
     const startDate = new Date('2026-04-06'); // Monday

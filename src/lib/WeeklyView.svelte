@@ -288,7 +288,12 @@
       for (let j = i + 1; j < dailyTasks.length; j++) {
         const t1 = dailyTasks[i];
         const t2 = dailyTasks[j];
-        if (t1.startTime < t2.endTime && t2.startTime < t1.endTime) {
+        // Use 1-minute tolerance for overlap detection
+        const overlapMs =
+          Math.min(t1.endTime.getTime(), t2.endTime.getTime()) -
+          Math.max(t1.startTime.getTime(), t2.startTime.getTime());
+
+        if (overlapMs >= 60000) {
           t1.hasOverlap = true;
           t2.hasOverlap = true;
         }
@@ -395,12 +400,13 @@
   }
 
   function checkForCollision(updatedTask: Task) {
-    const collision = tasks.some(
-      (t) =>
-        t.id !== updatedTask.id &&
-        t.startTime < updatedTask.endTime &&
-        t.endTime > updatedTask.startTime,
-    );
+    const collision = tasks.some((t) => {
+      if (t.id === updatedTask.id) return false;
+      const overlapMs =
+        Math.min(t.endTime.getTime(), updatedTask.endTime.getTime()) -
+        Math.max(t.startTime.getTime(), updatedTask.startTime.getTime());
+      return overlapMs >= 60000;
+    });
 
     if (collision) {
       collisionProposal = updatedTask;

@@ -37,13 +37,18 @@ export function calculateGapsFromChecks(checks: SesameCheck[]): Task[] {
     dayStart.setHours(0, 0, 0, 0);
 
     if (firstCheckIn.getTime() - dayStart.getTime() > 60000) {
+      const start = new Date(dayStart);
+      start.setSeconds(0, 0);
+      const end = new Date(firstCheckIn);
+      end.setSeconds(0, 0);
+      
       gaps.push({
         title: i18n.t('task.type_offline'),
         description: i18n.t('task.offline_description'),
         project: 'sesame',
         type: 'OFFLINE',
-        startTime: dayStart,
-        endTime: firstCheckIn,
+        startTime: start,
+        endTime: end,
       });
     }
 
@@ -58,13 +63,18 @@ export function calculateGapsFromChecks(checks: SesameCheck[]): Task[] {
 
         // Only add if there's an actual gap (more than 1 minute)
         if (gapEnd.getTime() - gapStart.getTime() > 60000) {
+          const start = new Date(gapStart);
+          start.setSeconds(0, 0);
+          const end = new Date(gapEnd);
+          end.setSeconds(0, 0);
+
           gaps.push({
             title: i18n.t('task.type_rest'),
             description: '',
             project: 'sesame',
             type: 'REST',
-            startTime: gapStart,
-            endTime: gapEnd,
+            startTime: start,
+            endTime: end,
           });
         }
       }
@@ -75,15 +85,18 @@ export function calculateGapsFromChecks(checks: SesameCheck[]): Task[] {
     if (lastCheck.checkOut && lastCheck.checkOut.date) {
       const lastCheckOut = new Date(lastCheck.checkOut.date);
       const dayEnd = new Date(lastCheckOut);
-      dayEnd.setHours(23, 59, 59, 0); // Using 23:59:59 as boundary
+      dayEnd.setHours(23, 59, 59, 999); // Use consistent boundary
 
       if (dayEnd.getTime() - lastCheckOut.getTime() > 60000) {
+        const start = new Date(lastCheckOut);
+        start.setSeconds(0, 0);
+        
         gaps.push({
           title: i18n.t('task.type_offline'),
           description: i18n.t('task.offline_description'),
           project: 'sesame',
           type: 'OFFLINE',
-          startTime: lastCheckOut,
+          startTime: start,
           endTime: dayEnd,
         });
       }
@@ -115,8 +128,9 @@ export async function syncSesameTasks(newRestTasks: Task[], taskStore: any): Pro
       const exStart = existingTask.startTime.getTime();
       const exEnd = existingTask.endTime.getTime();
 
-      // Check for ANY overlap
-      const hasOverlap = (newStart < exEnd && newEnd > exStart);
+      // Check for overlap with 1-minute tolerance
+      const overlapMs = Math.min(newEnd, exEnd) - Math.max(newStart, exStart);
+      const hasOverlap = overlapMs >= 60000;
 
       if (!hasOverlap) continue;
 

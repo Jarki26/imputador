@@ -97,4 +97,30 @@ describe('sesameSync - syncSesameTasks', () => {
     const tasks = await taskStore.getTasksForDay(new Date('2026-04-19'));
     expect(tasks).toHaveLength(2); // Both should exist
   });
+
+  it('should NOT skip insertion if a rest task starts exactly where another ends', async () => {
+    // Existing task ending at 11:00
+    await taskStore.addTask({
+      title: 'Morning Work',
+      project: 'Project',
+      type: 'Feature',
+      description: '',
+      startTime: new Date('2026-04-19T09:00:00Z'),
+      endTime: new Date('2026-04-19T11:00:00Z')
+    });
+
+    // New rest task starting at 11:00
+    const newRestTasks: Task[] = [
+      {
+        ...sesameFormat,
+        startTime: new Date('2026-04-19T11:00:00Z'),
+        endTime: new Date('2026-04-19T12:00:00Z')
+      }
+    ];
+
+    await syncSesameTasks(newRestTasks, taskStore);
+
+    const tasks = await taskStore.getTasksForDay(new Date('2026-04-19'));
+    expect(tasks).toHaveLength(2);
+  });
 });
