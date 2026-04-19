@@ -12,7 +12,7 @@
     - [ ] Write unit tests for Settings UI and config storage.
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Sesame Configuration & Core API Service' (Protocol in workflow.md) (069842a)
 
-## Phase 2: Synchronization Logic & Weekly View Integration
+## Phase 2: Synchronization Logic & Weekly View Integration [checkpoint: 96feb2f]
 - [x] Task: Implement gap calculation logic (0e6f813)
     - [ ] Create utility function to process `checkIn` and `checkOut` arrays and generate "Rest" tasks.
     - [ ] Ensure gaps are strictly bounded by the first and last check of each day.
@@ -26,7 +26,7 @@
     - [ ] Connect the button to fetch checks for the current week.
     - [ ] Provide user feedback (loading state, success, error toasts/alerts).
     - [ ] Write integration tests for the sync flow.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Synchronization Logic & Weekly View Integration' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Synchronization Logic & Weekly View Integration' (Protocol in workflow.md) (96feb2f)
 
 ## Phase 3: Final Review and Polish
 - [ ] Task: Add i18n support
