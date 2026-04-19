@@ -1,0 +1,8 @@
+{
+  "track_id": "snap_buttons_20260419",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-04-19T00:00:00Z",
+  "updated_at": "2026-04-19T00:00:00Z",
+  "description": "Dentro del formulario de tareas poner un botón tipo tooltip junto a la hora de inicio para establecer el valor igual al de la tarea que es inmediatamente anterior con su hora fin para ajustar y que no se produzca hueco entre tareas. Esto solo se aplica para tareas dentro de un mismo día, si no existe una tarea anterior no se modifica el valor inicial. Aplicar lo mismo para el hora fin pero buscando el valor en la tarea que se encuentre a continuación y usando su hora inicio. Si no hay una tarea posterior en el mismo día no se modifica el valor."
+}
