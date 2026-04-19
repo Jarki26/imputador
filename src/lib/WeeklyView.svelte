@@ -1,6 +1,10 @@
 <script lang="ts">
   import type { Task } from './db';
-  import { calculateWorkHours, calculateGoalAbsenceHours } from './taskUtils';
+  import {
+    calculateWorkHours,
+    calculateGoalAbsenceHours,
+    calculateRestHours,
+  } from './taskUtils';
   import { isBillable } from './config';
   import { i18n } from './i18n.svelte';
   import WeeklyHeader from './WeeklyHeader.svelte';
@@ -232,12 +236,11 @@
       ? tasks.map((t) => (t.id === dragInfo?.taskId ? dragInfo.currentTask : t))
       : tasks;
 
-    const dailyTasks = effectiveTasks
-      .filter((t) => t.startTime >= dayStart && t.startTime <= dayEnd)
-      .filter((t) => !isBillable(t.type))
-      .sort((a, b) => a.startTime.getTime() - b.startTime.getTime());
+    const dailyTasks = effectiveTasks.filter(
+      (t) => t.startTime >= dayStart && t.startTime <= dayEnd,
+    );
 
-    return getIntervalTotal(dailyTasks);
+    return calculateRestHours(dailyTasks).toFixed(2);
   }
 
   interface TaskWithOverlap extends Task {
