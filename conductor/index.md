@@ -5,4 +5,3 @@
 - [Workflow](./workflow.md)
 - [Product Guidelines](./product-guidelines.md)
 - [Tracks Registry](./tracks.md)
-- [Tasks List](./tareas_pendientes.md)
