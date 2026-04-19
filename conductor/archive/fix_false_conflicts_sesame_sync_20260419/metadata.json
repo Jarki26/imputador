@@ -1,0 +1,8 @@
+{
+  "track_id": "fix_false_conflicts_sesame_sync_20260419",
+  "type": "bug",
+  "status": "new",
+  "created_at": "2026-04-19T22:00:00Z",
+  "updated_at": "2026-04-19T22:00:00Z",
+  "description": "Se detectan conflictos falsos con las tareas de tipo OFFLINE y algunas de descanso cuando en verdad no existe un hueco entre ellas porque la hora fin y hora inicio son iguales."
+}
