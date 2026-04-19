@@ -51,7 +51,9 @@ Imputador is a specialized task registration and time-tracking application desig
 ### 5. Task Management & Configuration
 
 - Parametrizable task types from a closed list.
-- Special "Ausencia Facturable" (Billable Absence) type: Counts toward weekly goal but not daily productivity. Rendered with a patterned/striped background.
+- Special "Ausencia Facturable" (Billable Absence) type: Counts toward weekly goal but not daily productivity.
+- Special "OFFLINE" type: Represents time outside the office. Does not count toward billable hours, rest hours, or the weekly goal.
+- **Visual Distinction:** Both "Ausencia Facturable" and "OFFLINE" types are rendered with a patterned/striped background to differentiate them from active work.
 - Task entities include: Title, Description, Project (Autocomplete with auto-save), Company (Autocomplete with auto-save and management), and Task Type (with personalizable background colors).
 - **Direct Editing:** Ability to edit tasks directly from both Weekly and Daily Views.
 - Quick-access list of the 10 most recently used tasks and companies.
@@ -97,10 +99,10 @@ Imputador is a specialized task registration and time-tracking application desig
 
 ### 10. Sesame HR Integration
 
-- **Automated Break Logging:** Ability to synchronize with Sesame HR to automatically generate "Rest" (Descanso) tasks based on official clock-in/clock-out records.
-- **Smart Gap Calculation:** The system identifies gaps between work blocks within the bounds of the first and last check of the day.
+- **Automated Gap Filling:** Ability to synchronize with Sesame HR to automatically generate "Rest" (Descanso) and "OFFLINE" tasks based on official clock-in/clock-out records.
+- **Smart Gap Calculation:** The system identifies gaps between work blocks (REST) and also generates OFFLINE tasks to fill the periods from 00:00 to the first check-in and from the last check-out to 23:59.
 - **Authenticated Sync:** Secure, client-side authentication with Sesame HR credentials.
-- **Intelligent Conflict Resolution:** Automatically updates or replaces existing auto-generated rests while preserving user-defined work registries, allowing for manual overlap resolution.
+- **Intelligent Conflict Resolution:** Automatically updates or replaces existing auto-generated rests and offline tasks while preserving user-defined work registries, allowing for manual overlap resolution.
 - **One-Click Synchronization:** A dedicated "Sync Sesame" button in the Weekly View for effortless data retrieval for the active week.
 
 ## User Experience Focus
