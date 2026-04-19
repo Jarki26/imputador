@@ -409,6 +409,41 @@ describe('WeeklyView.svelte', () => {
     expect(progressBar.getAttribute('aria-valuenow')).toBe('12.82');
   });
 
+  it('should exclude OFFLINE tasks from daily and weekly totals', () => {
+    const tasks = [
+      {
+        id: 1,
+        title: 'Work',
+        type: 'DESARROLLO',
+        startTime: new Date('2026-04-06T09:00:00Z'),
+        endTime: new Date('2026-04-06T11:00:00Z'), // 2 hours
+      },
+      {
+        id: 2,
+        title: 'Offline Gaps',
+        type: 'OFFLINE',
+        startTime: new Date('2026-04-06T00:00:00Z'),
+        endTime: new Date('2026-04-06T09:00:00Z'), // 9 hours (excluded)
+      },
+    ];
+    render(WeeklyView, {
+      props: { startDate: new Date('2026-04-06'), tasks, weeklyTarget: 41 },
+    });
+
+    // Daily total should be 2.00h
+    expect(screen.getAllByTitle('Horas Facturables')[0]).toHaveTextContent(
+      '2.00h',
+    );
+    // Rest total should be 0.00h (OFFLINE is not REST)
+    expect(
+      screen.getAllByTitle('Horas de Descanso/No facturables')[0],
+    ).toHaveTextContent('0.00h');
+    // Weekly summary: Registrado: 2.00h / Objetivo: 41.00h
+    expect(
+      screen.getByText(/Registrado: 2\.00h \/ Objetivo: 41\.00h/i),
+    ).toBeDefined();
+  });
+
   it('should apply custom task colors to task blocks', () => {
     const tasks = [
       {

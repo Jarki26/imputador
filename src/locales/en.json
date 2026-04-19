@@ -104,6 +104,8 @@
     "type_soporte": "Support",
     "type_test": "Testing",
     "type_viaje": "Travel",
+    "type_offline": "Out of office",
+    "offline_description": "Out of office",
     "date": "Date",
     "start_time": "Start Time",
     "end_time": "End Time",

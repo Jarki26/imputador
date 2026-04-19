@@ -100,6 +100,8 @@
     "type_soporte": "Support",
     "type_test": "Test",
     "type_viaje": "Voyage",
+    "type_offline": "En dehors du bureau",
+    "offline_description": "En dehors du bureau",
     "date": "Date",
     "start_time": "Heure de début",
     "end_time": "Heure de fin",
