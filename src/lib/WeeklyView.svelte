@@ -175,9 +175,11 @@
       }
     }
 
-    // Evaluate for merge/snap (same as move/resize)
+    // Evaluate for merge/snap/collision (same as move/resize)
     if (!checkForMerge(task)) {
-      checkForSnap(task);
+      if (!checkForSnap(task)) {
+        checkForCollision(task);
+      }
     }
   }
 
