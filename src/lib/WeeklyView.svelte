@@ -739,10 +739,13 @@
       <p>{i18n.t('weekly.collision_move_msg')}</p>
       <div class="merge-actions">
         <button
-          class="btn-cancel"
+          class="btn-confirm"
           onclick={() => {
+            if (collisionProposal && onTaskUpdate) {
+              onTaskUpdate(collisionProposal, 'normal');
+            }
             collisionProposal = null;
-          }}>{i18n.t('common.cancel')}</button
+          }}>{i18n.t('task.continue_anyway')}</button
         >
         <button
           class="btn-confirm"
