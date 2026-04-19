@@ -1,13 +1,13 @@
 # Implementation Plan: Collision and Long-Press Enhancements
 
-## Phase 1: Collision "Continue Anyway" Functionality
+## Phase 1: Collision "Continue Anyway" Functionality [checkpoint: a95c01d]
 - [x] Task: Update the `TaskForm` component to replace the "Cancelar" button with "Continuar de todas formas" when a collision warning is triggered. ded480f
     - [x] Sub-task: Modify the modal action buttons in `TaskForm.svelte` to show the new option.
     - [x] Sub-task: Update `TaskForm.collision.spec.ts` tests to reflect the new button and expected state.
 - [x] Task: Implement the "Continue Anyway" action logic to bypass standard collision prevention. ded480f
     - [x] Sub-task: Adjust the task saving logic to allow the task to be created/updated with an overlap.
     - [x] Sub-task: Add or update unit tests to verify overlapping tasks are correctly stored when this action is used.
-- [ ] Task: Conductor - User Manual Verification 'Collision "Continue Anyway" Functionality' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Collision "Continue Anyway" Functionality' (Protocol in workflow.md) a95c01d
 
 ## Phase 2: Long-Press Displacement Evaluation
 - [ ] Task: Integrate displacement validation checks into the long-press event handler.
