@@ -296,7 +296,7 @@
 
   .task-title,
   .task-project {
-    user-select: text;
+    user-select: none;
   }
 
   .task-duration {
