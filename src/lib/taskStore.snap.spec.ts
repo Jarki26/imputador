@@ -75,6 +75,19 @@ describe('TaskStore Snap Helpers', () => {
     });
   });
 
+  describe('getPreviousTaskEndTime', () => {
+    it('should return the endTime of the closest preceding task', async () => {
+        await addTask('Task 1', '08:00:00', '09:00:00');
+        const endTime = await store.getPreviousTaskEndTime(testDate, new Date('2026-04-19T09:30:00Z'));
+        expect(endTime).toEqual(new Date('2026-04-19T09:00:00Z'));
+    });
+
+    it('should return null if no preceding task exists', async () => {
+        const endTime = await store.getPreviousTaskEndTime(testDate, new Date('2026-04-19T09:30:00Z'));
+        expect(endTime).toBeNull();
+    });
+  });
+
   describe('getNextTask', () => {
     it('should return the closest succeeding task on the same day', async () => {
       await addTask('Task 1', '08:00:00', '09:00:00');
@@ -125,6 +138,19 @@ describe('TaskStore Snap Helpers', () => {
         const refTime2 = new Date('2026-04-19T05:30:00Z');
         const next2 = await store.getNextTask(testDate, refTime2, id1);
         expect(next2?.title).toBe('Task 1');
+    });
+  });
+
+  describe('getNextTaskStartTime', () => {
+    it('should return the startTime of the closest succeeding task', async () => {
+        await addTask('Task 2', '10:00:00', '11:00:00');
+        const startTime = await store.getNextTaskStartTime(testDate, new Date('2026-04-19T09:30:00Z'));
+        expect(startTime).toEqual(new Date('2026-04-19T10:00:00Z'));
+    });
+
+    it('should return null if no succeeding task exists', async () => {
+        const startTime = await store.getNextTaskStartTime(testDate, new Date('2026-04-19T09:30:00Z'));
+        expect(startTime).toBeNull();
     });
   });
 });

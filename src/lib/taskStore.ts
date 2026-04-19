@@ -199,6 +199,30 @@ export class TaskStore {
   }
 
   /**
+   * Finds the end time of the task that ends closest to but before the referenceTime on the same day.
+   */
+  async getPreviousTaskEndTime(
+    date: Date,
+    referenceTime: Date,
+    excludeId?: number,
+  ): Promise<Date | null> {
+    const task = await this.getPreviousTask(date, referenceTime, excludeId);
+    return task ? task.endTime : null;
+  }
+
+  /**
+   * Finds the start time of the task that starts closest to but after the referenceTime on the same day.
+   */
+  async getNextTaskStartTime(
+    date: Date,
+    referenceTime: Date,
+    excludeId?: number,
+  ): Promise<Date | null> {
+    const task = await this.getNextTask(date, referenceTime, excludeId);
+    return task ? task.startTime : null;
+  }
+
+  /**
    * Updates an existing task.
    * @param id - The ID of the task to update.
    * @param updates - Partial task object containing updates.
