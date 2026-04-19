@@ -7,8 +7,8 @@ describe('sesameSync - calculateGapsFromChecks', () => {
     const checks: SesameCheck[] = [
       {
         id: '1',
-        checkIn: { occurredAt: '2026-04-19T09:00:00Z' },
-        checkOut: { occurredAt: '2026-04-19T18:00:00Z' }
+        checkIn: { date: '2026-04-19T09:00:00Z' },
+        checkOut: { date: '2026-04-19T18:00:00Z' }
       }
     ];
     const gaps = calculateGapsFromChecks(checks);
@@ -19,13 +19,13 @@ describe('sesameSync - calculateGapsFromChecks', () => {
     const checks: SesameCheck[] = [
       {
         id: '1',
-        checkIn: { occurredAt: '2026-04-19T09:00:00Z' },
-        checkOut: { occurredAt: '2026-04-19T13:00:00Z' }
+        checkIn: { date: '2026-04-19T09:00:00Z' },
+        checkOut: { date: '2026-04-19T13:00:00Z' }
       },
       {
         id: '2',
-        checkIn: { occurredAt: '2026-04-19T14:00:00Z' },
-        checkOut: { occurredAt: '2026-04-19T18:00:00Z' }
+        checkIn: { date: '2026-04-19T14:00:00Z' },
+        checkOut: { date: '2026-04-19T18:00:00Z' }
       }
     ];
     const gaps = calculateGapsFromChecks(checks);
@@ -41,13 +41,13 @@ describe('sesameSync - calculateGapsFromChecks', () => {
     const checks: SesameCheck[] = [
       {
         id: '1',
-        checkIn: { occurredAt: '2026-04-19T09:00:00Z' },
+        checkIn: { date: '2026-04-19T09:00:00Z' },
         // missing checkOut
       },
       {
         id: '2',
-        checkIn: { occurredAt: '2026-04-19T14:00:00Z' },
-        checkOut: { occurredAt: '2026-04-19T18:00:00Z' }
+        checkIn: { date: '2026-04-19T14:00:00Z' },
+        checkOut: { date: '2026-04-19T18:00:00Z' }
       }
     ];
     // If check 1 has no checkOut, we can't know when the gap starts.
@@ -61,29 +61,29 @@ describe('sesameSync - calculateGapsFromChecks', () => {
       // Day 1: two gaps
       {
         id: '1',
-        checkIn: { occurredAt: '2026-04-19T09:00:00Z' },
-        checkOut: { occurredAt: '2026-04-19T11:00:00Z' }
+        checkIn: { date: '2026-04-19T09:00:00Z' },
+        checkOut: { date: '2026-04-19T11:00:00Z' }
       },
       {
         id: '2',
-        checkIn: { occurredAt: '2026-04-19T12:00:00Z' },
-        checkOut: { occurredAt: '2026-04-19T13:00:00Z' }
+        checkIn: { date: '2026-04-19T12:00:00Z' },
+        checkOut: { date: '2026-04-19T13:00:00Z' }
       },
       {
         id: '3',
-        checkIn: { occurredAt: '2026-04-19T15:00:00Z' },
-        checkOut: { occurredAt: '2026-04-19T18:00:00Z' }
+        checkIn: { date: '2026-04-19T15:00:00Z' },
+        checkOut: { date: '2026-04-19T18:00:00Z' }
       },
       // Day 2: one gap
       {
         id: '4',
-        checkIn: { occurredAt: '2026-04-20T08:30:00Z' },
-        checkOut: { occurredAt: '2026-04-20T12:30:00Z' }
+        checkIn: { date: '2026-04-20T08:30:00Z' },
+        checkOut: { date: '2026-04-20T12:30:00Z' }
       },
       {
         id: '5',
-        checkIn: { occurredAt: '2026-04-20T13:30:00Z' },
-        checkOut: { occurredAt: '2026-04-20T17:30:00Z' }
+        checkIn: { date: '2026-04-20T13:30:00Z' },
+        checkOut: { date: '2026-04-20T17:30:00Z' }
       }
     ];
     const gaps = calculateGapsFromChecks(checks);

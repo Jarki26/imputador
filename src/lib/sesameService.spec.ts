@@ -73,7 +73,7 @@ describe('sesameService', () => {
 
   describe('getChecks', () => {
     it('should fetch checks for a given period', async () => {
-      const mockChecks = [{ id: 'check-1', checkIn: { occurredAt: '2026-04-19T09:00:00Z' } }];
+      const mockChecks = [{ id: 'check-1', checkIn: { date: '2026-04-19T09:00:00Z' } }];
       (fetch as any).mockResolvedValue({
         ok: true,
         json: async () => ({ data: mockChecks }),

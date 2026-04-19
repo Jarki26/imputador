@@ -8,10 +8,10 @@ export interface SesameUser {
 export interface SesameCheck {
   id: string;
   checkIn: {
-    occurredAt: string;
+    date: string;
   };
   checkOut?: {
-    occurredAt: string;
+    date: string;
   };
 }
 

@@ -16,7 +16,7 @@ export function calculateGapsFromChecks(checks: SesameCheck[]): Task[] {
   const checksByDay: Record<string, SesameCheck[]> = {};
   
   for (const check of checks) {
-    const day = check.checkIn.occurredAt.split('T')[0];
+    const day = check.checkIn.date.split('T')[0];
     if (!checksByDay[day]) {
       checksByDay[day] = [];
     }
@@ -25,16 +25,16 @@ export function calculateGapsFromChecks(checks: SesameCheck[]): Task[] {
 
   for (const day in checksByDay) {
     const dayChecks = checksByDay[day].sort((a, b) => 
-      new Date(a.checkIn.occurredAt).getTime() - new Date(b.checkIn.occurredAt).getTime()
+      new Date(a.checkIn.date).getTime() - new Date(b.checkIn.date).getTime()
     );
 
     for (let i = 0; i < dayChecks.length - 1; i++) {
       const currentCheck = dayChecks[i];
       const nextCheck = dayChecks[i + 1];
 
-      if (currentCheck.checkOut && currentCheck.checkOut.occurredAt) {
-        const gapStart = new Date(currentCheck.checkOut.occurredAt);
-        const gapEnd = new Date(nextCheck.checkIn.occurredAt);
+      if (currentCheck.checkOut && currentCheck.checkOut.date) {
+        const gapStart = new Date(currentCheck.checkOut.date);
+        const gapEnd = new Date(nextCheck.checkIn.date);
 
         // Only add if there's an actual gap (more than 1 minute)
         if (gapEnd.getTime() - gapStart.getTime() > 60000) {
@@ -42,7 +42,7 @@ export function calculateGapsFromChecks(checks: SesameCheck[]): Task[] {
             title: 'Descanso',
             description: '',
             project: 'sesame',
-            type: 'Rest',
+            type: 'REST',
             startTime: gapStart,
             endTime: gapEnd
           });
@@ -84,7 +84,7 @@ export async function syncSesameTasks(newRestTasks: Task[], taskStore: any): Pro
       const isSesameRest = 
         existingTask.title === 'Descanso' && 
         existingTask.project === 'sesame' && 
-        existingTask.type === 'Rest';
+        existingTask.type === 'REST';
 
       if (isSesameRest) {
         const isIdentical = exStart === newStart && exEnd === newEnd;

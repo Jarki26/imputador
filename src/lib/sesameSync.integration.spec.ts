@@ -14,7 +14,7 @@ describe('sesameSync - syncSesameTasks', () => {
   const sesameFormat = {
     title: 'Descanso',
     project: 'sesame',
-    type: 'Rest',
+    type: 'REST',
     description: ''
   };
 
