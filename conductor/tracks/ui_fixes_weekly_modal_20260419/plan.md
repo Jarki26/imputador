@@ -1,10 +1,10 @@
 # Implementation Plan: UI/UX Improvements for Weekly Mode and Modals
 
-## Phase 1: Task Block Text Selection
+## Phase 1: Task Block Text Selection [checkpoint: c8fc385]
 - [x] Task: Disable text selection on task blocks (e643633)
     - [ ] Locate the CSS classes for task blocks in the Weekly View (e.g., `WeeklyColumn.svelte` or `WeeklyView.svelte`).
     - [ ] Apply `user-select: none;` to the relevant task block styles.
-- [~] Task: Conductor - User Manual Verification 'Phase 1: Task Block Text Selection' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Task Block Text Selection' (Protocol in workflow.md) (c8fc385)
 
 ## Phase 2: Modal Closing Behavior
 - [ ] Task: Update Modal component backdrop click logic
