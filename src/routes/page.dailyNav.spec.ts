@@ -18,6 +18,10 @@ vi.mock('$lib/taskStore', () => {
       updateWithDisplacement = vi.fn().mockResolvedValue(undefined);
       deleteTask = vi.fn().mockResolvedValue(undefined);
       upsertRecentTask = vi.fn().mockResolvedValue(undefined);
+      getPreviousTask = vi.fn().mockResolvedValue(null);
+      getNextTask = vi.fn().mockResolvedValue(null);
+      getPreviousTaskEndTime = vi.fn().mockResolvedValue(null);
+      getNextTaskStartTime = vi.fn().mockResolvedValue(null);
     },
   };
 });

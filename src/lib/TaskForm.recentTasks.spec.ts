@@ -21,6 +21,10 @@ describe('TaskForm Recent Tasks UI', () => {
       getTasksForDay: vi.fn().mockResolvedValue([]),
       addTask: vi.fn().mockResolvedValue(1),
       purgeHistory: vi.fn().mockResolvedValue(undefined),
+      getPreviousTask: vi.fn().mockResolvedValue(null),
+      getNextTask: vi.fn().mockResolvedValue(null),
+      getPreviousTaskEndTime: vi.fn().mockResolvedValue(null),
+      getNextTaskStartTime: vi.fn().mockResolvedValue(null),
     };
   });
 

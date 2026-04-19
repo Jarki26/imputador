@@ -18,6 +18,10 @@ describe('TaskForm Company Integration', () => {
       addTask: vi.fn().mockResolvedValue(1),
       getTasksForDay: vi.fn().mockResolvedValue([]),
       getRecentTasks: vi.fn().mockResolvedValue([]),
+      getPreviousTask: vi.fn().mockResolvedValue(null),
+      getNextTask: vi.fn().mockResolvedValue(null),
+      getPreviousTaskEndTime: vi.fn().mockResolvedValue(null),
+      getNextTaskStartTime: vi.fn().mockResolvedValue(null),
     };
 
     mockCompanyStore = {

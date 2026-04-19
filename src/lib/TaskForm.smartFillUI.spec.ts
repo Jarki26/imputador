@@ -21,6 +21,14 @@ describe('TaskForm.svelte Smart Fill UI', () => {
       getRecentTasks: vi.fn().mockResolvedValue([]) as any,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       addWithSmartFill: vi.fn().mockResolvedValue(undefined) as any,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      getPreviousTask: vi.fn().mockResolvedValue(null) as any,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      getNextTask: vi.fn().mockResolvedValue(null) as any,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      getPreviousTaskEndTime: vi.fn().mockResolvedValue(null) as any,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      getNextTaskStartTime: vi.fn().mockResolvedValue(null) as any,
     };
     mockProjectStore = {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

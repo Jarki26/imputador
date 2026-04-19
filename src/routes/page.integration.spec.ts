@@ -9,6 +9,10 @@ let mockGetTasksForDay = vi.fn().mockResolvedValue([]);
 let mockGetLatestTaskOfDay = vi.fn().mockResolvedValue(null);
 let mockGetClosestPrecedingTask = vi.fn().mockResolvedValue(null);
 let mockGetRecentTasks = vi.fn().mockResolvedValue([]);
+let mockGetPreviousTask = vi.fn().mockResolvedValue(null);
+let mockGetNextTask = vi.fn().mockResolvedValue(null);
+let mockGetPreviousTaskEndTime = vi.fn().mockResolvedValue(null);
+let mockGetNextTaskStartTime = vi.fn().mockResolvedValue(null);
 
 vi.mock('$lib/taskStore', () => {
   return {
@@ -18,6 +22,10 @@ vi.mock('$lib/taskStore', () => {
       getLatestTaskOfDay = mockGetLatestTaskOfDay;
       getClosestPrecedingTask = mockGetClosestPrecedingTask;
       getRecentTasks = mockGetRecentTasks;
+      getPreviousTask = mockGetPreviousTask;
+      getNextTask = mockGetNextTask;
+      getPreviousTaskEndTime = mockGetPreviousTaskEndTime;
+      getNextTaskStartTime = mockGetNextTaskStartTime;
       // Other methods needed by +page.svelte
       updateTask = vi.fn().mockResolvedValue(undefined);
       updateWithOverwrite = vi.fn().mockResolvedValue(undefined);
@@ -62,6 +70,10 @@ describe('Page Integration - Smart Default Start Time', () => {
     mockGetLatestTaskOfDay.mockResolvedValue(null);
     mockGetClosestPrecedingTask.mockResolvedValue(null);
     mockGetRecentTasks.mockResolvedValue([]);
+    mockGetPreviousTask.mockResolvedValue(null);
+    mockGetNextTask.mockResolvedValue(null);
+    mockGetPreviousTaskEndTime.mockResolvedValue(null);
+    mockGetNextTaskStartTime.mockResolvedValue(null);
   });
 
   it('Daily View: "Add Task" should use the latest task end time', async () => {
