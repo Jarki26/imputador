@@ -29,6 +29,6 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Synchronization Logic & Weekly View Integration' (Protocol in workflow.md) (96feb2f)
 
 ## Phase 3: Final Review and Polish
-- [ ] Task: Add i18n support
+- [x] Task: Add i18n support
     - [ ] Add new translation strings for Sesame integration (Settings, Buttons, Error messages) to all locales.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Final Review and Polish' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Final Review and Polish' (Protocol in workflow.md)
