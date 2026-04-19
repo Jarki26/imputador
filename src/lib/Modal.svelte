@@ -11,20 +11,39 @@
 
   let { show = false, title, onClose, children }: Props = $props();
 
+  let mouseDownOnBackdrop = false;
+
   function handleKeydown(e: KeyboardEvent) {
     if (e.key === 'Escape' && show) {
       onClose();
     }
+  }
+
+  function handleBackdropMouseDown(e: MouseEvent) {
+    mouseDownOnBackdrop = e.target === e.currentTarget;
+  }
+
+  function handleBackdropMouseUp(e: MouseEvent) {
+    if (mouseDownOnBackdrop && e.target === e.currentTarget) {
+      onClose();
+    }
+    mouseDownOnBackdrop = false;
   }
 </script>
 
 <svelte:window onkeydown={handleKeydown} />
 
 {#if show}
-  <div class="modal-backdrop" onclick={onClose} role="presentation">
+  <div
+    class="modal-backdrop"
+    onmousedown={handleBackdropMouseDown}
+    onmouseup={handleBackdropMouseUp}
+    role="presentation"
+  >
     <div
       class="modal-content"
-      onclick={(e) => e.stopPropagation()}
+      onmousedown={(e) => e.stopPropagation()}
+      onmouseup={(e) => e.stopPropagation()}
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
