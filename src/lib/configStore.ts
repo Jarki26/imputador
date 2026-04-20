@@ -136,4 +136,19 @@ export class ConfigStore {
       await db.put('config', { key: 'sesameEmail', value: email });
     }
   }
+
+  async getSesameProxyUrl(): Promise<string | null> {
+    const db = await initDB(this.dbName);
+    const config = await db.get('config', 'sesameProxyUrl');
+    return config ? config.value : null;
+  }
+
+  async setSesameProxyUrl(url: string | null): Promise<void> {
+    const db = await initDB(this.dbName);
+    if (url === null) {
+      await db.delete('config', 'sesameProxyUrl');
+    } else {
+      await db.put('config', { key: 'sesameProxyUrl', value: url });
+    }
+  }
 }
