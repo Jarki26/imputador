@@ -68,7 +68,10 @@
     "sesame_logged_in_as": "Logged in as: {email}",
     "sesame_login_success": "Successfully logged in to Sesame",
     "sesame_login_error": "Login failed: {error}",
-    "sesame_sync_button": "Sync Sesame"
+    "sesame_sync_button": "Sync Sesame",
+    "sesame_proxy_url": "CORS Proxy URL (Optional)",
+    "sesame_proxy_placeholder": "https://my-proxy.com/",
+    "sesame_proxy_help": "If you experience CORS issues in production, enter a CORS proxy URL here."
   },
   "task": {
     "form_title_add": "Add Task",

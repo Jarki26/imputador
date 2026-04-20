@@ -73,7 +73,10 @@
     "sesame_logged_in_as": "Sesión iniciada como: {email}",
     "sesame_login_success": "Sesión iniciada en Sesame con éxito",
     "sesame_login_error": "Error al iniciar sesión: {error}",
-    "sesame_sync_button": "Sincronizar Sesame"
+    "sesame_sync_button": "Sincronizar Sesame",
+    "sesame_proxy_url": "URL del Proxy CORS (Opcional)",
+    "sesame_proxy_placeholder": "https://mi-proxy.com/",
+    "sesame_proxy_help": "Si tienes problemas de CORS en producción, introduce aquí la URL de un proxy CORS."
   },
   "task": {
     "form_title_add": "Añadir Tarea",
