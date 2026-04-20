@@ -15,9 +15,19 @@ export interface SesameCheck {
   };
 }
 
+function getUrl(endpoint: string, proxyUrl?: string | null): string {
+  const base = 'https://back-eu4.sesametime.com/api/v3';
+  const fullUrl = `${base}${endpoint}`;
+  if (!proxyUrl) return fullUrl;
+
+  const normalizedProxy = proxyUrl.endsWith('/') ? proxyUrl : `${proxyUrl}/`;
+  return `${normalizedProxy}${fullUrl}`;
+}
+
 export const sesameService = {
-  async login(email: string, password: string): Promise<string> {
-    const response = await fetch('https://back-eu4.sesametime.com/api/v3/security/login', {
+  async login(email: string, password: string, proxyUrl?: string | null): Promise<string> {
+    const url = getUrl('/security/login', proxyUrl);
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -33,8 +43,9 @@ export const sesameService = {
     return result.data;
   },
 
-  async getMe(token: string): Promise<SesameUser> {
-    const response = await fetch('https://back-eu4.sesametime.com/api/v3/security/me', {
+  async getMe(token: string, proxyUrl?: string | null): Promise<SesameUser> {
+    const url = getUrl('/security/me', proxyUrl);
+    const response = await fetch(url, {
       headers: {
         Authorization: token,
       },
@@ -49,8 +60,9 @@ export const sesameService = {
     return Array.isArray(result.data) ? result.data[0] : result.data;
   },
 
-  async getChecks(userId: string, token: string, from: string, to: string): Promise<SesameCheck[]> {
-    const url = `https://back-eu4.sesametime.com/api/v3/employees/${userId}/checks?from=${from}&to=${to}&includeOut=true`;
+  async getChecks(userId: string, token: string, from: string, to: string, proxyUrl?: string | null): Promise<SesameCheck[]> {
+    const endpoint = `/employees/${userId}/checks?from=${from}&to=${to}&includeOut=true`;
+    const url = getUrl(endpoint, proxyUrl);
     const response = await fetch(url, {
       headers: {
         Authorization: token,
