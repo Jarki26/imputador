@@ -102,6 +102,7 @@ Imputador is a specialized task registration and time-tracking application desig
 - **Automated Gap Filling:** Ability to synchronize with Sesame HR to automatically generate "Rest" (Descanso) and "OFFLINE" tasks based on official clock-in/clock-out records.
 - **Smart Gap Calculation:** The system identifies gaps between work blocks (REST) and also generates OFFLINE tasks to fill the periods from 00:00 to the first check-in and from the last check-out to 23:59.
 - **Authenticated Sync:** Secure, client-side authentication with Sesame HR credentials.
+- **CORS Proxy Support:** Optional configuration of a CORS proxy URL to route API calls, ensuring compatibility in production environments with strict cross-origin restrictions.
 - **Intelligent Conflict Resolution:** Automatically updates or replaces existing auto-generated rests and offline tasks while preserving user-defined work registries, allowing for manual overlap resolution.
 - **One-Click Synchronization:** A dedicated "Sync Sesame" button in the Weekly View for effortless data retrieval for the active week.
 
