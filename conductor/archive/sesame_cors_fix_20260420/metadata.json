@@ -1,0 +1,8 @@
+{
+  "track_id": "sesame_cors_fix_20260420",
+  "type": "bug",
+  "status": "new",
+  "created_at": "2026-04-20T00:00:00Z",
+  "updated_at": "2026-04-20T00:00:00Z",
+  "description": "Da un problema CORS al llamar al backend de sesame"
+}
