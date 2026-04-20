@@ -237,7 +237,8 @@
       const from = formatDateOnlyForInput(monday);
       const to = formatDateOnlyForInput(sunday);
 
-      const checks = await sesameService.getChecks(userId, token, from, to);
+      const proxyUrl = await configStore.getSesameProxyUrl();
+      const checks = await sesameService.getChecks(userId, token, from, to, proxyUrl);
       const restTasks = calculateGapsFromChecks(checks);
 
       await syncSesameTasks(restTasks, taskStore);

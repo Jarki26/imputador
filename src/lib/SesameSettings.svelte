@@ -12,6 +12,7 @@
 
   let email = $state('');
   let password = $state('');
+  let proxyUrl = $state('');
   let loggedInEmail = $state<string | null>(null);
   let loading = $state(false);
   let error = $state('');
@@ -19,6 +20,7 @@
 
   onMount(async () => {
     loggedInEmail = await configStore.getSesameEmail();
+    proxyUrl = await configStore.getSesameProxyUrl() || '';
   });
 
   async function handleLogin() {
@@ -29,12 +31,13 @@
     success = '';
     
     try {
-      const token = await sesameService.login(email, password);
-      const user = await sesameService.getMe(token);
+      const token = await sesameService.login(email, password, proxyUrl);
+      const user = await sesameService.getMe(token, proxyUrl);
       
       await configStore.setSesameToken(token);
       await configStore.setSesameUserId(user.id);
       await configStore.setSesameEmail(email);
+      await configStore.setSesameProxyUrl(proxyUrl || null);
       
       loggedInEmail = email;
       success = i18n.t('settings.sesame_login_success');
@@ -54,10 +57,35 @@
     success = '';
     error = '';
   }
+
+  async function handleSaveProxy() {
+    await configStore.setSesameProxyUrl(proxyUrl || null);
+    success = i18n.t('common.save');
+  }
 </script>
 
 <div class="sesame-settings">
   <h3>{i18n.t('settings.sesame_title')}</h3>
+
+  <div class="proxy-config">
+    <div class="form-group">
+      <label for="sesame-proxy">{i18n.t('settings.sesame_proxy_url')}</label>
+      <input
+        type="url"
+        id="sesame-proxy"
+        bind:value={proxyUrl}
+        placeholder={i18n.t('settings.sesame_proxy_placeholder')}
+      />
+      <span class="help-text">{i18n.t('settings.sesame_proxy_help')}</span>
+    </div>
+    {#if loggedInEmail}
+      <button class="save-btn" onclick={handleSaveProxy}>
+        {i18n.t('common.save')}
+      </button>
+    {/if}
+  </div>
+
+  <hr class="divider" />
 
   {#if loggedInEmail}
     <div class="logged-in">
@@ -119,10 +147,34 @@
     color: var(--md-sys-color-primary);
   }
 
-  .login-form, .logged-in {
+  .login-form, .logged-in, .proxy-config {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+  }
+
+  .help-text {
+    font-size: 0.75rem;
+    color: var(--md-sys-color-on-surface-variant);
+    font-style: italic;
+  }
+
+  .divider {
+    border: 0;
+    border-top: 1px solid var(--md-sys-color-outline-variant);
+    margin: 0.5rem 0;
+  }
+
+  .save-btn {
+    align-self: flex-end;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    border: 1px solid var(--md-sys-color-primary);
+    background: transparent;
+    color: var(--md-sys-color-primary);
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 0.875rem;
   }
 
   .form-group {
