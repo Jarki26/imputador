@@ -123,8 +123,10 @@
     "error_smart_fill": "Por favor, forneça uma data de início e uma duração válida",
     "error_save_failed": "Falha ao salvar a tarefa",
     "error_update_failed": "Falha ao atualizar a tarefa",
-    "error_collision_check": "Ocorreu um erro ao verificar colisões"
-  },
+    "error_collision_check": "Ocorreu un erro ao verificar colidões",
+    "set_current_time": "Agora",
+    "set_current_time_aria": "Definir hora atual"
+    },
   "weekly": {
     "logged": "Registrado",
     "target": "Meta",

@@ -136,7 +136,9 @@
     "error_smart_fill": "Por favor, introduce una fecha de inicio y una duración válida",
     "error_save_failed": "Error al guardar la tarea",
     "error_update_failed": "Error al actualizar la tarea",
-    "error_collision_check": "Ocurrió un error al comprobar colisiones"
+    "error_collision_check": "Ocurrió un error al comprobar colisiones",
+    "set_current_time": "Ahora",
+    "set_current_time_aria": "Establecer hora actual"
   },
   "weekly": {
     "logged": "Registrado",

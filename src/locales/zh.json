@@ -123,8 +123,10 @@
     "error_smart_fill": "请提供开始日期和有效时长",
     "error_save_failed": "保存任务失败",
     "error_update_failed": "更新任务失败",
-    "error_collision_check": "检查冲突时出错"
-  },
+    "error_collision_check": "检查冲突时发生错误",
+    "set_current_time": "现在",
+    "set_current_time_aria": "设置当前时间"
+    },
   "weekly": {
     "logged": "已记录",
     "target": "目标",

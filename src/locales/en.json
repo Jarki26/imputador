@@ -131,7 +131,9 @@
     "error_smart_fill": "Please provide a start date and a valid duration",
     "error_save_failed": "Failed to save task",
     "error_update_failed": "Failed to update task",
-    "error_collision_check": "An error occurred while checking for collisions"
+    "error_collision_check": "An error occurred while checking for collisions",
+    "set_current_time": "Now",
+    "set_current_time_aria": "Set current time"
   },
   "weekly": {
     "logged": "Logged",
