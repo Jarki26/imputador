@@ -1,0 +1,8 @@
+{
+  "track_id": "current_time_tooltip_20260421",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-04-21T00:00:00Z",
+  "updated_at": "2026-04-21T00:00:00Z",
+  "description": "agregar un tooltip en los campos de hora inicio y hora fin para establecer como valor la hora actual tanto en el formulario de creacion como el de actualizar"
+}
