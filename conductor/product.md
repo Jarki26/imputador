@@ -110,4 +110,5 @@ Imputador is a specialized task registration and time-tracking application desig
 
 - **Information Density:** A design that maximizes the visibility of the week's data, allowing for quick assessment of missing time and project distribution.
 - **Smart Components:** Using autocomplete for projects, intuitive dropdowns for task types, and **split date/time selectors** with context-aware defaults (today's date or selected day) and **double-arrow snap buttons** to quickly align tasks and eliminate gaps.
+- **Quick Time Entry:** Integrated **"Set Current Time" (Ahora)** buttons within the start and end time fields, allowing users to instantly populate entries with a single click.
 - **Smart Defaults:** Task creation automatically suggests a start time based on the preceding task's end time (in Weekly View) or the day's latest task (in Daily View) to maintain log continuity with zero effort.
