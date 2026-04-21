@@ -1,0 +1,8 @@
+{
+  "track_id": "fix_cell_click_start_time_suggestion_20260421",
+  "type": "bug",
+  "status": "new",
+  "created_at": "2026-04-21T00:00:00Z",
+  "updated_at": "2026-04-21T00:00:00Z",
+  "description": "Cuando se hace click en una celda donde ya hay una tarea no está obteniendo el fin de esta tarea para sugerir el comienzo de la nueva, la hora inicio que se trae actualmente es la de la última tarea que sea anterior a la celda actual, pero si en la celda actual hay una tarea esta debe considerarse como la más reciente."
+}
