@@ -140,10 +140,14 @@ export class TaskStore {
   }
 
   /**
-   * Finds the task that ends closest to but before the given time on the same day.
+   * Finds the task that ends closest to but before the end of the given hour on the same day.
+   * This is used when clicking a slot in the weekly view to suggest a start time.
    */
   async getClosestPrecedingTask(date: Date): Promise<Task | null> {
-    return this.getPreviousTask(date, date);
+    const referenceTime = new Date(date);
+    // Use the end of the hour as reference to include tasks that are within this slot
+    referenceTime.setHours(date.getHours() + 1, 0, 0, 0);
+    return this.getPreviousTask(date, referenceTime);
   }
 
   /**

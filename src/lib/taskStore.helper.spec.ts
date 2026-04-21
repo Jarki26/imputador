@@ -89,6 +89,22 @@ describe('TaskStore Helper Functions', () => {
       expect(closest?.title).toBe('Task 2');
     });
 
+    it('should return the task in the current slot if clicking a slot that contains it', async () => {
+      await store.addTask({
+        title: 'Current Slot Task',
+        startTime: new Date('2026-04-13T10:00:00Z'),
+        endTime: new Date('2026-04-13T10:30:00Z'),
+        description: '',
+        project: '',
+        type: '',
+      });
+
+      const slotStart = new Date('2026-04-13T10:00:00Z');
+      const closest = await store.getClosestPrecedingTask(slotStart);
+      expect(closest).toBeDefined();
+      expect(closest?.title).toBe('Current Slot Task');
+    });
+
     it('should return null if all tasks for the day start after the given time', async () => {
       await store.addTask({
         title: 'Future Task',
