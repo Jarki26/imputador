@@ -1,8 +1,8 @@
 # Implementation Plan: Calendar Navigation Icon for Weekly View
 
 ## Phase 1: Custom Calendar UI Component (DatePicker)
-- [ ] Task: Write tests for a new `DatePicker.svelte` component ensuring it renders the grid, navigation, and 'Today' shortcut (Red Phase).
-- [ ] Task: Implement `DatePicker.svelte` with Material Design 3 styling and localized date formatting (Green Phase).
+- [x] Task: Write tests for a new `DatePicker.svelte` component ensuring it renders the grid, navigation, and 'Today' shortcut (Red Phase). eadd716
+- [~] Task: Implement `DatePicker.svelte` with Material Design 3 styling and localized date formatting (Green Phase).
 - [ ] Task: Implement the "Today" shortcut logic within `DatePicker.svelte` (Green Phase).
 - [ ] Task: Add i18n translation keys for the calendar UI (e.g., month names, "Today" button, aria-labels) across supported languages (Green Phase).
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Custom Calendar UI Component' (Protocol in workflow.md)
