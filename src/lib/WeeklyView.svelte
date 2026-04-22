@@ -9,6 +9,8 @@
   import { i18n } from './i18n.svelte';
   import WeeklyHeader from './WeeklyHeader.svelte';
   import WeeklyColumn from './WeeklyColumn.svelte';
+  import Modal from './Modal.svelte';
+  import DatePicker from './DatePicker.svelte';
 
   let {
     startDate = new Date(),
@@ -135,6 +137,20 @@
   const ZOOM_STEP = 0.1;
   const MIN_ZOOM = 0.5;
   const MAX_ZOOM = 3.0;
+
+  // Calendar Navigation State
+  let showCalendarModal = $state(false);
+
+  function handleOpenCalendar() {
+    showCalendarModal = true;
+  }
+
+  function handleCalendarSelect(date: Date) {
+    showCalendarModal = false;
+    if (onNavigate) {
+      onNavigate(date);
+    }
+  }
 
   const totalBillableHours = $derived(calculateWorkHours(tasks));
   const goalAbsenceHours = $derived(calculateGoalAbsenceHours(tasks));
@@ -666,6 +682,7 @@
     {progressPercentage}
     onSyncSesame={handleSync}
     {syncLoading}
+    onOpenCalendar={handleOpenCalendar}
   />
   <div class="grid-scroll-container">
     <div class="grid-header">
@@ -936,6 +953,14 @@
     </svg>
   </button>
 </div>
+
+<Modal
+  show={showCalendarModal}
+  title={i18n.t('calendar.select_date')}
+  onClose={() => (showCalendarModal = false)}
+>
+  <DatePicker selectedDate={startDate} onSelect={handleCalendarSelect} />
+</Modal>
 
 <style>
   .merge-modal-backdrop {
