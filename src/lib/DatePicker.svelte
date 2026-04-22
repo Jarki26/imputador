@@ -85,6 +85,10 @@
     viewDate = new Date(viewDate.getFullYear(), viewDate.getMonth() + delta, 1);
   }
 
+  function changeYear(delta: number) {
+    viewDate = new Date(viewDate.getFullYear() + delta, viewDate.getMonth(), 1);
+  }
+
   function selectDay(day: number, month: number, year: number) {
     const newDate = new Date(year, month, day);
     onSelect(newDate);
@@ -111,19 +115,33 @@
 
 <div class="date-picker">
   <div class="calendar-header">
-    <button
-      class="nav-btn"
-      onclick={() => changeMonth(-1)}
-      aria-label={i18n.t('calendar.prev_month')}>&lt;</button
-    >
+    <div class="nav-group">
+      <button
+        class="nav-btn"
+        onclick={() => changeYear(-1)}
+        aria-label={i18n.t('calendar.prev_year')}>&lt;&lt;</button
+      >
+      <button
+        class="nav-btn"
+        onclick={() => changeMonth(-1)}
+        aria-label={i18n.t('calendar.prev_month')}>&lt;</button
+      >
+    </div>
     <div class="current-month">
       {i18n.t(`calendar.${monthNames[viewDate.getMonth()]}`)} {viewDate.getFullYear()}
     </div>
-    <button
-      class="nav-btn"
-      onclick={() => changeMonth(1)}
-      aria-label={i18n.t('calendar.next_month')}>&gt;</button
-    >
+    <div class="nav-group">
+      <button
+        class="nav-btn"
+        onclick={() => changeMonth(1)}
+        aria-label={i18n.t('calendar.next_month')}>&gt;</button
+      >
+      <button
+        class="nav-btn"
+        onclick={() => changeYear(1)}
+        aria-label={i18n.t('calendar.next_year')}>&gt;&gt;</button
+      >
+    </div>
   </div>
 
   <div class="calendar-grid">
@@ -171,6 +189,11 @@
   .current-month {
     font-weight: 500;
     font-size: 1rem;
+  }
+
+  .nav-group {
+    display: flex;
+    gap: 2px;
   }
 
   .nav-btn {

@@ -236,6 +236,8 @@
     "select_date": "Select date",
     "prev_month": "Previous month",
     "next_month": "Next month",
+    "prev_year": "Previous year",
+    "next_year": "Next year",
     "january": "January",
     "february": "February",
     "march": "March",

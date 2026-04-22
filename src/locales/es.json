@@ -251,6 +251,8 @@
     "select_date": "Seleccionar fecha",
     "prev_month": "Mes anterior",
     "next_month": "Mes siguiente",
+    "prev_year": "Año anterior",
+    "next_year": "Año siguiente",
     "january": "Enero",
     "february": "Febrero",
     "march": "Marzo",

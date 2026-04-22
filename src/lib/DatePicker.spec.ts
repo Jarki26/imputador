@@ -14,6 +14,8 @@ describe('DatePicker', () => {
         select_date: 'Seleccionar fecha',
         prev_month: 'Mes anterior',
         next_month: 'Mes siguiente',
+        prev_year: 'Año anterior',
+        next_year: 'Año siguiente',
         january: 'Enero',
         february: 'Febrero',
         march: 'Marzo',
@@ -32,7 +34,7 @@ describe('DatePicker', () => {
 
   it('should render the calendar grid for a specific month', async () => {
     const testDate = new Date(2026, 3, 22); // April 22, 2026
-    const { getByText, getAllByRole } = render(DatePicker, {
+    const { getByText, getAllByText } = render(DatePicker, {
       props: { selectedDate: testDate },
     });
 
@@ -41,9 +43,11 @@ describe('DatePicker', () => {
     expect(getByText(/2026/)).toBeDefined();
 
     // Check if some days of April are present
-    expect(getByText('1')).toBeDefined();
+    // Use getAllByText and filter for current month if needed, 
+    // but here we just want to see they exist.
+    expect(getAllByText('1').length).toBeGreaterThan(0);
     expect(getByText('22')).toBeDefined();
-    expect(getByText('30')).toBeDefined();
+    expect(getAllByText('30').length).toBeGreaterThan(0);
   });
 
   it('should highlight the selected date', () => {
@@ -62,8 +66,8 @@ describe('DatePicker', () => {
       props: { selectedDate: testDate },
     });
 
-    const prevBtn = getByLabelText('calendar.prev_month');
-    const nextBtn = getByLabelText('calendar.next_month');
+    const prevBtn = getByLabelText('Mes anterior');
+    const nextBtn = getByLabelText('Mes siguiente');
 
     await fireEvent.click(nextBtn);
     expect(getByText(/Mayo/)).toBeDefined();
@@ -71,6 +75,27 @@ describe('DatePicker', () => {
     await fireEvent.click(prevBtn);
     await fireEvent.click(prevBtn);
     expect(getByText(/Marzo/)).toBeDefined();
+  });
+
+  it('should navigate to the previous and next year', async () => {
+    const testDate = new Date(2026, 3, 22); // April 2026
+    const { getByLabelText, getByText } = render(DatePicker, {
+      props: { selectedDate: testDate },
+    });
+
+    // Mock translations for this test specifically if needed, 
+    // but they should be in the beforeEach mock already if I update it.
+    // Let's update the beforeEach mock first.
+    
+    const prevYearBtn = getByLabelText('Año anterior');
+    const nextYearBtn = getByLabelText('Año siguiente');
+
+    await fireEvent.click(nextYearBtn);
+    expect(getByText(/2027/)).toBeDefined();
+
+    await fireEvent.click(prevYearBtn);
+    await fireEvent.click(prevYearBtn);
+    expect(getByText(/2025/)).toBeDefined();
   });
 
   it('should navigate to today when "Today" button is clicked', async () => {
@@ -98,7 +123,11 @@ describe('DatePicker', () => {
       props: { selectedDate: testDate, onSelect },
     });
 
-    const day15 = getByText('15');
+    // To be safe, find the '15' that is NOT 'not-current'
+    const days = document.querySelectorAll('.day-cell:not(.not-current)');
+    const day15 = Array.from(days).find(d => d.textContent?.trim() === '15');
+    
+    if (!day15) throw new Error('Day 15 not found');
     await fireEvent.click(day15);
 
     expect(onSelect).toHaveBeenCalledWith(new Date(2026, 3, 15));

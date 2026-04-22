@@ -203,6 +203,8 @@
     "select_date": "选择日期",
     "prev_month": "上个月",
     "next_month": "下个月",
+    "prev_year": "上一年",
+    "next_year": "下一年",
     "january": "一月",
     "february": "二月",
     "march": "三月",
