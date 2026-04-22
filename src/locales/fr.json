@@ -197,5 +197,23 @@
     "step14_content": "Utilisez ces boutons pour verrouiller le déplacement, l'édition ou la création de tâches. Utile sur les appareils tactiles.",
     "step15_title": "Tout est prêt !",
     "step15_content": "Vous êtes prêt à enregistrer votre journée de travail efficacement."
+  },
+  "calendar": {
+    "today": "Aujourd'hui",
+    "select_date": "Choisir une date",
+    "prev_month": "Mois précédent",
+    "next_month": "Mois suivant",
+    "january": "Janvier",
+    "february": "Février",
+    "march": "Mars",
+    "april": "Avril",
+    "may": "Mai",
+    "june": "Juin",
+    "july": "Juillet",
+    "august": "Août",
+    "september": "Septembre",
+    "october": "Octobre",
+    "november": "Novembre",
+    "december": "Décembre"
   }
 }

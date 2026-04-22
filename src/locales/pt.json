@@ -197,5 +197,23 @@
     "step14_content": "Use estes botões para bloquear o movimento, a edição ou a criação de tarefas. Útil em dispositivos sensíveis ao toque.",
     "step15_title": "Tudo pronto!",
     "step15_content": "Você está pronto para registrar seu dia de trabalho com eficiência."
+  },
+  "calendar": {
+    "today": "Hoje",
+    "select_date": "Selecionar data",
+    "prev_month": "Mês anterior",
+    "next_month": "Próximo mês",
+    "january": "Janeiro",
+    "february": "Fevereiro",
+    "march": "Março",
+    "april": "Abril",
+    "may": "Maio",
+    "june": "Junho",
+    "july": "Julho",
+    "august": "Agosto",
+    "september": "Setembro",
+    "october": "Outubro",
+    "november": "Novembro",
+    "december": "Dezember"
   }
 }

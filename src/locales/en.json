@@ -230,5 +230,23 @@
     "target_values": "New Values",
     "success": "Successfully updated {count} tasks",
     "no_changes": "No tasks matching the criteria were found"
+  },
+  "calendar": {
+    "today": "Today",
+    "select_date": "Select date",
+    "prev_month": "Previous month",
+    "next_month": "Next month",
+    "january": "January",
+    "february": "February",
+    "march": "March",
+    "april": "April",
+    "may": "May",
+    "june": "June",
+    "july": "July",
+    "august": "August",
+    "september": "September",
+    "october": "October",
+    "november": "November",
+    "december": "December"
   }
 }

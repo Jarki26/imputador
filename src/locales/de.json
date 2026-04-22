@@ -198,5 +198,23 @@
     "step14_content": "Verwenden Sie diese Schaltflächen, um das Verschieben, Bearbeiten oder Erstellen von Aufgaben zu sperren. Nützlich auf Touch-Geräten.",
     "step15_title": "Alles bereit!",
     "step15_content": "Sie sind bereit, Ihren Arbeitstag effizient zu erfassen."
+  },
+  "calendar": {
+    "today": "Heute",
+    "select_date": "Datum auswählen",
+    "prev_month": "Vorheriger Monat",
+    "next_month": "Nächster Monat",
+    "january": "Januar",
+    "february": "Februar",
+    "march": "März",
+    "april": "April",
+    "may": "Mai",
+    "june": "Juni",
+    "july": "Juli",
+    "august": "August",
+    "september": "September",
+    "october": "Oktober",
+    "november": "November",
+    "december": "Dezember"
   }
 }

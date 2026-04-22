@@ -245,5 +245,23 @@
     "target_values": "Nuevos Valores",
     "success": "Se han actualizado {count} tareas con éxito",
     "no_changes": "No se han encontrado tareas que coincidan con los criterios"
+  },
+  "calendar": {
+    "today": "Hoy",
+    "select_date": "Seleccionar fecha",
+    "prev_month": "Mes anterior",
+    "next_month": "Mes siguiente",
+    "january": "Enero",
+    "february": "Febrero",
+    "march": "Marzo",
+    "april": "Abril",
+    "may": "Mayo",
+    "june": "Junio",
+    "july": "Julio",
+    "august": "Agosto",
+    "september": "Septiembre",
+    "october": "Octubre",
+    "november": "Noviembre",
+    "december": "Diciembre"
   }
 }
