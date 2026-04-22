@@ -1,10 +1,10 @@
-# Implementation Plan: Configurable Excel Export Filename Format
+# Implementation Plan: Configurable Excel Export Filename Format [checkpoint: d910ad3]
 
 ## Phase 1: Data Layer & Formatting Logic
 - [x] Task: Write tests for saving/loading the export filename format in `configStore` and formatting logic in `exportService` (Red Phase). (5e68938)
 - [x] Task: Implement `getExcelFilenameFormat` and `setExcelFilenameFormat` in `configStore` with the default value fallback (Green Phase). (5e68938)
 - [x] Task: Implement token replacement logic (`{START_YYYY}`, `{END_MM}`, etc.) in `exportService` to generate the correct filename based on the date range (Green Phase). (5e68938)
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Data Layer & Formatting Logic' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Data Layer & Formatting Logic' (Protocol in workflow.md) (d910ad3)
 
 ## Phase 2: Settings UI Integration
 - [ ] Task: Write tests for the new filename format input field and real-time validation in `ExportSettings` (Red Phase).
