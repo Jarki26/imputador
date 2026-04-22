@@ -2,9 +2,9 @@
 
 ## Phase 1: Custom Calendar UI Component (DatePicker)
 - [x] Task: Write tests for a new `DatePicker.svelte` component ensuring it renders the grid, navigation, and 'Today' shortcut (Red Phase). eadd716
-- [~] Task: Implement `DatePicker.svelte` with Material Design 3 styling and localized date formatting (Green Phase).
-- [ ] Task: Implement the "Today" shortcut logic within `DatePicker.svelte` (Green Phase).
-- [ ] Task: Add i18n translation keys for the calendar UI (e.g., month names, "Today" button, aria-labels) across supported languages (Green Phase).
+- [x] Task: Implement `DatePicker.svelte` with Material Design 3 styling and localized date formatting (Green Phase). a5ec9b3
+- [x] Task: Implement the "Today" shortcut logic within `DatePicker.svelte` (Green Phase). a5ec9b3
+- [~] Task: Add i18n translation keys for the calendar UI (e.g., month names, "Today" button, aria-labels) across supported languages (Green Phase).
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Custom Calendar UI Component' (Protocol in workflow.md)
 
 ## Phase 2: Integration with Weekly View
