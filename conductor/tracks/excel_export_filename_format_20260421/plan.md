@@ -11,4 +11,4 @@
 - [x] Task: Add the text input to `ExportSettings.svelte`, including validation for invalid OS characters (`/ \ : * ? " < > |`) that shows an error message and disables saving (Green Phase). (cb5be78)
 - [x] Task: Integrate the new setting into the `save` workflow and ensure it's passed down from `+page.svelte` (Green Phase). (cb5be78)
 - [x] Task: Add i18n translation keys for the new label, help text, and validation error message (Green Phase). (cb5be78)
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Settings UI Integration' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Settings UI Integration' (Protocol in workflow.md) (0071882)
