@@ -1,5 +1,0 @@
-# Track excel_export_filename_format_20260421 Context
-
-- [Specification](./spec.md)
-- [Implementation Plan](./plan.md)
-- [Metadata](./metadata.json)

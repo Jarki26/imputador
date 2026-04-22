@@ -1,8 +1,0 @@
-{
-  "track_id": "excel_export_filename_format_20260421",
-  "type": "feature",
-  "status": "new",
-  "created_at": "2026-04-21T22:57:00Z",
-  "updated_at": "2026-04-21T22:57:00Z",
-  "description": "agregar un ajuste en la pestaña de gestión de datos para establecer el formato del fichero excel que se exporta. Se debe incorporar el soporte para usar patrones de tiempo y fecha para usar en el nombre."
-}
