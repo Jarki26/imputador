@@ -80,6 +80,7 @@ Imputador is a specialized task registration and time-tracking application desig
   - **Flexible Export:** Generate `.xlsx` files based on a selected date range and parameterized task type exclusion filters.
   - **Wipe & Import:** Ability to replace the entire local dataset with data from an Excel/CSV file, featuring a strict confirmation process and a summary of import results.
   - **Custom Date Formatting:** Users can define a custom date format (e.g., `DD/MM/YYYY`, `YYYY-MM-DD`) for bidirectional Excel operations. Includes strict parsing and proactive format warnings during import.
+  - **Custom Filename Patterns:** Ability to define a personalized filename format for exported files using dynamic tokens (e.g., `{START_YYYY}`, `{END_MM}`) and static text.
   - **Automatic Refresh:** The application automatically reloads all views after a successful import to reflect the new data immediately.
   - **Data Persistence:** Custom templates and exclusion settings are saved locally for consistency across sessions.
 
