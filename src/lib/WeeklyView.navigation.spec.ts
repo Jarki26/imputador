@@ -57,4 +57,36 @@ describe('WeeklyView.svelte - Navigation', () => {
     expect(clickedDate.getDate()).toBe(6);
     expect(clickedDate.getMonth()).toBe(3); // April
   });
+
+  it('should open the calendar modal and navigate to the selected date', async () => {
+    cleanup();
+    const onNavigate = vi.fn();
+    const startDate = new Date('2026-04-06'); // Monday
+    render(WeeklyView, { props: { startDate, onNavigate } });
+
+    // 1. Find the calendar icon button (by title/aria-label)
+    const calendarBtn = screen.getByTitle('Seleccionar fecha');
+    expect(calendarBtn).toBeDefined();
+
+    // 2. Click the calendar icon
+    await fireEvent.click(calendarBtn);
+
+    // 3. Confirm modal is open (contains DatePicker elements)
+    // We can look for the "Hoy" button from DatePicker
+    expect(screen.getByText('Hoy')).toBeDefined();
+
+    // 4. Click a different date in the calendar (e.g., April 15)
+    const day15 = screen.getByText('15');
+    await fireEvent.click(day15);
+
+    // 5. Confirm onNavigate was called with the correct date
+    expect(onNavigate).toHaveBeenCalled();
+    const navigatedDate = onNavigate.mock.calls[0][0];
+    expect(navigatedDate.getFullYear()).toBe(2026);
+    expect(navigatedDate.getMonth()).toBe(3); // April
+    expect(navigatedDate.getDate()).toBe(15);
+
+    // 6. Confirm modal is closed (Hoy button should be gone)
+    expect(screen.queryByText('Hoy')).toBeNull();
+  });
 });
