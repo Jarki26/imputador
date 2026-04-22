@@ -28,7 +28,7 @@ Imputador is a specialized task registration and time-tracking application desig
 - Completed tasks are color-coded using user-defined custom colors (with muted styling for non-billable tasks), supports robust interactive manipulation via drag-and-drop (with non-selectable task content to avoid visual conflicts), and empty time slots are clearly highlighted as gaps.
 - Daily totals (billable and non-billable) are displayed at the top of each column.
 - Interactive controls for direct management:
-  - **Week Navigation:** Quick arrows to switch between weeks.
+  - **Week Navigation:** Quick arrows to switch between weeks and a **Visual Calendar Selector** icon to jump to any specific date instantly via a modal.
   - **Daily Drill-down:** Clickable day headers to jump to the detailed Daily View.
   - **Direct Management:** Delete buttons on task blocks and long-press to copy existing tasks to favorites/recents while triggering merge/snap evaluations.
   - **Smart Interaction:** Magnetic snapping to close small gaps and automatic merging of identical consecutive tasks.
