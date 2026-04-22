@@ -1,0 +1,8 @@
+{
+  "track_id": "calendar_navigation_weekly_view_20260421",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-04-21T00:00:00Z",
+  "updated_at": "2026-04-21T00:00:00Z",
+  "description": "Añadir un icono de calendario entre los botones del modo semanal de cambio entre semanas para que se abra un modal de calendario que permita seleccionar un día y que se cargue en la vista de calendario la semana del día seleccionado."
+}
