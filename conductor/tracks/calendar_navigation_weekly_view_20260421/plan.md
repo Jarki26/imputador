@@ -10,6 +10,6 @@
 ## Phase 2: Integration with Weekly View
 - [x] Task: Write tests in `WeeklyView.spec.ts` for the new calendar icon button and modal interaction (Red Phase). 2031375 (Update: in WeeklyView.navigation.spec.ts)
 - [x] Task: Add the calendar icon button to the `WeeklyView` header, horizontally positioned between the prev/next arrows (Green Phase). bf0dd28
-- [~] Task: Integrate the `DatePicker` component inside a `Modal` overlay in `WeeklyView`, triggered by the new icon button (Green Phase).
-- [ ] Task: Connect the `DatePicker` selection events (including "Today") to instantly update the central `selectedDate` state and close the modal (Green Phase).
+- [x] Task: Integrate the `DatePicker` component inside a `Modal` overlay in `WeeklyView`, triggered by the new icon button (Green Phase). ed9a080
+- [x] Task: Connect the `DatePicker` selection events (including "Today") to instantly update the central `selectedDate` state and close the modal (Green Phase). ed9a080
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Integration with Weekly View' (Protocol in workflow.md)
