@@ -8,8 +8,8 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Custom Calendar UI Component' (Protocol in workflow.md) abe375a
 
 ## Phase 2: Integration with Weekly View
-- [ ] Task: Write tests in `WeeklyView.spec.ts` for the new calendar icon button and modal interaction (Red Phase).
-- [ ] Task: Add the calendar icon button to the `WeeklyView` header, horizontally positioned between the prev/next arrows (Green Phase).
-- [ ] Task: Integrate the `DatePicker` component inside a `Modal` overlay in `WeeklyView`, triggered by the new icon button (Green Phase).
+- [x] Task: Write tests in `WeeklyView.spec.ts` for the new calendar icon button and modal interaction (Red Phase). 2031375 (Update: in WeeklyView.navigation.spec.ts)
+- [x] Task: Add the calendar icon button to the `WeeklyView` header, horizontally positioned between the prev/next arrows (Green Phase). bf0dd28
+- [~] Task: Integrate the `DatePicker` component inside a `Modal` overlay in `WeeklyView`, triggered by the new icon button (Green Phase).
 - [ ] Task: Connect the `DatePicker` selection events (including "Today") to instantly update the central `selectedDate` state and close the modal (Green Phase).
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Integration with Weekly View' (Protocol in workflow.md)
