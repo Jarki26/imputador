@@ -44,6 +44,26 @@ export class ConfigStore {
   }
 
   /**
+   * Retrieves the Excel export filename format from the config store.
+   * Defaults to 'imputador_{START_YYYY}{START_MM}{START_DD}_{END_YYYY}{END_MM}{END_DD}' if not found.
+   */
+  async getExcelFilenameFormat(): Promise<string> {
+    const db = await initDB(this.dbName);
+    const config = await db.get('config', 'excelFilenameFormat');
+    return config
+      ? config.value
+      : 'imputador_{START_YYYY}{START_MM}{START_DD}_{END_YYYY}{END_MM}{END_DD}';
+  }
+
+  /**
+   * Saves the Excel export filename format to the config store.
+   */
+  async setExcelFilenameFormat(format: string): Promise<void> {
+    const db = await initDB(this.dbName);
+    await db.put('config', { key: 'excelFilenameFormat', value: format });
+  }
+
+  /**
    * Retrieves the color for a specific task type.
    * Defaults to '#e5e7eb' or task type defaultColor if not found.
    */

@@ -32,6 +32,27 @@ export class ExportService {
   }
 
   /**
+   * Formats a filename based on a pattern and a date range.
+   */
+  formatFilename(pattern: string, startDate: Date, endDate: Date): string {
+    let result = pattern;
+    const tokens = {
+      '{START_YYYY}': startDate.getFullYear().toString(),
+      '{START_MM}': (startDate.getMonth() + 1).toString().padStart(2, '0'),
+      '{START_DD}': startDate.getDate().toString().padStart(2, '0'),
+      '{END_YYYY}': endDate.getFullYear().toString(),
+      '{END_MM}': (endDate.getMonth() + 1).toString().padStart(2, '0'),
+      '{END_DD}': endDate.getDate().toString().padStart(2, '0'),
+    };
+
+    Object.entries(tokens).forEach(([token, value]) => {
+      result = result.split(token).join(value);
+    });
+
+    return result + '.xlsx';
+  }
+
+  /**
    * Maps a list of tasks to a list of row objects based on the template.
    */
   private mapTasksToRows(
