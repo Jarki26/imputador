@@ -36,6 +36,9 @@
   let exportTemplate = $state<ColumnMapping[]>([]);
   let exportExclusions = $state<string[]>([]);
   let excelDateFormat = $state('DD/MM/YYYY');
+  let excelFilenameFormat = $state(
+    'imputador_{START_YYYY}{START_MM}{START_DD}_{END_YYYY}{END_MM}{END_DD}',
+  );
   let taskTypeColors = $state<Record<string, string>>({});
   let view = $state<'weekly' | 'daily'>('weekly');
   let selectedDate = $state(new Date());
@@ -57,6 +60,7 @@
   async function loadConfig() {
     weeklyTarget = await configStore.getWeeklyHoursTarget();
     excelDateFormat = await configStore.getExcelDateFormat();
+    excelFilenameFormat = await configStore.getExcelFilenameFormat();
     taskTypeColors = await configStore.getAllTaskTypeColors();
     exportTemplate = await exportConfigStore.getTemplate();
     exportExclusions = await exportConfigStore.getExclusions();
@@ -131,13 +135,16 @@
     template: ColumnMapping[];
     exclusions: string[];
     excelDateFormat: string;
+    excelFilenameFormat: string;
   }) {
     await exportConfigStore.setTemplate(data.template);
     await exportConfigStore.setExclusions(data.exclusions);
     await configStore.setExcelDateFormat(data.excelDateFormat);
+    await configStore.setExcelFilenameFormat(data.excelFilenameFormat);
     exportTemplate = data.template;
     exportExclusions = data.exclusions;
     excelDateFormat = data.excelDateFormat;
+    excelFilenameFormat = data.excelFilenameFormat;
   }
 
   async function handleExport(range: { startDate: string; endDate: string }) {
@@ -156,10 +163,12 @@
       excelDateFormat,
     );
 
+    const filename = exportService.formatFilename(excelFilenameFormat, start, end);
+
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `imputador_export_${range.startDate}_${range.endDate}.xlsx`;
+    a.download = filename;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -419,6 +428,7 @@
     {exportTemplate}
     {exportExclusions}
     {excelDateFormat}
+    {excelFilenameFormat}
     {taskTypeColors}
     {companyStore}
     {taskStore}
@@ -427,12 +437,8 @@
     onSave={handleSaveSettings}
     onSaveExportConfig={handleSaveExportConfig}
     onSaveTaskTypeColor={handleSaveTaskTypeColor}
-    onImportComplete={async () => {
-      await loadTasks(true);
-    }}
-    onBulkUpdate={async () => {
-      await loadTasks(true);
-    }}
+    onImportComplete={() => loadTasks(true)}
+    onBulkUpdate={() => loadTasks(true)}
   />
 </Modal>
 

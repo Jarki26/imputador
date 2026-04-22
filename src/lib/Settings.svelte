@@ -17,6 +17,7 @@
     exportTemplate: ColumnMapping[];
     exportExclusions: string[];
     excelDateFormat: string;
+    excelFilenameFormat: string;
     taskTypeColors: Record<string, string>;
     companyStore?: CompanyStore;
     taskStore?: TaskStore;
@@ -27,6 +28,7 @@
       template: ColumnMapping[];
       exclusions: string[];
       excelDateFormat: string;
+      excelFilenameFormat: string;
     }) => void;
     onSaveTaskTypeColor: (taskType: string, color: string) => void;
     onImportComplete?: () => void;
@@ -38,6 +40,7 @@
     exportTemplate,
     exportExclusions,
     excelDateFormat,
+    excelFilenameFormat,
     taskTypeColors,
     companyStore,
     taskStore,
@@ -176,6 +179,7 @@
           template={exportTemplate}
           exclusions={exportExclusions}
           {excelDateFormat}
+          {excelFilenameFormat}
           onSave={onSaveExportConfig}
           {onImportComplete}
         />
