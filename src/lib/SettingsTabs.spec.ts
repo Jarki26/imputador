@@ -39,9 +39,8 @@ describe('Settings Tabs', () => {
 
   it('should render Integrations tab when configStore is provided', () => {
     const configStore = {
-      getSesameConfig: vi.fn().mockReturnValue({}),
-      setSesameConfig: vi.fn(),
       getSesameEmail: vi.fn().mockResolvedValue(''),
+      getSesameProxyUrl: vi.fn().mockResolvedValue(''),
     } as any;
 
     render(Settings, { props: { ...defaultProps, configStore } });
@@ -95,9 +94,8 @@ describe('Settings Tabs', () => {
   it('should switch content when clicking "Integrations" tab', async () => {
     // We need to pass configStore for SesameSettings to be visible
     const configStore = {
-      getSesameConfig: vi.fn().mockReturnValue({}),
-      setSesameConfig: vi.fn(),
       getSesameEmail: vi.fn().mockResolvedValue('test@example.com'),
+      getSesameProxyUrl: vi.fn().mockResolvedValue(''),
     } as any;
 
     render(Settings, { props: { ...defaultProps, configStore } });

@@ -24,6 +24,8 @@ describe('SesameSettings.svelte', () => {
     setSesameToken: vi.fn(),
     setSesameUserId: vi.fn(),
     setSesameEmail: vi.fn(),
+    getSesameProxyUrl: vi.fn(),
+    setSesameProxyUrl: vi.fn(),
   };
 
   beforeEach(async () => {
@@ -74,6 +76,7 @@ describe('SesameSettings.svelte', () => {
         expect(sesameService.login).toHaveBeenCalledWith(
           'test@example.com',
           'password123',
+          '',
         );
         expect(mockConfigStore.setSesameToken).toHaveBeenCalledWith(
           'token-123',
