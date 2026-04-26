@@ -18,9 +18,9 @@
 - [x] Task: Conflict Resolution Logic (Last Write Wins) (b3920c7)
   - [ ] Sub-task: Write tests for conflict resolution (newer timestamps override older ones).
   - [ ] Sub-task: Implement `syncEngine.ts` to merge incoming data with local IndexedDB data.
-- [~] Task: Background Syncing
-  - [ ] Sub-task: Write tests for queuing offline changes and syncing upon reconnection.
-  - [ ] Sub-task: Implement offline queue and automatic retry mechanism.
+- [x] Task: Background Syncing (eb7e0e5)
+  - [x] Sub-task: Write tests for queuing offline changes and syncing upon reconnection.
+  - [x] Sub-task: Implement offline queue and automatic retry mechanism.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Sync Engine and Conflict Resolution' (Protocol in workflow.md)
 
 ## Phase 3: User Interface
