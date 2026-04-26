@@ -6,6 +6,8 @@ type DataHandler = (data: any) => void;
 class P2PConnection {
   connection = $state<DataConnection | null>(null);
   handlers: DataHandler[] = [];
+  openHandlers: (() => void)[] = [];
+  listening = false;
 
   constructor() {}
 
@@ -28,6 +30,7 @@ class P2PConnection {
     this.connection = conn;
 
     conn.on('open', () => {
+      this.openHandlers.forEach((handler) => handler());
       if (resolve) resolve();
     });
 
@@ -48,6 +51,10 @@ class P2PConnection {
     this.handlers.push(handler);
   }
 
+  onOpen(handler: () => void) {
+    this.openHandlers.push(handler);
+  }
+
   send(data: any) {
     if (this.connection) {
       this.connection.send(data);
@@ -66,10 +73,12 @@ class P2PConnection {
   }
 
   listen() {
+    if (this.listening) return;
     if (signalingService.peer) {
       signalingService.peer.on('connection', (conn) => {
         this.setupConnection(conn);
       });
+      this.listening = true;
     }
   }
 }

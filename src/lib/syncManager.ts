@@ -4,6 +4,12 @@ import { syncEngine } from './syncEngine';
 
 export const syncManager = {
   pendingSync: false,
+  listenersSetup: false,
+  mergeHandlers: [] as (() => void)[],
+
+  onDataMerged(handler: () => void) {
+    this.mergeHandlers.push(handler);
+  },
 
   async sync() {
     if (p2pConnection.isConnected()) {
@@ -29,10 +35,18 @@ export const syncManager = {
   },
 
   setupListeners() {
+    if (this.listenersSetup) return;
+
+    p2pConnection.onOpen(() => {
+      this.sync();
+    });
+
     p2pConnection.onData(async (data) => {
       if (data.type === 'SYNC_PAYLOAD') {
         await syncEngine.mergePayload(data.payload);
+        this.mergeHandlers.forEach((handler) => handler());
       }
     });
+    this.listenersSetup = true;
   },
 };

@@ -68,6 +68,10 @@
   }
 
   onMount(async () => {
+    syncManager.onDataMerged(() => {
+      loadTasks(false);
+      loadConfig();
+    });
     await loadTasks(true); // Initial state for history
     await loadConfig();
   });

@@ -7,16 +7,14 @@
 
   let localId = $state('');
   let remoteId = $state('');
-  let isConnected = $state(p2pConnection.isConnected());
-  let status = $state(isConnected ? 'connected' : 'disconnected');
+  const isConnected = $derived(p2pConnection.isConnected());
+  let status = $state('disconnected');
   let copySuccess = $state(false);
 
   onMount(async () => {
     if (!signalingService.peer) {
       try {
         localId = await signalingService.initialize();
-        p2pConnection.listen();
-        syncManager.setupListeners();
       } catch (err) {
         console.error('Failed to initialize signaling:', err);
         status = 'error';
@@ -24,6 +22,10 @@
     } else {
       localId = signalingService.peer.id;
     }
+
+    // These methods have internal guards to run only once
+    p2pConnection.listen();
+    syncManager.setupListeners();
   });
 
   async function handleConnect() {
@@ -31,7 +33,6 @@
     try {
       status = 'syncing';
       await p2pConnection.connect(remoteId);
-      isConnected = true;
       status = 'connected';
       await syncManager.sync();
     } catch (err) {
@@ -42,7 +43,6 @@
 
   function handleDisconnect() {
     p2pConnection.disconnect();
-    isConnected = false;
     status = 'disconnected';
   }
 
