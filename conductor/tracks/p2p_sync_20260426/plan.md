@@ -24,12 +24,12 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Sync Engine and Conflict Resolution' (Protocol in workflow.md) (b43a0f5)
 
 
-## Phase 3: User Interface
+## Phase 3: User Interface [x] (Checkpoint: d99c93f)
 
 - [x] Task: Connection Management UI (66129c7)
   - [x] Sub-task: Write tests for pairing UI components (generating ID, inputting ID).
   - [x] Sub-task: Implement `SyncSettings.svelte` or add to existing settings to manage pairing.
-- [~] Task: Sync Status Indicators
-  - [ ] Sub-task: Write tests for status indicator component (connected, syncing, error).
-  - [ ] Sub-task: Implement `SyncStatus.svelte` and integrate it into the global header/layout.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: User Interface' (Protocol in workflow.md)
+- [x] Task: Sync Status Indicators (d99c93f)
+  - [x] Sub-task: Write tests for status indicator component (connected, syncing, error).
+  - [x] Sub-task: Implement `SyncStatus.svelte` and integrate it into the global header/layout.
+- [x] Task: Conductor - User Manual Verification 'Phase 3: User Interface' (Protocol in workflow.md) (d99c93f)
