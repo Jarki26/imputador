@@ -15,7 +15,7 @@
 - [x] Task: Data Serialization and Deserialization (fbb14fd)
   - [ ] Sub-task: Write tests for exporting/importing tasks, settings, and projects to/from sync payloads.
   - [ ] Sub-task: Implement payload generation and parsing logic.
-- [~] Task: Conflict Resolution Logic (Last Write Wins)
+- [x] Task: Conflict Resolution Logic (Last Write Wins) (b3920c7)
   - [ ] Sub-task: Write tests for conflict resolution (newer timestamps override older ones).
   - [ ] Sub-task: Implement `syncEngine.ts` to merge incoming data with local IndexedDB data.
 - [ ] Task: Background Syncing
