@@ -1,0 +1,8 @@
+{
+  "track_id": "p2p_sync_20260426",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-04-26T12:00:00Z",
+  "updated_at": "2026-04-26T12:00:00Z",
+  "description": "Investigación e implementación de la Sincronización P2P: Investigación e implementación de sincronización entre navegador móvil y escritorio sin servidor intermedio."
+}
