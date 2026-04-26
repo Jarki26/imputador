@@ -22,7 +22,7 @@ export class ConfigStore {
    */
   async setWeeklyHoursTarget(target: number): Promise<void> {
     const db = await initDB(this.dbName);
-    await db.put('config', { key: 'weeklyHoursTarget', value: target });
+    await putItem(db, 'config', { key: 'weeklyHoursTarget', value: target });
   }
 
   /**
@@ -40,7 +40,10 @@ export class ConfigStore {
    */
   async setExcelDateFormat(format: string): Promise<void> {
     const db = await initDB(this.dbName);
-    await db.put('config', { key: 'excelDateFormat', value: format });
+    await putItem(db, 'config', {
+      key: 'excelDateFormat',
+      value: format,
+    });
   }
 
   /**
@@ -60,7 +63,10 @@ export class ConfigStore {
    */
   async setExcelFilenameFormat(format: string): Promise<void> {
     const db = await initDB(this.dbName);
-    await db.put('config', { key: 'excelFilenameFormat', value: format });
+    await putItem(db, 'config', {
+      key: 'excelFilenameFormat',
+      value: format,
+    });
   }
 
   /**
@@ -81,7 +87,10 @@ export class ConfigStore {
    */
   async setTaskTypeColor(taskType: string, color: string): Promise<void> {
     const db = await initDB(this.dbName);
-    await db.put('config', { key: `taskTypeColor:${taskType}`, value: color });
+    await putItem(db, 'config', {
+      key: `taskTypeColor:${taskType}`,
+      value: color,
+    });
   }
 
   /**
@@ -123,7 +132,10 @@ export class ConfigStore {
     if (token === null) {
       await db.delete('config', 'sesameToken');
     } else {
-      await db.put('config', { key: 'sesameToken', value: token });
+      await putItem(db, 'config', {
+        key: 'sesameToken',
+        value: token,
+      });
     }
   }
 
@@ -138,7 +150,10 @@ export class ConfigStore {
     if (id === null) {
       await db.delete('config', 'sesameUserId');
     } else {
-      await db.put('config', { key: 'sesameUserId', value: id });
+      await putItem(db, 'config', {
+        key: 'sesameUserId',
+        value: id,
+      });
     }
   }
 
@@ -153,7 +168,10 @@ export class ConfigStore {
     if (email === null) {
       await db.delete('config', 'sesameEmail');
     } else {
-      await db.put('config', { key: 'sesameEmail', value: email });
+      await putItem(db, 'config', {
+        key: 'sesameEmail',
+        value: email,
+      });
     }
   }
 
@@ -168,7 +186,10 @@ export class ConfigStore {
     if (url === null) {
       await db.delete('config', 'sesameProxyUrl');
     } else {
-      await db.put('config', { key: 'sesameProxyUrl', value: url });
+      await putItem(db, 'config', {
+        key: 'sesameProxyUrl',
+        value: url,
+      });
     }
   }
 }

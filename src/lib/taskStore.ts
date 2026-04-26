@@ -1,4 +1,4 @@
-import { initDB, type Task, type RecentTask } from './db';
+import { initDB, type Task, type RecentTask, addItem, putItem } from './db';
 import { CompanyStore } from './companyStore';
 import { applyOverwriteLogic, pushConflict } from './taskStore.collision';
 import { addWithSmartFill } from './taskStore.smartFill';
@@ -40,7 +40,7 @@ export class TaskStore {
    */
   async addTask(task: Task): Promise<number | undefined> {
     const db = await this.getDB();
-    const id = await db.add('tasks', task);
+    const id = await addItem(db, 'tasks', task);
     await this.upsertRecentTask(task);
     await this.purgeHistory();
     return id as number;
@@ -242,7 +242,7 @@ export class TaskStore {
     }
 
     const updatedTask = { ...task, ...updates };
-    await store.put(updatedTask);
+    await putItem(db, 'tasks', updatedTask);
     await tx.done;
 
     // Also update recents if title or project changed
@@ -271,7 +271,7 @@ export class TaskStore {
 
     await applyOverwriteLogic(newTask, store);
 
-    const id = await store.add(newTask);
+    const id = await addItem(db, 'tasks', newTask);
     await tx.done;
 
     await this.upsertRecentTask(newTask);
@@ -293,7 +293,7 @@ export class TaskStore {
     const updatedTask = { ...existing, ...updates };
     await applyOverwriteLogic(updatedTask, store, id);
 
-    await store.put(updatedTask);
+    await putItem(db, 'tasks', updatedTask);
     await tx.done;
 
     if (updates.title || updates.project || updates.company) {
@@ -316,7 +316,7 @@ export class TaskStore {
       store,
     );
 
-    const id = await store.add(newTask);
+    const id = await addItem(db, 'tasks', newTask);
     await tx.done;
 
     await this.upsertRecentTask(newTask);
@@ -347,7 +347,7 @@ export class TaskStore {
       [id], // Exclude the task being updated
     );
 
-    await store.put(updatedTask);
+    await putItem(db, 'tasks', updatedTask);
     await tx.done;
 
     if (updates.title || updates.project || updates.company) {

@@ -10,6 +10,7 @@ import {
  */
 export interface Task {
   id?: number;
+  uuid: string;
   title: string;
   description: string;
   project: string;
@@ -17,6 +18,7 @@ export interface Task {
   type: string;
   startTime: Date;
   endTime: Date;
+  updatedAt?: number;
 }
 
 /**
@@ -27,6 +29,7 @@ export interface Company {
   name: string;
   lastUsedAt: Date;
   useCount: number;
+  updatedAt?: number;
 }
 
 /**
@@ -36,6 +39,7 @@ export interface Project {
   id?: number;
   name: string;
   lastUsedAt: Date;
+  updatedAt?: number;
 }
 
 /**
@@ -49,6 +53,7 @@ export interface RecentTask {
   type: string;
   lastUsedAt: Date;
   isBillable: boolean;
+  updatedAt?: number;
 }
 
 /**
@@ -66,6 +71,7 @@ export async function initDB(
           autoIncrement: true,
         });
         taskStore.createIndex('date', 'startTime');
+        taskStore.createIndex('uuid', 'uuid', { unique: true });
 
         // Create projects store
         const projectStore = db.createObjectStore('projects', {
@@ -136,8 +142,37 @@ export async function putItem<T>(
   db: IDBPDatabase,
   storeName: string,
   item: T,
+  preserveUpdatedAt: boolean = false,
 ): Promise<any> {
+  if (item && typeof item === 'object') {
+    if (!preserveUpdatedAt || !(item as any).updatedAt) {
+      (item as any).updatedAt = Date.now();
+    }
+    if (storeName === 'tasks' && !(item as any).uuid) {
+      (item as any).uuid = crypto.randomUUID();
+    }
+  }
   return db.put(storeName as any, item);
+}
+
+/**
+ * Helper to add a new item.
+ */
+export async function addItem<T>(
+  db: IDBPDatabase,
+  storeName: string,
+  item: T,
+  preserveUpdatedAt: boolean = false,
+): Promise<any> {
+  if (item && typeof item === 'object') {
+    if (!preserveUpdatedAt || !(item as any).updatedAt) {
+      (item as any).updatedAt = Date.now();
+    }
+    if (storeName === 'tasks' && !(item as any).uuid) {
+      (item as any).uuid = crypto.randomUUID();
+    }
+  }
+  return db.add(storeName as any, item);
 }
 
 /**
