@@ -2,7 +2,7 @@
 
 ## Phase 1: Setup and Infrastructure
 
-- [~] Task: Integrate Signaling Server
+- [x] Task: Integrate Signaling Server (15ce3b3)
   - [ ] Sub-task: Write tests for signaling service (PeerJS initialization, ID generation, connection handling).
   - [ ] Sub-task: Implement `signalingService.ts` wrapping PeerJS.
 - [ ] Task: Establish WebRTC Connection
