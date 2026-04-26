@@ -6,6 +6,7 @@
   import BulkEdit from './BulkEdit.svelte';
   import BackupSettings from './BackupSettings.svelte';
   import SesameSettings from './SesameSettings.svelte';
+  import SyncSettings from './SyncSettings.svelte';
   import type { ColumnMapping } from './exportConfigStore';
   import type { CompanyStore } from './companyStore';
   import type { TaskStore } from './taskStore';
@@ -104,6 +105,13 @@
     >
       {i18n.t('settings.tabs.data_management')}
     </button>
+    <button
+      class="tab-btn"
+      class:active={activeTab === 'synchronization'}
+      onclick={() => (activeTab = 'synchronization')}
+    >
+      {i18n.t('settings.tabs.synchronization')}
+    </button>
     {#if configStore}
       <button
         class="tab-btn"
@@ -189,6 +197,10 @@
     {:else if activeTab === 'integrations' && configStore}
       <div class="tab-pane">
         <SesameSettings {configStore} />
+      </div>
+    {:else if activeTab === 'synchronization'}
+      <div class="tab-pane">
+        <SyncSettings />
       </div>
     {/if}
   </div>

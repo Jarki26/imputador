@@ -26,7 +26,7 @@
 
 ## Phase 3: User Interface
 
-- [ ] Task: Connection Management UI
+- [~] Task: Connection Management UI
   - [ ] Sub-task: Write tests for pairing UI components (generating ID, inputting ID).
   - [ ] Sub-task: Implement `SyncSettings.svelte` or add to existing settings to manage pairing.
 - [ ] Task: Sync Status Indicators
