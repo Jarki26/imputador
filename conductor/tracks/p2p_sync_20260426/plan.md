@@ -12,7 +12,7 @@
 
 ## Phase 2: Sync Engine and Conflict Resolution
 
-- [ ] Task: Data Serialization and Deserialization
+- [~] Task: Data Serialization and Deserialization
   - [ ] Sub-task: Write tests for exporting/importing tasks, settings, and projects to/from sync payloads.
   - [ ] Sub-task: Implement payload generation and parsing logic.
 - [ ] Task: Conflict Resolution Logic (Last Write Wins)
