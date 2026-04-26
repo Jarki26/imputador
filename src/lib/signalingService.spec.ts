@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { signalingService } from './signalingService';
-import { Peer } from 'peerjs';
+import Peer from 'peerjs';
 
 vi.mock('peerjs', () => {
   const mockPeer = {
@@ -11,7 +11,7 @@ vi.mock('peerjs', () => {
     id: null,
   };
   return {
-    Peer: vi.fn().mockImplementation(function (this: any) {
+    default: vi.fn().mockImplementation(function (this: any) {
       return mockPeer;
     }),
   };
@@ -22,7 +22,6 @@ describe('signalingService', () => {
 
   beforeEach(async () => {
     vi.clearAllMocks();
-    const { Peer } = await import('peerjs');
     mockPeer = (Peer as any)();
     mockPeer.id = null;
     mockPeer.on.mockReset();

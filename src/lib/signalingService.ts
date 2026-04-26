@@ -1,4 +1,4 @@
-import { Peer } from 'peerjs';
+import Peer from 'peerjs';
 
 export const signalingService = {
   peer: null as Peer | null,
