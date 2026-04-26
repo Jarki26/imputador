@@ -1,4 +1,4 @@
-import { initDB } from './db';
+import { initDB, putItem } from './db';
 import { getTaskType, TASK_TYPES } from './config';
 
 /**

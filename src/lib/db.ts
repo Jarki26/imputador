@@ -144,15 +144,17 @@ export async function putItem<T>(
   item: T,
   preserveUpdatedAt: boolean = false,
 ): Promise<any> {
-  if (item && typeof item === 'object') {
-    if (!preserveUpdatedAt || !(item as any).updatedAt) {
-      (item as any).updatedAt = Date.now();
+  const itemToSave =
+    item && typeof item === 'object' ? { ...item } : item;
+  if (itemToSave && typeof itemToSave === 'object') {
+    if (!preserveUpdatedAt || !(itemToSave as any).updatedAt) {
+      (itemToSave as any).updatedAt = Date.now();
     }
-    if (storeName === 'tasks' && !(item as any).uuid) {
-      (item as any).uuid = crypto.randomUUID();
+    if (storeName === 'tasks' && !(itemToSave as any).uuid) {
+      (itemToSave as any).uuid = crypto.randomUUID();
     }
   }
-  return db.put(storeName as any, item);
+  return db.put(storeName as any, itemToSave);
 }
 
 /**
@@ -164,15 +166,17 @@ export async function addItem<T>(
   item: T,
   preserveUpdatedAt: boolean = false,
 ): Promise<any> {
-  if (item && typeof item === 'object') {
-    if (!preserveUpdatedAt || !(item as any).updatedAt) {
-      (item as any).updatedAt = Date.now();
+  const itemToSave =
+    item && typeof item === 'object' ? { ...item } : item;
+  if (itemToSave && typeof itemToSave === 'object') {
+    if (!preserveUpdatedAt || !(itemToSave as any).updatedAt) {
+      (itemToSave as any).updatedAt = Date.now();
     }
-    if (storeName === 'tasks' && !(item as any).uuid) {
-      (item as any).uuid = crypto.randomUUID();
+    if (storeName === 'tasks' && !(itemToSave as any).uuid) {
+      (itemToSave as any).uuid = crypto.randomUUID();
     }
   }
-  return db.add(storeName as any, item);
+  return db.add(storeName as any, itemToSave);
 }
 
 /**

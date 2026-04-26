@@ -41,6 +41,8 @@ export async function applyOverwriteLogic(
         const taskAfter = {
           ...taskAfterData,
           startTime: new Date(newEnd),
+          uuid: crypto.randomUUID(),
+          updatedAt: Date.now(),
         };
         await store.put({ ...taskBefore, updatedAt: Date.now() });
         await store.add({ ...taskAfter, updatedAt: Date.now() });
@@ -113,6 +115,7 @@ export async function pushConflict(
           ...taskAfterData,
           startTime: new Date(newStart),
           endTime: new Date(newEnd),
+          uuid: crypto.randomUUID(),
           updatedAt: Date.now(),
         };
 
