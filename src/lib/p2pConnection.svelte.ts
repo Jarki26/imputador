@@ -3,9 +3,11 @@ import type { DataConnection } from 'peerjs';
 
 type DataHandler = (data: any) => void;
 
-export const p2pConnection = {
-  connection: null as DataConnection | null,
-  handlers: [] as DataHandler[],
+class P2PConnection {
+  connection = $state<DataConnection | null>(null);
+  handlers: DataHandler[] = [];
+
+  constructor() {}
 
   async connect(peerId: string): Promise<void> {
     if (!signalingService.peer) {
@@ -16,7 +18,7 @@ export const p2pConnection = {
       const conn = signalingService.peer!.connect(peerId);
       this.setupConnection(conn, resolve, reject);
     });
-  },
+  }
 
   setupConnection(
     conn: DataConnection,
@@ -40,28 +42,28 @@ export const p2pConnection = {
     conn.on('close', () => {
       this.connection = null;
     });
-  },
+  }
 
   onData(handler: DataHandler) {
     this.handlers.push(handler);
-  },
+  }
 
   send(data: any) {
     if (this.connection) {
       this.connection.send(data);
     }
-  },
+  }
 
   disconnect() {
     if (this.connection) {
       this.connection.close();
       this.connection = null;
     }
-  },
+  }
 
   isConnected(): boolean {
     return this.connection !== null;
-  },
+  }
 
   listen() {
     if (signalingService.peer) {
@@ -69,5 +71,7 @@ export const p2pConnection = {
         this.setupConnection(conn);
       });
     }
-  },
-};
+  }
+}
+
+export const p2pConnection = new P2PConnection();

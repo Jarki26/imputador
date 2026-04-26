@@ -11,6 +11,7 @@
   import Settings from '$lib/Settings.svelte';
   import Modal from '$lib/Modal.svelte';
   import Tutorial from '$lib/Tutorial.svelte';
+  import SyncStatus from '$lib/SyncStatus.svelte';
   import type { Task } from '$lib/db';
   import { i18n } from '$lib/i18n.svelte';
   import {
@@ -292,6 +293,7 @@
         </button>
       </div>
       <div class="header-btns">
+        <SyncStatus />
         <ExportTrigger onExport={handleExport} />
         <button
           class="icon-btn"

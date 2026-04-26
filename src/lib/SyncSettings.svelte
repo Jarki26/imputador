@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
   import { i18n } from './i18n.svelte';
   import { signalingService } from './signalingService';
-  import { p2pConnection } from './p2pConnection';
+  import { p2pConnection } from './p2pConnection.svelte';
   import { syncManager } from './syncManager';
 
   let localId = $state('');

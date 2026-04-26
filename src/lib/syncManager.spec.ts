@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { syncManager } from './syncManager';
-import { p2pConnection } from './p2pConnection';
+import { p2pConnection } from './p2pConnection.svelte';
 import { syncService } from './syncService';
 
-vi.mock('./p2pConnection', () => ({
+vi.mock('./p2pConnection.svelte', () => ({
   p2pConnection: {
     isConnected: vi.fn(),
     send: vi.fn(),

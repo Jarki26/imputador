@@ -29,7 +29,7 @@
 - [x] Task: Connection Management UI (66129c7)
   - [x] Sub-task: Write tests for pairing UI components (generating ID, inputting ID).
   - [x] Sub-task: Implement `SyncSettings.svelte` or add to existing settings to manage pairing.
-- [ ] Task: Sync Status Indicators
+- [~] Task: Sync Status Indicators
   - [ ] Sub-task: Write tests for status indicator component (connected, syncing, error).
   - [ ] Sub-task: Implement `SyncStatus.svelte` and integrate it into the global header/layout.
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: User Interface' (Protocol in workflow.md)

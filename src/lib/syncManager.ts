@@ -1,4 +1,4 @@
-import { p2pConnection } from './p2pConnection';
+import { p2pConnection } from './p2pConnection.svelte';
 import { syncService } from './syncService';
 import { syncEngine } from './syncEngine';
 

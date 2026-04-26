@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { p2pConnection } from './p2pConnection';
+import { p2pConnection } from './p2pConnection.svelte';
 import { signalingService } from './signalingService';
 
 vi.mock('./signalingService', () => ({

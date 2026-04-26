@@ -1,4 +1,5 @@
 import { initDB, putItem } from './db';
+import { syncManager } from './syncManager';
 import { getTaskType, TASK_TYPES } from './config';
 
 /**
@@ -23,6 +24,7 @@ export class ConfigStore {
   async setWeeklyHoursTarget(target: number): Promise<void> {
     const db = await initDB(this.dbName);
     await putItem(db, 'config', { key: 'weeklyHoursTarget', value: target });
+    syncManager.sync();
   }
 
   /**
@@ -44,6 +46,7 @@ export class ConfigStore {
       key: 'excelDateFormat',
       value: format,
     });
+    syncManager.sync();
   }
 
   /**
@@ -67,6 +70,7 @@ export class ConfigStore {
       key: 'excelFilenameFormat',
       value: format,
     });
+    syncManager.sync();
   }
 
   /**
@@ -91,6 +95,7 @@ export class ConfigStore {
       key: `taskTypeColor:${taskType}`,
       value: color,
     });
+    syncManager.sync();
   }
 
   /**
@@ -136,6 +141,7 @@ export class ConfigStore {
         key: 'sesameToken',
         value: token,
       });
+      syncManager.sync();
     }
   }
 
@@ -154,6 +160,7 @@ export class ConfigStore {
         key: 'sesameUserId',
         value: id,
       });
+      syncManager.sync();
     }
   }
 
@@ -172,6 +179,7 @@ export class ConfigStore {
         key: 'sesameEmail',
         value: email,
       });
+      syncManager.sync();
     }
   }
 
@@ -190,6 +198,7 @@ export class ConfigStore {
         key: 'sesameProxyUrl',
         value: url,
       });
+      syncManager.sync();
     }
   }
 }

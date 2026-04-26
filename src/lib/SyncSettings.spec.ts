@@ -2,8 +2,9 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, cleanup } from '@testing-library/svelte';
 import SyncSettings from './SyncSettings.svelte';
 import { signalingService } from './signalingService';
-import { p2pConnection } from './p2pConnection';
+import { p2pConnection } from './p2pConnection.svelte';
 import { syncManager } from './syncManager';
+import { i18n } from './i18n.svelte';
 
 vi.mock('./signalingService', () => ({
   signalingService: {
@@ -12,7 +13,7 @@ vi.mock('./signalingService', () => ({
   },
 }));
 
-vi.mock('./p2pConnection', () => ({
+vi.mock('./p2pConnection.svelte', () => ({
   p2pConnection: {
     isConnected: vi.fn(),
     connect: vi.fn(),
@@ -29,9 +30,10 @@ vi.mock('./syncManager', () => ({
 }));
 
 describe('SyncSettings.svelte', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     cleanup();
     vi.clearAllMocks();
+    await i18n.setLocale('es');
     (signalingService as any).peer = null;
     (p2pConnection.isConnected as any).mockReturnValue(false);
   });
