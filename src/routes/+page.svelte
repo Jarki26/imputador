@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, tick } from 'svelte';
   import { TaskStore } from '$lib/taskStore';
   import { ProjectStore } from '$lib/projectStore';
   import { ConfigStore } from '$lib/configStore';
@@ -68,9 +68,11 @@
   }
 
   onMount(async () => {
-    syncManager.onDataMerged(() => {
-      loadTasks(false);
-      loadConfig();
+    syncManager.onDataMerged(async () => {
+      console.log('Sync data merged, reloading...');
+      await loadTasks(false);
+      await loadConfig();
+      await tick();
     });
     await loadTasks(true); // Initial state for history
     await loadConfig();
