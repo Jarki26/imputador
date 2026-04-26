@@ -5,7 +5,7 @@
 - [x] Task: Integrate Signaling Server (15ce3b3)
   - [ ] Sub-task: Write tests for signaling service (PeerJS initialization, ID generation, connection handling).
   - [ ] Sub-task: Implement `signalingService.ts` wrapping PeerJS.
-- [ ] Task: Establish WebRTC Connection
+- [~] Task: Establish WebRTC Connection
   - [ ] Sub-task: Write tests for P2P data channel creation and message handling.
   - [ ] Sub-task: Implement `p2pConnection.ts` to manage the WebRTC lifecycle.
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Setup and Infrastructure' (Protocol in workflow.md)
