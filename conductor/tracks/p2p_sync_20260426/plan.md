@@ -1,14 +1,14 @@
 # Implementation Plan: P2P Synchronization
 
-## Phase 1: Setup and Infrastructure
+## Phase 1: Setup and Infrastructure [x] (Checkpoint: bff08ec)
 
 - [x] Task: Integrate Signaling Server (15ce3b3)
-  - [ ] Sub-task: Write tests for signaling service (PeerJS initialization, ID generation, connection handling).
-  - [ ] Sub-task: Implement `signalingService.ts` wrapping PeerJS.
+  - [x] Sub-task: Write tests for signaling service (PeerJS initialization, ID generation, connection handling).
+  - [x] Sub-task: Implement `signalingService.ts` wrapping PeerJS.
 - [x] Task: Establish WebRTC Connection (231d0f4)
-  - [ ] Sub-task: Write tests for P2P data channel creation and message handling.
-  - [ ] Sub-task: Implement `p2pConnection.ts` to manage the WebRTC lifecycle.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Setup and Infrastructure' (Protocol in workflow.md)
+  - [x] Sub-task: Write tests for P2P data channel creation and message handling.
+  - [x] Sub-task: Implement `p2pConnection.ts` to manage the WebRTC lifecycle.
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Setup and Infrastructure' (Protocol in workflow.md) (bff08ec)
 
 ## Phase 2: Sync Engine and Conflict Resolution
 
