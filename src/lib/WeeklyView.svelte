@@ -554,7 +554,10 @@
     const deltaX = e.clientX - dragInfo.startX;
 
     // If moved more than 5px, cancel long press and quick click
-    if (Math.abs(deltaY) > QUICK_CLICK_MOVE_THRESHOLD || Math.abs(deltaX) > QUICK_CLICK_MOVE_THRESHOLD) {
+    if (
+      Math.abs(deltaY) > QUICK_CLICK_MOVE_THRESHOLD ||
+      Math.abs(deltaX) > QUICK_CLICK_MOVE_THRESHOLD
+    ) {
       if (longPressTimer) {
         clearTimeout(longPressTimer);
         longPressTimer = null;

@@ -1,5 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, cleanup, fireEvent, waitFor } from '@testing-library/svelte';
+import {
+  render,
+  screen,
+  cleanup,
+  fireEvent,
+  waitFor,
+} from '@testing-library/svelte';
 import SesameSettings from './SesameSettings.svelte';
 import { i18n } from './i18n.svelte';
 import { sesameService } from './sesameService';
@@ -40,7 +46,9 @@ describe('SesameSettings.svelte', () => {
     mockConfigStore.getSesameEmail.mockResolvedValue('test@example.com');
     render(SesameSettings, { props: { configStore: mockConfigStore as any } });
 
-    expect(await screen.findByText(/Logged in as: test@example.com/i)).toBeDefined();
+    expect(
+      await screen.findByText(/Logged in as: test@example.com/i),
+    ).toBeDefined();
     expect(screen.getByText(/Logout from Sesame/i)).toBeDefined();
   });
 
@@ -55,24 +63,44 @@ describe('SesameSettings.svelte', () => {
     const passwordInput = screen.getByLabelText(/Sesame Password/i);
     const loginBtn = screen.getByText(/Login to Sesame/i);
 
-    await fireEvent.input(emailInput, { target: { value: 'test@example.com' } });
+    await fireEvent.input(emailInput, {
+      target: { value: 'test@example.com' },
+    });
     await fireEvent.input(passwordInput, { target: { value: 'password123' } });
     await fireEvent.click(loginBtn);
 
-    await waitFor(async () => {
-      expect(sesameService.login).toHaveBeenCalledWith('test@example.com', 'password123');
-      expect(mockConfigStore.setSesameToken).toHaveBeenCalledWith('token-123');
-      expect(mockConfigStore.setSesameUserId).toHaveBeenCalledWith('user-id-456');
-      expect(mockConfigStore.setSesameEmail).toHaveBeenCalledWith('test@example.com');
-    }, { timeout: 2000 });
+    await waitFor(
+      async () => {
+        expect(sesameService.login).toHaveBeenCalledWith(
+          'test@example.com',
+          'password123',
+        );
+        expect(mockConfigStore.setSesameToken).toHaveBeenCalledWith(
+          'token-123',
+        );
+        expect(mockConfigStore.setSesameUserId).toHaveBeenCalledWith(
+          'user-id-456',
+        );
+        expect(mockConfigStore.setSesameEmail).toHaveBeenCalledWith(
+          'test@example.com',
+        );
+      },
+      { timeout: 2000 },
+    );
 
-    expect(await screen.findByText(/Successfully logged in to Sesame/i)).toBeDefined();
-    expect(await screen.findByText(/Logged in as: test@example.com/i)).toBeDefined();
+    expect(
+      await screen.findByText(/Successfully logged in to Sesame/i),
+    ).toBeDefined();
+    expect(
+      await screen.findByText(/Logged in as: test@example.com/i),
+    ).toBeDefined();
   });
 
   it('should handle login error', async () => {
     mockConfigStore.getSesameEmail.mockResolvedValue(null);
-    (sesameService.login as any).mockRejectedValue(new Error('Invalid credentials'));
+    (sesameService.login as any).mockRejectedValue(
+      new Error('Invalid credentials'),
+    );
 
     render(SesameSettings, { props: { configStore: mockConfigStore as any } });
 
@@ -80,11 +108,15 @@ describe('SesameSettings.svelte', () => {
     const passwordInput = screen.getByLabelText(/Sesame Password/i);
     const loginBtn = screen.getByText(/Login to Sesame/i);
 
-    await fireEvent.input(emailInput, { target: { value: 'test@example.com' } });
+    await fireEvent.input(emailInput, {
+      target: { value: 'test@example.com' },
+    });
     await fireEvent.input(passwordInput, { target: { value: 'wrong-pass' } });
     await fireEvent.click(loginBtn);
 
-    expect(await screen.findByText(/Login failed: Invalid credentials/i)).toBeDefined();
+    expect(
+      await screen.findByText(/Login failed: Invalid credentials/i),
+    ).toBeDefined();
   });
 
   it('should logout correctly', async () => {

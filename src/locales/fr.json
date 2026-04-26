@@ -126,7 +126,7 @@
     "error_collision_check": "Une erreur s'est produite lors de la vérification des collisions",
     "set_current_time": "Maintenant",
     "set_current_time_aria": "Régler sur l'heure actuelle"
-    },
+  },
   "weekly": {
     "logged": "Enregistré",
     "target": "Objectif",

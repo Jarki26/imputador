@@ -20,25 +20,25 @@
 
   onMount(async () => {
     loggedInEmail = await configStore.getSesameEmail();
-    proxyUrl = await configStore.getSesameProxyUrl() || '';
+    proxyUrl = (await configStore.getSesameProxyUrl()) || '';
   });
 
   async function handleLogin() {
     if (!email || !password) return;
-    
+
     loading = true;
     error = '';
     success = '';
-    
+
     try {
       const token = await sesameService.login(email, password, proxyUrl);
       const user = await sesameService.getMe(token, proxyUrl);
-      
+
       await configStore.setSesameToken(token);
       await configStore.setSesameUserId(user.id);
       await configStore.setSesameEmail(email);
       await configStore.setSesameProxyUrl(proxyUrl || null);
-      
+
       loggedInEmail = email;
       success = i18n.t('settings.sesame_login_success');
       password = '';
@@ -106,7 +106,8 @@
         />
       </div>
       <div class="form-group">
-        <label for="sesame-password">{i18n.t('settings.sesame_password')}</label>
+        <label for="sesame-password">{i18n.t('settings.sesame_password')}</label
+        >
         <input
           type="password"
           id="sesame-password"
@@ -124,7 +125,7 @@
   {#if error}
     <p class="error-msg">{error}</p>
   {/if}
-  
+
   {#if success}
     <p class="success-msg">{success}</p>
   {/if}
@@ -147,7 +148,9 @@
     color: var(--md-sys-color-primary);
   }
 
-  .login-form, .logged-in, .proxy-config {
+  .login-form,
+  .logged-in,
+  .proxy-config {
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -196,7 +199,8 @@
     color: var(--md-sys-color-on-surface);
   }
 
-  .login-btn, .logout-btn {
+  .login-btn,
+  .logout-btn {
     padding: 0.75rem;
     border-radius: 20px;
     border: none;

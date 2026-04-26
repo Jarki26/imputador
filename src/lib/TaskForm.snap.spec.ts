@@ -1,5 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, cleanup, fireEvent, waitFor } from '@testing-library/svelte';
+import {
+  render,
+  screen,
+  cleanup,
+  fireEvent,
+  waitFor,
+} from '@testing-library/svelte';
 import TaskForm from './TaskForm.svelte';
 import type { TaskStore } from './taskStore';
 import type { ProjectStore } from './projectStore';
@@ -34,10 +40,14 @@ describe('TaskForm Snap Buttons', () => {
     render(TaskForm, {
       props: { taskStore: mockTaskStore, projectStore: mockProjectStore },
     });
-    
+
     // Using test-id or looking for buttons with specific titles/tooltips
-    expect(screen.getByTitle(/Ajustar al final de la tarea anterior/i)).toBeDefined();
-    expect(screen.getByTitle(/Ajustar al inicio de la siguiente tarea/i)).toBeDefined();
+    expect(
+      screen.getByTitle(/Ajustar al final de la tarea anterior/i),
+    ).toBeDefined();
+    expect(
+      screen.getByTitle(/Ajustar al inicio de la siguiente tarea/i),
+    ).toBeDefined();
   });
 
   it('should call getPreviousTaskEndTime when clicking start snap button', async () => {
@@ -56,7 +66,9 @@ describe('TaskForm Snap Buttons', () => {
       props: { taskStore: mockTaskStore, projectStore: mockProjectStore },
     });
 
-    const snapBtn = screen.getByTitle(/Ajustar al inicio de la siguiente tarea/i);
+    const snapBtn = screen.getByTitle(
+      /Ajustar al inicio de la siguiente tarea/i,
+    );
     await fireEvent.click(snapBtn);
 
     expect(mockTaskStore.getNextTaskStartTime).toHaveBeenCalled();
@@ -73,7 +85,9 @@ describe('TaskForm Snap Buttons', () => {
     const snapBtn = screen.getByTitle(/Ajustar al final de la tarea anterior/i);
     await fireEvent.click(snapBtn);
 
-    const startTimeInput = screen.getByLabelText(/Hora de Inicio/i) as HTMLInputElement;
+    const startTimeInput = screen.getByLabelText(
+      /Hora de Inicio/i,
+    ) as HTMLInputElement;
     await waitFor(() => expect(startTimeInput.value).toBe('10:00'));
   });
 
@@ -85,10 +99,14 @@ describe('TaskForm Snap Buttons', () => {
       props: { taskStore: mockTaskStore, projectStore: mockProjectStore },
     });
 
-    const snapBtn = screen.getByTitle(/Ajustar al inicio de la siguiente tarea/i);
+    const snapBtn = screen.getByTitle(
+      /Ajustar al inicio de la siguiente tarea/i,
+    );
     await fireEvent.click(snapBtn);
 
-    const endTimeInput = screen.getByLabelText(/Hora de Fin/i) as HTMLInputElement;
+    const endTimeInput = screen.getByLabelText(
+      /Hora de Fin/i,
+    ) as HTMLInputElement;
     await waitFor(() => expect(endTimeInput.value).toBe('11:00'));
   });
 
@@ -99,7 +117,9 @@ describe('TaskForm Snap Buttons', () => {
       props: { taskStore: mockTaskStore, projectStore: mockProjectStore },
     });
 
-    const snapBtn = screen.getByTitle(/Ajustar al final de la tarea anterior/i) as HTMLButtonElement;
+    const snapBtn = screen.getByTitle(
+      /Ajustar al final de la tarea anterior/i,
+    ) as HTMLButtonElement;
     await waitFor(() => expect(snapBtn.disabled).toBe(true));
   });
 
@@ -110,7 +130,9 @@ describe('TaskForm Snap Buttons', () => {
       props: { taskStore: mockTaskStore, projectStore: mockProjectStore },
     });
 
-    const snapBtn = screen.getByTitle(/Ajustar al final de la tarea anterior/i) as HTMLButtonElement;
+    const snapBtn = screen.getByTitle(
+      /Ajustar al final de la tarea anterior/i,
+    ) as HTMLButtonElement;
     await waitFor(() => expect(snapBtn.disabled).toBe(false));
   });
 
@@ -121,7 +143,9 @@ describe('TaskForm Snap Buttons', () => {
       props: { taskStore: mockTaskStore, projectStore: mockProjectStore },
     });
 
-    const snapBtn = screen.getByTitle(/Ajustar al inicio de la siguiente tarea/i) as HTMLButtonElement;
+    const snapBtn = screen.getByTitle(
+      /Ajustar al inicio de la siguiente tarea/i,
+    ) as HTMLButtonElement;
     await waitFor(() => expect(snapBtn.disabled).toBe(true));
   });
 
@@ -132,7 +156,9 @@ describe('TaskForm Snap Buttons', () => {
       props: { taskStore: mockTaskStore, projectStore: mockProjectStore },
     });
 
-    const snapBtn = screen.getByTitle(/Ajustar al inicio de la siguiente tarea/i) as HTMLButtonElement;
+    const snapBtn = screen.getByTitle(
+      /Ajustar al inicio de la siguiente tarea/i,
+    ) as HTMLButtonElement;
     await waitFor(() => expect(snapBtn.disabled).toBe(false));
   });
 });

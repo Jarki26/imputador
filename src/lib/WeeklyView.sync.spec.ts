@@ -1,5 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, cleanup, fireEvent, waitFor } from '@testing-library/svelte';
+import {
+  render,
+  screen,
+  cleanup,
+  fireEvent,
+  waitFor,
+} from '@testing-library/svelte';
 import WeeklyView from './WeeklyView.svelte';
 import { i18n } from './i18n.svelte';
 import { tick } from 'svelte';
@@ -34,15 +40,18 @@ describe('WeeklyView Sesame Sync', () => {
 
   it('should show loading state during sync', async () => {
     let resolveSync: any;
-    const onSyncSesame = vi.fn().mockImplementation(() => new Promise((resolve) => {
-      resolveSync = resolve;
-    }));
+    const onSyncSesame = vi.fn().mockImplementation(
+      () =>
+        new Promise((resolve) => {
+          resolveSync = resolve;
+        }),
+    );
 
     render(WeeklyView, { props: { ...defaultProps, onSyncSesame } });
 
     const syncBtn = screen.getByText(/Sync Sesame/i).closest('button')!;
     await fireEvent.click(syncBtn);
-    
+
     await waitFor(() => {
       expect(syncBtn.className).toContain('loading');
     });

@@ -38,15 +38,21 @@ describe('WeeklyView.svelte Collision Move', () => {
     // Drag Task 2 to 09:30 (overlap with Task 1)
     // 09:00 is at y=0 relative to something, let's just say each hour is 60px.
     // Task 2 starts at 11:00. To move to 09:30, we need to move it up by 1.5 hours = 90px.
-    await fireEvent.pointerDown(task2Block!, { clientY: 660, pointerId: 1, button: 0 }); // 11:00 is 11*60 = 660
+    await fireEvent.pointerDown(task2Block!, {
+      clientY: 660,
+      pointerId: 1,
+      button: 0,
+    }); // 11:00 is 11*60 = 660
     await fireEvent.pointerMove(window, { clientY: 570, pointerId: 1 }); // 09:30 is 9.5*60 = 570
     await fireEvent.pointerUp(window, { clientY: 570, pointerId: 1 });
 
     // Should show collision modal
     expect(await screen.findByText(/Colisión Detectada/i)).toBeDefined();
-    
+
     // Verify "Continuar de todas formas" button exists
-    const continueBtn = screen.getByRole('button', { name: /Continuar de todas formas/i });
+    const continueBtn = screen.getByRole('button', {
+      name: /Continuar de todas formas/i,
+    });
     expect(continueBtn).toBeDefined();
 
     // Click "Continuar de todas formas"

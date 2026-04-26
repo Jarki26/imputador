@@ -1,5 +1,11 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, cleanup, fireEvent, act } from '@testing-library/svelte';
+import {
+  render,
+  screen,
+  cleanup,
+  fireEvent,
+  act,
+} from '@testing-library/svelte';
 import WeeklyView from './WeeklyView.svelte';
 import { i18n } from './i18n.svelte';
 
@@ -29,7 +35,7 @@ describe('WeeklyView.svelte Long Press', () => {
       {
         id: 2,
         title: 'Task 1', // Same title
-        project: 'P1',    // Same project
+        project: 'P1', // Same project
         type: 'General', // Same type
         startTime: new Date('2026-04-06T10:00:00Z'), // Adjacent
         endTime: new Date('2026-04-06T11:00:00Z'),
@@ -44,7 +50,7 @@ describe('WeeklyView.svelte Long Press', () => {
 
     // Simulate long press (500ms timer in WeeklyView)
     await fireEvent.pointerDown(task2Block!, { pointerId: 1, button: 0 });
-    
+
     await act(() => {
       vi.advanceTimersByTime(600);
     });
@@ -53,7 +59,9 @@ describe('WeeklyView.svelte Long Press', () => {
     expect(onTaskCopyToRecents).toHaveBeenCalled();
 
     // Should show merge modal because Task 1 and Task 2 are identical and adjacent
-    expect(await screen.findByText(/¿Combinar tareas idénticas?/i)).toBeDefined();
+    expect(
+      await screen.findByText(/¿Combinar tareas idénticas?/i),
+    ).toBeDefined();
 
     // Click "No"
     const onTaskUpdate = vi.fn();
@@ -95,7 +103,7 @@ describe('WeeklyView.svelte Long Press', () => {
     const task2Block = screen.getByText('Task 2').closest('.task-block');
 
     await fireEvent.pointerDown(task2Block!, { pointerId: 1, button: 0 });
-    
+
     await act(() => {
       vi.advanceTimersByTime(600);
     });
@@ -135,7 +143,7 @@ describe('WeeklyView.svelte Long Press', () => {
     const task2Block = screen.getByText('Task 2').closest('.task-block');
 
     await fireEvent.pointerDown(task2Block!, { pointerId: 1, button: 0 });
-    
+
     await act(() => {
       vi.advanceTimersByTime(600);
     });
@@ -144,6 +152,8 @@ describe('WeeklyView.svelte Long Press', () => {
 
     // Should show collision modal
     expect(await screen.findByText(/Colisión Detectada/i)).toBeDefined();
-    expect(screen.getByRole('button', { name: /Continuar de todas formas/i })).toBeDefined();
+    expect(
+      screen.getByRole('button', { name: /Continuar de todas formas/i }),
+    ).toBeDefined();
   });
 });

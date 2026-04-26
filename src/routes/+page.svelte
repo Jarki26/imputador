@@ -163,7 +163,11 @@
       excelDateFormat,
     );
 
-    const filename = exportService.formatFilename(excelFilenameFormat, start, end);
+    const filename = exportService.formatFilename(
+      excelFilenameFormat,
+      start,
+      end,
+    );
 
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -247,7 +251,13 @@
       const to = formatDateOnlyForInput(sunday);
 
       const proxyUrl = await configStore.getSesameProxyUrl();
-      const checks = await sesameService.getChecks(userId, token, from, to, proxyUrl);
+      const checks = await sesameService.getChecks(
+        userId,
+        token,
+        from,
+        to,
+        proxyUrl,
+      );
       const restTasks = calculateGapsFromChecks(checks);
 
       await syncSesameTasks(restTasks, taskStore);

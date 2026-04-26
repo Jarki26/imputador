@@ -27,7 +27,9 @@ describe('TaskColorSettings.svelte', () => {
     render(TaskColorSettings, { props: defaultProps });
 
     // Find OFFLINE item
-    const offlineHeader = screen.getByText('OFFLINE').closest('.type-header') as HTMLElement;
+    const offlineHeader = screen
+      .getByText('OFFLINE')
+      .closest('.type-header') as HTMLElement;
     const colorDot = offlineHeader.querySelector('.color-dot') as HTMLElement;
 
     // #f1f5f9 is rgb(241, 245, 249)
@@ -41,7 +43,9 @@ describe('TaskColorSettings.svelte', () => {
     };
     render(TaskColorSettings, { props });
 
-    const offlineHeader = screen.getByText('OFFLINE').closest('.type-header') as HTMLElement;
+    const offlineHeader = screen
+      .getByText('OFFLINE')
+      .closest('.type-header') as HTMLElement;
     const colorDot = offlineHeader.querySelector('.color-dot') as HTMLElement;
 
     expect(colorDot.style.backgroundColor).toBe('rgb(255, 0, 0)');

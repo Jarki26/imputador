@@ -43,7 +43,7 @@ describe('DatePicker', () => {
     expect(getByText(/2026/)).toBeDefined();
 
     // Check if some days of April are present
-    // Use getAllByText and filter for current month if needed, 
+    // Use getAllByText and filter for current month if needed,
     // but here we just want to see they exist.
     expect(getAllByText('1').length).toBeGreaterThan(0);
     expect(getByText('22')).toBeDefined();
@@ -83,10 +83,10 @@ describe('DatePicker', () => {
       props: { selectedDate: testDate },
     });
 
-    // Mock translations for this test specifically if needed, 
+    // Mock translations for this test specifically if needed,
     // but they should be in the beforeEach mock already if I update it.
     // Let's update the beforeEach mock first.
-    
+
     const prevYearBtn = getByLabelText('Año anterior');
     const nextYearBtn = getByLabelText('Año siguiente');
 
@@ -125,8 +125,8 @@ describe('DatePicker', () => {
 
     // To be safe, find the '15' that is NOT 'not-current'
     const days = document.querySelectorAll('.day-cell:not(.not-current)');
-    const day15 = Array.from(days).find(d => d.textContent?.trim() === '15');
-    
+    const day15 = Array.from(days).find((d) => d.textContent?.trim() === '15');
+
     if (!day15) throw new Error('Day 15 not found');
     await fireEvent.click(day15);
 

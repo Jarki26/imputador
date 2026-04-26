@@ -15,7 +15,7 @@ describe('sesameSync - syncSesameTasks', () => {
     title: 'Descanso',
     project: 'sesame',
     type: 'REST',
-    description: ''
+    description: '',
   };
 
   it('should insert new rest tasks', async () => {
@@ -23,8 +23,8 @@ describe('sesameSync - syncSesameTasks', () => {
       {
         ...sesameFormat,
         startTime: new Date('2026-04-19T11:00:00Z'),
-        endTime: new Date('2026-04-19T12:00:00Z')
-      }
+        endTime: new Date('2026-04-19T12:00:00Z'),
+      },
     ];
 
     await syncSesameTasks(newRestTasks, taskStore);
@@ -38,11 +38,11 @@ describe('sesameSync - syncSesameTasks', () => {
     const task: Task = {
       ...sesameFormat,
       startTime: new Date('2026-04-19T11:00:00Z'),
-      endTime: new Date('2026-04-19T12:00:00Z')
+      endTime: new Date('2026-04-19T12:00:00Z'),
     };
 
     await taskStore.addTask(task);
-    
+
     const newRestTasks: Task[] = [{ ...task }];
     await syncSesameTasks(newRestTasks, taskStore);
 
@@ -55,15 +55,15 @@ describe('sesameSync - syncSesameTasks', () => {
     await taskStore.addTask({
       ...sesameFormat,
       startTime: new Date('2026-04-19T11:00:00Z'),
-      endTime: new Date('2026-04-19T11:30:00Z')
+      endTime: new Date('2026-04-19T11:30:00Z'),
     });
 
     const newRestTasks: Task[] = [
       {
         ...sesameFormat,
         startTime: new Date('2026-04-19T11:00:00Z'),
-        endTime: new Date('2026-04-19T12:00:00Z')
-      }
+        endTime: new Date('2026-04-19T12:00:00Z'),
+      },
     ];
 
     await syncSesameTasks(newRestTasks, taskStore);
@@ -81,15 +81,15 @@ describe('sesameSync - syncSesameTasks', () => {
       type: 'Feature',
       description: '',
       startTime: new Date('2026-04-19T11:30:00Z'),
-      endTime: new Date('2026-04-19T12:30:00Z')
+      endTime: new Date('2026-04-19T12:30:00Z'),
     });
 
     const newRestTasks: Task[] = [
       {
         ...sesameFormat,
         startTime: new Date('2026-04-19T11:00:00Z'),
-        endTime: new Date('2026-04-19T12:00:00Z')
-      }
+        endTime: new Date('2026-04-19T12:00:00Z'),
+      },
     ];
 
     await syncSesameTasks(newRestTasks, taskStore);
@@ -106,7 +106,7 @@ describe('sesameSync - syncSesameTasks', () => {
       type: 'Feature',
       description: '',
       startTime: new Date('2026-04-19T09:00:00Z'),
-      endTime: new Date('2026-04-19T11:00:00Z')
+      endTime: new Date('2026-04-19T11:00:00Z'),
     });
 
     // New rest task starting at 11:00
@@ -114,8 +114,8 @@ describe('sesameSync - syncSesameTasks', () => {
       {
         ...sesameFormat,
         startTime: new Date('2026-04-19T11:00:00Z'),
-        endTime: new Date('2026-04-19T12:00:00Z')
-      }
+        endTime: new Date('2026-04-19T12:00:00Z'),
+      },
     ];
 
     await syncSesameTasks(newRestTasks, taskStore);

@@ -14,14 +14,20 @@ describe('sesameService', () => {
         json: async () => ({ data: mockToken }),
       });
 
-      const token = await sesameService.login('user@example.com', 'password123');
-      
+      const token = await sesameService.login(
+        'user@example.com',
+        'password123',
+      );
+
       expect(fetch).toHaveBeenCalledWith(
         'https://back-eu4.sesametime.com/api/v3/security/login',
         expect.objectContaining({
           method: 'POST',
-          body: JSON.stringify({ email: 'user@example.com', password: 'password123' }),
-        })
+          body: JSON.stringify({
+            email: 'user@example.com',
+            password: 'password123',
+          }),
+        }),
       );
       expect(token).toBe(mockToken);
     });
@@ -33,8 +39,9 @@ describe('sesameService', () => {
         statusText: 'Unauthorized',
       });
 
-      await expect(sesameService.login('user@example.com', 'wrong-pass'))
-        .rejects.toThrow('Sesame login failed: 401 Unauthorized');
+      await expect(
+        sesameService.login('user@example.com', 'wrong-pass'),
+      ).rejects.toThrow('Sesame login failed: 401 Unauthorized');
     });
   });
 
@@ -47,14 +54,14 @@ describe('sesameService', () => {
       });
 
       const user = await sesameService.getMe('some-token');
-      
+
       expect(fetch).toHaveBeenCalledWith(
         'https://back-eu4.sesametime.com/api/v3/security/me',
         expect.objectContaining({
           headers: expect.objectContaining({
             Authorization: 'some-token',
           }),
-        })
+        }),
       );
       expect(user.id).toBe(mockUser.id);
     });
@@ -66,28 +73,36 @@ describe('sesameService', () => {
         statusText: 'Not Found',
       });
 
-      await expect(sesameService.getMe('invalid-token'))
-        .rejects.toThrow('Failed to fetch Sesame user info: 404 Not Found');
+      await expect(sesameService.getMe('invalid-token')).rejects.toThrow(
+        'Failed to fetch Sesame user info: 404 Not Found',
+      );
     });
   });
 
   describe('getChecks', () => {
     it('should fetch checks for a given period', async () => {
-      const mockChecks = [{ id: 'check-1', checkIn: { date: '2026-04-19T09:00:00Z' } }];
+      const mockChecks = [
+        { id: 'check-1', checkIn: { date: '2026-04-19T09:00:00Z' } },
+      ];
       (fetch as any).mockResolvedValue({
         ok: true,
         json: async () => ({ data: mockChecks }),
       });
 
-      const checks = await sesameService.getChecks('user-id', 'token', '2026-04-19', '2026-04-25');
-      
+      const checks = await sesameService.getChecks(
+        'user-id',
+        'token',
+        '2026-04-19',
+        '2026-04-25',
+      );
+
       expect(fetch).toHaveBeenCalledWith(
         'https://back-eu4.sesametime.com/api/v3/employees/user-id/checks?from=2026-04-19&to=2026-04-25&includeOut=true',
         expect.objectContaining({
           headers: expect.objectContaining({
             Authorization: 'token',
           }),
-        })
+        }),
       );
       expect(checks).toEqual(mockChecks);
     });
@@ -99,8 +114,11 @@ describe('sesameService', () => {
         statusText: 'Internal Server Error',
       });
 
-      await expect(sesameService.getChecks('user-id', 'token', '2026-04-19', '2026-04-25'))
-        .rejects.toThrow('Failed to fetch Sesame checks: 500 Internal Server Error');
+      await expect(
+        sesameService.getChecks('user-id', 'token', '2026-04-19', '2026-04-25'),
+      ).rejects.toThrow(
+        'Failed to fetch Sesame checks: 500 Internal Server Error',
+      );
     });
   });
 });

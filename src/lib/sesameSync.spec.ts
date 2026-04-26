@@ -111,11 +111,11 @@ describe('sesameSync - calculateGapsFromChecks', () => {
     ];
     const gaps = calculateGapsFromChecks(checks);
     expect(gaps).toHaveLength(2);
-    
+
     // OFFLINE 00:00 - 09:00
     expect(gaps[0].endTime.getSeconds()).toBe(0);
     expect(gaps[0].endTime.getMilliseconds()).toBe(0);
-    
+
     // OFFLINE 18:00 - 23:59:59.999
     expect(gaps[1].startTime.getSeconds()).toBe(0);
     expect(gaps[1].startTime.getMilliseconds()).toBe(0);

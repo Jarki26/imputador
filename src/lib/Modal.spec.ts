@@ -51,7 +51,7 @@ describe('Modal', () => {
       });
 
       const backdrop = document.querySelector('.modal-backdrop')!;
-      
+
       await fireEvent.mouseDown(backdrop);
       await fireEvent.mouseUp(backdrop);
 
@@ -66,7 +66,7 @@ describe('Modal', () => {
 
       const backdrop = document.querySelector('.modal-backdrop')!;
       const content = document.querySelector('.modal-content')!;
-      
+
       await fireEvent.mouseDown(content);
       await fireEvent.mouseUp(backdrop);
 

@@ -9,15 +9,27 @@
   let { selectedDate = new Date(), onSelect = () => {} }: Props = $props();
 
   // Internal state for the currently viewed month/year in the picker
-  let viewDate = $state(new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1));
+  let viewDate = $state(
+    new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1),
+  );
 
   $effect(() => {
     viewDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
   });
 
   const monthNames = [
-    'january', 'february', 'march', 'april', 'may', 'june',
-    'july', 'august', 'september', 'october', 'november', 'december'
+    'january',
+    'february',
+    'march',
+    'april',
+    'may',
+    'june',
+    'july',
+    'august',
+    'september',
+    'october',
+    'november',
+    'december',
   ];
 
   const daysOfWeek = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
@@ -51,7 +63,7 @@
         day: daysInPrevMonth - i,
         month: prevMonth,
         year: prevMonthYear,
-        isCurrentMonth: false
+        isCurrentMonth: false,
       });
     }
 
@@ -61,7 +73,7 @@
         day: i,
         month: month,
         year: year,
-        isCurrentMonth: true
+        isCurrentMonth: true,
       });
     }
 
@@ -74,7 +86,7 @@
         day: i,
         month: nextMonth,
         year: nextMonthYear,
-        isCurrentMonth: false
+        isCurrentMonth: false,
       });
     }
 
@@ -95,16 +107,20 @@
   }
 
   function isSelected(day: number, month: number, year: number) {
-    return selectedDate.getDate() === day &&
-           selectedDate.getMonth() === month &&
-           selectedDate.getFullYear() === year;
+    return (
+      selectedDate.getDate() === day &&
+      selectedDate.getMonth() === month &&
+      selectedDate.getFullYear() === year
+    );
   }
 
   function isToday(day: number, month: number, year: number) {
     const today = new Date();
-    return today.getDate() === day &&
-           today.getMonth() === month &&
-           today.getFullYear() === year;
+    return (
+      today.getDate() === day &&
+      today.getMonth() === month &&
+      today.getFullYear() === year
+    );
   }
 
   function goToToday() {
@@ -128,7 +144,8 @@
       >
     </div>
     <div class="current-month">
-      {i18n.t(`calendar.${monthNames[viewDate.getMonth()]}`)} {viewDate.getFullYear()}
+      {i18n.t(`calendar.${monthNames[viewDate.getMonth()]}`)}
+      {viewDate.getFullYear()}
     </div>
     <div class="nav-group">
       <button
@@ -260,7 +277,7 @@
     border: 1px solid var(--md-sys-color-primary);
     color: var(--md-sys-color-primary);
   }
-  
+
   .day-cell.today.selected {
     color: var(--md-sys-color-on-primary);
   }

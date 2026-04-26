@@ -25,7 +25,11 @@ function getUrl(endpoint: string, proxyUrl?: string | null): string {
 }
 
 export const sesameService = {
-  async login(email: string, password: string, proxyUrl?: string | null): Promise<string> {
+  async login(
+    email: string,
+    password: string,
+    proxyUrl?: string | null,
+  ): Promise<string> {
     const url = getUrl('/security/login', proxyUrl);
     const response = await fetch(url, {
       method: 'POST',
@@ -36,7 +40,9 @@ export const sesameService = {
     });
 
     if (!response.ok) {
-      throw new Error(`Sesame login failed: ${response.status} ${response.statusText}`);
+      throw new Error(
+        `Sesame login failed: ${response.status} ${response.statusText}`,
+      );
     }
 
     const result = await response.json();
@@ -52,7 +58,9 @@ export const sesameService = {
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch Sesame user info: ${response.status} ${response.statusText}`);
+      throw new Error(
+        `Failed to fetch Sesame user info: ${response.status} ${response.statusText}`,
+      );
     }
 
     const result = await response.json();
@@ -60,7 +68,13 @@ export const sesameService = {
     return Array.isArray(result.data) ? result.data[0] : result.data;
   },
 
-  async getChecks(userId: string, token: string, from: string, to: string, proxyUrl?: string | null): Promise<SesameCheck[]> {
+  async getChecks(
+    userId: string,
+    token: string,
+    from: string,
+    to: string,
+    proxyUrl?: string | null,
+  ): Promise<SesameCheck[]> {
     const endpoint = `/employees/${userId}/checks?from=${from}&to=${to}&includeOut=true`;
     const url = getUrl(endpoint, proxyUrl);
     const response = await fetch(url, {
@@ -70,7 +84,9 @@ export const sesameService = {
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch Sesame checks: ${response.status} ${response.statusText}`);
+      throw new Error(
+        `Failed to fetch Sesame checks: ${response.status} ${response.statusText}`,
+      );
     }
 
     const result = await response.json();
