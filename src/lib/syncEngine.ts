@@ -50,6 +50,12 @@ export const syncEngine = {
 
     // Merge Tasks
     for (const remoteTask of payload.tasks) {
+      // Safety check: skip tasks without UUID to avoid IDBIndex DataError
+      if (!remoteTask.uuid) {
+        console.warn('Skipping remote task without UUID:', remoteTask);
+        continue;
+      }
+
       // Find local task by UUID
       const localTask = await db.getFromIndex('tasks', 'uuid', remoteTask.uuid);
 

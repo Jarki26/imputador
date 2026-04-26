@@ -4,7 +4,7 @@ export interface SyncPayload {
   tasks: Task[];
   projects: Project[];
   companies: Company[];
-  config: { key: string; value: any }[];
+  config: { key: string; value: any; updatedAt?: number }[];
   timestamp: number;
 }
 
@@ -13,9 +13,39 @@ export const syncService = {
     const db = await initDB(dbName);
 
     const tasks = await db.getAll('tasks');
+
+    // Legacy data repair: Ensure all tasks have a UUID and updatedAt
+    for (const task of tasks) {
+      if (!task.uuid || !task.updatedAt) {
+        if (!task.uuid) task.uuid = crypto.randomUUID();
+        if (!task.updatedAt) task.updatedAt = Date.now();
+        await db.put('tasks', task);
+      }
+    }
+
     const projects = await db.getAll('projects');
+    for (const project of projects) {
+      if (!(project as any).updatedAt) {
+        (project as any).updatedAt = Date.now();
+        await db.put('projects', project);
+      }
+    }
+
     const companies = await db.getAll('companies');
+    for (const company of companies) {
+      if (!(company as any).updatedAt) {
+        (company as any).updatedAt = Date.now();
+        await db.put('companies', company);
+      }
+    }
+
     const config = await db.getAll('config');
+    for (const item of config) {
+      if (!(item as any).updatedAt) {
+        (item as any).updatedAt = Date.now();
+        await db.put('config', item);
+      }
+    }
 
     return {
       tasks,
