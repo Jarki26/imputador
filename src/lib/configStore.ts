@@ -1,5 +1,4 @@
-import { initDB, putItem } from './db';
-import { syncManager } from './syncManager';
+import { initDB } from './db';
 import { getTaskType, TASK_TYPES } from './config';
 
 /**
@@ -23,8 +22,7 @@ export class ConfigStore {
    */
   async setWeeklyHoursTarget(target: number): Promise<void> {
     const db = await initDB(this.dbName);
-    await putItem(db, 'config', { key: 'weeklyHoursTarget', value: target });
-    syncManager.sync();
+    await db.put('config', { key: 'weeklyHoursTarget', value: target });
   }
 
   /**
@@ -42,11 +40,7 @@ export class ConfigStore {
    */
   async setExcelDateFormat(format: string): Promise<void> {
     const db = await initDB(this.dbName);
-    await putItem(db, 'config', {
-      key: 'excelDateFormat',
-      value: format,
-    });
-    syncManager.sync();
+    await db.put('config', { key: 'excelDateFormat', value: format });
   }
 
   /**
@@ -66,11 +60,7 @@ export class ConfigStore {
    */
   async setExcelFilenameFormat(format: string): Promise<void> {
     const db = await initDB(this.dbName);
-    await putItem(db, 'config', {
-      key: 'excelFilenameFormat',
-      value: format,
-    });
-    syncManager.sync();
+    await db.put('config', { key: 'excelFilenameFormat', value: format });
   }
 
   /**
@@ -91,11 +81,7 @@ export class ConfigStore {
    */
   async setTaskTypeColor(taskType: string, color: string): Promise<void> {
     const db = await initDB(this.dbName);
-    await putItem(db, 'config', {
-      key: `taskTypeColor:${taskType}`,
-      value: color,
-    });
-    syncManager.sync();
+    await db.put('config', { key: `taskTypeColor:${taskType}`, value: color });
   }
 
   /**
@@ -137,11 +123,7 @@ export class ConfigStore {
     if (token === null) {
       await db.delete('config', 'sesameToken');
     } else {
-      await putItem(db, 'config', {
-        key: 'sesameToken',
-        value: token,
-      });
-      syncManager.sync();
+      await db.put('config', { key: 'sesameToken', value: token });
     }
   }
 
@@ -156,11 +138,7 @@ export class ConfigStore {
     if (id === null) {
       await db.delete('config', 'sesameUserId');
     } else {
-      await putItem(db, 'config', {
-        key: 'sesameUserId',
-        value: id,
-      });
-      syncManager.sync();
+      await db.put('config', { key: 'sesameUserId', value: id });
     }
   }
 
@@ -175,11 +153,7 @@ export class ConfigStore {
     if (email === null) {
       await db.delete('config', 'sesameEmail');
     } else {
-      await putItem(db, 'config', {
-        key: 'sesameEmail',
-        value: email,
-      });
-      syncManager.sync();
+      await db.put('config', { key: 'sesameEmail', value: email });
     }
   }
 
@@ -194,11 +168,7 @@ export class ConfigStore {
     if (url === null) {
       await db.delete('config', 'sesameProxyUrl');
     } else {
-      await putItem(db, 'config', {
-        key: 'sesameProxyUrl',
-        value: url,
-      });
-      syncManager.sync();
+      await db.put('config', { key: 'sesameProxyUrl', value: url });
     }
   }
 }

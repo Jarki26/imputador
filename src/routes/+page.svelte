@@ -5,6 +5,7 @@
   import { ConfigStore } from '$lib/configStore';
   import { CompanyStore } from '$lib/companyStore';
   import { HistoryStore } from '$lib/historyStore.svelte';
+  import { syncManager } from '$lib/syncManager';
   import WeeklyView from '$lib/WeeklyView.svelte';
   import TaskList from '$lib/TaskList.svelte';
   import TaskForm from '$lib/TaskForm.svelte';
