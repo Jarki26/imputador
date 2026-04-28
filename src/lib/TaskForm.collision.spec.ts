@@ -259,12 +259,15 @@ describe('TaskForm.svelte Collision Detection', () => {
     });
     await fireEvent.click(continueBtn);
 
-    expect(mockTaskStore.updateTask).toHaveBeenCalledWith(99, expect.anything());
+    expect(mockTaskStore.updateTask).toHaveBeenCalledWith(
+      99,
+      expect.anything(),
+    );
   });
 
   it('should NOT detect collision if overlap is less than 1 minute', async () => {
     const today = new Date().toISOString().split('T')[0];
-    
+
     // Mock existing task that ends slightly AFTER 11:00 (e.g. from Sesame)
     const existingEnd = new Date(`${today}T11:00:05`);
     mockTaskStore.getTasksForDay.mockResolvedValue([
@@ -277,8 +280,8 @@ describe('TaskForm.svelte Collision Detection', () => {
     ]);
 
     render(TaskForm, {
-      props: { 
-        taskStore: mockTaskStore, 
+      props: {
+        taskStore: mockTaskStore,
         projectStore: mockProjectStore,
         initialStartTime: `${today}T11:00:00`, // Starts exactly at 11:00
       },

@@ -10,6 +10,7 @@ import {
  */
 export interface Task {
   id?: number;
+  uuid: string;
   title: string;
   description: string;
   project: string;
@@ -17,6 +18,7 @@ export interface Task {
   type: string;
   startTime: Date;
   endTime: Date;
+  updatedAt?: number;
 }
 
 /**
@@ -27,6 +29,7 @@ export interface Company {
   name: string;
   lastUsedAt: Date;
   useCount: number;
+  updatedAt?: number;
 }
 
 /**
@@ -36,6 +39,7 @@ export interface Project {
   id?: number;
   name: string;
   lastUsedAt: Date;
+  updatedAt?: number;
 }
 
 /**
@@ -49,6 +53,7 @@ export interface RecentTask {
   type: string;
   lastUsedAt: Date;
   isBillable: boolean;
+  updatedAt?: number;
 }
 
 /**
@@ -66,6 +71,7 @@ export async function initDB(
           autoIncrement: true,
         });
         taskStore.createIndex('date', 'startTime');
+        taskStore.createIndex('uuid', 'uuid', { unique: true });
 
         // Create projects store
         const projectStore = db.createObjectStore('projects', {
@@ -136,8 +142,41 @@ export async function putItem<T>(
   db: IDBPDatabase,
   storeName: string,
   item: T,
+  preserveUpdatedAt: boolean = false,
 ): Promise<any> {
-  return db.put(storeName as any, item);
+  const itemToSave =
+    item && typeof item === 'object' ? { ...item } : item;
+  if (itemToSave && typeof itemToSave === 'object') {
+    if (!preserveUpdatedAt || !(itemToSave as any).updatedAt) {
+      (itemToSave as any).updatedAt = Date.now();
+    }
+    if (storeName === 'tasks' && !(itemToSave as any).uuid) {
+      (itemToSave as any).uuid = crypto.randomUUID();
+    }
+  }
+  return db.put(storeName as any, itemToSave);
+}
+
+/**
+ * Helper to add a new item.
+ */
+export async function addItem<T>(
+  db: IDBPDatabase,
+  storeName: string,
+  item: T,
+  preserveUpdatedAt: boolean = false,
+): Promise<any> {
+  const itemToSave =
+    item && typeof item === 'object' ? { ...item } : item;
+  if (itemToSave && typeof itemToSave === 'object') {
+    if (!preserveUpdatedAt || !(itemToSave as any).updatedAt) {
+      (itemToSave as any).updatedAt = Date.now();
+    }
+    if (storeName === 'tasks' && !(itemToSave as any).uuid) {
+      (itemToSave as any).uuid = crypto.randomUUID();
+    }
+  }
+  return db.add(storeName as any, itemToSave);
 }
 
 /**

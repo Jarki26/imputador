@@ -41,15 +41,25 @@ export async function applyOverwriteLogic(
         const taskAfter = {
           ...taskAfterData,
           startTime: new Date(newEnd),
+          uuid: crypto.randomUUID(),
+          updatedAt: Date.now(),
         };
-        await store.put(taskBefore);
-        await store.add(taskAfter);
+        await store.put({ ...taskBefore, updatedAt: Date.now() });
+        await store.add({ ...taskAfter, updatedAt: Date.now() });
       } else if (oldStart < newStart && oldEnd > newStart) {
         // Truncate end of existing task
-        await store.put({ ...task, endTime: new Date(newStart) });
+        await store.put({
+          ...task,
+          endTime: new Date(newStart),
+          updatedAt: Date.now(),
+        });
       } else if (oldStart < newEnd && oldEnd > newEnd) {
         // Truncate start of existing task
-        await store.put({ ...task, startTime: new Date(newEnd) });
+        await store.put({
+          ...task,
+          startTime: new Date(newEnd),
+          updatedAt: Date.now(),
+        });
       }
     }
   }
@@ -88,7 +98,11 @@ export async function pushConflict(
     if (oldStart < end && oldEnd > start) {
       if (oldStart < start) {
         // Split task
-        const taskBefore = { ...task, endTime: new Date(start) };
+        const taskBefore = {
+          ...task,
+          endTime: new Date(start),
+          updatedAt: Date.now(),
+        };
         const shiftDuration = oldEnd - start;
         const newStart = end;
         const newEnd = end + shiftDuration;
@@ -101,6 +115,8 @@ export async function pushConflict(
           ...taskAfterData,
           startTime: new Date(newStart),
           endTime: new Date(newEnd),
+          uuid: crypto.randomUUID(),
+          updatedAt: Date.now(),
         };
 
         // Recursively push what this new part might collide with
@@ -118,6 +134,7 @@ export async function pushConflict(
           ...task,
           startTime: new Date(newStart),
           endTime: new Date(newEnd),
+          updatedAt: Date.now(),
         };
         await store.put(updatedTask);
 

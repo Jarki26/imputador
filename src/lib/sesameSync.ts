@@ -3,7 +3,7 @@ import type { Task } from './db';
 import { i18n } from './i18n.svelte';
 
 /**
- * Calculates gaps between check-out and the next check-in, 
+ * Calculates gaps between check-out and the next check-in,
  * plus OFFLINE boundaries at the start and end of the day.
  */
 export function calculateGapsFromChecks(checks: SesameCheck[]): Task[] {
@@ -41,7 +41,7 @@ export function calculateGapsFromChecks(checks: SesameCheck[]): Task[] {
       start.setSeconds(0, 0);
       const end = new Date(firstCheckIn);
       end.setSeconds(0, 0);
-      
+
       gaps.push({
         title: i18n.t('task.type_offline'),
         description: i18n.t('task.offline_description'),
@@ -90,7 +90,7 @@ export function calculateGapsFromChecks(checks: SesameCheck[]): Task[] {
       if (dayEnd.getTime() - lastCheckOut.getTime() > 60000) {
         const start = new Date(lastCheckOut);
         start.setSeconds(0, 0);
-        
+
         gaps.push({
           title: i18n.t('task.type_offline'),
           description: i18n.t('task.offline_description'),
@@ -113,7 +113,10 @@ export function calculateGapsFromChecks(checks: SesameCheck[]): Task[] {
  * 2. Overwrite if conflicting rest task exists.
  * 3. Allow overlap if conflicting with other task types.
  */
-export async function syncSesameTasks(newRestTasks: Task[], taskStore: any): Promise<void> {
+export async function syncSesameTasks(
+  newRestTasks: Task[],
+  taskStore: any,
+): Promise<void> {
   for (const newRestTask of newRestTasks) {
     // Get all tasks for the day to check for collisions accurately
     const existingTasks = await taskStore.getTasksForDay(newRestTask.startTime);

@@ -1,16 +1,18 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, tick } from 'svelte';
   import { TaskStore } from '$lib/taskStore';
   import { ProjectStore } from '$lib/projectStore';
   import { ConfigStore } from '$lib/configStore';
   import { CompanyStore } from '$lib/companyStore';
   import { HistoryStore } from '$lib/historyStore.svelte';
+  import { syncManager } from '$lib/syncManager';
   import WeeklyView from '$lib/WeeklyView.svelte';
   import TaskList from '$lib/TaskList.svelte';
   import TaskForm from '$lib/TaskForm.svelte';
   import Settings from '$lib/Settings.svelte';
   import Modal from '$lib/Modal.svelte';
   import Tutorial from '$lib/Tutorial.svelte';
+  import SyncStatus from '$lib/SyncStatus.svelte';
   import type { Task } from '$lib/db';
   import { i18n } from '$lib/i18n.svelte';
   import {
@@ -67,6 +69,12 @@
   }
 
   onMount(async () => {
+    syncManager.onDataMerged(async () => {
+      console.log('Sync data merged, reloading...');
+      await loadTasks(false);
+      await loadConfig();
+      await tick();
+    });
     await loadTasks(true); // Initial state for history
     await loadConfig();
   });
@@ -163,7 +171,11 @@
       excelDateFormat,
     );
 
-    const filename = exportService.formatFilename(excelFilenameFormat, start, end);
+    const filename = exportService.formatFilename(
+      excelFilenameFormat,
+      start,
+      end,
+    );
 
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -247,7 +259,13 @@
       const to = formatDateOnlyForInput(sunday);
 
       const proxyUrl = await configStore.getSesameProxyUrl();
-      const checks = await sesameService.getChecks(userId, token, from, to, proxyUrl);
+      const checks = await sesameService.getChecks(
+        userId,
+        token,
+        from,
+        to,
+        proxyUrl,
+      );
       const restTasks = calculateGapsFromChecks(checks);
 
       await syncSesameTasks(restTasks, taskStore);
@@ -282,6 +300,7 @@
         </button>
       </div>
       <div class="header-btns">
+        <SyncStatus />
         <ExportTrigger onExport={handleExport} />
         <button
           class="icon-btn"

@@ -261,7 +261,7 @@ describe('WeeklyView.svelte', () => {
     });
 
     const deleteBtn = screen.getByTitle(/Eliminar/i);
-    
+
     // Simulate pointerDown on delete button
     await fireEvent.pointerDown(deleteBtn, { button: 0, pointerId: 1 });
     // Simulate click on delete button
@@ -307,26 +307,56 @@ describe('WeeklyView.svelte', () => {
       props: { startDate: new Date('2026-04-06'), tasks, onTaskClick },
     });
 
-    const taskBlock = screen.getByText('Quick Click Task').closest('.task-block');
+    const taskBlock = screen
+      .getByText('Quick Click Task')
+      .closest('.task-block');
 
     // 1. Valid Quick Click: 100ms, no movement
-    await fireEvent.pointerDown(taskBlock!, { clientX: 100, clientY: 100, pointerId: 1 });
+    await fireEvent.pointerDown(taskBlock!, {
+      clientX: 100,
+      clientY: 100,
+      pointerId: 1,
+    });
     vi.advanceTimersByTime(100);
-    await fireEvent.pointerUp(taskBlock!, { clientX: 100, clientY: 100, pointerId: 1 });
+    await fireEvent.pointerUp(taskBlock!, {
+      clientX: 100,
+      clientY: 100,
+      pointerId: 1,
+    });
     expect(onTaskClick).toHaveBeenCalledTimes(1);
     onTaskClick.mockClear();
 
     // 2. Too long: 400ms (Long press)
-    await fireEvent.pointerDown(taskBlock!, { clientX: 100, clientY: 100, pointerId: 1 });
+    await fireEvent.pointerDown(taskBlock!, {
+      clientX: 100,
+      clientY: 100,
+      pointerId: 1,
+    });
     vi.advanceTimersByTime(400);
-    await fireEvent.pointerUp(taskBlock!, { clientX: 100, clientY: 100, pointerId: 1 });
+    await fireEvent.pointerUp(taskBlock!, {
+      clientX: 100,
+      clientY: 100,
+      pointerId: 1,
+    });
     expect(onTaskClick).not.toHaveBeenCalled();
 
     // 3. Moved too much: 100ms, 10px movement (Drag)
-    await fireEvent.pointerDown(taskBlock!, { clientX: 100, clientY: 100, pointerId: 1 });
+    await fireEvent.pointerDown(taskBlock!, {
+      clientX: 100,
+      clientY: 100,
+      pointerId: 1,
+    });
     vi.advanceTimersByTime(100);
-    await fireEvent.pointerMove(taskBlock!, { clientX: 110, clientY: 100, pointerId: 1 });
-    await fireEvent.pointerUp(taskBlock!, { clientX: 110, clientY: 100, pointerId: 1 });
+    await fireEvent.pointerMove(taskBlock!, {
+      clientX: 110,
+      clientY: 100,
+      pointerId: 1,
+    });
+    await fireEvent.pointerUp(taskBlock!, {
+      clientX: 110,
+      clientY: 100,
+      pointerId: 1,
+    });
     expect(onTaskClick).not.toHaveBeenCalled();
   });
 
@@ -347,8 +377,16 @@ describe('WeeklyView.svelte', () => {
 
     const taskBlock = screen.getByText('Clickable Task').closest('.task-block');
     // Simulate Quick Click using pointer events
-    await fireEvent.pointerDown(taskBlock!, { clientX: 0, clientY: 0, pointerId: 1 });
-    await fireEvent.pointerUp(taskBlock!, { clientX: 0, clientY: 0, pointerId: 1 });
+    await fireEvent.pointerDown(taskBlock!, {
+      clientX: 0,
+      clientY: 0,
+      pointerId: 1,
+    });
+    await fireEvent.pointerUp(taskBlock!, {
+      clientX: 0,
+      clientY: 0,
+      pointerId: 1,
+    });
 
     expect(onTaskClick).toHaveBeenCalledWith(expect.objectContaining(tasks[0]));
   });
@@ -621,11 +659,21 @@ describe('WeeklyView.svelte', () => {
       },
     });
 
-    const taskBlock = screen.getByText('Move Locked Task').closest('.task-block');
+    const taskBlock = screen
+      .getByText('Move Locked Task')
+      .closest('.task-block');
     // Simulate Quick Click
-    await fireEvent.pointerDown(taskBlock!, { clientX: 100, clientY: 100, pointerId: 1 });
+    await fireEvent.pointerDown(taskBlock!, {
+      clientX: 100,
+      clientY: 100,
+      pointerId: 1,
+    });
     vi.advanceTimersByTime(100);
-    await fireEvent.pointerUp(taskBlock!, { clientX: 100, clientY: 100, pointerId: 1 });
+    await fireEvent.pointerUp(taskBlock!, {
+      clientX: 100,
+      clientY: 100,
+      pointerId: 1,
+    });
 
     expect(onTaskClick).toHaveBeenCalledTimes(1);
     expect(onTaskClick).toHaveBeenCalledWith(expect.objectContaining(tasks[0]));
@@ -651,7 +699,9 @@ describe('WeeklyView.svelte', () => {
       },
     });
 
-    const taskBlock = screen.getByText('Move Locked Drag Task').closest('.task-block');
+    const taskBlock = screen
+      .getByText('Move Locked Drag Task')
+      .closest('.task-block');
 
     // Simulate drag attempt
     await fireEvent.pointerDown(taskBlock!, { clientY: 0, pointerId: 1 });

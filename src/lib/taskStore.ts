@@ -1,5 +1,6 @@
-import { initDB, type Task, type RecentTask } from './db';
+import { initDB, type Task, type RecentTask, addItem, putItem } from './db';
 import { CompanyStore } from './companyStore';
+import { syncManager } from './syncManager';
 import { applyOverwriteLogic, pushConflict } from './taskStore.collision';
 import { addWithSmartFill } from './taskStore.smartFill';
 import {
@@ -40,9 +41,10 @@ export class TaskStore {
    */
   async addTask(task: Task): Promise<number | undefined> {
     const db = await this.getDB();
-    const id = await db.add('tasks', task);
+    const id = await addItem(db, 'tasks', task);
     await this.upsertRecentTask(task);
     await this.purgeHistory();
+    syncManager.sync();
     return id as number;
   }
 
@@ -242,13 +244,14 @@ export class TaskStore {
     }
 
     const updatedTask = { ...task, ...updates };
-    await store.put(updatedTask);
+    await putItem(db, 'tasks', updatedTask);
     await tx.done;
 
     // Also update recents if title or project changed
     if (updates.title || updates.project || updates.company) {
       await this.upsertRecentTask(updatedTask);
     }
+    syncManager.sync();
   }
 
   /**
@@ -258,6 +261,7 @@ export class TaskStore {
   async deleteTask(id: number): Promise<void> {
     const db = await this.getDB();
     await db.delete('tasks', id);
+    syncManager.sync();
   }
 
   /**
@@ -271,11 +275,12 @@ export class TaskStore {
 
     await applyOverwriteLogic(newTask, store);
 
-    const id = await store.add(newTask);
+    const id = await addItem(db, 'tasks', newTask);
     await tx.done;
 
     await this.upsertRecentTask(newTask);
     await this.purgeHistory();
+    syncManager.sync();
     return id as number;
   }
 
@@ -293,12 +298,13 @@ export class TaskStore {
     const updatedTask = { ...existing, ...updates };
     await applyOverwriteLogic(updatedTask, store, id);
 
-    await store.put(updatedTask);
+    await putItem(db, 'tasks', updatedTask);
     await tx.done;
 
     if (updates.title || updates.project || updates.company) {
       await this.upsertRecentTask(updatedTask);
     }
+    syncManager.sync();
   }
 
   /**
@@ -316,11 +322,12 @@ export class TaskStore {
       store,
     );
 
-    const id = await store.add(newTask);
+    const id = await addItem(db, 'tasks', newTask);
     await tx.done;
 
     await this.upsertRecentTask(newTask);
     await this.purgeHistory();
+    syncManager.sync();
     return id as number;
   }
 
@@ -347,12 +354,13 @@ export class TaskStore {
       [id], // Exclude the task being updated
     );
 
-    await store.put(updatedTask);
+    await putItem(db, 'tasks', updatedTask);
     await tx.done;
 
     if (updates.title || updates.project || updates.company) {
       await this.upsertRecentTask(updatedTask);
     }
+    syncManager.sync();
   }
 
   /**

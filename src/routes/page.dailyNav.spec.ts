@@ -31,8 +31,22 @@ vi.mock('$lib/configStore', () => {
     ConfigStore: class {
       getWeeklyHoursTarget = vi.fn().mockResolvedValue(41);
       getExcelDateFormat = vi.fn().mockResolvedValue('DD/MM/YYYY');
+      getExcelFilenameFormat = vi
+        .fn()
+        .mockResolvedValue(
+          'imputador_{START_YYYY}{START_MM}{START_DD}_{END_YYYY}{END_MM}{END_DD}',
+        );
+      getSesameToken = vi.fn().mockResolvedValue(null);
+      getSesameUserId = vi.fn().mockResolvedValue(null);
+      getSesameEmail = vi.fn().mockResolvedValue(null);
+      getSesameProxyUrl = vi.fn().mockResolvedValue(null);
       setExcelDateFormat = vi.fn().mockResolvedValue(undefined);
       setWeeklyHoursTarget = vi.fn().mockResolvedValue(undefined);
+      setExcelFilenameFormat = vi.fn().mockResolvedValue(undefined);
+      setSesameToken = vi.fn().mockResolvedValue(undefined);
+      setSesameUserId = vi.fn().mockResolvedValue(undefined);
+      setSesameEmail = vi.fn().mockResolvedValue(undefined);
+      setSesameProxyUrl = vi.fn().mockResolvedValue(undefined);
       getAllTaskTypeColors = vi.fn().mockResolvedValue({});
       setTaskTypeColor = vi.fn().mockResolvedValue(undefined);
     },

@@ -1,4 +1,5 @@
 import { initDB, type Project, putItem, deleteItem, getMany } from './db';
+import { syncManager } from './syncManager';
 
 /**
  * Service for managing projects in IndexedDB.
@@ -21,6 +22,7 @@ export class ProjectStore {
       lastUsedAt: new Date(),
     };
     await putItem(db, 'projects', project);
+    syncManager.sync();
   }
 
   /**
@@ -38,6 +40,7 @@ export class ProjectStore {
       ...existing,
       name: newName,
     });
+    syncManager.sync();
   }
 
   /**

@@ -28,7 +28,20 @@
 
 - **Sesame HR API:** Direct client-side integration via standard `fetch` API for retrieving time logs and employee information.
 
+## P2P Synchronization
+
+- **Signaling:** `peerjs` for WebRTC connection negotiation using a public signaling server.
+- **Connection:** Direct WebRTC Data Channels for end-to-end encrypted synchronization.
+
 ## Settings Backup & Restore
 
 - **JSON-based Backup:** JSON for structured configuration export/import.
 - **Scope:** Coverage of `config`, `companies`, and `projects` tables.
+
+---
+
+## Change Log
+
+### 2026-04-26
+
+- Added `peerjs` to the tech stack to support P2P synchronization between devices. This enables real-time data exchange without a persistent backend.

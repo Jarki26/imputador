@@ -1,4 +1,5 @@
 import { initDB, type Company, putItem, deleteItem, getMany } from './db';
+import { syncManager } from './syncManager';
 
 /**
  * Service for managing companies in IndexedDB.
@@ -27,6 +28,7 @@ export class CompanyStore {
     };
 
     await putItem(db, 'companies', company);
+    syncManager.sync();
   }
 
   /**
@@ -50,6 +52,7 @@ export class CompanyStore {
   async deleteCompany(name: string): Promise<void> {
     const db = await initDB(this.dbName);
     await deleteItem(db, 'companies', name);
+    syncManager.sync();
   }
 
   /**
@@ -69,6 +72,7 @@ export class CompanyStore {
     } else {
       await putItem(db, 'companies', { ...existing, ...updates } as Company);
     }
+    syncManager.sync();
   }
 
   /**

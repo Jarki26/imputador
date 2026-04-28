@@ -1,5 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import { calculateTotalHours, calculateWorkHours, calculateRestHours } from './taskUtils';
+import {
+  calculateTotalHours,
+  calculateWorkHours,
+  calculateRestHours,
+} from './taskUtils';
 import type { Task } from './db';
 
 describe('taskUtils', () => {
@@ -11,7 +15,12 @@ describe('taskUtils', () => {
   it('calculateTotalHours should exclude OFFLINE tasks', () => {
     const tasks: Task[] = [
       { ...baseTask, type: 'DESARROLLO' } as Task,
-      { ...baseTask, startTime: new Date('2026-04-19T10:00:00'), endTime: new Date('2026-04-19T11:00:00'), type: 'OFFLINE' } as Task,
+      {
+        ...baseTask,
+        startTime: new Date('2026-04-19T10:00:00'),
+        endTime: new Date('2026-04-19T11:00:00'),
+        type: 'OFFLINE',
+      } as Task,
     ];
     // Should only count the 2 hours of DESARROLLO
     expect(calculateTotalHours(tasks)).toBe(2);
@@ -20,7 +29,12 @@ describe('taskUtils', () => {
   it('calculateWorkHours should exclude OFFLINE tasks', () => {
     const tasks: Task[] = [
       { ...baseTask, type: 'DESARROLLO' } as Task,
-      { ...baseTask, startTime: new Date('2026-04-19T10:00:00'), endTime: new Date('2026-04-19T11:00:00'), type: 'OFFLINE' } as Task,
+      {
+        ...baseTask,
+        startTime: new Date('2026-04-19T10:00:00'),
+        endTime: new Date('2026-04-19T11:00:00'),
+        type: 'OFFLINE',
+      } as Task,
     ];
     // Should only count the 2 hours of DESARROLLO
     expect(calculateWorkHours(tasks)).toBe(2);

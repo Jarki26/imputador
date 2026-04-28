@@ -14,7 +14,7 @@ describe('TaskForm.svelte - Current Time Tooltip', () => {
   beforeEach(async () => {
     cleanup();
     await i18n.setLocale('es');
-    
+
     // Mock stores
     mockTaskStore = {
       addTask: vi.fn().mockResolvedValue(1) as any,
@@ -29,7 +29,7 @@ describe('TaskForm.svelte - Current Time Tooltip', () => {
       upsertProject: vi.fn().mockResolvedValue(undefined) as any,
     };
     mockCompanyStore = {
-        getRecentCompanies: vi.fn().mockResolvedValue([]) as any,
+      getRecentCompanies: vi.fn().mockResolvedValue([]) as any,
     };
 
     // Mock system time to 14:30:00
@@ -43,10 +43,10 @@ describe('TaskForm.svelte - Current Time Tooltip', () => {
 
   it('should have a button to set current time for start and end time fields', () => {
     render(TaskForm, {
-      props: { 
-        taskStore: mockTaskStore as TaskStore, 
+      props: {
+        taskStore: mockTaskStore as TaskStore,
         projectStore: mockProjectStore as ProjectStore,
-        companyStore: mockCompanyStore as CompanyStore
+        companyStore: mockCompanyStore as CompanyStore,
       },
     });
 
@@ -54,20 +54,26 @@ describe('TaskForm.svelte - Current Time Tooltip', () => {
     const currentTimeBtns = screen.getAllByTitle(/Ahora/i);
     expect(currentTimeBtns).toHaveLength(2);
 
-    expect(currentTimeBtns[0].getAttribute('aria-label')).toBe('Establecer hora actual');
-    expect(currentTimeBtns[1].getAttribute('aria-label')).toBe('Establecer hora actual');
+    expect(currentTimeBtns[0].getAttribute('aria-label')).toBe(
+      'Establecer hora actual',
+    );
+    expect(currentTimeBtns[1].getAttribute('aria-label')).toBe(
+      'Establecer hora actual',
+    );
   });
 
   it('should set start time to current time when the button is clicked', async () => {
     render(TaskForm, {
-      props: { 
-        taskStore: mockTaskStore as TaskStore, 
+      props: {
+        taskStore: mockTaskStore as TaskStore,
         projectStore: mockProjectStore as ProjectStore,
-        companyStore: mockCompanyStore as CompanyStore
+        companyStore: mockCompanyStore as CompanyStore,
       },
     });
 
-    const startInput = screen.getByLabelText(/Hora de Inicio/i) as HTMLInputElement;
+    const startInput = screen.getByLabelText(
+      /Hora de Inicio/i,
+    ) as HTMLInputElement;
     const setStartTimeBtn = screen.getAllByTitle(/Ahora/i)[0];
 
     await fireEvent.click(setStartTimeBtn);
@@ -77,10 +83,10 @@ describe('TaskForm.svelte - Current Time Tooltip', () => {
 
   it('should set end time to current time when the button is clicked', async () => {
     render(TaskForm, {
-      props: { 
-        taskStore: mockTaskStore as TaskStore, 
+      props: {
+        taskStore: mockTaskStore as TaskStore,
         projectStore: mockProjectStore as ProjectStore,
-        companyStore: mockCompanyStore as CompanyStore
+        companyStore: mockCompanyStore as CompanyStore,
       },
     });
 

@@ -51,7 +51,9 @@
         aria-label={i18n.t('calendar.select_date')}
       >
         <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-          <path d="M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3H18V1M17,12H12V17H17V12Z" />
+          <path
+            d="M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3H18V1M17,12H12V17H17V12Z"
+          />
         </svg>
       </button>
 
@@ -66,21 +68,25 @@
         aria-label={i18n.t('weekly.next_week')}
       >
         <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-          <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
+          <path
+            d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"
+          />
         </svg>
       </button>
     </div>
 
     {#if onSyncSesame}
-      <button 
-        class="sync-btn" 
+      <button
+        class="sync-btn"
         class:loading={syncLoading}
         onclick={onSyncSesame}
         disabled={syncLoading}
         title={i18n.t('settings.sesame_sync_button')}
       >
         <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-          <path d="M12,18A6,6 0 0,1 6,12C6,11,6.25,10.03 6.7,9.2L5.24,7.74C4.46,8.97 4,10.43 4,12A8,8 0 0,0 12,20V23L16,19L12,15V18M12,4V1L8,5L12,9V6A6,6 0 0,1 18,12C18,13 17.75,13.97 17.3,14.8L18.76,16.26C19.54,15.03 20,13.57 20,12A8,8 0 0,0 12,4Z" />
+          <path
+            d="M12,18A6,6 0 0,1 6,12C6,11,6.25,10.03 6.7,9.2L5.24,7.74C4.46,8.97 4,10.43 4,12A8,8 0 0,0 12,20V23L16,19L12,15V18M12,4V1L8,5L12,9V6A6,6 0 0,1 18,12C18,13 17.75,13.97 17.3,14.8L18.76,16.26C19.54,15.03 20,13.57 20,12A8,8 0 0,0 12,4Z"
+          />
         </svg>
         <span>{i18n.t('settings.sesame_sync_button')}</span>
       </button>
@@ -178,8 +184,12 @@
   }
 
   @keyframes rotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   .summary-container {
