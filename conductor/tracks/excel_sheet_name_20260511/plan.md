@@ -1,9 +1,9 @@
 # Implementation Plan: Parameterizable Excel Sheet Name
 
 ## Phase 1: Configuration Store Updates
-- [ ] Task: Update `configStore` to include `excelSheetName` with a default of "Hoja1".
-    - [ ] Update `src/lib/configStore.ts` types and default values.
-    - [ ] Add unit tests in `src/lib/configStore.spec.ts` for the new setting.
+- [x] Task: Update `configStore` to include `excelSheetName` with a default of "Hoja1". [2798cfc]
+    - [x] Update `src/lib/configStore.ts` types and default values.
+    - [x] Add unit tests in `src/lib/configStore.spec.ts` for the new setting.
 - [ ] Task: Update `exportConfigStore` to use the new setting.
     - [ ] Update `src/lib/exportConfigStore.ts` to expose `excelSheetName`.
     - [ ] Add unit tests in `src/lib/exportConfigStore.spec.ts`.
