@@ -1,13 +1,11 @@
 # Implementation Plan: Parameterizable Excel Sheet Name
 
-## Phase 1: Configuration Store Updates
+## Phase 1: Configuration Store Updates [checkpoint: 02c6216]
 - [x] Task: Update `configStore` to include `excelSheetName` with a default of "Hoja1". [2798cfc]
     - [x] Update `src/lib/configStore.ts` types and default values.
     - [x] Add unit tests in `src/lib/configStore.spec.ts` for the new setting.
-- [ ] Task: Update `exportConfigStore` to use the new setting.
-    - [ ] Update `src/lib/exportConfigStore.ts` to expose `excelSheetName`.
-    - [ ] Add unit tests in `src/lib/exportConfigStore.spec.ts`.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Configuration Store Updates' (Protocol in workflow.md)
+- [-] Task: Update `exportConfigStore` to use the new setting. (Not needed, integrated into ConfigStore for consistency)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Configuration Store Updates' (Protocol in workflow.md) [02c6216]
 
 ## Phase 2: UI Implementation
 - [ ] Task: Add the configuration field to the UI.
