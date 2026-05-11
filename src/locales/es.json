@@ -61,6 +61,7 @@
     "excel_filename_format_title": "Formato de Nombre de Archivo (Excel)",
     "excel_filename_format_hint": "Tokens: {START_YYYY}, {START_MM}, {START_DD}, {END_YYYY}, {END_MM}, {END_DD}",
     "excel_filename_error": "El nombre contiene caracteres no válidos (/ \\ : * ? \" < > |)",
+    "excel_sheet_name_title": "Nombre de la Hoja (Excel)",
     "import_file": "Importar Archivo",
     "import_confirm_title": "¿Vaciar datos e importar?",
     "import_confirm_msg": "Esta acción borrará TODOS los registros actuales de la aplicación. Escribe 'IMPORTAR' para confirmar:",

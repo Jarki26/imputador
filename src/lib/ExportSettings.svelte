@@ -10,6 +10,7 @@
     exclusions = [],
     excelDateFormat = 'DD/MM/YYYY',
     excelFilenameFormat = 'imputador_{START_YYYY}{START_MM}{START_DD}_{END_YYYY}{END_MM}{END_DD}',
+    excelSheetName = 'Hoja1',
     onSave,
     onImportComplete,
   }: {
@@ -17,11 +18,13 @@
     exclusions: string[];
     excelDateFormat: string;
     excelFilenameFormat: string;
+    excelSheetName: string;
     onSave: (data: {
       template: ColumnMapping[];
       exclusions: string[];
       excelDateFormat: string;
       excelFilenameFormat: string;
+      excelSheetName: string;
     }) => void;
     onImportComplete?: () => void;
   } = $props();
@@ -49,7 +52,7 @@
 
     const result = await importService.parseFile(
       file,
-      template,
+      localTemplate,
       localExcelDateFormat,
     );
     parsedTasks = result.tasks;
@@ -74,6 +77,7 @@
   let localExclusions = $state<string[]>([]);
   let localExcelDateFormat = $state('');
   let localExcelFilenameFormat = $state('');
+  let localExcelSheetName = $state('');
 
   let filenameError = $derived.by(() => {
     const invalidChars = /[\\/:*?"<>|]/;
@@ -81,10 +85,11 @@
   });
 
   $effect(() => {
-    localTemplate = JSON.parse(JSON.stringify(template));
-    localExclusions = [...exclusions];
+    localTemplate = JSON.parse(JSON.stringify($state.snapshot(template)));
+    localExclusions = [...$state.snapshot(exclusions)];
     localExcelDateFormat = excelDateFormat;
     localExcelFilenameFormat = excelFilenameFormat;
+    localExcelSheetName = excelSheetName;
   });
 
   function addMapping() {
@@ -110,6 +115,7 @@
       exclusions: $state.snapshot(localExclusions),
       excelDateFormat: localExcelDateFormat,
       excelFilenameFormat: localExcelFilenameFormat,
+      excelSheetName: localExcelSheetName,
     });
   }
 </script>
@@ -144,6 +150,20 @@
       {:else}
         <p class="hint">{i18n.t('settings.excel_filename_format_hint')}</p>
       {/if}
+    </div>
+  </section>
+
+  <section class="sheet-name-section">
+    <h3>{i18n.t('settings.excel_sheet_name_title')}</h3>
+    <div class="format-input-container">
+      <input
+        id="excelSheetName"
+        type="text"
+        bind:value={localExcelSheetName}
+        class="sheet-name-input"
+        placeholder="Hoja1"
+        aria-label={i18n.t('settings.excel_sheet_name_title')}
+      />
     </div>
   </section>
 
@@ -309,7 +329,8 @@
   }
 
   .date-format-input,
-  .filename-format-input {
+  .filename-format-input,
+  .sheet-name-input {
     padding: 0.75rem;
     border: 1px solid var(--md-sys-color-outline);
     border-radius: 0.5rem;

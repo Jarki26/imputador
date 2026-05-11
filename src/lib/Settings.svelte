@@ -19,6 +19,7 @@
     exportExclusions: string[];
     excelDateFormat: string;
     excelFilenameFormat: string;
+    excelSheetName: string;
     taskTypeColors: Record<string, string>;
     companyStore?: CompanyStore;
     taskStore?: TaskStore;
@@ -30,6 +31,7 @@
       exclusions: string[];
       excelDateFormat: string;
       excelFilenameFormat: string;
+      excelSheetName: string;
     }) => void;
     onSaveTaskTypeColor: (taskType: string, color: string) => void;
     onImportComplete?: () => void;
@@ -42,6 +44,7 @@
     exportExclusions,
     excelDateFormat,
     excelFilenameFormat,
+    excelSheetName,
     taskTypeColors,
     companyStore,
     taskStore,
@@ -188,6 +191,7 @@
           exclusions={exportExclusions}
           {excelDateFormat}
           {excelFilenameFormat}
+          {excelSheetName}
           onSave={onSaveExportConfig}
           {onImportComplete}
         />

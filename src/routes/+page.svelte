@@ -41,6 +41,7 @@
   let excelFilenameFormat = $state(
     'imputador_{START_YYYY}{START_MM}{START_DD}_{END_YYYY}{END_MM}{END_DD}',
   );
+  let excelSheetName = $state('Hoja1');
   let taskTypeColors = $state<Record<string, string>>({});
   let view = $state<'weekly' | 'daily'>('weekly');
   let selectedDate = $state(new Date());
@@ -63,6 +64,7 @@
     weeklyTarget = await configStore.getWeeklyHoursTarget();
     excelDateFormat = await configStore.getExcelDateFormat();
     excelFilenameFormat = await configStore.getExcelFilenameFormat();
+    excelSheetName = await configStore.getExcelSheetName();
     taskTypeColors = await configStore.getAllTaskTypeColors();
     exportTemplate = await exportConfigStore.getTemplate();
     exportExclusions = await exportConfigStore.getExclusions();
@@ -144,15 +146,18 @@
     exclusions: string[];
     excelDateFormat: string;
     excelFilenameFormat: string;
+    excelSheetName: string;
   }) {
     await exportConfigStore.setTemplate(data.template);
     await exportConfigStore.setExclusions(data.exclusions);
     await configStore.setExcelDateFormat(data.excelDateFormat);
     await configStore.setExcelFilenameFormat(data.excelFilenameFormat);
+    await configStore.setExcelSheetName(data.excelSheetName);
     exportTemplate = data.template;
     exportExclusions = data.exclusions;
     excelDateFormat = data.excelDateFormat;
     excelFilenameFormat = data.excelFilenameFormat;
+    excelSheetName = data.excelSheetName;
   }
 
   async function handleExport(range: { startDate: string; endDate: string }) {

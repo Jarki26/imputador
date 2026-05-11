@@ -61,6 +61,7 @@
     "excel_filename_format_title": "Filename Format (Excel)",
     "excel_filename_format_hint": "Tokens: {START_YYYY}, {START_MM}, {START_DD}, {END_YYYY}, {END_MM}, {END_DD}",
     "excel_filename_error": "Filename contains invalid characters (/ \\ : * ? \" < > |)",
+    "excel_sheet_name_title": "Sheet Name (Excel)",
     "import_file": "Import File",
     "import_confirm_title": "Clear data and import?",
     "import_confirm_msg": "This action will clear ALL current app records. Type 'IMPORTAR' to confirm:",
