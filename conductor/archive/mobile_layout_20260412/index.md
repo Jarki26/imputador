@@ -1,1 +1,1 @@
-# Track mobile_layout_20260412 Context`n`n- [Specification](./spec.md)`n- [Implementation Plan](./plan.md)`n- [Metadata](./metadata.json)
+# Track mobile_layout_20260412 Context`n`n- [Specification](automatizaciones/Imputador/conductor/archive/mobile_layout_20260412/spec.md)`n- [Implementation Plan](./plan.md)`n- [Metadata](automatizaciones/Imputador/conductor/archive/mobile_layout_20260412/metadata.json)
