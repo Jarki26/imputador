@@ -174,6 +174,7 @@
       filteredTasks,
       exportTemplate,
       excelDateFormat,
+      excelSheetName,
     );
 
     const filename = exportService.formatFilename(

@@ -3,6 +3,7 @@ import { ExportService } from './exportService';
 import type { Task } from './db';
 import type { ColumnMapping } from './exportConfigStore';
 import { i18n } from './i18n.svelte';
+import * as XLSX from 'xlsx';
 
 vi.mock('./i18n.svelte', () => ({
   i18n: {
@@ -140,5 +141,17 @@ describe('ExportService operations', () => {
     expect(blob.type).toBe(
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     );
+  });
+
+  it('should use the provided sheet name', async () => {
+    const template: ColumnMapping[] = [
+      { columnName: 'Proyecto', taskField: 'project' },
+    ];
+    const spy = vi.spyOn(XLSX.utils, 'book_append_sheet');
+    
+    await service.generateExcel(mockTasks, template, 'YYYY-MM-DD', 'CustomSheet');
+    
+    expect(spy).toHaveBeenCalledWith(expect.anything(), expect.anything(), 'CustomSheet');
+    spy.mockRestore();
   });
 });

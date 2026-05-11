@@ -15,11 +15,12 @@ export class ExportService {
     tasks: Task[],
     template: ColumnMapping[],
     excelDateFormat: string = 'YYYY-MM-DD',
+    excelSheetName: string = 'Tasks',
   ): Promise<Blob> {
     const rows = this.mapTasksToRows(tasks, template, excelDateFormat);
     const worksheet = XLSX.utils.json_to_sheet(rows);
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Tasks');
+    XLSX.utils.book_append_sheet(workbook, worksheet, excelSheetName);
 
     const excelBuffer = XLSX.write(workbook, {
       bookType: 'xlsx',
