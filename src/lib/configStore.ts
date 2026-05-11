@@ -64,6 +64,24 @@ export class ConfigStore {
   }
 
   /**
+   * Retrieves the Excel sheet name from the config store.
+   * Defaults to 'Hoja1' if not found.
+   */
+  async getExcelSheetName(): Promise<string> {
+    const db = await initDB(this.dbName);
+    const config = await db.get('config', 'excelSheetName');
+    return config ? config.value : 'Hoja1';
+  }
+
+  /**
+   * Saves the Excel sheet name to the config store.
+   */
+  async setExcelSheetName(name: string): Promise<void> {
+    const db = await initDB(this.dbName);
+    await db.put('config', { key: 'excelSheetName', value: name });
+  }
+
+  /**
    * Retrieves the color for a specific task type.
    * Defaults to '#e5e7eb' or task type defaultColor if not found.
    */

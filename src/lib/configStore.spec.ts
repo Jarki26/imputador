@@ -27,4 +27,17 @@ describe('ConfigStore operations', () => {
     const target = await store.getWeeklyHoursTarget();
     expect(target).toBe(35);
   });
+
+  describe('Excel Sheet Name', () => {
+    it('should return default value of "Hoja1" when no sheet name is set', async () => {
+      const name = await store.getExcelSheetName();
+      expect(name).toBe('Hoja1');
+    });
+
+    it('should save and retrieve a new sheet name', async () => {
+      await store.setExcelSheetName('CustomSheet');
+      const name = await store.getExcelSheetName();
+      expect(name).toBe('CustomSheet');
+    });
+  });
 });
