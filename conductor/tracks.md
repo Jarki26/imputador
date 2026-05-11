@@ -9,6 +9,6 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Parameterizable Excel Sheet Name**
+- [x] **Track: Parameterizable Excel Sheet Name**
 *Link: [./tracks/excel_sheet_name_20260511/](./tracks/excel_sheet_name_20260511/)*
 
