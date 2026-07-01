@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { calculateTotalHours } from './taskUtils';
 import { getContrastColor } from './uiUtils';
 import { parseStartDate, parseEndDate } from './dateUtils';
+import { formatHoursToHHMM } from './utils';
 import type { Task } from './db';
 
 describe('Date Helpers', () => {
@@ -77,5 +78,27 @@ describe('calculateTotalHours', () => {
       },
     ];
     expect(calculateTotalHours(tasks as Task[])).toBe(2);
+  });
+});
+
+describe('formatHoursToHHMM', () => {
+  it('should format simple decimals correctly', () => {
+    expect(formatHoursToHHMM(2.5)).toBe('02:30');
+    expect(formatHoursToHHMM(8.25)).toBe('08:15');
+    expect(formatHoursToHHMM(0.75)).toBe('00:45');
+  });
+
+  it('should pad single digits with zero', () => {
+    expect(formatHoursToHHMM(9)).toBe('09:00');
+    expect(formatHoursToHHMM(0)).toBe('00:00');
+  });
+
+  it('should handle values over 24 hours without resetting', () => {
+    expect(formatHoursToHHMM(26.5)).toBe('26:30');
+    expect(formatHoursToHHMM(100)).toBe('100:00');
+  });
+
+  it('should format floating point precision issues correctly', () => {
+    expect(formatHoursToHHMM(1.3333333333333333)).toBe('01:20'); // 1/3 of an hour is 20 mins
   });
 });
