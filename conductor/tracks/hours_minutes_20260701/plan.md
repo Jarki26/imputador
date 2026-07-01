@@ -1,9 +1,9 @@
 # Implementation Plan: Formato de Horas HH:MM
 
 ## Phase 1: Utility Function Implementation
-- [ ] Task: Implement `formatHoursToHHMM` utility
-    - [ ] Sub-task: Write failing tests for `formatHoursToHHMM` function.
-    - [ ] Sub-task: Implement `formatHoursToHHMM` function to make tests pass.
+- [x] Task: Implement `formatHoursToHHMM` utility (7c141a1)
+    - [x] Sub-task: Write failing tests for `formatHoursToHHMM` function.
+    - [x] Sub-task: Implement `formatHoursToHHMM` function to make tests pass.
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Utility Function Implementation' (Protocol in workflow.md)
 
 ## Phase 2: UI Integration (Daily Summaries)
