@@ -6,6 +6,8 @@
     getContrastColor,
   } from './uiUtils';
   import { isBillable } from './config';
+  import { fade } from 'svelte/transition';
+  import { formatHoursToHHMM } from './utils';
   import { i18n } from './i18n.svelte';
 
   interface TaskWithOverlap extends Task {
@@ -69,7 +71,7 @@
 
   function getTaskDuration(task: Task): string {
     const durationMs = task.endTime.getTime() - task.startTime.getTime();
-    return (durationMs / (1000 * 60 * 60)).toFixed(2) + 'h';
+    return formatHoursToHHMM(durationMs / (1000 * 60 * 60)) + 'h';
   }
 </script>
 

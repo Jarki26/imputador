@@ -53,7 +53,7 @@ describe('WeeklyView.svelte', () => {
     render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks } });
 
     expect(screen.getAllByTitle('Horas Facturables')[0]).toHaveTextContent(
-      '1.00h',
+      '01:00h',
     );
   });
 
@@ -80,9 +80,9 @@ describe('WeeklyView.svelte', () => {
       props: { startDate: new Date('2026-04-06'), tasks, weeklyTarget: 41 },
     });
 
-    // Registrado: 2.00h / Objetivo: 41.00h
+    // Registrado: 02:00h / Objetivo: 41:00h
     expect(
-      screen.getByText(/Registrado: 2\.00h \/ Objetivo: 41\.00h/i),
+      screen.getByText(/Registrado: 02:00h \/ Objetivo: 41:00h/i),
     ).toBeDefined();
   });
 
@@ -106,11 +106,11 @@ describe('WeeklyView.svelte', () => {
     render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks } });
 
     expect(screen.getAllByTitle('Horas Facturables')[0]).toHaveTextContent(
-      '2.00h',
+      '02:00h',
     );
     expect(
       screen.getAllByTitle('Horas de Descanso/No facturables')[0],
-    ).toHaveTextContent('1.00h');
+    ).toHaveTextContent('01:00h');
   });
 
   it('should calculate daily total excluding overlapping time', () => {
@@ -134,7 +134,7 @@ describe('WeeklyView.svelte', () => {
     render(WeeklyView, { props: { startDate: new Date('2026-04-06'), tasks } });
 
     expect(screen.getAllByTitle('Horas Facturables')[0]).toHaveTextContent(
-      '2.00h',
+      '02:00h',
     );
   });
 
@@ -155,7 +155,7 @@ describe('WeeklyView.svelte', () => {
 
     expect(screen.getByText('Weekly Task')).toBeDefined();
     expect(screen.getByText('Project Weekly')).toBeDefined();
-    expect(screen.getAllByText(/1\.50h/i)).toHaveLength(3);
+    expect(screen.getAllByText(/01:30h/i)).toHaveLength(3);
   });
 
   it('should highlight overlapping tasks with an error state', () => {
@@ -568,8 +568,8 @@ describe('WeeklyView.svelte', () => {
       props: { startDate: new Date('2026-04-06'), tasks, weeklyTarget: 41 },
     });
 
-    // Check for "Restante: 34.00h"
-    expect(screen.getByText(/Restante: 34\.00h/i)).toBeDefined();
+    // Check for "Restante: 34:00h"
+    expect(screen.getByText(/Restante: 34:00h/i)).toBeDefined();
 
     // Check for progress bar
     const progressBar = screen.getByRole('progressbar');
@@ -599,17 +599,17 @@ describe('WeeklyView.svelte', () => {
       props: { startDate: new Date('2026-04-06'), tasks, weeklyTarget: 41 },
     });
 
-    // Daily total should be 2.00h
+    // Daily total should be 02:00h
     expect(screen.getAllByTitle('Horas Facturables')[0]).toHaveTextContent(
-      '2.00h',
+      '02:00h',
     );
     // Rest total should be 0.00h (OFFLINE is not REST)
     expect(
       screen.getAllByTitle('Horas de Descanso/No facturables')[0],
-    ).toHaveTextContent('0.00h');
-    // Weekly summary: Registrado: 2.00h / Objetivo: 41.00h
+    ).toHaveTextContent('00:00h');
+    // Weekly summary: Registrado: 02:00h / Objetivo: 41:00h
     expect(
-      screen.getByText(/Registrado: 2\.00h \/ Objetivo: 41\.00h/i),
+      screen.getByText(/Registrado: 02:00h \/ Objetivo: 41:00h/i),
     ).toBeDefined();
   });
 

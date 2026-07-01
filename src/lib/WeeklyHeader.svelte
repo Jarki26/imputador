@@ -1,5 +1,6 @@
 <script lang="ts">
   import { i18n } from './i18n.svelte';
+  import { formatHoursToHHMM } from './utils';
 
   let {
     startDate,
@@ -94,11 +95,9 @@
   </div>
   <div class="summary-container">
     <div class="weekly-summary">
-      {i18n.t('weekly.logged')}: {totalBillableHours.toFixed(2)}h / {i18n.t(
+      {i18n.t('weekly.logged')}: {formatHoursToHHMM(totalBillableHours)}h / {i18n.t(
         'weekly.target',
-      )}: {effectiveGoal.toFixed(2)}h | {i18n.t('weekly.remaining')}: {remainingTime.toFixed(
-        2,
-      )}h
+      )}: {formatHoursToHHMM(effectiveGoal)}h | {i18n.t('weekly.remaining')}: {formatHoursToHHMM(remainingTime)}h
     </div>
     <div
       class="progress-container"

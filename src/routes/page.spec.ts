@@ -49,12 +49,19 @@ describe('+page.svelte', () => {
     const settingsBtn = screen.getByTitle(/Ajustes/i);
     await fireEvent.click(settingsBtn);
 
-    // Check if Settings modal content is visible
+    // Check if Settings modal content is visible (General tab)
     expect(screen.getByText(/Objetivo de Horas Semanales/i)).toBeDefined();
+
+    // Switch to Data Management tab to see Export Configuration
+    const dataManagementTab = screen.getByText(/Gestión de Datos/i);
+    await fireEvent.click(dataManagementTab);
+
     expect(screen.getByText(/Plantilla de Exportación/i)).toBeDefined();
     expect(screen.getByText(/Excluir Tipos de Tarea/i)).toBeDefined();
 
-    // Check for the specific Save button
+    // Switch back to general tab to find the save button
+    const generalTab = screen.getByText(/General/i);
+    await fireEvent.click(generalTab);
     expect(screen.getByRole('button', { name: /^Guardar$/i })).toBeDefined();
   });
 
@@ -63,3 +70,4 @@ describe('+page.svelte', () => {
     expect(screen.getByText(/Exportar Excel/i)).toBeDefined();
   });
 });
+

@@ -36,6 +36,7 @@ vi.mock('$lib/configStore', () => {
         .mockResolvedValue(
           'imputador_{START_YYYY}{START_MM}{START_DD}_{END_YYYY}{END_MM}{END_DD}',
         );
+      getExcelSheetName = vi.fn().mockResolvedValue('Hoja1');
       getSesameToken = vi.fn().mockResolvedValue(null);
       getSesameUserId = vi.fn().mockResolvedValue(null);
       getSesameEmail = vi.fn().mockResolvedValue(null);
@@ -94,8 +95,8 @@ describe('Page Integration - Daily Navigation & Edit', () => {
         title: 'Task to Edit',
         project: 'Project A',
         type: 'General',
-        startTime: new Date(2026, 3, 15, 9, 0),
-        endTime: new Date(2026, 3, 15, 10, 0),
+        startTime: new Date(new Date().setHours(9, 0, 0, 0)),
+        endTime: new Date(new Date().setHours(10, 0, 0, 0)),
       },
     ];
     mockGetTasksForWeek.mockResolvedValue(mockTasks);
@@ -119,3 +120,4 @@ describe('Page Integration - Daily Navigation & Edit', () => {
     );
   });
 });
+

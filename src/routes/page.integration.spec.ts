@@ -46,6 +46,7 @@ vi.mock('$lib/configStore', () => {
         .mockResolvedValue(
           'imputador_{START_YYYY}{START_MM}{START_DD}_{END_YYYY}{END_MM}{END_DD}',
         );
+      getExcelSheetName = vi.fn().mockResolvedValue('Hoja1');
       getSesameToken = vi.fn().mockResolvedValue(null);
       getSesameUserId = vi.fn().mockResolvedValue(null);
       getSesameEmail = vi.fn().mockResolvedValue(null);
@@ -140,3 +141,4 @@ describe('Page Integration - Smart Default Start Time', () => {
     expect(startTimeInput.value).toBe('09:15');
   });
 });
+

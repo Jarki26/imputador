@@ -7,6 +7,7 @@
   } from './taskUtils';
   import { isBillable } from './config';
   import { i18n } from './i18n.svelte';
+  import { formatHoursToHHMM } from './utils';
   import WeeklyHeader from './WeeklyHeader.svelte';
   import WeeklyColumn from './WeeklyColumn.svelte';
   import Modal from './Modal.svelte';
@@ -243,7 +244,7 @@
       return acc + (interval.end.getTime() - interval.start.getTime());
     }, 0);
 
-    return (totalMs / (1000 * 60 * 60)).toFixed(2);
+    return formatHoursToHHMM(totalMs / (1000 * 60 * 60));
   }
 
   function getDailyTotal(date: Date): string {
@@ -278,7 +279,7 @@
       (t) => t.startTime >= dayStart && t.startTime <= dayEnd,
     );
 
-    return calculateRestHours(dailyTasks).toFixed(2);
+    return formatHoursToHHMM(calculateRestHours(dailyTasks));
   }
 
   interface TaskWithOverlap extends Task {

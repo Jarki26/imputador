@@ -83,11 +83,11 @@ describe('WeeklyHeader.svelte', () => {
       },
     });
 
-    // Registrado: 10.50h / Objetivo: 39.00h | Restante: 28.50h
+    // Registrado: 10:30h / Objetivo: 39:00h | Restante: 28:30h
     expect(
-      screen.getByText(/Registrado: 10\.50h \/ Objetivo: 39\.00h/i),
+      screen.getByText(/Registrado: 10:30h \/ Objetivo: 39:00h/i),
     ).toBeDefined();
-    expect(screen.getByText(/Restante: 28\.50h/i)).toBeDefined();
+    expect(screen.getByText(/Restante: 28:30h/i)).toBeDefined();
   });
 
   it('should update progress bar', () => {
