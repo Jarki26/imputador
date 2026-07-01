@@ -12,3 +12,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 - [x] **Track: Parameterizable Excel Sheet Name**
 *Link: [./tracks/excel_sheet_name_20260511/](./tracks/excel_sheet_name_20260511/)*
 
+---
+
+- [ ] **Track: Formato de Horas HH:MM**
+*Link: [./tracks/hours_minutes_20260701/](./tracks/hours_minutes_20260701/)*
+
